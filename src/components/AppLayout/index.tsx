@@ -7,7 +7,7 @@ const AppLayout = () => (
   <div className="flex flex-col min-h-screen overflow-x-hidden">
     <WhitelistBanner />
     <Navbar />
-    <main className="grow pt-[167.5px]">
+    <main className="grow pt-[175.5px]">
       <div className="flex w-full h-full">
         <div className="flex flex-col justify-center w-full">
           <Outlet />

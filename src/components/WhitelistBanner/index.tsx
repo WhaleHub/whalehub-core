@@ -1,6 +1,6 @@
 const WhitelistBanner = () => (
   <div
-    className="fixed top-0 left-0 right-0 z-40 w-full bg-amber-500/15 border-b border-amber-500/40 text-amber-200 text-center text-[18px] leading-[26px] px-[24px] py-[30px] font-inter backdrop-blur-[6px]"
+    className="fixed top-0 left-0 right-0 z-40 w-full bg-amber-500/15 border-b border-amber-500/40 text-amber-200 text-center text-[16px] leading-[22px] px-[24px] py-[24px] font-inter backdrop-blur-[6px]"
     role="status"
   >
     <span className="font-semibold">Rewards temporarily paused.</span>{" "}
