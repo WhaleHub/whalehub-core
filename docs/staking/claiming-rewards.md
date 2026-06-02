@@ -2,6 +2,8 @@
 
 BLUB rewards accumulate continuously while your tokens are staked. You can claim them every 7 days.
 
+> **Status (2026-06):** new BLUB rewards are temporarily not accruing because the BLUB-AQUA pool is awaiting whitelist approval from the Aquarius team. Any rewards already accumulated before this pause remain claimable on the normal 7-day cadence; new rewards resume automatically once the pool is re-whitelisted.
+
 ## How Claiming Works
 
 ```mermaid

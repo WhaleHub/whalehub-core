@@ -92,6 +92,10 @@ AQUA rewards and fees earned by POL are used to **buy BLUB from the open market*
 
 > **Why buy, not mint?** Buying BLUB from existing liquidity pools supports the token price directly. Minting would increase supply and dilute existing holders. WhaleHub prioritizes buying from the market to create real demand.
 
+**Live BLUB-AQUA pool:** [`CAMXZXXBD7DFBLYLHUW24U4MY37X7SU5XXT5ZVVUBXRXWLAIM7INI7G2`](https://stellar.expert/explorer/public/contract/CAMXZXXBD7DFBLYLHUW24U4MY37X7SU5XXT5ZVVUBXRXWLAIM7INI7G2) on Aquarius (StableSwap). This is the active POL pool; any older liquidity-contract address (e.g. from earlier deploy scripts) is deprecated.
+
+> **Note on current rewards:** the BLUB-AQUA pool is awaiting whitelist approval from the Aquarius team. Until that approval lands, the pool earns 0 AQUA emissions and reward distribution to stakers is paused. POL liquidity is in place; distribution will resume automatically once the pool is re-whitelisted.
+
 ---
 
 ## Why This Yield is Sustainable

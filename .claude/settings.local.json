@@ -33,7 +33,13 @@
       "Bash(node *)",
       "Bash(chmod +x *)",
       "Bash(shasum -a 256 soroban-contracts/staking-contract/target/wasm32-unknown-unknown/release/whalehub_staking.optimized.wasm)",
-      "Bash(stellar keys *)"
+      "Bash(stellar keys *)",
+      "WebFetch(domain:docs.aqua.network)",
+      "Bash(gh api *)",
+      "Bash(PORT=3000 BROWSER=none npm start)",
+      "Bash(tee /tmp/whalehub-dev.log)",
+      "Bash(PORT=3002 BROWSER=none npm start)",
+      "Bash(tee /tmp/whalehub-dev3002.log)"
     ]
   }
 }

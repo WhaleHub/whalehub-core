@@ -35,6 +35,8 @@ Whalehub operates on the **Stellar public network** (mainnet) using Soroban smar
 | Pool 0 | BLUB / AQUA | `CAMXZXXBD7DFBLYLHUW24U4MY37X7SU5XXT5ZVVUBXRXWLAIM7INI7G2` | `CDMRHKJCYYHZTRQVR7NY43PR7ISMRBYC2O57IMVAQ7B7P2I2XGIZLI5E` | StableSwap |
 | Pool 2 | XLM / AQUA | `CCY2PXGMKNQHO7WNYXEWX76L2C5BH3JUW3RCATGUYKY7QQTRILBZIFWV` | `CBOHAVUYKQD4C7FIVXEDJCVLUZYUO6RN3VIKEDOTIJGDDV3QN33Y4T4D` | Constant Product |
 
+> **Pool 0 (BLUB-AQUA) — emissions paused pending Aquarius whitelist approval.** The pool is live and POL liquidity is deposited, but it is not on the Aquarius gauge whitelist, so it currently receives 0 AQUA emissions. Reward distribution resumes automatically once the Aquarius whitelist team approves the pair.
+
 ## Admin Wallets
 
 | Role | Address | Type |

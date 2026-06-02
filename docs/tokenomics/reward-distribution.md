@@ -2,6 +2,8 @@
 
 Whalehub distributes rewards using the **Synthetix reward model** — a proven approach where rewards are split proportionally based on each user's share of the staking pool.
 
+> **Status (2026-06):** the BLUB-AQUA pool is currently awaiting whitelist approval from the Aquarius team, so the AQUA-rewards leg of the flow below is **paused**. No AQUA is being earned by POL, so no BLUB is being distributed to stakers from this source. Staked positions are unaffected; distribution resumes automatically once the pool is re-whitelisted.
+
 ## How Rewards Flow
 
 ```mermaid

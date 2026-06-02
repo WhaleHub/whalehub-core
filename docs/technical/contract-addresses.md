@@ -25,6 +25,8 @@ All contracts and tokens are deployed on **Stellar mainnet**.
 | **Pool 0: BLUB-AQUA** | `CAMXZXXBD7DFBLYLHUW24U4MY37X7SU5XXT5ZVVUBXRXWLAIM7INI7G2` | `CDMRHKJCYYHZTRQVR7NY43PR7ISMRBYC2O57IMVAQ7B7P2I2XGIZLI5E` |
 | **Pool 2: XLM-AQUA** | `CCY2PXGMKNQHO7WNYXEWX76L2C5BH3JUW3RCATGUYKY7QQTRILBZIFWV` | `CBOHAVUYKQD4C7FIVXEDJCVLUZYUO6RN3VIKEDOTIJGDDV3QN33Y4T4D` |
 
+> **Pool 0 (BLUB-AQUA) — emissions paused.** The pool is not currently whitelisted on the Aquarius gauge, so it does not receive AQUA emissions. Rewards will resume once the Aquarius whitelist team approves the pair; no protocol change is required from our side. POL liquidity remains deposited at the address above.
+
 ## Admin Wallets
 
 | Role | Address |

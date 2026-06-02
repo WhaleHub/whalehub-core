@@ -32,6 +32,8 @@ DeFi protocol on Stellar. Users lock AQUA -> earn BLUB rewards. Protocol deploys
 | Pool 0: BLUB-AQUA | `CAMXZXXBD7DFBLYLHUW24U4MY37X7SU5XXT5ZVVUBXRXWLAIM7INI7G2` | `CDMRHKJCYYHZTRQVR7NY43PR7ISMRBYC2O57IMVAQ7B7P2I2XGIZLI5E` | StableSwap |
 | Pool 2: XLM-AQUA | `CCY2PXGMKNQHO7WNYXEWX76L2C5BH3JUW3RCATGUYKY7QQTRILBZIFWV` | `CBOHAVUYKQD4C7FIVXEDJCVLUZYUO6RN3VIKEDOTIJGDDV3QN33Y4T4D` | Constant Product |
 
+> **Pool 0 is currently de-whitelisted on the Aquarius gauge** — no AQUA emissions are flowing to POL or vault LP until the Aquarius whitelist team re-approves the pair. The pool contract itself is live and working; this is a gauge-side gating, not a contract issue.
+
 ### Admin Wallets
 | Role | Address | Type |
 |------|---------|------|

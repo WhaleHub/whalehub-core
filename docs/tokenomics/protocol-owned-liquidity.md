@@ -12,7 +12,7 @@ User locks 100 AQUA
 └── 10 BLUB → minted to admin wallet (paired with the AQUA above)
 ```
 
-The admin wallet deposits these into the BLUB-AQUA Aquarius pool, creating LP tokens owned by the protocol.
+The admin wallet deposits these into the BLUB-AQUA Aquarius pool — [`CAMXZXXBD7DFBLYLHUW24U4MY37X7SU5XXT5ZVVUBXRXWLAIM7INI7G2`](https://stellar.expert/explorer/public/contract/CAMXZXXBD7DFBLYLHUW24U4MY37X7SU5XXT5ZVVUBXRXWLAIM7INI7G2) — creating LP tokens owned by the protocol.
 
 ## POL in Pool 0 (BLUB-AQUA)
 
@@ -21,6 +21,8 @@ The BLUB-AQUA pool contains both POL and vault user LP. The contract tracks vaul
 ```
 POL LP = Total contract LP balance - Vault user LP (tracked in contract)
 ```
+
+> **Note (2026-06):** the BLUB-AQUA pool is awaiting whitelist approval from the Aquarius team. Until that approval lands, the pool earns 0 AQUA emissions, so POL earnings and the staker distribution described below are temporarily paused. The POL position itself remains intact; distribution resumes automatically when the pool is re-whitelisted.
 
 ## How POL Earnings Are Distributed
 
