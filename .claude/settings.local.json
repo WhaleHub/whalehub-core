@@ -39,7 +39,11 @@
       "Bash(PORT=3000 BROWSER=none npm start)",
       "Bash(tee /tmp/whalehub-dev.log)",
       "Bash(PORT=3002 BROWSER=none npm start)",
-      "Bash(tee /tmp/whalehub-dev3002.log)"
+      "Bash(tee /tmp/whalehub-dev3002.log)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Read(//Users/viktorvostrikov/Desktop/whalehub/whalehub-server/src/modules/**)",
+      "Read(//Users/viktorvostrikov/Desktop/whalehub/whalehub-server/src/**)"
     ]
   }
 }
