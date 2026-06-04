@@ -332,7 +332,10 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-[94px] right-0 z-30 w-full bg-[#090C0E]/50 backdrop-blur-[9px] shadow-[0_2px_3px_rgba(0,0,0,.3)] py-[32px] px-[15px] md:px-[32px] transition-all duration-300 font-inter">
+    <nav
+      className="fixed right-0 z-30 w-full bg-[#090C0E]/50 backdrop-blur-[9px] shadow-[0_2px_3px_rgba(0,0,0,.3)] py-[32px] px-[15px] md:px-[32px] transition-all duration-300 font-inter"
+      style={{ top: "var(--banner-h, 94px)" }}
+    >
       <div className="flex flex-row justify-between items-center w-full max-w-[1954px] h-full mx-auto">
         <div className="shrink-0">
           <a
