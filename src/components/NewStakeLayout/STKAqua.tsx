@@ -66,22 +66,20 @@ function STKAqua() {
   const dispatch = useAppDispatch();
   const user = useSelector((state: RootState) => state.user);
   const staking = useSelector((state: RootState) => state.staking);
-  const { apy: stakingAPY, source: stakingAPYSource, isPaused: rewardsPaused } = useStakingApy(staking.rewardState, 7);
+  const { apy: stakingAPY, source: stakingAPYSource } = useStakingApy(staking.rewardState, 7);
   const blubPrice = useTokenPrice("BLUB");
   const aquaPrice = useTokenPrice("AQUA");
 
   // Daily BLUB rewards estimate: activeStakedBlub * apy / 100 / 365.25.
   // Shown alongside the APY % so users can see the concrete number (like AQUA dex).
   // Falls back to "--" when APY is unknown or the user has nothing staked.
-  // Hidden during a reward pause so we don't quote a number that won't accrue.
   const userStakedBlub = parseFloat(staking.userStats?.activeAmount ?? "0");
   const dailyBlubEstimate = useMemo(() => {
-    if (rewardsPaused) return null;
     if (stakingAPY === "--" || userStakedBlub <= 0) return null;
     const rate = parseFloat(stakingAPY);
     if (!Number.isFinite(rate) || rate <= 0) return null;
     return (userStakedBlub * rate) / 100 / 365.25;
-  }, [stakingAPY, userStakedBlub, rewardsPaused]);
+  }, [stakingAPY, userStakedBlub]);
 
   const [aquaDepositAmount, setAquaDepositAmount] = useState<number | null>(0);
   const [dialogMsg, setDialogMsg] = useState<string>("");
@@ -1211,19 +1209,13 @@ const handleAddTrustline = async () => {
                 <div className="text-base sm:text-xl font-semibold text-right truncate min-w-0">
                   {staking.isLoading ? (
                     "..."
-                  ) : rewardsPaused ? (
-                    <span className="text-amber-300">Paused</span>
                   ) : (
                     <span className="text-[#00CC99]">
                       {stakingAPY === "--" ? "--" : `${stakingAPY}%`}
                     </span>
                   )}
                 </div>
-                {rewardsPaused ? (
-                  <div className="text-[11px] text-[#6B7280] mt-0.5">
-                    Resumes after Aquarius whitelist
-                  </div>
-                ) : dailyBlubEstimate !== null && (
+                {dailyBlubEstimate !== null && (
                   <div className="text-[11px] text-[#6B7280] mt-0.5">
                     ~{dailyBlubEstimate.toLocaleString("en-US", { maximumFractionDigits: 2 })} BLUB/day
                     {blubPrice > 0 && (

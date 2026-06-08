@@ -24,18 +24,12 @@ import { RewardStateInfo } from "../lib/slices/stakingSlice";
  */
 const FALLBACK_APY = "17.88";
 
-// If the most recent `rwd_add` event is older than this, we treat emissions as
-// paused. Picked at 24h so a single missed cron run doesn't trip the flag, but
-// an extended halt (e.g. Aquarius whitelist freeze) shows up promptly.
-const PAUSE_THRESHOLD_SECONDS = 24 * 60 * 60;
-
 export function useStakingApy(
   _rewardState: RewardStateInfo | null,
   windowDays = 1,
-): { apy: string; source: "indexer" | "fallback"; isPaused: boolean } {
+): { apy: string; source: "indexer" | "fallback" } {
   const [apy, setApy] = useState<string>(FALLBACK_APY);
   const [source, setSource] = useState<"indexer" | "fallback">("fallback");
-  const [isPaused, setIsPaused] = useState<boolean>(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -43,15 +37,6 @@ export function useStakingApy(
     const refresh = async () => {
       const res: StakingApyResponse | null = await apiService.getStakingApy(windowDays);
       if (cancelled) return;
-
-      // Detect pause from the indexer's latest event timestamp. We use the
-      // window's own latestEventTs — when the window is silent the field is
-      // null, and when it last fired pre-pause it lets us compute the gap.
-      const nowSec = Math.floor(Date.now() / 1000);
-      const lastTs = res?.latestEventTs ?? null;
-      const paused = res != null && (lastTs == null || nowSec - lastTs > PAUSE_THRESHOLD_SECONDS);
-      setIsPaused(paused);
-
       if (res && res.apy !== "--" && res.eventCount > 0) {
         setApy(res.apy);
         setSource("indexer");
@@ -71,5 +56,5 @@ export function useStakingApy(
     };
   }, [windowDays]);
 
-  return { apy, source, isPaused };
+  return { apy, source };
 }
