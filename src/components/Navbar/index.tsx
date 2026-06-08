@@ -1,4 +1,4 @@
-import { useCallback, useRef, useEffect } from "react";
+import { useCallback, useRef, useEffect, useLayoutEffect } from "react";
 import { useState } from "react";
 import { useAppDispatch } from "../../lib/hooks";
 import {
@@ -91,6 +91,28 @@ const Navbar = () => {
   const user = useSelector((state: RootState) => state.user);
   const isMobile = isMobileDevice();
   const [activeSection, setActiveSection] = useState<string>("");
+  const navRef = useRef<HTMLElement>(null);
+
+  // Publish the navbar's rendered height as `--nav-h` so the fixed-nav offset in
+  // AppLayout's <main> always matches the real height — which is taller on
+  // mobile (logo + wallet button wrap) than the desktop ~81.5px. Without this,
+  // content (rewards section) slides under the fixed navbar on small screens.
+  // useLayoutEffect so the var is set before paint (no first-frame overlap).
+  useLayoutEffect(() => {
+    const el = navRef.current;
+    if (!el) return;
+    const update = () => {
+      document.documentElement.style.setProperty("--nav-h", `${el.offsetHeight}px`);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    window.addEventListener("resize", update);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", update);
+    };
+  }, []);
 
   useEffect(() => {
     const sectionIds = ["reward_section", "Yield_section", "Vault_section"];
@@ -332,7 +354,10 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 right-0 z-30 w-full bg-[#090C0E]/50 backdrop-blur-[9px] shadow-[0_2px_3px_rgba(0,0,0,.3)] py-[32px] px-[15px] md:px-[32px] transition-all duration-300 font-inter">
+    <nav
+      ref={navRef}
+      className="fixed top-0 right-0 z-30 w-full bg-[#090C0E]/50 backdrop-blur-[9px] shadow-[0_2px_3px_rgba(0,0,0,.3)] py-[32px] px-[15px] md:px-[32px] transition-all duration-300 font-inter"
+    >
       <div className="flex flex-row justify-between items-center w-full max-w-[1954px] h-full mx-auto">
         <div className="shrink-0">
           <a

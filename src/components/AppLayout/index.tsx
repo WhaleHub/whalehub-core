@@ -5,7 +5,10 @@ import Footer from "../Footer";
 const AppLayout = () => (
   <div className="flex flex-col min-h-screen overflow-x-hidden">
     <Navbar />
-    <main className="grow pt-[81.5px]">
+    <main
+      className="grow"
+      style={{ paddingTop: "var(--nav-h, 94px)" }}
+    >
       <div className="flex w-full h-full">
         <div className="flex flex-col justify-center w-full">
           <Outlet />
