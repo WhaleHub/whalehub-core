@@ -1,0 +1,120 @@
+/* ============================================================
+   WhaleHub — Color tokens
+   Aligned to the LIVE product (app.whalehub.io), June 2026.
+   Deep ink-navy surfaces, signature teal #00CC99 → blue #005F99
+   gradient. (Supersedes the earlier written brief.)
+   ============================================================ */
+
+:root {
+  /* --- Brand teal scale (accent) --- */
+  --teal-50:  #d3fff1;
+  --teal-100: #94f7da;
+  --teal-200: #4fefc2;
+  --teal-300: #1fe0a8;   /* light teal — subtle highlights */
+  --teal-400: #06d6a0;
+  --teal-500: #00cc99;   /* ACCENT — primary action, links, active */
+  --teal-600: #00a87e;
+  --teal-700: #007f66;
+  --teal-800: #045a4a;
+  --teal-900: #06382f;
+
+  /* --- Brand blue (gradient partner) --- */
+  --blue-300: #4aa8ff;
+  --blue-400: #2d7fc0;
+  --blue-500: #1f6fbf;
+  --blue-600: #0b6aa6;
+  --blue-700: #005f99;   /* gradient bottom (CTA / logo) */
+  --blue-link: #3b82f6;  /* informational links */
+  --blue-sky:  #26a5e4;
+
+  /* --- Verdigris (kit secondary teal; base 400) --- */
+  --verdigris-50:  #c1dedd;
+  --verdigris-100: #a2cdcb;
+  --verdigris-200: #83bdba;
+  --verdigris-300: #64aca9;
+  --verdigris-400: #459c98;   /* base */
+  --verdigris-500: #3a827f;
+  --verdigris-600: #2e6865;
+  --verdigris-700: #234e4c;
+  --verdigris-800: #173433;
+  --verdigris-900: #0e1f1e;
+
+  /* --- Ink / “Rich Black” scale (kit neutral; base 600) --- */
+  --navy-950: #0b0d15;   /* 900 — deepest */
+  --navy-900: #0e111b;   /* 800 — app background */
+  --navy-850: #121622;   /* 700 */
+  --navy-800: #151a29;   /* 600 (Base) — card / panel */
+  --navy-700: #1a1e2e;   /* elevated inner panel (live app) */
+  --navy-650: #1c2235;   /* hairline border (subtle) */
+  --navy-600: #2a3050;   /* border default */
+  --navy-550: #2d3259;   /* border strong */
+  --navy-500: #3c404d;   /* 500 — neutral control */
+  --navy-450: #4c5060;   /* neutral control hover */
+
+  /* --- Neutral / text scale --- */
+  --white:     #ffffff;
+  --ink-50:    #fafafa;
+  --ink-100:   #e6e7ea;
+  --ink-200:   #b1b3b8;   /* body / primary muted */
+  --ink-300:   #6b7280;   /* secondary muted / placeholder */
+  --ink-400:   #4b5163;
+
+  /* --- Semantic status --- */
+  --positive:  #00cc99;   /* gains / up / earning (brand teal) */
+  --positive-dim: #07372c;
+  --negative:  #ff5c72;   /* losses / down */
+  --negative-dim: #3d1620;
+  --warning:   #fcd34d;   /* amber-300 — paused / caution */
+  --warning-dim:  #38300f;
+  --info:      #3b82f6;   /* blue-link */
+  --discord:   #5865f2;
+
+  /* ============================================================
+     Semantic aliases — reference these in components
+     ============================================================ */
+
+  /* Surfaces */
+  --bg-app:          var(--navy-900);
+  --bg-app-deep:     var(--navy-950);
+  --surface-card:    var(--navy-800);
+  --surface-raised:  var(--navy-700);
+  --surface-sunken:  var(--navy-950);
+  --surface-overlay: rgba(10, 13, 20, 0.80);
+
+  /* Text */
+  --text-heading:    var(--white);
+  --text-body:       var(--ink-200);
+  --text-muted:      var(--ink-300);
+  --text-subtle:     var(--ink-400);
+  --text-disabled:   var(--ink-400);
+  --text-on-accent:  var(--white);
+  --text-accent:     var(--teal-500);
+
+  /* Lines & borders */
+  --border-subtle:   var(--navy-650);
+  --border-default:  var(--navy-600);
+  --border-strong:   var(--navy-550);
+  --border-accent:   var(--teal-500);
+
+  /* Actions */
+  --action-primary:        var(--teal-500);
+  --action-primary-hover:  var(--teal-400);
+  --action-primary-press:  var(--teal-600);
+  --action-neutral:        var(--navy-500);
+  --action-neutral-hover:  var(--navy-450);
+  --action-glow:           var(--teal-500);
+
+  /* Status semantic */
+  --status-up:    var(--positive);
+  --status-down:  var(--negative);
+  --status-warn:  var(--warning);
+  --status-info:  var(--info);
+
+  /* Brand gradients — the signature is the vertical teal→blue */
+  --grad-brand:        linear-gradient(180deg, #00cc99 0%, #005f99 100%);  /* @kind color */
+  --grad-brand-hover:  linear-gradient(180deg, #00a37a 0%, #004670 100%);  /* @kind color */
+  --grad-teal:     linear-gradient(135deg, var(--teal-400) 0%, var(--blue-700) 100%);  /* @kind color */
+  --grad-deep:     linear-gradient(180deg, var(--navy-800) 0%, var(--navy-900) 100%);  /* @kind color */
+  --grad-abyss:    radial-gradient(120% 120% at 50% 0%, #14182a 0%, var(--navy-900) 55%, var(--navy-950) 100%);  /* @kind color */
+  --grad-glow:     radial-gradient(60% 80% at 50% 0%, rgba(0, 204, 153, 0.18) 0%, rgba(0, 204, 153, 0) 70%);  /* @kind color */
+}

@@ -1,0 +1,42 @@
+name: live-apy
+
+# Hourly: read the staking contract's reward state and publish website-redesign/apy.json
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: live-apy
+  cancel-in-progress: false
+
+jobs:
+  apy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Puppeteer (bundled Chromium)
+        run: npm init -y && npm install puppeteer@^23
+
+      - name: Read live APY from the dApp
+        run: node scripts/fetch-live-apy.cjs
+
+      - name: Commit apy.json if changed
+        run: |
+          if [ -n "$(git status --porcelain website-redesign/apy.json)" ]; then
+            git config user.name "whalehub-bot"
+            git config user.email "bot@users.noreply.github.com"
+            git add website-redesign/apy.json
+            git commit -m "chore: update live APY [skip ci]"
+            git push
+          else
+            echo "apy.json unchanged"
+          fi

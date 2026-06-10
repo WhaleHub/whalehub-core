@@ -1,0 +1,37 @@
+/* ============================================================
+   WhaleHub — Spacing, radii, layout tokens
+   4px base grid.
+   ============================================================ */
+
+:root {
+  /* Spacing scale (4px base) */
+  --space-0:   0;
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;
+
+  /* Corner radii — matched to the live app */
+  --radius-xs:   4px;     /* quick % chips */
+  --radius-sm:   8px;     /* toggles / inputs */
+  --radius-md:   12px;    /* primary CTA (live value) */
+  --radius-lg:   16px;    /* cards / panels (rounded-2xl) */
+  --radius-xl:   20px;
+  --radius-2xl:  24px;    /* hero surfaces */
+  --radius-pill: 999px;
+
+  /* Layout */
+  --container-max:  1200px;
+  --sidebar-w:      264px;
+  --topbar-h:       68px;
+  --field-h:        44px;   /* min touch target */
+  --field-h-lg:     52px;
+}
