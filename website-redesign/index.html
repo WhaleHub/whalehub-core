@@ -94,6 +94,19 @@
   .coin-aqua{position:absolute;left:5%;bottom:3%;width:min(122px,31%);animation-delay:.9s;filter:drop-shadow(0 22px 44px rgba(120,60,200,.5))}
   @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-14px) rotate(2deg)}}
 
+  /* ambient glassy bubbles + Blubber-logo hover burst on the token stage */
+  .bubble{position:absolute;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle at 32% 28%, rgba(255,255,255,.95) 0%, rgba(255,255,255,.35) 12%,
+      rgba(0,204,153,.12) 42%, rgba(255,255,255,.05) 68%, transparent 74%);
+    border:1px solid rgba(255,255,255,.18);
+    box-shadow:inset 0 0 6px rgba(255,255,255,.30), inset -2px -3px 6px rgba(0,95,153,.25), 0 0 10px rgba(0,204,153,.16)}
+  .logo-particle{position:absolute;pointer-events:none;will-change:transform,opacity;
+    filter:drop-shadow(0 4px 10px rgba(0,95,153,.45)) drop-shadow(0 0 8px rgba(0,204,153,.35))}
+  @keyframes rise{0%{transform:translateY(0) translateX(0) scale(.7);opacity:0}12%{opacity:.85}85%{opacity:.55}
+    100%{transform:translateY(-300px) translateX(var(--dx,0)) scale(1);opacity:0}}
+  @keyframes burstLogo{0%{transform:translate(-50%,-50%) scale(.2) rotate(0deg);opacity:0}22%{opacity:1}
+    100%{transform:translate(calc(-50% + var(--bx)), calc(-50% + var(--by))) scale(1) rotate(var(--rot,0deg));opacity:0}}
+
   /* depth gauge */
   .gauge{width:100%;border:1px solid var(--border-subtle);border-radius:var(--radius-lg);overflow:hidden;
     background:linear-gradient(180deg,var(--surface-card),var(--surface-sunken));box-shadow:var(--shadow-card)}
@@ -279,8 +292,12 @@
   .foot-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:46px;padding-top:22px;border-top:1px solid var(--border-subtle);flex-wrap:wrap;gap:14px}
   .foot-bottom span{font-size:13px;color:var(--text-subtle)}
   .socials{display:flex;gap:10px}
-  .socials a{width:38px;height:38px;border-radius:10px;border:1px solid var(--border-subtle);display:grid;place-items:center;color:var(--text-muted);transition:all var(--dur-base) var(--ease-out)}
-  .socials a:hover{color:var(--teal-500);border-color:var(--teal-500);transform:translateY(-2px)}
+  .socials a{width:38px;height:38px;border-radius:10px;border:1px solid var(--border-subtle);display:grid;place-items:center;color:#c2cad4;transition:all var(--dur-base) var(--ease-out)}
+  .socials a:hover{color:#fff;border-color:var(--teal-500);transform:translateY(-2px)}
+  .socials a .ic{width:18px;height:18px;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+  .socials a.dc{--m:url(./assets/social/discord.svg)}
+  .socials a.tg{--m:url(./assets/social/telegram.svg)}
+  .socials a.xt{--m:url(./assets/social/x.svg)}
 
   /* reveal */
   .js [data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)}
@@ -326,6 +343,8 @@
       <a href="#how">How it works</a>
       <a href="#why">Why WhaleHub</a>
       <a href="#stellar">Stellar-native</a>
+      <a href="./about.html">About</a>
+      <a href="./faq.html">FAQ</a>
       <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
     </div>
     <div class="nav-right">
@@ -340,6 +359,8 @@
   <a href="#how">How it works</a>
   <a href="#why">Why WhaleHub</a>
   <a href="#stellar">Stellar-native</a>
+  <a href="./about.html">About</a>
+  <a href="./faq.html">FAQ</a>
   <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
   <a href="https://app.whalehub.io/" class="btn btn-primary"><i data-lucide="wallet"></i> Launch app</a>
 </div>
@@ -585,9 +606,9 @@
       <div class="foot-col">
         <h4>Resources</h4>
         <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
-        <a href="/about">About</a>
-        <a href="/blog">Blog</a>
-        <a href="/contact">Contact</a>
+        <a href="./about.html">About</a>
+        <a href="./faq.html">FAQ</a>
+        <a href="https://whalehub.io/contact">Contact</a>
       </div>
       <div class="foot-col">
         <h4>Community</h4>
@@ -599,9 +620,9 @@
     <div class="foot-bottom">
       <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
       <div class="socials">
-        <a href="https://discord.gg/DmGKxgSdTP" aria-label="Discord"><i data-lucide="message-circle"></i></a>
-        <a href="https://t.me/whalehubdefi" aria-label="Telegram"><i data-lucide="send"></i></a>
-        <a href="https://x.com/whalehubdefi" aria-label="X"><i data-lucide="twitter"></i></a>
+        <a class="dc" href="https://discord.gg/DmGKxgSdTP" target="_blank" rel="noopener" aria-label="Discord"><span class="ic"></span></a>
+        <a class="tg" href="https://t.me/whalehubdefi" target="_blank" rel="noopener" aria-label="Telegram"><span class="ic"></span></a>
+        <a class="xt" href="https://x.com/whalehubdefi" target="_blank" rel="noopener" aria-label="X"><span class="ic"></span></a>
       </div>
     </div>
   </div>
@@ -676,6 +697,44 @@
     window.addEventListener('scroll', onP, {passive:true});
     window.addEventListener('resize', onP);
   }
+
+  // ambient glass bubbles + Blubber-logo hover burst on the hero token stage
+  (function(){
+    const stage = document.querySelector('.coin-stage');
+    if (!stage || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const rnd = (a,b) => a + Math.random()*(b-a);
+    const mkBubble = s => { const b=document.createElement('span'); b.className='bubble'; b.style.width=b.style.height=s+'px'; return b; };
+    // ambient rising stream
+    setInterval(() => {
+      const b = mkBubble(rnd(6,18));
+      b.style.left = rnd(12,88)+'%'; b.style.bottom = '-24px';
+      b.style.setProperty('--dx', rnd(-40,40)+'px');
+      b.style.animation = `rise ${rnd(6,11)}s linear forwards`;
+      stage.appendChild(b); b.addEventListener('animationend', () => b.remove());
+    }, 520);
+    // hover burst — little Blubber logos fanning gently upward
+    const SMOOTH = 'cubic-bezier(.22,1,.36,1)';
+    let cool = false;
+    stage.querySelectorAll('.coin').forEach(coin => {
+      coin.addEventListener('mouseenter', () => {
+        if (cool) return; cool = true; setTimeout(()=>cool=false, 600);
+        const cr = coin.getBoundingClientRect(), sr = stage.getBoundingClientRect();
+        const cx = cr.left - sr.left + cr.width/2, cy = cr.top - sr.top + cr.height/2;
+        for (let i=0;i<10;i++){
+          const p = document.createElement('img');
+          p.className = 'logo-particle'; p.src = './assets/blubber.webp'; p.alt = '';
+          p.style.width = rnd(20,40)+'px'; p.style.left = cx+'px'; p.style.top = cy+'px';
+          const ang = rnd(-Math.PI*0.85, -Math.PI*0.15), dist = rnd(70,175);
+          p.style.setProperty('--bx', Math.cos(ang)*dist+'px');
+          p.style.setProperty('--by', Math.sin(ang)*dist+'px');
+          p.style.setProperty('--rot', rnd(-40,40)+'deg');
+          p.style.animation = `burstLogo ${rnd(1.6,2.4)}s ${SMOOTH} forwards`;
+          p.style.animationDelay = (i*30)+'ms';
+          stage.appendChild(p); p.addEventListener('animationend', () => p.remove());
+        }
+      });
+    });
+  })();
 </script>
 </body>
 </html>
