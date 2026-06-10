@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>document.documentElement.classList.add('js');</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contact WhaleHub — Get in touch</title>
+<meta name="description" content="Get in touch with WhaleHub. Join the community on Telegram and Discord, follow updates on X, or read the docs. Questions, partnerships, and press welcome." />
+<link rel="stylesheet" href="./styles.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg-app);color:var(--text-body);font-family:var(--font-body);font-size:16px;line-height:var(--lh-normal);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--teal-500);color:#06241c}
+  a{text-decoration:none;color:inherit}
+  img{display:block;max-width:100%}
+  .wrap{max-width:var(--container-max);margin:0 auto;padding:0 28px}
+  h1,h2,h3,h4{font-family:var(--font-heading);color:var(--text-heading);letter-spacing:var(--ls-tight);line-height:var(--lh-tight)}
+  .grad-text{background:var(--grad-teal);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .overline{font-family:var(--font-heading);font-weight:600;font-size:var(--fs-micro);letter-spacing:var(--ls-overline);text-transform:uppercase;color:var(--text-accent)}
+  i[data-lucide]{width:18px;height:18px;stroke-width:2}
+
+  /* buttons */
+  .btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--font-heading);font-weight:600;font-size:15px;border-radius:var(--radius-md);padding:13px 22px;cursor:pointer;border:1px solid transparent;transition:transform var(--dur-base) var(--ease-out),box-shadow var(--dur-base) var(--ease-out),filter var(--dur-base) var(--ease-out);white-space:nowrap}
+  .btn:active{transform:scale(.97)}
+  .btn-primary{background:var(--grad-brand);color:#fff;box-shadow:var(--glow-teal-md)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 32px rgba(0,204,153,.42),0 12px 30px -10px rgba(0,95,153,.6);filter:brightness(1.05)}
+  .btn-ghost{background:transparent;color:var(--text-body);border-color:var(--border-default)}
+  .btn-ghost:hover{border-color:var(--border-accent);color:var(--text-heading)}
+  .btn-lg{padding:16px 26px;font-size:16px;min-height:var(--field-h-lg)}
+
+  /* nav */
+  header{position:sticky;top:0;z-index:50}
+  header::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(13,19,32,.72);backdrop-filter:var(--blur-md);border-bottom:1px solid var(--border-subtle);opacity:0;transition:opacity var(--dur-slow) var(--ease-out)}
+  header.scrolled::before{opacity:1}
+  .nav{display:flex;align-items:center;gap:28px;height:var(--topbar-h);max-width:var(--container-max);margin:0 auto;padding:0 28px}
+  .nav .logo{height:30px;width:auto}
+  .nav-links{display:flex;gap:26px;margin-left:8px}
+  .nav-links a{color:var(--text-muted);font-family:var(--font-heading);font-weight:500;font-size:14px;transition:color var(--dur-base)}
+  .nav-links a:hover,.nav-links a.active{color:var(--text-heading)}
+  .nav-right{margin-left:auto;display:flex;align-items:center;gap:14px}
+  .menu-btn{display:none;background:none;border:1px solid var(--border-default);border-radius:var(--radius-sm);width:42px;height:42px;color:#fff;cursor:pointer;align-items:center;justify-content:center}
+
+  /* atmosphere */
+  .atmos{position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(120% 85% at 50% -12%, rgba(0,204,153,.10), transparent 58%),radial-gradient(90% 70% at 100% 108%, rgba(0,95,153,.14), transparent 70%),var(--bg-app)}
+  .atmos::after{content:"";position:absolute;inset:0;opacity:.04;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  /* hero */
+  .c-hero{position:relative;overflow:hidden;border-bottom:1px solid var(--border-subtle);text-align:center}
+  .c-hero .mark{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(48%,380px);opacity:.05;filter:brightness(0) invert(1);pointer-events:none;z-index:0;animation:floatY 10s var(--ease-inout) infinite}
+  @keyframes floatY{0%,100%{transform:translate(-50%,-50%) translateY(0)}50%{transform:translate(-50%,-50%) translateY(-12px)}}
+  .c-hero::after{content:"";position:absolute;inset:0;background:var(--grad-glow);pointer-events:none;z-index:0}
+  .c-hero .wrap{position:relative;z-index:2;padding:clamp(72px,10vw,104px) 28px clamp(52px,7vw,72px);max-width:760px}
+  .c-hero h1{font-weight:700;font-size:clamp(2.4rem,5.4vw,3.7rem);letter-spacing:-.025em;margin:18px 0 0}
+  .c-hero h1::after{content:"";display:block;width:66px;height:3px;border-radius:2px;background:var(--grad-brand);box-shadow:var(--glow-teal-sm);margin:18px auto 0}
+  .c-hero .lead{color:var(--text-body);font-size:clamp(1.05rem,1.5vw,1.2rem);margin:22px auto 0;max-width:54ch}
+
+  /* sections */
+  .block{padding:clamp(56px,8vw,92px) 0}
+  .sec-head{max-width:620px;margin:0 auto 42px;text-align:center}
+  .sec-head h2{font-weight:700;font-size:clamp(1.7rem,3.2vw,2.4rem);letter-spacing:-.02em;margin-top:12px}
+  .sec-head p{margin-top:14px;color:var(--text-muted)}
+
+  /* channel cards */
+  .channels{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .chan{position:relative;display:flex;flex-direction:column;border:1px solid var(--border-subtle);border-radius:var(--radius-lg);
+    padding:30px 26px;background:var(--surface-card);overflow:hidden;
+    transition:transform var(--dur-slow) var(--ease-out),border-color var(--dur-slow),box-shadow var(--dur-slow)}
+  .chan:hover{transform:translateY(-5px);border-color:var(--border-strong);box-shadow:var(--shadow-card)}
+  .chan .ic{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;margin-bottom:18px;color:#fff;
+    border:1px solid var(--border-default);background:rgba(255,255,255,.04);transition:color var(--dur-base),border-color var(--dur-base),box-shadow var(--dur-base)}
+  .chan .ic .g{width:24px;height:24px;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+  .chan h3{font-weight:600;font-size:1.2rem}
+  .chan p{color:var(--text-muted);font-size:14.5px;margin-top:10px;line-height:1.6}
+  .chan .go{margin-top:20px;color:var(--teal-500);font-family:var(--font-heading);font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:7px}
+  .chan .go .arr{transition:transform var(--dur-base) var(--ease-out)}
+  .chan:hover .go .arr{transform:translateX(4px)}
+  .chan.tg .ic{--m:url(./assets/social/telegram.svg)} .chan.tg:hover .ic{color:#26A5E4;border-color:#26A5E4;box-shadow:0 0 18px rgba(38,165,228,.35)}
+  .chan.dc .ic{--m:url(./assets/social/discord.svg)}  .chan.dc:hover .ic{color:#5865F2;border-color:#5865F2;box-shadow:0 0 18px rgba(88,101,242,.35)}
+  .chan.xt .ic{--m:url(./assets/social/x.svg)}        .chan.xt:hover .ic{color:#fff;border-color:#fff;box-shadow:0 0 18px rgba(255,255,255,.22)}
+  .channels-note{margin-top:26px;text-align:center;color:var(--text-muted);font-size:14.5px}
+  .channels-note a{color:var(--teal-500);font-weight:600}
+
+  /* final cta */
+  .final{position:relative;border-radius:var(--radius-2xl);overflow:hidden;border:1px solid rgba(0,204,153,.30);background:var(--grad-deep);box-shadow:var(--glow-teal-lg);padding:clamp(44px,6vw,72px);text-align:center}
+  .final .wave{position:absolute;left:0;right:0;bottom:0;width:100%;opacity:.9;pointer-events:none}
+  .final::before{content:"";position:absolute;inset:0;background:var(--grad-glow)}
+  .final h2{position:relative;font-weight:700;font-size:clamp(1.9rem,4.4vw,3rem);letter-spacing:-.02em}
+  .final p{position:relative;color:var(--text-body);max-width:46ch;margin:16px auto 28px;font-size:1.05rem}
+  .final .acts{position:relative;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+  /* footer */
+  footer{border-top:1px solid var(--border-subtle);background:var(--navy-950);padding:56px 0 36px}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:38px}
+  .foot-brand img{height:28px;margin-bottom:14px}
+  .foot-brand p{color:var(--text-muted);font-size:14px;max-width:30ch}
+  .foot-col h4{font-family:var(--font-heading);font-weight:500;font-size:var(--fs-micro);letter-spacing:var(--ls-overline);text-transform:uppercase;color:var(--text-subtle);margin-bottom:14px}
+  .foot-col a{display:block;color:var(--text-muted);font-size:14px;padding:6px 0;transition:color var(--dur-base)}
+  .foot-col a:hover{color:var(--teal-500)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:46px;padding-top:22px;border-top:1px solid var(--border-subtle);flex-wrap:wrap;gap:14px}
+  .foot-bottom span{font-size:13px;color:var(--text-subtle)}
+  .socials{display:flex;gap:10px}
+  .socials a{width:38px;height:38px;border-radius:10px;border:1px solid var(--border-subtle);display:grid;place-items:center;color:var(--text-muted);transition:all var(--dur-base) var(--ease-out)}
+  .socials a:hover{color:var(--teal-500);border-color:var(--teal-500);transform:translateY(-2px)}
+
+  /* reveal */
+  .js [data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)}
+  .js [data-reveal].in{opacity:1;transform:none}
+
+  @media(max-width:860px){ .channels{grid-template-columns:1fr} .foot-grid{grid-template-columns:1fr 1fr} }
+  @media(max-width:760px){ .nav-links{display:none}.menu-btn{display:flex}.nav-right .btn-ghost{display:none} }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}[data-reveal]{opacity:1;transform:none}}
+
+  /* mobile drawer */
+  .drawer{position:fixed;inset:0;z-index:60;background:rgba(10,13,20,.97);backdrop-filter:blur(12px);display:flex;flex-direction:column;padding:72px 28px;gap:6px;transform:translateY(-100%);transition:transform var(--dur-slow) var(--ease-out);visibility:hidden}
+  .drawer.open{transform:none;visibility:visible}
+  .drawer a{color:#fff;font-family:var(--font-heading);font-size:1.5rem;font-weight:600;padding:14px 0;border-bottom:1px solid var(--border-subtle)}
+  .drawer .btn{margin-top:22px;justify-content:center}
+  .drawer .close{position:absolute;top:20px;right:24px;background:none;border:1px solid var(--border-default);border-radius:9px;width:44px;height:44px;color:#fff;font-size:22px;cursor:pointer}
+</style>
+</head>
+<body class="wh-root">
+<div class="atmos" aria-hidden="true"></div>
+
+<header id="hdr">
+  <nav class="nav">
+    <a href="./index.html"><img class="logo" src="./assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="./index.html#how">How it works</a>
+      <a href="./index.html#why">Why WhaleHub</a>
+      <a href="./about.html">About</a>
+      <a href="./contact.html" class="active">Contact</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><i data-lucide="wallet"></i> Launch app</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+    </div>
+  </nav>
+</header>
+
+<div class="drawer" id="drawer">
+  <button class="close" id="closeBtn" aria-label="Close">×</button>
+  <a href="./index.html#how">How it works</a>
+  <a href="./index.html#why">Why WhaleHub</a>
+  <a href="./about.html">About</a>
+  <a href="./contact.html">Contact</a>
+  <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+  <a href="https://app.whalehub.io/" class="btn btn-primary"><i data-lucide="wallet"></i> Launch app</a>
+</div>
+
+<!-- HERO -->
+<section class="c-hero">
+  <img class="mark" src="./assets/logo-icon.webp" alt="" aria-hidden="true" />
+  <div class="wrap">
+    <span class="overline" data-reveal>Contact</span>
+    <h1 data-reveal>Get in touch</h1>
+    <p class="lead" data-reveal>Questions, partnerships, or press? The pod is one message away. We ship publicly and answer fast — pick the channel that suits you.</p>
+  </div>
+</section>
+
+<!-- CHANNELS -->
+<section class="block">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="overline">Reach the pod</span>
+      <h2>Talk to us directly.</h2>
+      <p>The fastest way to reach the team and the community is on-chain's favourite places.</p>
+    </div>
+    <div class="channels">
+      <a class="chan tg" href="https://t.me/whalehubdefi" target="_blank" rel="noopener" data-reveal>
+        <span class="ic"><span class="g"></span></span>
+        <h3>Telegram</h3>
+        <p>Join the community, talk strategy with other backers, and get protocol updates first — direct line to the team.</p>
+        <span class="go">Open Telegram <span class="arr">→</span></span>
+      </a>
+      <a class="chan dc" href="https://discord.gg/DmGKxgSdTP" target="_blank" rel="noopener" data-reveal>
+        <span class="ic"><span class="g"></span></span>
+        <h3>Discord</h3>
+        <p>Chat, ask questions, and get support from the team and the wider WhaleHub community.</p>
+        <span class="go">Open Discord <span class="arr">→</span></span>
+      </a>
+      <a class="chan xt" href="https://x.com/whalehubdefi" target="_blank" rel="noopener" data-reveal>
+        <span class="ic"><span class="g"></span></span>
+        <h3>X / Twitter</h3>
+        <p>Follow announcements, releases, and protocol numbers. DMs open for press and partnerships.</p>
+        <span class="go">Follow on X <span class="arr">→</span></span>
+      </a>
+    </div>
+    <p class="channels-note" data-reveal>
+      Press or partnership enquiry? DM us on <a href="https://x.com/whalehubdefi" target="_blank" rel="noopener">X</a>
+      or message the team on <a href="https://t.me/whalehubdefi" target="_blank" rel="noopener">Telegram</a>.
+    </p>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="block" style="padding-top:0">
+  <div class="wrap">
+    <div class="final" data-reveal>
+      <img class="wave" src="./assets/wave.svg" alt="" />
+      <h2>Ready to dive in?</h2>
+      <p>Convert AQUA to BLUB and start earning in under a minute — or read the docs to see exactly how it works.</p>
+      <div class="acts">
+        <a href="https://app.whalehub.io/" class="btn btn-primary btn-lg"><i data-lucide="wallet"></i> Launch app</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub" class="btn btn-ghost btn-lg"><i data-lucide="book-open"></i> Read the docs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="./assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="./index.html#how">How it works</a>
+        <a href="./index.html#why">Why WhaleHub</a>
+        <a href="./index.html#stellar">Stellar-native</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="./about.html">About</a>
+        <a href="https://whalehub.io/blog">Blog</a>
+        <a href="./contact.html">Contact</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <div class="socials">
+        <a href="https://discord.gg/DmGKxgSdTP" aria-label="Discord"><i data-lucide="message-circle"></i></a>
+        <a href="https://t.me/whalehubdefi" aria-label="Telegram"><i data-lucide="send"></i></a>
+        <a href="https://x.com/whalehubdefi" aria-label="X"><i data-lucide="twitter"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  const hdr = document.getElementById('hdr');
+  const onScroll = () => hdr.classList.toggle('scrolled', window.scrollY > 16);
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+  const drawer = document.getElementById('drawer');
+  document.getElementById('menuBtn').onclick = () => drawer.classList.add('open');
+  document.getElementById('closeBtn').onclick = () => drawer.classList.remove('open');
+  drawer.querySelectorAll('a').forEach(a => a.onclick = () => drawer.classList.remove('open'));
+  const reveals = document.querySelectorAll('[data-reveal]');
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e,i) => { if(e.isIntersecting){ e.target.style.transitionDelay = Math.min(i*55,220)+'ms'; e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.12, rootMargin:'0px 0px -8% 0px'});
+  reveals.forEach(el => io.observe(el));
+  setTimeout(() => reveals.forEach(el => el.classList.add('in')), 2000);
+</script>
+</body>
+</html>
