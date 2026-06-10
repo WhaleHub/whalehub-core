@@ -74,14 +74,14 @@
                linear-gradient(180deg, rgba(14,17,27,.45) 0%, transparent 26%, transparent 64%, var(--bg-app) 100%)}
   .hero::after{content:"";position:absolute;inset:0;background:var(--grad-glow);pointer-events:none;z-index:1}
   .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.08fr .92fr;gap:48px;align-items:center;padding:88px 0 96px}
-  .hero h1{font-weight:800;font-size:clamp(2.6rem,6vw,4.1rem);letter-spacing:-.025em;margin:20px 0 0}
+  .hero h1{font-weight:700;font-size:clamp(2.6rem,6vw,4.1rem);letter-spacing:-.025em;margin:20px 0 0}
   .hero .lead{color:var(--text-body);font-size:clamp(1.05rem,1.5vw,1.22rem);max-width:48ch;margin-top:22px}
   .hero-actions{display:flex;gap:14px;margin-top:32px;flex-wrap:wrap}
   .reassure{margin-top:20px;color:var(--text-muted);font-size:14px;display:flex;align-items:center;gap:8px}
   .reassure i{color:var(--teal-500)}
 
   .ticker{display:flex;gap:34px;margin-top:44px;flex-wrap:wrap;border-top:1px solid var(--border-subtle);padding-top:26px}
-  .stat .v{font-family:var(--font-numeric);font-weight:800;font-size:clamp(1.5rem,2.4vw,1.9rem);color:#fff;letter-spacing:-.01em;line-height:1}
+  .stat .v{font-family:var(--font-numeric);font-weight:700;font-size:clamp(1.5rem,2.4vw,1.9rem);color:#fff;letter-spacing:-.01em;line-height:1}
   .stat .v .u{color:var(--teal-500)}
   .stat .l{font-size:12.5px;color:var(--text-subtle);margin-top:7px}
 
@@ -125,7 +125,7 @@
   /* ---- sections ---- */
   .block{padding:clamp(64px,9vw,104px) 0}
   .sec-head{max-width:620px;margin-bottom:46px}
-  .sec-head h2{font-weight:800;font-size:clamp(1.9rem,3.6vw,2.7rem);letter-spacing:-.02em;margin-top:14px}
+  .sec-head h2{font-weight:700;font-size:clamp(1.9rem,3.6vw,2.7rem);letter-spacing:-.02em;margin-top:14px}
   .sec-head p{margin-top:16px;color:var(--text-muted)}
 
   .ways{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
@@ -172,7 +172,7 @@
     color:var(--teal-300);background:rgba(8,12,20,.62);border-radius:var(--radius-sm);padding:.3em .55em;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.5)}
   .fw-apy{display:flex;flex-direction:column;align-items:center;gap:1px;text-align:center;left:50%;top:62%}
   .fw-apy .o{font-family:var(--font-heading);font-weight:500;font-size:clamp(8px,2.1cqi,11px);letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
-  .fw-apy .v{font-family:var(--font-numeric);font-weight:800;font-size:clamp(15px,5.3cqi,27px);letter-spacing:-.01em;
+  .fw-apy .v{font-family:var(--font-numeric);font-weight:700;font-size:clamp(15px,5.3cqi,27px);letter-spacing:-.01em;
     background:var(--grad-teal);-webkit-background-clip:text;background-clip:text;color:transparent;animation:apyGlow 3.4s var(--ease-inout) infinite}
   @keyframes apyGlow{0%,100%{filter:drop-shadow(0 0 0 rgba(0,204,153,0))}50%{filter:drop-shadow(0 0 9px rgba(0,204,153,.45))}}
   /* anchors — tuned to the rendered 1:1 flywheel */
@@ -203,7 +203,7 @@
   .cmp .hub .brand-pill{height:22px;width:auto;display:block;margin-bottom:18px}
   .cmp .hub li{color:var(--text-body)} .cmp .hub li i{color:var(--teal-500)}
   .cmp .hub-stat{margin-top:20px;padding-top:18px;border-top:1px solid var(--border-subtle);display:flex;align-items:baseline;gap:8px}
-  .cmp .hub-stat .num,.cmp .hub-stat .u{font-family:var(--font-numeric);font-weight:800;font-size:2.2rem;color:#fff;line-height:1}
+  .cmp .hub-stat .num,.cmp .hub-stat .u{font-family:var(--font-numeric);font-weight:700;font-size:2.2rem;color:#fff;line-height:1}
   .cmp .hub-stat .u{color:var(--teal-500)}
   .cmp .hub-stat .cap{font-size:12px;color:var(--text-subtle);margin-left:6px;align-self:center}
 
@@ -226,7 +226,7 @@
     border-radius:var(--radius-2xl);overflow:hidden;padding:clamp(34px,5vw,56px);
     background:var(--grad-deep);border:1px solid rgba(0,204,153,.28);box-shadow:var(--glow-teal-lg)}
   .blub::before{content:"";position:absolute;inset:0;background:var(--grad-glow);pointer-events:none}
-  .blub .eq{font-family:var(--font-heading);font-weight:800;font-size:clamp(1.7rem,4vw,2.7rem);letter-spacing:-.02em;color:#fff;position:relative}
+  .blub .eq{font-family:var(--font-heading);font-weight:700;font-size:clamp(1.7rem,4vw,2.7rem);letter-spacing:-.02em;color:#fff;position:relative}
   .blub .eq .a{color:var(--teal-400)}
   .blub p{color:var(--text-body);max-width:52ch;margin:16px 0 26px;position:relative}
   .blub .coinflow{display:flex;align-items:center;gap:14px;justify-content:center;position:relative}
@@ -246,7 +246,7 @@
   .whaley .ov{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:20px;
     padding:clamp(28px,5vw,56px);max-width:560px;
     background:linear-gradient(90deg,rgba(10,13,20,.92) 0%,rgba(10,13,20,.55) 45%,transparent 72%)}
-  .whaley h2{font-weight:800;font-size:clamp(1.6rem,3.4vw,2.4rem);letter-spacing:-.02em}
+  .whaley h2{font-weight:700;font-size:clamp(1.6rem,3.4vw,2.4rem);letter-spacing:-.02em}
   .whaley .ov p{color:var(--text-body);font-size:15px;line-height:1.55;max-width:42ch;margin:0}
   .socials-row{display:flex;gap:12px}
   .soc-btn{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;
@@ -264,7 +264,7 @@
     background:var(--grad-deep);box-shadow:var(--glow-teal-lg);padding:clamp(44px,6vw,72px);text-align:center}
   .final .wave{position:absolute;left:0;right:0;bottom:0;width:100%;opacity:.9;pointer-events:none}
   .final::before{content:"";position:absolute;inset:0;background:var(--grad-glow)}
-  .final h2{position:relative;font-weight:800;font-size:clamp(2rem,4.6vw,3.2rem);letter-spacing:-.02em}
+  .final h2{position:relative;font-weight:700;font-size:clamp(2rem,4.6vw,3.2rem);letter-spacing:-.02em}
   .final p{position:relative;color:var(--text-body);max-width:44ch;margin:16px auto 28px;font-size:1.05rem}
   .final .hero-actions{position:relative;justify-content:center}
 
@@ -492,7 +492,7 @@
   <div class="wrap native">
     <div data-reveal>
       <span class="overline">Not a fork. Not a bridge.</span>
-      <h2 style="font-weight:800;font-size:clamp(1.9rem,3.6vw,2.7rem);letter-spacing:-.02em;margin-top:14px">Built Natively on Stellar.</h2>
+      <h2 style="font-weight:700;font-size:clamp(1.9rem,3.6vw,2.7rem);letter-spacing:-.02em;margin-top:14px">Built Natively on Stellar.</h2>
       <p class="lead" style="margin-top:20px;color:var(--text-muted)">
         Built on Soroban from day one, powered by the Aquarius liquidity layer.
       </p>
