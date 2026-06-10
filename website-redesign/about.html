@@ -162,8 +162,12 @@
   .foot-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:46px;padding-top:22px;border-top:1px solid var(--border-subtle);flex-wrap:wrap;gap:14px}
   .foot-bottom span{font-size:13px;color:var(--text-subtle)}
   .socials{display:flex;gap:10px}
-  .socials a{width:38px;height:38px;border-radius:10px;border:1px solid var(--border-subtle);display:grid;place-items:center;color:var(--text-muted);transition:all var(--dur-base) var(--ease-out)}
-  .socials a:hover{color:var(--teal-500);border-color:var(--teal-500);transform:translateY(-2px)}
+  .socials a{width:38px;height:38px;border-radius:10px;border:1px solid var(--border-subtle);display:grid;place-items:center;color:#c2cad4;transition:all var(--dur-base) var(--ease-out)}
+  .socials a:hover{color:#fff;border-color:var(--teal-500);transform:translateY(-2px)}
+  .socials a .ic{width:18px;height:18px;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+  .socials a.dc{--m:url(./assets/social/discord.svg)}
+  .socials a.tg{--m:url(./assets/social/telegram.svg)}
+  .socials a.xt{--m:url(./assets/social/x.svg)}
 
   /* reveal */
   .js [data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)}
@@ -255,6 +259,7 @@
       <a href="./index.html#why">Why WhaleHub</a>
       <a href="./index.html#stellar">Stellar-native</a>
       <a href="./about.html" class="active">About</a>
+      <a href="./faq.html">FAQ</a>
       <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
     </div>
     <div class="nav-right">
@@ -270,6 +275,7 @@
   <a href="./index.html#why">Why WhaleHub</a>
   <a href="./index.html#stellar">Stellar-native</a>
   <a href="./about.html">About</a>
+  <a href="./faq.html">FAQ</a>
   <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
   <a href="https://app.whalehub.io/" class="btn btn-primary"><i data-lucide="wallet"></i> Launch app</a>
 </div>
@@ -419,7 +425,7 @@
         <h4>Resources</h4>
         <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
         <a href="./about.html">About</a>
-        <a href="https://whalehub.io/blog">Blog</a>
+        <a href="./faq.html">FAQ</a>
         <a href="https://whalehub.io/contact">Contact</a>
       </div>
       <div class="foot-col">
@@ -432,9 +438,9 @@
     <div class="foot-bottom">
       <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
       <div class="socials">
-        <a href="https://discord.gg/DmGKxgSdTP" aria-label="Discord"><i data-lucide="message-circle"></i></a>
-        <a href="https://t.me/whalehubdefi" aria-label="Telegram"><i data-lucide="send"></i></a>
-        <a href="https://x.com/whalehubdefi" aria-label="X"><i data-lucide="twitter"></i></a>
+        <a class="dc" href="https://discord.gg/DmGKxgSdTP" target="_blank" rel="noopener" aria-label="Discord"><span class="ic"></span></a>
+        <a class="tg" href="https://t.me/whalehubdefi" target="_blank" rel="noopener" aria-label="Telegram"><span class="ic"></span></a>
+        <a class="xt" href="https://x.com/whalehubdefi" target="_blank" rel="noopener" aria-label="X"><span class="ic"></span></a>
       </div>
     </div>
   </div>
