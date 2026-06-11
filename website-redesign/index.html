@@ -671,7 +671,7 @@
   // Live APY — the dApp's headline "Current APY". A GitHub Action reads the exact value the
   // dApp renders (app.whalehub.io/stake/aqua) hourly and publishes apy.json; we fetch it.
   // LIVE_APY is the fallback shown until apy.json loads / if the fetch fails.
-  const LIVE_APY = '17.88';
+  const LIVE_APY = '50.00';
   (function(){
     const setApy = (v) => ['liveApy','liveApy2'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = v; });
     setApy(LIVE_APY);
