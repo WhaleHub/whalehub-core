@@ -14,6 +14,6 @@ code = "BLUB"
 issuer = "GDERSSCKJQPPXUQOZIOXGRVAGNLVPVZCJ2MAX7RCMVMWGRPVAEG7XGTK"
 display_decimals = 7
 name = "Blubber Token"
-desc = "BLUB is a liquid derivative version of AQUA, which participates in the liquidity mining of the BLUB-AQUA pair. The WhaleHub reward asset is BLUBBER or BLUB for short."
+desc = "BLUB is WhaleHub's liquid staking token. Deposit AQUA and receive BLUB 1:1 — BLUB represents your share of WhaleHub's yield-generating position and participates in the BLUB-AQUA liquidity pool on Aquarius. The WhaleHub reward asset is BLUBBER, or BLUB for short."
 conditions = "No specific restrictions. Note, BLUB is not redeemable for AQUA."
 image = "https://gray-occasional-trout-50.mypinata.cloud/ipfs/bafkreihz5fsc5qrdiryxeaigqh5albve4xlp224husvaeftljn5gwfenxa"
