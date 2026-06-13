@@ -318,7 +318,11 @@
   .js [data-reveal].in{opacity:1;transform:none}
 
   @media(max-width:980px){
-    .hero-grid{grid-template-columns:1fr;gap:40px}
+    .hero-grid{grid-template-columns:1fr;gap:40px;text-align:center}
+    .hero-grid .lead{margin-left:auto;margin-right:auto}
+    .hero-actions{justify-content:center}
+    .ticker{justify-content:center}
+    .hero::before{background:linear-gradient(180deg, rgba(14,17,27,.5) 0%, rgba(14,17,27,.34) 45%, var(--bg-app) 100%)}
     .native{grid-template-columns:1fr;gap:28px}
     .foot-grid{grid-template-columns:1fr 1fr}
     .blub{grid-template-columns:1fr;text-align:center}
@@ -326,6 +330,8 @@
   }
   @media(max-width:760px){
     .nav-links{display:none}.menu-btn{display:flex}.nav-right .btn-ghost{display:none}
+    .nav{gap:14px}.nav>a:first-child,.nav .logo{flex-shrink:0}
+    .nav-right .btn-primary{display:none}
     .ways{grid-template-columns:1fr}
     .cmp{grid-template-columns:1fr;gap:16px}.cmp .solo,.cmp .hub{transform:none;margin-left:0}.cmp .solo{opacity:.7}
   }
