@@ -16,6 +16,9 @@ concurrency:
 jobs:
   apy:
     runs-on: ubuntu-latest
+    env:
+      NETLIFY_SITE_ID: 90f0c7ff-fbb0-46e5-a78f-336d1a7637e2   # whalehub-website (marketing) — NOT the dApp
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -30,6 +33,7 @@ jobs:
         run: node scripts/fetch-live-apy.cjs
 
       - name: Commit apy.json if changed
+        id: commit
         run: |
           if [ -n "$(git status --porcelain website-redesign/apy.json)" ]; then
             git config user.name "whalehub-bot"
@@ -37,6 +41,19 @@ jobs:
             git add website-redesign/apy.json
             git commit -m "chore: update live APY [skip ci]"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "apy.json unchanged"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
+
+      # Re-publish the static marketing site so the live apy.json updates on whalehub.io.
+      # whalehub-website has no connected repo, so we deploy the folder directly. Copying it
+      # out and stripping netlify.toml guarantees a pure static upload — it can NEVER trigger
+      # the dApp build or touch the dApp project. Skipped gracefully until the secret is set.
+      - name: Publish to Netlify (static, no build)
+        if: steps.commit.outputs.changed == 'true' && env.NETLIFY_AUTH_TOKEN != ''
+        run: |
+          cp -r website-redesign "$RUNNER_TEMP/site"
+          cd "$RUNNER_TEMP/site" && rm -f netlify.toml && rm -rf .netlify
+          npx --yes netlify-cli@latest deploy --dir=. --prod --site "$NETLIFY_SITE_ID"
