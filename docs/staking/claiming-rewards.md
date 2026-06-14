@@ -2,7 +2,7 @@
 
 BLUB rewards accumulate continuously while your tokens are staked. You can claim them every 7 days.
 
-> **Status (2026-06):** new BLUB rewards are temporarily not accruing because the BLUB-AQUA pool is awaiting whitelist approval from the Aquarius team. Any rewards already accumulated before this pause remain claimable on the normal 7-day cadence; new rewards resume automatically once the pool is re-whitelisted.
+> **Status (2026-06):** BLUB rewards are actively accruing. Staker income now comes from the [Bribes Harvesting Module (v2)](../tokenomics/bribes-harvesting.md), which earns Aquarius bribes by voting Whalehub's ICE on the **highest-yielding market** — replacing the earlier pool-farming source.
 
 ## How Claiming Works
 
@@ -31,13 +31,15 @@ Whalehub uses the **Synthetix reward model** — rewards are split fairly based 
 Your pending rewards = Your staked BLUB × (Current reward rate − Your last checkpoint rate)
 ```
 
-The reward rate increases every time the protocol distributes new BLUB from pool earnings. Your share is proportional to how much BLUB you have staked relative to the total.
+The reward rate increases every time the protocol distributes new BLUB from harvested income. Your share is proportional to how much BLUB you have staked relative to the total.
 
 ## Where Do Rewards Come From?
 
-Every 30 minutes, the backend:
+Rewards come from the [Bribes Harvesting Module (v2)](../tokenomics/bribes-harvesting.md). Whalehub votes its ICE on the Aquarius market with the **best bribe yield for our voting power**, and as bribes arrive the backend:
 
-1. Claims AQUA farming rewards from the BLUB-AQUA liquidity pool
+1. Collects the bribe income (AQUA)
 2. Sends 30% to the protocol treasury
-3. Swaps 70% to BLUB
+3. Swaps 70% to BLUB on the open market (non-dilutive — never minted)
 4. Distributes that BLUB to all stakers proportionally
+
+> Whalehub continuously re-evaluates every active bribe and re-targets its votes to **optimize for the best yield** each epoch. See the [Bribes Harvesting Module](../tokenomics/bribes-harvesting.md) for the methodology.

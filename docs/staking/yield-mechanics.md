@@ -94,7 +94,7 @@ AQUA rewards and fees earned by POL are used to **buy BLUB from the open market*
 
 **Live BLUB-AQUA pool:** [`CAMXZXXBD7DFBLYLHUW24U4MY37X7SU5XXT5ZVVUBXRXWLAIM7INI7G2`](https://stellar.expert/explorer/public/contract/CAMXZXXBD7DFBLYLHUW24U4MY37X7SU5XXT5ZVVUBXRXWLAIM7INI7G2) on Aquarius (StableSwap). This is the active POL pool; any older liquidity-contract address (e.g. from earlier deploy scripts) is deprecated.
 
-> **Note on current rewards:** the BLUB-AQUA pool is awaiting whitelist approval from the Aquarius team. Until that approval lands, the pool earns 0 AQUA emissions and reward distribution to stakers is paused. POL liquidity is in place; distribution will resume automatically once the pool is re-whitelisted.
+> **Note on current rewards:** staker rewards are active and now flow primarily from the [Bribes Harvesting Module (v2)](../tokenomics/bribes-harvesting.md) rather than POL pool emissions. Whalehub votes its ICE on the **highest-yielding Aquarius market** each epoch, harvests the bribes, and distributes them to stakers as BLUB. POL liquidity remains in place; the pool-emissions leg resumes automatically if the BLUB-AQUA pool is re-whitelisted.
 
 ---
 

@@ -27,6 +27,7 @@
 * [BLUB Token](tokenomics/blub-token.md)
 * [ICE Boost](tokenomics/ice-boost.md)
 * [Reward Distribution](tokenomics/reward-distribution.md)
+* [Bribes Harvesting Module](tokenomics/bribes-harvesting.md)
 * [Protocol Owned Liquidity](tokenomics/protocol-owned-liquidity.md)
 
 ## Technical

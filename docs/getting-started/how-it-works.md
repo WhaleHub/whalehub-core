@@ -2,7 +2,7 @@
 
 Whalehub connects users, smart contracts, liquidity pools, and a backend automation server into a single yield-generating system.
 
-> **Status (2026-06):** the BLUB-AQUA pool — [`CAMXZXXBD7DFBLYLHUW24U4MY37X7SU5XXT5ZVVUBXRXWLAIM7INI7G2`](https://stellar.expert/explorer/public/contract/CAMXZXXBD7DFBLYLHUW24U4MY37X7SU5XXT5ZVVUBXRXWLAIM7INI7G2) — is awaiting whitelist approval from the Aquarius team. The yield cycle below describes the steady-state flow; the AQUA-reward leg is paused until the pool is re-whitelisted, then resumes automatically with no user action required.
+> **Status (2026-06):** staker rewards are active. Income is driven by the [Bribes Harvesting Module (v2)](../tokenomics/bribes-harvesting.md) — Whalehub votes its ICE on the **highest-yielding Aquarius market** and routes the harvested bribes to stakers as BLUB. The legacy POL pool-emissions leg (BLUB-AQUA) is paused pending Aquarius re-whitelisting and resumes automatically if approved — but it is no longer required for rewards.
 
 ## System Overview
 
