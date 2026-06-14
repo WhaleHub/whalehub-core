@@ -688,16 +688,19 @@
   document.querySelectorAll('[data-count]').forEach(el => cIO.observe(el));
 
   // Live APY — the dApp's headline "Current APY". A GitHub Action reads the exact value the
-  // dApp renders (app.whalehub.io/stake/aqua) hourly and publishes apy.json; we fetch it.
-  // LIVE_APY is the fallback shown until apy.json loads / if the fetch fails.
+  // dApp renders (app.whalehub.io/stake/aqua) hourly and commits apy.json to the repo. The
+  // site reads that file LIVE from raw GitHub (CORS-enabled, ~5-min CDN cache), so the number
+  // refreshes on its own with no redeploy. Falls back to the deployed copy, then the constant.
   const LIVE_APY = '50.00';
+  const APY_LIVE_URL = 'https://raw.githubusercontent.com/WhaleHub/whalehub-core/main/website-redesign/apy.json';
   (function(){
     const setApy = (v) => ['liveApy','liveApy2'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = v; });
+    const apply = (d) => { if(d && d.apy) { setApy(d.apy); return true; } return false; };
     setApy(LIVE_APY);
-    fetch('./apy.json', {cache:'no-store'})
+    fetch(APY_LIVE_URL + '?t=' + Date.now(), {cache:'no-store'})
       .then(r => r.ok ? r.json() : null)
-      .then(d => { if(d && d.apy) setApy(d.apy); })
-      .catch(() => {});
+      .then(d => { if(!apply(d)) throw new Error('no live value'); })
+      .catch(() => fetch('./apy.json', {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(apply).catch(() => {}));
   })();
 
   // gentle scroll parallax on the hero art (respects reduced-motion)
