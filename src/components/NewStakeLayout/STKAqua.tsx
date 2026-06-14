@@ -1015,7 +1015,7 @@ const handleAddTrustline = async () => {
                     ⟳
                   </button>
                 </div>
-                <div className="grid grid-cols-2 gap-4 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs [&>div]:min-w-0">
                   <div>
                     <div className="text-[#B1B3B8] flex items-center">
                       <span>Staked BLUB</span>

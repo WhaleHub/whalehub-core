@@ -43,7 +43,10 @@
       "Bash(git commit -m ' *)",
       "Bash(git push *)",
       "Read(//Users/viktorvostrikov/Desktop/whalehub/whalehub-server/src/modules/**)",
-      "Read(//Users/viktorvostrikov/Desktop/whalehub/whalehub-server/src/**)"
+      "Read(//Users/viktorvostrikov/Desktop/whalehub/whalehub-server/src/**)",
+      "WebFetch(domain:github.com)",
+      "Bash(npm run *)",
+      "Bash(awk -F: '$1>=990 && $1<=1095')"
     ]
   }
 }
