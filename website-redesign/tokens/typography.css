@@ -1,0 +1,53 @@
+/* ============================================================
+   WhaleHub — Typography tokens
+   Live product uses Poppins across the UI (semibold headings,
+   medium controls, normal body). Inter for dense figures.
+   ============================================================ */
+
+:root {
+  /* Families */
+  --font-heading: 'Poppins', system-ui, sans-serif;
+  --font-body:    'Poppins', system-ui, sans-serif;
+  --font-ui:      'Poppins', system-ui, sans-serif;
+  --font-data:    'Inter', system-ui, sans-serif;     /* tabular figures / dense rows */
+  --font-mono:    'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-numeric: 'Inter', system-ui, sans-serif;     /* balances & prices */
+
+  /* Weights */
+  --fw-regular:  400;  /* @kind font */
+  --fw-medium:   500;  /* @kind font */
+  --fw-semibold: 600;  /* @kind font */
+  --fw-bold:     700;  /* @kind font */
+
+  /* Type scale (px-based, tuned to the live app) */
+  --fs-display:  44px;   /* hero numerals / marketing */
+  --fs-h1:       34px;
+  --fs-h2:       24px;
+  --fs-h3:       20px;
+  --fs-h4:       16px;
+  --fs-body-lg:  16px;
+  --fs-body:     14px;   /* app base */
+  --fs-sm:       13px;
+  --fs-xs:       12px;
+  --fs-micro:    11px;   /* labels / overlines */
+
+  /* Line heights */
+  --lh-tight:    1.1;   /* @kind other */
+  --lh-snug:     1.25;  /* @kind other */
+  --lh-normal:   1.5;   /* @kind other */
+  --lh-relaxed:  1.6;   /* @kind other */
+
+  /* Letter spacing */
+  --ls-tight:    -0.01em;  /* @kind other */
+  --ls-snug:     -0.005em; /* @kind other */
+  --ls-normal:   0;        /* @kind other */
+  --ls-wide:     0.02em;   /* @kind other */
+  --ls-overline: 0.12em;   /* @kind other */
+
+  /* Semantic roles */
+  --text-display:  var(--fw-bold) var(--fs-display)/var(--lh-tight) var(--font-heading);
+  --text-h1:       var(--fw-semibold) var(--fs-h1)/var(--lh-tight) var(--font-heading);
+  --text-h2:       var(--fw-semibold) var(--fs-h2)/var(--lh-snug) var(--font-heading);
+  --text-h3:       var(--fw-semibold) var(--fs-h3)/var(--lh-snug) var(--font-heading);
+  --text-label:    var(--fw-medium) var(--fs-micro)/var(--lh-normal) var(--font-heading);
+}

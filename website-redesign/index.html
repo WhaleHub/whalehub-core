@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>document.documentElement.classList.add('js');</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WhaleHub — Daily growth staking on Aquarius</title>
+<meta name="description" content="Convert AQUA to BLUB 1 : 1 and start earning. WhaleHub pools every backer into one position to reach yield no individual could alone. No lockups, no vote management, no hassle." />
+<!-- Real design-system tokens + webfonts (Poppins / Inter / JetBrains Mono) -->
+<link rel="icon" type="image/webp" href="./assets/logo-icon.webp" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/" />
+<meta property="og:title" content="WhaleHub — Daily growth staking on Aquarius" />
+<meta property="og:description" content="Convert AQUA to BLUB 1 : 1 and start earning. WhaleHub pools every backer into one position to reach yield no individual could alone. No lockups, no vote management, no hassle." />
+<meta property="og:image" content="https://whalehub.io/assets/whaley-banner-site.png" />
+<meta property="og:image:width" content="1500" />
+<meta property="og:image:height" content="500" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="WhaleHub — Daily growth staking on Aquarius" />
+<meta name="twitter:description" content="Convert AQUA to BLUB 1 : 1 and start earning. Pooled AQUA staking that reaches whale-tier yield." />
+<meta name="twitter:image" content="https://whalehub.io/assets/whaley-banner-site.png" />
+<link rel="stylesheet" href="./styles.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg-app);color:var(--text-body);
+    font-family:var(--font-body);font-size:16px;line-height:var(--lh-normal);
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  }
+  ::selection{background:var(--teal-500);color:#06241c}
+  a{text-decoration:none;color:inherit}
+  img{display:block;max-width:100%}
+  .wrap{max-width:var(--container-max);margin:0 auto;padding:0 28px}
+  h1,h2,h3,h4{font-family:var(--font-heading);color:var(--text-heading);letter-spacing:var(--ls-tight);line-height:var(--lh-tight)}
+  .num{font-family:var(--font-numeric);font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+  .grad-text{background:var(--grad-teal);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .overline{font-family:var(--font-heading);font-weight:600;font-size:var(--fs-micro);letter-spacing:var(--ls-overline);text-transform:uppercase;color:var(--text-accent)}
+  i[data-lucide]{width:18px;height:18px;stroke-width:2}
+
+  /* ---- buttons ---- */
+  .btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--font-heading);font-weight:600;
+    font-size:15px;border-radius:var(--radius-md);padding:13px 22px;cursor:pointer;border:1px solid transparent;
+    transition:transform var(--dur-base) var(--ease-out),box-shadow var(--dur-base) var(--ease-out),filter var(--dur-base) var(--ease-out);white-space:nowrap}
+  .btn:active{transform:scale(.97)}
+  .btn-primary{background:linear-gradient(110deg,var(--teal-400) 0%,var(--blue-700) 100%);color:#fff}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 26px 3px rgba(0,204,153,.4)}
+  .btn-secondary{background:var(--action-neutral);color:#fff}
+  .btn-secondary:hover{background:var(--action-neutral-hover);transform:translateY(-2px)}
+  .btn-ghost{background:transparent;color:var(--text-body);border-color:var(--border-default)}
+  .btn-ghost:hover{border-color:var(--border-accent);color:var(--text-heading)}
+  .btn .arr{transition:transform var(--dur-base) var(--ease-out)}
+  .btn:hover .arr{transform:translateX(3px)}
+  .btn-lg{padding:16px 26px;font-size:16px;min-height:var(--field-h-lg)}
+  .ic-whale{display:block;flex-shrink:0;border-radius:5px}
+
+  /* ---- badge ---- */
+  .badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-heading);font-weight:500;
+    font-size:var(--fs-xs);letter-spacing:.02em;border-radius:var(--radius-pill);padding:6px 13px;
+    background:rgba(0,204,153,.10);color:var(--teal-300);border:1px solid rgba(0,204,153,.22)}
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--teal-500);box-shadow:0 0 0 0 rgba(0,204,153,.7);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,204,153,.55)}70%{box-shadow:0 0 0 8px rgba(0,204,153,0)}100%{box-shadow:0 0 0 0 rgba(0,204,153,0)}}
+
+  /* ---- nav ---- */
+  header{position:sticky;top:0;z-index:50}
+  header::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(13,19,32,.72);
+    backdrop-filter:var(--blur-md);border-bottom:1px solid var(--border-subtle);opacity:0;transition:opacity var(--dur-slow) var(--ease-out)}
+  header.scrolled::before{opacity:1}
+  .nav{display:flex;align-items:center;gap:28px;height:var(--topbar-h);max-width:var(--container-max);margin:0 auto;padding:0 28px}
+  .nav .logo{height:30px;width:auto}
+  .nav-links{display:flex;gap:26px;margin-left:8px}
+  .nav-links a{color:var(--text-muted);font-family:var(--font-heading);font-weight:500;font-size:14px;transition:color var(--dur-base)}
+  .nav-links a:hover{color:var(--text-heading)}
+  .nav-right{margin-left:auto;display:flex;align-items:center;gap:14px}
+  .menu-btn{display:none;background:none;border:1px solid var(--border-default);border-radius:var(--radius-sm);width:42px;height:42px;color:#fff;cursor:pointer;align-items:center;justify-content:center}
+
+  /* ---- hero ---- */
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--border-subtle)}
+  /* ambient underwater scene behind everything in the hero */
+  .hero .abyss{position:absolute;inset:-8% 0;width:100%;height:116%;object-fit:cover;object-position:center 40%;
+    opacity:.32;filter:saturate(1.05) blur(5px);pointer-events:none;z-index:0;will-change:transform}
+  .hero::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+    background:linear-gradient(90deg, var(--bg-app) 4%, rgba(14,17,27,.66) 34%, rgba(14,17,27,.32) 66%, rgba(14,17,27,.5) 100%),
+               linear-gradient(180deg, rgba(14,17,27,.45) 0%, transparent 26%, transparent 64%, var(--bg-app) 100%)}
+  .hero::after{content:"";position:absolute;inset:0;background:var(--grad-glow);pointer-events:none;z-index:1}
+  .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.08fr .92fr;gap:48px;align-items:center;padding:88px 0 96px}
+  .hero h1{font-weight:700;font-size:clamp(2.6rem,6vw,4.1rem);letter-spacing:-.025em;margin:20px 0 0}
+  .hero .lead{color:var(--text-body);font-size:clamp(1.05rem,1.5vw,1.22rem);max-width:48ch;margin-top:22px}
+  .hero-actions{display:flex;gap:14px;margin-top:32px;flex-wrap:wrap}
+  .reassure{margin-top:20px;color:var(--text-muted);font-size:14px;display:flex;align-items:center;gap:8px}
+  .reassure i{color:var(--teal-500)}
+
+  .ticker{display:flex;gap:34px;margin-top:44px;flex-wrap:wrap;border-top:1px solid var(--border-subtle);padding-top:26px}
+  .stat .v{font-family:var(--font-numeric);font-weight:700;font-size:clamp(1.5rem,2.4vw,1.9rem);color:#fff;letter-spacing:-.01em;line-height:1}
+  .stat .v .u{color:var(--teal-500)}
+  .stat .l{font-size:12.5px;color:var(--text-subtle);margin-top:7px}
+
+  /* hero visual — 3D AQUA + BLUB coins + bubbles + depth gauge */
+  .hero-visual{position:relative;display:flex;flex-direction:column;align-items:center;gap:26px}
+  .coin-stage{position:relative;width:100%;min-height:290px;display:flex;justify-content:center;align-items:center}
+  .coin-stage .bubbles{position:absolute;left:9%;top:0;height:200px;opacity:.4;pointer-events:none}
+  .coin{filter:drop-shadow(0 30px 60px rgba(0,95,153,.55));animation:bob 6s var(--ease-inout) infinite}
+  .coin-blub{width:min(220px,56%)}
+  .coin-aqua{position:absolute;left:5%;bottom:3%;width:min(122px,31%);animation-delay:.9s;filter:drop-shadow(0 22px 44px rgba(120,60,200,.5))}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-14px) rotate(2deg)}}
+
+  /* ambient glassy bubbles + Blubber-logo hover burst on the token stage */
+  .bubble{position:absolute;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle at 32% 28%, rgba(255,255,255,.95) 0%, rgba(255,255,255,.35) 12%,
+      rgba(0,204,153,.12) 42%, rgba(255,255,255,.05) 68%, transparent 74%);
+    border:1px solid rgba(255,255,255,.18);
+    box-shadow:inset 0 0 6px rgba(255,255,255,.30), inset -2px -3px 6px rgba(0,95,153,.25), 0 0 10px rgba(0,204,153,.16)}
+  .logo-particle{position:absolute;pointer-events:none;will-change:transform,opacity;
+    filter:drop-shadow(0 4px 10px rgba(0,95,153,.45)) drop-shadow(0 0 8px rgba(0,204,153,.35))}
+  @keyframes rise{0%{transform:translateY(0) translateX(0) scale(.7);opacity:0}12%{opacity:.85}85%{opacity:.55}
+    100%{transform:translateY(-300px) translateX(var(--dx,0)) scale(1);opacity:0}}
+  @keyframes burstLogo{0%{transform:translate(-50%,-50%) scale(.2) rotate(0deg);opacity:0}22%{opacity:1}
+    100%{transform:translate(calc(-50% + var(--bx)), calc(-50% + var(--by))) scale(1) rotate(var(--rot,0deg));opacity:0}}
+
+  /* depth gauge */
+  .gauge{width:100%;border:1px solid var(--border-subtle);border-radius:var(--radius-lg);overflow:hidden;
+    background:linear-gradient(180deg,var(--surface-card),var(--surface-sunken));box-shadow:var(--shadow-card)}
+  .gauge-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border-subtle)}
+  .gauge-head .t{font-family:var(--font-heading);font-weight:500;font-size:var(--fs-micro);letter-spacing:var(--ls-overline);text-transform:uppercase;color:var(--text-muted)}
+  .gauge-head .more{font-size:12px;color:var(--teal-500);display:flex;align-items:center;gap:6px}
+  .layer{position:relative;display:flex;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px solid var(--border-subtle);transition:background var(--dur-slow) var(--ease-out)}
+  .layer:last-child{border-bottom:0}
+  .layer:nth-child(1){background:linear-gradient(90deg,rgba(0,204,153,.04),transparent)}
+  .layer:nth-child(2){background:linear-gradient(90deg,rgba(0,204,153,.07),transparent)}
+  .layer:nth-child(3){background:linear-gradient(90deg,rgba(0,204,153,.11),transparent)}
+  .layer:hover{background:rgba(0,204,153,.14)}
+  .layer .lx{font-family:var(--font-mono);font-size:12px;color:var(--text-subtle);width:26px;flex-shrink:0}
+  .layer .ic{width:36px;height:36px;border-radius:10px;flex-shrink:0;display:grid;place-items:center;border:1px solid var(--border-default);background:var(--surface-sunken);color:var(--teal-500)}
+  .layer .n{font-family:var(--font-heading);font-weight:600;font-size:15px;color:#fff}
+  .layer .d{font-size:12.5px;color:var(--text-muted)}
+  .layer .tag{margin-left:auto;font-family:var(--font-mono);font-size:11px;color:var(--teal-300);opacity:.85;text-align:right;flex-shrink:0}
+
+  /* ---- trust strip ---- */
+  .trust{border-bottom:1px solid var(--border-subtle);padding:24px 0}
+  .trust .wrap{display:flex;align-items:center;gap:34px;flex-wrap:wrap}
+  .trust .label{font-family:var(--font-heading);font-weight:500;font-size:var(--fs-micro);letter-spacing:var(--ls-overline);text-transform:uppercase;color:var(--text-subtle)}
+  .trust .marks{display:flex;gap:34px;align-items:center;flex-wrap:wrap}
+  /* clean monochrome-white logos directly on the dark bg — no chips */
+  .trust .marks a{display:inline-flex;align-items:center}
+  .trust .marks img{height:24px;width:auto;display:block;object-fit:contain;filter:brightness(0) invert(1);opacity:.62;transition:opacity var(--dur-base) var(--ease-out)}
+  .trust .marks a:hover img{opacity:1}
+
+  /* ---- sections ---- */
+  .block{padding:clamp(64px,9vw,104px) 0}
+  .sec-head{max-width:620px;margin-bottom:46px}
+  .sec-head h2{font-weight:700;font-size:clamp(1.9rem,3.6vw,2.7rem);letter-spacing:-.02em;margin-top:14px}
+  .sec-head p{margin-top:16px;color:var(--text-muted)}
+
+  .ways{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .card{position:relative;border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:26px 24px;
+    background:var(--surface-card);overflow:hidden;transition:transform var(--dur-slow) var(--ease-out),border-color var(--dur-slow),box-shadow var(--dur-slow)}
+  .card:hover{transform:translateY(-5px);border-color:var(--border-strong);box-shadow:var(--shadow-card)}
+  .card .tag{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-subtle)}
+  .card .ic{width:46px;height:46px;border-radius:var(--radius-md);display:grid;place-items:center;margin:16px 0 18px;background:rgba(0,204,153,.12);border:1px solid rgba(0,204,153,.22);color:var(--teal-500)}
+  .card .ic i{width:23px;height:23px}
+  .card h3{font-weight:600;font-size:1.3rem}
+  .card .sub{color:var(--teal-500);font-family:var(--font-heading);font-weight:500;font-size:13px;margin-top:5px}
+  .card p{color:var(--text-muted);font-size:14.5px;margin-top:13px;line-height:1.6}
+
+  /* how-it-works v2 — flywheel as an immersive right-side scene, copy on top */
+  .how-v2{position:relative;overflow:hidden}
+  .how-amb{position:absolute;inset:0;z-index:0;background:url("./assets/flywheel.png") center/cover no-repeat;opacity:.2;filter:blur(8px) saturate(1.05)}
+  .how-v2::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(90deg, var(--bg-app) 6%, rgba(14,17,27,.8) 33%, rgba(14,17,27,.28) 60%, transparent 80%),
+               linear-gradient(180deg, var(--bg-app), transparent 16%, transparent 84%, var(--bg-app))}
+  .how-content{position:relative;z-index:3}
+  .how-copy{max-width:540px}
+  .how-copy .sec-head{margin-bottom:26px}
+  .layer-list{display:flex;flex-direction:column;gap:13px}
+  .layer-item{display:flex;gap:15px;padding:17px 19px;border:1px solid var(--border-subtle);border-radius:var(--radius-lg);background:var(--surface-card);transition:border-color var(--dur-base),transform var(--dur-base) var(--ease-out)}
+  .layer-item:hover{border-color:var(--border-strong);transform:translateX(5px)}
+  .layer-item .ic{width:44px;height:44px;flex-shrink:0;border-radius:var(--radius-md);display:grid;place-items:center;background:rgba(0,204,153,.12);border:1px solid rgba(0,204,153,.22);color:var(--teal-500)}
+  .layer-item .ic i{width:22px;height:22px}
+  .layer-item .lh{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:5px}
+  .layer-item .lh h3{font-weight:600;font-size:1.1rem}
+  .layer-item .tag{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-subtle)}
+  .layer-item .sub{font-family:var(--font-heading);font-weight:500;font-size:12.5px;color:var(--teal-500)}
+  .layer-item p{color:var(--text-muted);font-size:14px;line-height:1.55}
+
+  /* flywheel scene anchored right; labels sized with container-query units */
+  .how-fly{position:absolute;top:37%;right:-1%;transform:translateY(-50%);height:70%;aspect-ratio:1;
+    container-type:inline-size;z-index:2;pointer-events:none;margin:0}
+  .how-fly>img{width:100%;height:100%;object-fit:contain;display:block;
+    -webkit-mask-image:radial-gradient(closest-side,#000 74%,transparent 99%);mask-image:radial-gradient(closest-side,#000 74%,transparent 99%)}
+  .how-fly .lbl{position:absolute;transform:translate(-50%,-50%)}
+  .fw-node{font-family:var(--font-heading);font-weight:600;font-size:clamp(12px,3.8cqi,18px);color:var(--text-heading);
+    background:rgba(8,12,20,.7);border:1px solid var(--border-subtle);border-radius:var(--radius-pill);
+    padding:.36em .8em;white-space:nowrap;backdrop-filter:blur(4px);box-shadow:0 4px 14px rgba(0,0,0,.45)}
+  .fw-arrow{font-family:var(--font-mono);font-size:clamp(9px,2.5cqi,12px);letter-spacing:.05em;text-transform:uppercase;
+    color:var(--teal-300);background:rgba(8,12,20,.62);border-radius:var(--radius-sm);padding:.3em .55em;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,.5)}
+  .fw-apy{display:flex;flex-direction:column;align-items:center;gap:1px;text-align:center;left:50%;top:62%}
+  .fw-apy .o{font-family:var(--font-heading);font-weight:500;font-size:clamp(8px,2.1cqi,11px);letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+  .fw-apy .v{font-family:var(--font-numeric);font-weight:700;font-size:clamp(15px,5.3cqi,27px);letter-spacing:-.01em;
+    background:var(--grad-teal);-webkit-background-clip:text;background-clip:text;color:transparent;animation:apyGlow 3.4s var(--ease-inout) infinite}
+  @keyframes apyGlow{0%,100%{filter:drop-shadow(0 0 0 rgba(0,204,153,0))}50%{filter:drop-shadow(0 0 9px rgba(0,204,153,.45))}}
+  /* anchors — tuned to the rendered 1:1 flywheel */
+  .fw-stake{left:50%;top:5.5%}
+  .fw-provide{left:78%;top:85%}
+  .fw-compound{left:22%;top:85%}
+  .fw-a1{left:85%;top:33%}
+  .fw-a2{left:50%;top:93%}
+  .fw-a3{left:14.5%;top:33%}
+
+  /* comparison — asymmetric weighted contrast */
+  .cmp{position:relative;display:grid;grid-template-columns:.82fr 1.18fr;align-items:center}
+  .cmp-panel{border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:30px 28px;background:var(--surface-card)}
+  .cmp-panel .pill{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:var(--radius-pill);display:inline-block;margin-bottom:18px}
+  .cmp-panel ul{list-style:none}
+  .cmp-panel li{display:flex;gap:12px;padding:13px 0;border-top:1px solid var(--border-subtle);font-size:15px}
+  .cmp-panel li:first-of-type{border-top:0}
+  .cmp-panel li i{flex-shrink:0;width:19px;height:19px;margin-top:2px}
+  /* SOLO — recessed, dimmed, behind */
+  .cmp .solo{transform:scale(.92);opacity:.55;filter:saturate(.55);z-index:1;
+    background:rgba(255,92,114,.04);border-color:rgba(255,92,114,.16);color:var(--text-muted)}
+  .cmp .solo .pill{background:rgba(255,92,114,.12);color:#ff95a4}
+  .cmp .solo li i{color:var(--negative)}
+  /* WHALEHUB — large, elevated, glowing, in front, overlapping */
+  .cmp .hub{position:relative;z-index:2;margin-left:-28px;transform:translateY(-14px);
+    background:linear-gradient(180deg,rgba(0,204,153,.08),var(--surface-card));
+    border-color:rgba(0,204,153,.34);box-shadow:var(--glow-teal-lg)}
+  .cmp .hub .brand-pill{height:22px;width:auto;display:block;margin-bottom:18px}
+  .cmp .hub li{color:var(--text-body)} .cmp .hub li i{color:var(--teal-500)}
+  .cmp .hub-stat{margin-top:20px;padding-top:18px;border-top:1px solid var(--border-subtle);display:flex;align-items:baseline;gap:8px}
+  .cmp .hub-stat .num,.cmp .hub-stat .u{font-family:var(--font-numeric);font-weight:700;font-size:2.2rem;color:#fff;line-height:1}
+  .cmp .hub-stat .u{color:var(--teal-500)}
+  .cmp .hub-stat .cap{font-size:12px;color:var(--text-subtle);margin-left:6px;align-self:center}
+
+  /* stellar native */
+  .native{display:grid;grid-template-columns:1.05fr 1fr;gap:44px;align-items:center}
+  .ncard{border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:20px 22px;background:var(--surface-card);
+    transition:border-color var(--dur-base),transform var(--dur-base) var(--ease-out);margin-bottom:13px}
+  .ncard:last-child{margin-bottom:0}
+  .ncard:hover{border-color:var(--border-strong);transform:translateX(5px)}
+  .ncard .top{display:flex;align-items:center;gap:11px;margin-bottom:7px}
+  .ncard .top .b{width:30px;height:30px;flex-shrink:0;display:grid;place-items:center}
+  .ncard .top .b img{width:28px;height:28px;object-fit:contain;filter:brightness(0) invert(1);opacity:.85}
+  .ncard .top .b svg{width:22px;height:22px;color:#fff;opacity:.85}
+  .ncard .top h3{font-weight:600;font-size:1.05rem}
+  .ncard .top .h{margin-left:auto;font-family:var(--font-mono);font-size:12px;color:var(--text-subtle)}
+  .ncard p{color:var(--text-muted);font-size:14px;line-height:1.6}
+
+  /* blub band */
+  .blub{position:relative;display:grid;grid-template-columns:1fr auto;align-items:center;gap:36px;
+    border-radius:var(--radius-2xl);overflow:hidden;padding:clamp(34px,5vw,56px);
+    background:var(--grad-deep);border:1px solid rgba(0,204,153,.28);box-shadow:var(--glow-teal-lg)}
+  .blub::before{content:"";position:absolute;inset:0;background:var(--grad-glow);pointer-events:none}
+  .blub .eq{font-family:var(--font-heading);font-weight:700;font-size:clamp(1.7rem,4vw,2.7rem);letter-spacing:-.02em;color:#fff;position:relative}
+  .blub .eq .a{color:var(--teal-400)}
+  .blub p{color:var(--text-body);max-width:52ch;margin:16px 0 26px;position:relative}
+  .blub .coinflow{display:flex;align-items:center;gap:14px;justify-content:center;position:relative}
+  .blub .coin3d{width:clamp(92px,12vw,150px);height:auto;filter:drop-shadow(0 24px 50px rgba(0,95,153,.55));animation:bob 6s var(--ease-inout) infinite;position:relative}
+  .blub .coin3d-aqua{animation-delay:.9s;filter:drop-shadow(0 22px 44px rgba(120,60,200,.5))}
+  /* AQUA → BLUB 1:1 conversion connector (crisp CSS/SVG) */
+  .flow{position:relative;flex:0 0 clamp(46px,9vw,104px);height:20px;display:flex;align-items:center}
+  .flow svg{width:100%;height:20px;display:block}
+  .flow .pulse{position:absolute;top:50%;left:0;width:9px;height:9px;border-radius:50%;
+    transform:translate(-50%,-50%);background:var(--teal-500);box-shadow:0 0 10px 3px rgba(0,204,153,.7);
+    animation:flowmove 2.2s var(--ease-inout) infinite}
+  @keyframes flowmove{0%{left:0;opacity:0}12%{opacity:1}88%{opacity:1}100%{left:100%;opacity:0}}
+
+  /* whaley moment — text-free broadcaster banner, content on the dark left */
+  .whaley{position:relative;border-radius:var(--radius-2xl);overflow:hidden;border:1px solid var(--border-subtle)}
+  .whaley img{width:100%;height:100%;object-fit:cover;object-position:right center;display:block}
+  .whaley .ov{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:20px;
+    padding:clamp(28px,5vw,56px);max-width:560px;
+    background:linear-gradient(90deg,rgba(10,13,20,.92) 0%,rgba(10,13,20,.55) 45%,transparent 72%)}
+  .whaley h2{font-weight:700;font-size:clamp(1.6rem,3.4vw,2.4rem);letter-spacing:-.02em}
+  .whaley .ov p{color:var(--text-body);font-size:15px;line-height:1.55;max-width:42ch;margin:0}
+  .socials-row{display:flex;gap:12px}
+  .soc-btn{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;
+    border:1px solid var(--border-default);background:rgba(255,255,255,.04);color:#fff;
+    transition:transform var(--dur-base) var(--ease-out),color var(--dur-base),border-color var(--dur-base),box-shadow var(--dur-base)}
+  .soc-btn .ic{width:22px;height:22px;background:currentColor;
+    -webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+  .soc-btn:hover{transform:translateY(-2px)}
+  .soc-btn.tg{--m:url(./assets/social/telegram.svg)} .soc-btn.tg:hover{color:#26A5E4;border-color:#26A5E4;box-shadow:0 0 18px rgba(38,165,228,.4)}
+  .soc-btn.dc{--m:url(./assets/social/discord.svg)} .soc-btn.dc:hover{color:#5865F2;border-color:#5865F2;box-shadow:0 0 18px rgba(88,101,242,.4)}
+  .soc-btn.xt{--m:url(./assets/social/x.svg)} .soc-btn.xt:hover{color:#fff;border-color:#fff;box-shadow:0 0 18px rgba(255,255,255,.25)}
+
+  /* final cta */
+  .final{position:relative;border-radius:var(--radius-2xl);overflow:hidden;border:1px solid rgba(0,204,153,.30);
+    background:var(--grad-deep);box-shadow:var(--glow-teal-lg);padding:clamp(44px,6vw,72px);text-align:center}
+  .final .wave{position:absolute;left:0;right:0;bottom:0;width:100%;opacity:.9;pointer-events:none}
+  .final::before{content:"";position:absolute;inset:0;background:var(--grad-glow)}
+  .final h2{position:relative;font-weight:700;font-size:clamp(2rem,4.6vw,3.2rem);letter-spacing:-.02em}
+  .final p{position:relative;color:var(--text-body);max-width:44ch;margin:16px auto 28px;font-size:1.05rem}
+  .final .hero-actions{position:relative;justify-content:center}
+
+  /* footer */
+  footer{border-top:1px solid var(--border-subtle);background:var(--navy-950);padding:56px 0 36px}
+  .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:38px}
+  .foot-brand img{height:28px;margin-bottom:14px}
+  .foot-brand p{color:var(--text-muted);font-size:14px;max-width:30ch}
+  .foot-col h4{font-family:var(--font-heading);font-weight:500;font-size:var(--fs-micro);letter-spacing:var(--ls-overline);text-transform:uppercase;color:var(--text-subtle);margin-bottom:14px}
+  .foot-col a{display:block;color:var(--text-muted);font-size:14px;padding:6px 0;transition:color var(--dur-base)}
+  .foot-col a:hover{color:var(--teal-500)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:46px;padding-top:22px;border-top:1px solid var(--border-subtle);flex-wrap:wrap;gap:14px}
+  .foot-bottom span{font-size:13px;color:var(--text-subtle)}
+  .socials{display:flex;gap:10px}
+  .socials a{width:38px;height:38px;border-radius:10px;border:1px solid var(--border-subtle);display:grid;place-items:center;color:#c2cad4;transition:all var(--dur-base) var(--ease-out)}
+  .socials a:hover{color:#fff;border-color:var(--teal-500);transform:translateY(-2px)}
+  .socials a .ic{width:18px;height:18px;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat}
+  .socials a.dc{--m:url(./assets/social/discord.svg)}
+  .socials a.tg{--m:url(./assets/social/telegram.svg)}
+  .socials a.xt{--m:url(./assets/social/x.svg)}
+
+  /* reveal */
+  .js [data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)}
+  .js [data-reveal].in{opacity:1;transform:none}
+
+  @media(max-width:980px){
+    .hero-grid{grid-template-columns:1fr;gap:40px;text-align:center}
+    .hero-grid .lead{margin-left:auto;margin-right:auto}
+    .hero-actions{justify-content:center}
+    .ticker{justify-content:center}
+    .hero::before{background:linear-gradient(180deg, rgba(14,17,27,.5) 0%, rgba(14,17,27,.34) 45%, var(--bg-app) 100%)}
+    .native{grid-template-columns:1fr;gap:28px}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    .blub{grid-template-columns:1fr;text-align:center}
+    .blub .coin3d{margin:0 auto}
+  }
+  @media(max-width:760px){
+    .nav-links{display:none}.menu-btn{display:flex}.nav-right .btn-ghost{display:none}
+    .nav{gap:14px}.nav>a:first-child,.nav .logo{flex-shrink:0}
+    .nav-right .btn-primary{display:none}
+    .ways{grid-template-columns:1fr}
+    .cmp{grid-template-columns:1fr;gap:16px}.cmp .solo,.cmp .hub{transform:none;margin-left:0}.cmp .solo{opacity:.7}
+  }
+  /* ≤640px: stack copy-first / flywheel below, cap width, hide small arrow labels */
+  @media(max-width:640px){
+    .how-fly{position:static;transform:none;height:auto;width:100%;max-width:360px;margin:26px auto 0;aspect-ratio:1}
+    .how-amb,.how-v2::before{display:none}
+    .fw-arrow{display:none}
+    .whaley img{min-height:320px}
+    .whaley .ov{max-width:none;justify-content:flex-end;background:linear-gradient(180deg,rgba(10,13,20,.35) 0%,rgba(10,13,20,.9) 75%)}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}[data-reveal]{opacity:1;transform:none}.flow .pulse{left:50%;opacity:1}.cmp .hub{transform:none}.soc-btn:hover{transform:none}}
+
+  /* mobile drawer */
+  .drawer{position:fixed;inset:0;z-index:60;background:rgba(10,13,20,.97);backdrop-filter:blur(12px);
+    display:flex;flex-direction:column;padding:72px 28px;gap:6px;transform:translateY(-100%);transition:transform var(--dur-slow) var(--ease-out);visibility:hidden}
+  .drawer.open{transform:none;visibility:visible}
+  .drawer a{color:#fff;font-family:var(--font-heading);font-size:1.5rem;font-weight:600;padding:14px 0;border-bottom:1px solid var(--border-subtle)}
+  .drawer .btn{margin-top:22px;justify-content:center}
+  .drawer .close{position:absolute;top:20px;right:24px;background:none;border:1px solid var(--border-default);border-radius:9px;width:44px;height:44px;color:#fff;font-size:22px;cursor:pointer}
+</style>
+</head>
+<body class="wh-root">
+
+<header id="hdr">
+  <nav class="nav">
+    <a href="#"><img class="logo" src="./assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#why">Why WhaleHub</a>
+      <a href="#stellar">Stellar-native</a>
+      <a href="./about.html">About</a>
+      <a href="./faq.html">FAQ</a>
+      <a href="./contact.html">Contact</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="./assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
+    </div>
+  </nav>
+</header>
+
+<div class="drawer" id="drawer">
+  <button class="close" id="closeBtn" aria-label="Close">×</button>
+  <a href="#how">How it works</a>
+  <a href="#why">Why WhaleHub</a>
+  <a href="#stellar">Stellar-native</a>
+  <a href="./about.html">About</a>
+  <a href="./faq.html">FAQ</a>
+  <a href="./contact.html">Contact</a>
+  <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+  <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="./assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="abyss" src="./assets/website-hero-coin.png" alt="" data-parallax />
+  <div class="wrap hero-grid">
+    <div>
+      <h1 data-reveal>Enhanced staking<br>& <span class="grad-text">compounding</span></h1>
+      <p class="lead" data-reveal>
+        WhaleHub is a yield optimizer on Stellar. Deposit AQUA. Get BLUB
+        (1:1, same value). Watch it grow. Three ways to earn, one protocol,
+        zero complexity.
+      </p>
+      <div class="hero-actions" data-reveal>
+        <a href="https://app.whalehub.io/" class="btn btn-primary btn-lg"><img class="ic-whale" src="./assets/logo-icon.webp" alt="" width="20" height="20" style="display:block;flex-shrink:0;border-radius:5px"> Start Earning</a>
+        <a href="#how" class="btn btn-secondary btn-lg"><i data-lucide="book-open"></i> How it works</a>
+      </div>
+      <div class="ticker" data-reveal>
+        <div class="stat"><div class="v"><span id="liveApy">—</span><span class="u">%</span></div><div class="l">Live APY</div></div>
+        <div class="stat"><div class="v">1<span class="u"> : </span>1</div><div class="l">AQUA → BLUB</div></div>
+        <div class="stat"><div class="v"><span data-count="24">0</span><span class="u">×</span></div><div class="l">Auto-compounds / day</div></div>
+      </div>
+    </div>
+
+    <div class="hero-visual" data-reveal>
+      <div class="coin-stage">
+        <img class="bubbles" src="./assets/bubbles.svg" alt="" />
+        <img class="coin coin-blub" src="./assets/tokens-3d/blub-3d-teal.png" alt="BLUB token" />
+        <img class="coin coin-aqua" src="./assets/tokens-3d/aqua-3d.png" alt="AQUA token" />
+      </div>
+      <div class="gauge">
+        <div class="gauge-head">
+          <span class="t">Yield depth · 3 layers</span>
+          <span class="more"><i data-lucide="arrow-down"></i> more yield</span>
+        </div>
+        <div class="layer">
+          <span class="lx">L1</span>
+          <span class="ic"><i data-lucide="waves"></i></span>
+          <div><div class="n">Stake</div><div class="d">Daily passive rewards</div></div>
+          <span class="tag">deposit AQUA</span>
+        </div>
+        <div class="layer">
+          <span class="lx">L2</span>
+          <span class="ic"><i data-lucide="droplets"></i></span>
+          <div><div class="n">Provide liquidity</div><div class="d">Swap fees + rewards</div></div>
+          <span class="tag">AQUA–BLUB pool</span>
+        </div>
+        <div class="layer">
+          <span class="lx">L3</span>
+          <span class="ic"><i data-lucide="repeat"></i></span>
+          <div><div class="n">Compound</div><div class="d">Accelerated growth</div></div>
+          <span class="tag">re-stake BLUB</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<div class="trust">
+  <div class="wrap">
+    <span class="label">Built natively on</span>
+    <div class="marks">
+      <a href="https://stellar.org/" target="_blank" rel="noopener" aria-label="Stellar"><img src="./assets/brand-stellar.png" alt="Stellar" /></a>
+      <a href="https://aqua.network/" target="_blank" rel="noopener" aria-label="Aquarius"><img src="./assets/brand-aquarius-white.png" alt="Aquarius" /></a>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS / THREE LAYERS -->
+<section class="block how-v2" id="how">
+  <div class="how-amb" aria-hidden="true"></div>
+  <div class="wrap how-content">
+    <div class="how-copy">
+      <div class="sec-head" data-reveal>
+        <span class="overline">One Protocol · Three Ways to Earn</span>
+        <h2>Your AQUA earns more when it doesn't work alone.</h2>
+        <p>WhaleHub combines your tokens with a larger pool to unlock higher yield.</p>
+      </div>
+      <div class="layer-list">
+        <div class="layer-item" data-reveal>
+          <span class="ic"><i data-lucide="waves"></i></span>
+          <div>
+            <div class="lh"><span class="tag">Layer 1</span><h3>Stake</h3><span class="sub">Daily passive rewards</span></div>
+            <p>Deposit AQUA, get BLUB (1:1, same value). Done. You're earning from minute one. Every new staker strengthens the pool. Your position grows daily.</p>
+          </div>
+        </div>
+        <div class="layer-item" data-reveal>
+          <span class="ic"><i data-lucide="droplets"></i></span>
+          <div>
+            <div class="lh"><span class="tag">Layer 2</span><h3>Provide liquidity</h3><span class="sub">Maximum yield</span></div>
+            <p>Add to the AQUA-BLUB pool. Earn swap fees plus rewards, auto-compounded 24 times a day. This is the full cycle.</p>
+          </div>
+        </div>
+        <div class="layer-item" data-reveal>
+          <span class="ic"><i data-lucide="repeat"></i></span>
+          <div>
+            <div class="lh"><span class="tag">Layer 3</span><h3>Compound</h3><span class="sub">Accelerated growth</span></div>
+            <p>Re-stake your earned BLUB. Each round, your share of the pool gets bigger. Your rewards earn rewards. Classic snowball.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <figure class="how-fly" data-reveal aria-label="WhaleHub yield flywheel">
+      <img src="./assets/flywheel.png" alt="WhaleHub yield flywheel: stake, provide liquidity, compound" />
+      <span class="lbl fw-arrow fw-a1">Get BLUB</span>
+      <span class="lbl fw-arrow fw-a2">Fees + rewards</span>
+      <span class="lbl fw-arrow fw-a3">Bigger share</span>
+    </figure>
+  </div>
+</section>
+
+<!-- WHY / COMPARISON -->
+<section class="block" id="why">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="overline">The honest comparison</span>
+      <h2>Why not just earn on Aquarius directly?</h2>
+      <p>You could. Here's what that actually looks like — versus letting the pool do the heavy lifting.</p>
+    </div>
+    <div class="cmp">
+      <div class="cmp-panel solo">
+        <span class="pill">Solo earning</span>
+        <ul>
+          <li><i data-lucide="x"></i> Lock AQUA for 5 years</li>
+          <li><i data-lucide="x"></i> Manage votes every epoch</li>
+          <li><i data-lucide="x"></i> Compound by hand</li>
+          <li><i data-lucide="x"></i> Small position, base rate only</li>
+        </ul>
+      </div>
+      <div class="cmp-panel hub">
+        <img class="brand-pill" src="./assets/logo-full.webp" alt="WhaleHub" />
+        <ul>
+          <li data-reveal><i data-lucide="check"></i> No lockup — BLUB stays liquid, 1:1</li>
+          <li data-reveal><i data-lucide="check"></i> Pooled ICE voting handled for you</li>
+          <li data-reveal><i data-lucide="check"></i> Auto-compounding 24×/day</li>
+          <li data-reveal><i data-lucide="check"></i> Pooled position earns a higher tier</li>
+        </ul>
+        <div class="hub-stat"><span class="num" id="liveApy2">17.88</span><span class="u">%</span><span class="cap">Live APY</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STELLAR NATIVE -->
+<section class="block" id="stellar">
+  <div class="wrap native">
+    <div data-reveal>
+      <span class="overline">Not a fork. Not a bridge.</span>
+      <h2 style="font-weight:700;font-size:clamp(1.9rem,3.6vw,2.7rem);letter-spacing:-.02em;margin-top:14px">Built Natively on Stellar.</h2>
+      <p class="lead" style="margin-top:20px;color:var(--text-muted)">
+        Built on Soroban from day one, powered by the Aquarius liquidity layer.
+      </p>
+      <div class="hero-actions">
+        <a href="https://whalehub-1.gitbook.io/whalehub" class="btn btn-ghost btn-lg"><i data-lucide="book-open"></i> Read the docs <span class="arr">→</span></a>
+      </div>
+    </div>
+    <div>
+      <div class="ncard" data-reveal>
+        <div class="top"><span class="b"><img src="./assets/brand-stellar-icon-white.png" alt="Stellar" /></span><h3>Stellar Network</h3><span class="h">@StellarOrg</span></div>
+        <p>The blockchain. Fast, low-cost, built for financial products. WhaleHub runs natively on Stellar Mainnet.</p>
+      </div>
+      <div class="ncard" data-reveal>
+        <div class="top"><span class="b"><i data-lucide="box"></i></span><h3>Soroban Smart Contracts</h3><span class="h">@whalehubdefi</span></div>
+        <p>The engine. WhaleHub's staking logic, vault compounding, and reward distribution all run on Soroban.</p>
+      </div>
+      <div class="ncard" data-reveal>
+        <div class="top"><span class="b"><img src="./assets/token-aqua-white.png" alt="Aquarius" /></span><h3>Aquarius Liquidity Layer</h3><span class="h">@aqua_token</span></div>
+        <p>The source. ICE governance, epoch voting, reward zones. Where WhaleHub's yield comes from.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLUB BAND -->
+<section class="block" style="padding-top:0">
+  <div class="wrap">
+    <div class="blub" data-reveal>
+      <div>
+        <span class="overline" style="color:var(--teal-300)">The BLUB token</span>
+        <div class="eq" style="margin-top:14px">1 <span class="a">$AQUA</span> In = 1 <span class="a">$BLUB</span> Out</div>
+        <p style="color:var(--teal-300);font-family:var(--font-heading);font-weight:500;margin:8px 0 0">Position Grows Daily</p>
+        <p>$BLUB is your liquid staking token, redeemable 1:1. Hold it, trade it, stake it deeper. Your value is always preserved.</p>
+        <a href="https://app.whalehub.io/" class="btn btn-primary btn-lg"><img class="ic-whale" src="./assets/logo-icon.webp" alt="" width="20" height="20" style="display:block;flex-shrink:0;border-radius:5px"> Start Earning</a>
+      </div>
+      <div class="coinflow">
+        <img class="coin3d coin3d-aqua" src="./assets/tokens-3d/aqua-3d.png" alt="AQUA 3D coin" />
+        <span class="flow" aria-hidden="true">
+          <svg viewBox="0 0 120 20" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="flowg" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#9b5cff"/>
+                <stop offset="1" stop-color="#00cc99"/>
+              </linearGradient>
+            </defs>
+            <line x1="4" y1="10" x2="116" y2="10" stroke="url(#flowg)" stroke-width="2" stroke-linecap="round" opacity=".45"/>
+          </svg>
+          <span class="pulse"></span>
+        </span>
+        <img class="coin3d coin3d-blub" src="./assets/tokens-3d/blub-3d-deep.png" alt="BLUB 3D coin" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHALEY MOMENT -->
+<section class="block" style="padding-top:0">
+  <div class="wrap">
+    <div class="whaley" data-reveal>
+      <img src="./assets/whaley-broadcast.png" alt="Whaley — your WhaleHub broadcaster" />
+      <div class="ov">
+        <h2>Join the pod</h2>
+        <p>Get protocol updates first and talk strategy with other backers — straight from the team.</p>
+        <div class="socials-row">
+          <a class="soc-btn tg" href="https://t.me/whalehubdefi" target="_blank" rel="noopener" aria-label="Telegram"><span class="ic"></span></a>
+          <a class="soc-btn dc" href="https://discord.gg/DmGKxgSdTP" target="_blank" rel="noopener" aria-label="Discord"><span class="ic"></span></a>
+          <a class="soc-btn xt" href="https://x.com/whalehubdefi" target="_blank" rel="noopener" aria-label="X"><span class="ic"></span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="./assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="#how">How it works</a>
+        <a href="#why">Why WhaleHub</a>
+        <a href="#stellar">Stellar-native</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="./about.html">About</a>
+        <a href="./faq.html">FAQ</a>
+        <a href="./contact.html">Contact</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <div class="socials">
+        <a class="dc" href="https://discord.gg/DmGKxgSdTP" target="_blank" rel="noopener" aria-label="Discord"><span class="ic"></span></a>
+        <a class="tg" href="https://t.me/whalehubdefi" target="_blank" rel="noopener" aria-label="Telegram"><span class="ic"></span></a>
+        <a class="xt" href="https://x.com/whalehubdefi" target="_blank" rel="noopener" aria-label="X"><span class="ic"></span></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Lucide icons (design-system house set) -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  const hdr = document.getElementById('hdr');
+  const onScroll = () => hdr.classList.toggle('scrolled', window.scrollY > 16);
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  const drawer = document.getElementById('drawer');
+  document.getElementById('menuBtn').onclick = () => drawer.classList.add('open');
+  document.getElementById('closeBtn').onclick = () => drawer.classList.remove('open');
+  drawer.querySelectorAll('a').forEach(a => a.onclick = () => drawer.classList.remove('open'));
+
+  const reveals = document.querySelectorAll('[data-reveal]');
+  const io = new IntersectionObserver((es) => {
+    es.forEach((e,i) => { if(e.isIntersecting){ e.target.style.transitionDelay = Math.min(i*55,220)+'ms'; e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.12, rootMargin:'0px 0px -8% 0px'});
+  reveals.forEach(el => io.observe(el));
+  // failsafe: never leave content hidden (independent of load/network timing)
+  setTimeout(() => reveals.forEach(el => el.classList.add('in')), 2000);
+
+  const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cIO = new IntersectionObserver((es) => {
+    es.forEach(e => {
+      if(!e.isIntersecting) return;
+      const el = e.target, target = +el.dataset.count;
+      cIO.unobserve(el);
+      if(prefersReduce){ el.textContent = target; return; }
+      const dur = 1400, t0 = performance.now();
+      const tick = (t) => { const p = Math.min((t-t0)/dur,1); el.textContent = Math.round(target*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    });
+  }, {threshold:.6});
+  document.querySelectorAll('[data-count]').forEach(el => cIO.observe(el));
+
+  // Live APY — the dApp's headline "Current APY". A GitHub Action reads the exact value the
+  // dApp renders (app.whalehub.io/stake/aqua) hourly and commits apy.json to the repo. The
+  // site reads that file LIVE from raw GitHub (CORS-enabled, ~5-min CDN cache), so the number
+  // refreshes on its own with no redeploy. Falls back to the deployed copy, then the constant.
+  const LIVE_APY = '50.00';
+  const APY_LIVE_URL = 'https://raw.githubusercontent.com/WhaleHub/whalehub-core/main/website-redesign/apy.json';
+  (function(){
+    const setApy = (v) => ['liveApy','liveApy2'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = v; });
+    const apply = (d) => { if(d && d.apy) { setApy(d.apy); return true; } return false; };
+    setApy(LIVE_APY);
+    fetch(APY_LIVE_URL + '?t=' + Date.now(), {cache:'no-store'})
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if(!apply(d)) throw new Error('no live value'); })
+      .catch(() => fetch('./apy.json', {cache:'no-store'}).then(r => r.ok ? r.json() : null).then(apply).catch(() => {}));
+  })();
+
+  // gentle scroll parallax on the hero art (respects reduced-motion)
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const parallaxEls = document.querySelectorAll('[data-parallax]');
+  if (!reduceMotion && parallaxEls.length) {
+    let ticking = false;
+    const apply = () => {
+      const vh = window.innerHeight;
+      parallaxEls.forEach(el => {
+        const r = el.getBoundingClientRect();
+        const prog = (r.top + r.height / 2 - vh / 2) / vh; // ~ -1 (below) .. 1 (above)
+        el.style.transform = 'translateY(' + (prog * -22).toFixed(1) + 'px)';
+      });
+      ticking = false;
+    };
+    const onP = () => { if (!ticking) { ticking = true; requestAnimationFrame(apply); } };
+    apply();
+    window.addEventListener('scroll', onP, {passive:true});
+    window.addEventListener('resize', onP);
+  }
+
+  // ambient glass bubbles + Blubber-logo hover burst on the hero token stage
+  (function(){
+    const stage = document.querySelector('.coin-stage');
+    if (!stage || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const rnd = (a,b) => a + Math.random()*(b-a);
+    const mkBubble = s => { const b=document.createElement('span'); b.className='bubble'; b.style.width=b.style.height=s+'px'; return b; };
+    // ambient rising stream
+    setInterval(() => {
+      const b = mkBubble(rnd(6,18));
+      b.style.left = rnd(12,88)+'%'; b.style.bottom = '-24px';
+      b.style.setProperty('--dx', rnd(-40,40)+'px');
+      b.style.animation = `rise ${rnd(6,11)}s linear forwards`;
+      stage.appendChild(b); b.addEventListener('animationend', () => b.remove());
+    }, 520);
+    // hover burst — little Blubber logos fanning gently upward
+    const SMOOTH = 'cubic-bezier(.22,1,.36,1)';
+    let cool = false;
+    stage.querySelectorAll('.coin').forEach(coin => {
+      coin.addEventListener('mouseenter', () => {
+        if (cool) return; cool = true; setTimeout(()=>cool=false, 600);
+        const cr = coin.getBoundingClientRect(), sr = stage.getBoundingClientRect();
+        const cx = cr.left - sr.left + cr.width/2, cy = cr.top - sr.top + cr.height/2;
+        for (let i=0;i<10;i++){
+          const p = document.createElement('img');
+          p.className = 'logo-particle'; p.src = './assets/blubber.webp'; p.alt = '';
+          p.style.width = rnd(20,40)+'px'; p.style.left = cx+'px'; p.style.top = cy+'px';
+          const ang = rnd(-Math.PI*0.85, -Math.PI*0.15), dist = rnd(70,175);
+          p.style.setProperty('--bx', Math.cos(ang)*dist+'px');
+          p.style.setProperty('--by', Math.sin(ang)*dist+'px');
+          p.style.setProperty('--rot', rnd(-40,40)+'deg');
+          p.style.animation = `burstLogo ${rnd(1.6,2.4)}s ${SMOOTH} forwards`;
+          p.style.animationDelay = (i*30)+'ms';
+          stage.appendChild(p); p.addEventListener('animationend', () => p.remove());
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<svg width="1440" height="120" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-hidden="true">
+  <defs>
+    <linearGradient id="waveFill" x1="0" y1="0" x2="0" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00A87E" stop-opacity="0.22"></stop>
+      <stop offset="1" stop-color="#00A87E" stop-opacity="0"></stop>
+    </linearGradient>
+  </defs>
+  <path d="M0 48c180-40 360-40 540 0s360 40 540 0 270-28 360-14V120H0V48Z" fill="url(#waveFill)"></path>
+  <path d="M0 64c200-36 380-12 600 12s420 8 600-16c80-10 160-12 240-6" stroke="#00CC99" stroke-opacity="0.35" stroke-width="2" fill="none"></path>
+</svg>

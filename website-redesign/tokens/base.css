@@ -1,0 +1,56 @@
+/* ============================================================
+   WhaleHub — Base layer
+   Lightweight resets + ambient defaults. Scoped to avoid
+   clobbering host apps: only sets body/heading defaults and
+   a couple of helper classes.
+   ============================================================ */
+
+.wh-root,
+body.wh-root {
+  background: var(--bg-app);
+  color: var(--text-body);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.wh-root h1, .wh-root h2, .wh-root h3, .wh-root h4 {
+  font-family: var(--font-heading);
+  color: var(--text-heading);
+  letter-spacing: var(--ls-tight);
+  margin: 0;
+}
+
+/* Ambient ocean background — drop on a full-page wrapper */
+.wh-abyss {
+  background-color: var(--navy-900);
+  background-image: var(--grad-glow), var(--grad-abyss);
+  background-repeat: no-repeat;
+}
+
+/* Eyebrow / overline */
+.wh-overline {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-overline);
+  text-transform: uppercase;
+  color: var(--text-accent);
+}
+
+/* Tabular numerals for balances / prices */
+.wh-num {
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Teal gradient text */
+.wh-grad-text {
+  background: var(--grad-teal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
