@@ -13,7 +13,7 @@ function Vaults() {
           Provide Liquidity. Earn Extra Yield.
         </div>
         <div className="text-[#B1B3B8] text-base font-normal text-center max-w-[720px] mx-auto">
-          Deposit into the AQUA-BLUB pool. Earn swap fees and rewards — auto-compounded daily.
+          Deposit into the AQUA-BLUB pool. Earn swap fees and rewards, auto-compounded daily.
         </div>
       </div>
       <div className="mt-10 max-w-[550px] mx-auto mb-10">

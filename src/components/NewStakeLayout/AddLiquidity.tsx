@@ -971,7 +971,7 @@ function AddLiquidity() {
                     )}
                   />
                 </div>
-                <div className="text-[10px] text-[#6B7280]">Deposit only one token — vault handles the rest</div>
+                <div className="text-[10px] text-[#6B7280]">Deposit only one token, vault handles the rest</div>
               </div>
               <button
                 onClick={() => {

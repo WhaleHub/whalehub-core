@@ -67,7 +67,7 @@ const createWalletConnectKit = () => {
         url: "https://app.whalehub.io",
         projectId: "3dcbb538e6a1ff9db2cdbf0b1c209a9d",
         method: WalletConnectAllowedMethods.SIGN,
-        description: "WhaleHub — stake AQUA, earn BLUB rewards",
+        description: "WhaleHub: stake AQUA, earn BLUB rewards",
         name: "Whalehub",
         icons: ["https://app.whalehub.io/Blub_logo2.svg"],
         network: WALLET_NETWORK,
