@@ -26,10 +26,10 @@ function NewStakelayout() {
     <div className="font-inter mx-auto">
       <div className="md:w-[960px] mx-auto px-4">
         <Wrapper>
-          {/* Page order: Stake → Vaults → Compound. */}
+          {/* Page order: Stake → Compound → Vaults. */}
           <STKAqua />
-          <Vaults />
           <Yield />
+          <Vaults />
         </Wrapper>
       </div>
       
