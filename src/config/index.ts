@@ -1,12 +1,3 @@
-import { PublicKey } from "@solana/web3.js";
-import {
-  FreighterModule,
-  StellarWalletsKit,
-  WalletNetwork,
-  XBULL_ID,
-  allowAllModules,
-  xBullModule,
-} from "@creit.tech/stellar-wallets-kit";
 import { Networks } from "@stellar/stellar-sdk";
 
 // Network configuration
@@ -26,9 +17,8 @@ export const isMainnet =
 
 // Network constants - use these throughout the app for consistency
 export const STELLAR_NETWORK = isMainnet ? Networks.PUBLIC : Networks.TESTNET;
-export const WALLET_NETWORK = isMainnet
-  ? WalletNetwork.PUBLIC
-  : WalletNetwork.TESTNET;
+// v2 kit uses `Networks` (passphrase strings); WALLET_NETWORK is just the passphrase.
+export const WALLET_NETWORK = STELLAR_NETWORK;
 export const MIN_DEPOSIT_AMOUNT = 0.01;
 export const MAX_FEE_TO_DEPOSIT = 0.014;
 export const MINUTE_IN_MS = 60000;

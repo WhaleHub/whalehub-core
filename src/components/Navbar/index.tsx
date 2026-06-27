@@ -29,12 +29,12 @@ import {
   allowAllModules,
   xBullModule,
   StellarWalletsModal,
-} from "@creit.tech/stellar-wallets-kit";
+} from "../../lib/walletKit";
 import {
   WALLET_CONNECT_ID,
   WalletConnectAllowedMethods,
   WalletConnectModule,
-} from "@creit.tech/stellar-wallets-kit/modules/walletconnect.module";
+} from "../../lib/walletKit";
 import clsx from "clsx";
 import { ToastContainer, toast } from "react-toastify";
 import { persistor } from "../../lib/store";

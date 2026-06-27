@@ -11,7 +11,7 @@ import {
   LobstrModule,
   StellarWalletsKit,
   WalletNetwork,
-} from "@creit.tech/stellar-wallets-kit";
+} from "../../lib/walletKit";
 import { toast } from "react-toastify";
 import {
   getAccountInfo,
@@ -45,7 +45,7 @@ import { walletTypes } from "../../enums";
 import { signTransaction } from "@lobstrco/signer-extension-api";
 import DialogC from "./Dialog";
 import { kit } from "../Navbar";
-import { WALLET_CONNECT_ID } from "@creit.tech/stellar-wallets-kit/modules/walletconnect.module";
+import { WALLET_CONNECT_ID } from "../../lib/walletKit";
 import { ensureTrustline } from "../../utils/trustline.helper";
 import { useTokenPrice, formatUsd } from "../../hooks/useTokenPrice";
 

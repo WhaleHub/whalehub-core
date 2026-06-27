@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@coral-xyz/anchor": "^0.29.0",
-    "@creit.tech/stellar-wallets-kit": "^1.6.0",
+    "@creit.tech/stellar-wallets-kit": "2.4.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^2.2.0",

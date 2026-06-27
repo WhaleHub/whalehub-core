@@ -22,7 +22,7 @@ import {
   LobstrModule,
   StellarWalletsKit,
   WalletNetwork,
-} from "@creit.tech/stellar-wallets-kit";
+} from "../../lib/walletKit";
 import {
   getAccountInfo,
   lockingAqua,
@@ -58,7 +58,7 @@ import { walletTypes } from "../../enums";
 import { signTransaction } from "@lobstrco/signer-extension-api";
 import { ensureTrustline } from "../../utils/trustline.helper";
 import { kit as walletConnectKit } from "../Navbar";
-import { WALLET_CONNECT_ID } from "@creit.tech/stellar-wallets-kit/modules/walletconnect.module";
+import { WALLET_CONNECT_ID } from "../../lib/walletKit";
 
 function Restake() {
   const [isBlubStakeExpanded, setIsBlubStakeExpanded] =

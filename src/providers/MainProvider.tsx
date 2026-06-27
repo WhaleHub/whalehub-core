@@ -5,7 +5,7 @@ import {
   FreighterModule,
   StellarWalletsKit,
   WalletNetwork,
-} from "@creit.tech/stellar-wallets-kit";
+} from "../lib/walletKit";
 import { StellarService } from "../services/stellar.service";
 import { useAppDispatch } from "../lib/hooks";
 import {

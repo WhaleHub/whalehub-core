@@ -13,8 +13,8 @@ import {
   LobstrModule,
   StellarWalletsKit,
   WalletNetwork,
-} from "@creit.tech/stellar-wallets-kit";
-import { WALLET_CONNECT_ID } from "@creit.tech/stellar-wallets-kit/modules/walletconnect.module";
+} from "../lib/walletKit";
+import { WALLET_CONNECT_ID } from "../lib/walletKit";
 import { signTransaction } from "@lobstrco/signer-extension-api";
 import { walletTypes } from "../enums";
 import { StellarService } from "../services/stellar.service";

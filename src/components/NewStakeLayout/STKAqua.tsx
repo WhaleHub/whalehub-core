@@ -12,7 +12,7 @@ import {
   LOBSTR_ID,
   StellarWalletsKit,
   WalletNetwork,
-} from "@creit.tech/stellar-wallets-kit";
+} from "../../lib/walletKit";
 import { StellarService } from "../../services/stellar.service";
 import {
   getAccountInfo,
@@ -57,7 +57,7 @@ import {
   WALLET_CONNECT_ID,
   WalletConnectAllowedMethods,
   WalletConnectModule,
-} from "@creit.tech/stellar-wallets-kit/modules/walletconnect.module";
+} from "../../lib/walletKit";
 import { kit } from "../Navbar";
 import { enhancedBalanceRefresh } from "../../utils/helpers";
 import { useTokenPrice, formatUsd } from "../../hooks/useTokenPrice";

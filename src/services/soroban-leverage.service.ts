@@ -20,8 +20,8 @@ import {
   LOBSTR_ID,
   FreighterModule,
   LobstrModule,
-} from "@creit.tech/stellar-wallets-kit";
-import { WALLET_CONNECT_ID } from "@creit.tech/stellar-wallets-kit/modules/walletconnect.module";
+} from "../lib/walletKit";
+import { WALLET_CONNECT_ID } from "../lib/walletKit";
 import { kit as walletConnectKit, reconnectWalletConnect } from "../components/Navbar";
 import { SOROBAN_CONFIG } from "../config/soroban.config";
 import { STELLAR_NETWORK, WALLET_NETWORK } from "../config";

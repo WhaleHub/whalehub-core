@@ -7,8 +7,8 @@ import {
   TransactionData,
   UserRecords,
 } from "../../interfaces";
-import { FREIGHTER_ID, LOBSTR_ID } from "@creit.tech/stellar-wallets-kit";
-import { WALLET_CONNECT_ID } from "@creit.tech/stellar-wallets-kit/modules/walletconnect.module";
+import { FREIGHTER_ID, LOBSTR_ID } from "../walletKit";
+import { WALLET_CONNECT_ID } from "../walletKit";
 
 export interface User {
   userRecords: UserRecords;

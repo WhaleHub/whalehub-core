@@ -22,7 +22,7 @@ import {
   LobstrModule,
   StellarWalletsKit,
   WalletNetwork,
-} from "@creit.tech/stellar-wallets-kit";
+} from "../../lib/walletKit";
 import {
   getAccountInfo,
   lockingAqua,
@@ -49,7 +49,7 @@ import { MIN_DEPOSIT_AMOUNT } from "../../config";
 import { walletTypes } from "../../enums";
 import { signTransaction } from "@lobstrco/signer-extension-api";
 import { kit as walletConnectKit } from "../Navbar";
-import { WALLET_CONNECT_ID } from "@creit.tech/stellar-wallets-kit/modules/walletconnect.module";
+import { WALLET_CONNECT_ID } from "../../lib/walletKit";
 
 const aquaAssetCode = "AQUA";
 const aquaAssetIssuer =
