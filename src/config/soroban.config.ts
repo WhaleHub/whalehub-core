@@ -29,14 +29,36 @@ export const SOROBAN_CONFIG = {
     leverageVault: getOptionalEnv("REACT_APP_LEVERAGE_VAULT_CONTRACT_ID"),
   },
 
-  // Leveraged LP farming stack (Blend on testnet)
+  // Leveraged LP farming stack (Blend on TESTNET).
+  // The /leverage screen always operates on testnet (the leverage service pins its own
+  // testnet RPC + passphrase), so these testnet addresses are baked in as defaults — the
+  // hidden page works on the mainnet prod build without any Netlify env changes. Env vars
+  // still override if set. Deployed 2026-06-27 (identity `core`).
   leverage: {
-    vaultContractId: getOptionalEnv("REACT_APP_LEVERAGE_VAULT_CONTRACT_ID"),
-    blendPoolId: getOptionalEnv("REACT_APP_BLEND_POOL_ID"),
-    ammPoolId: getOptionalEnv("REACT_APP_LEVERAGE_AMM_POOL_ID"),
-    lpToken: getOptionalEnv("REACT_APP_LEVERAGE_LP_TOKEN"),
-    borrowAsset: getOptionalEnv("REACT_APP_LEVERAGE_BORROW_ASSET"),
-    pairToken: getOptionalEnv("REACT_APP_LEVERAGE_PAIR_TOKEN"),
+    vaultContractId: getOptionalEnv(
+      "REACT_APP_LEVERAGE_VAULT_CONTRACT_ID",
+      "CA7U246VSRBIB64O43VXINQQ3E2VEBQH3UWCSZPEEZK6SKKKFWPMUWFL"
+    ),
+    blendPoolId: getOptionalEnv(
+      "REACT_APP_BLEND_POOL_ID",
+      "CDSFGJOQ5RHIPK5522VVCNYNOQH4ECGRTPWZK6QBQV4XXA4IAE5BVTW4"
+    ),
+    ammPoolId: getOptionalEnv(
+      "REACT_APP_LEVERAGE_AMM_POOL_ID",
+      "CDOTVNSYEFF6TWAFSMO3AVSHYEMTMAWTR2E7GXUOOLOCSEC6UV6KJWGC"
+    ),
+    lpToken: getOptionalEnv(
+      "REACT_APP_LEVERAGE_LP_TOKEN",
+      "CDOTVNSYEFF6TWAFSMO3AVSHYEMTMAWTR2E7GXUOOLOCSEC6UV6KJWGC"
+    ),
+    borrowAsset: getOptionalEnv(
+      "REACT_APP_LEVERAGE_BORROW_ASSET",
+      "CA2AYW5YFEI36LY5L7NTDN666KMR7SBCY4MLY6FA6UMAYBF3ZS7PR7WH"
+    ),
+    pairToken: getOptionalEnv(
+      "REACT_APP_LEVERAGE_PAIR_TOKEN",
+      "CAMP6O2ZGMY65DDCJKC7RGZVSOWTFHQDHG6MHD2BRZXBUQBIYNQJMCUJ"
+    ),
     // Enabled only when the vault contract id is configured.
     get enabled(): boolean {
       return Boolean(this.vaultContractId);

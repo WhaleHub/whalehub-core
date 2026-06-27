@@ -24,7 +24,12 @@ import {
 import { WALLET_CONNECT_ID } from "@creit.tech/stellar-wallets-kit/modules/walletconnect.module";
 import { kit as walletConnectKit, reconnectWalletConnect } from "../components/Navbar";
 import { SOROBAN_CONFIG } from "../config/soroban.config";
-import { STELLAR_NETWORK, WALLET_NETWORK } from "../config";
+
+// Leverage farming is TESTNET-ONLY (Blend mainnet pool creation needs a backstop deposit),
+// so this whole service is pinned to testnet regardless of the app's global network — the
+// hidden /leverage screen "switches to testnet" while the rest of the app stays mainnet.
+const TESTNET_RPC = "https://soroban-testnet.stellar.org";
+const TESTNET_PASSPHRASE = "Test SDF Network ; September 2015";
 
 // Stroop scaling — AQUA / XLM / LP share tokens all use 7 decimals.
 const SCALAR_7 = 1e7;
@@ -79,14 +84,10 @@ export class SorobanLeverageService {
   private dummyAccountFetchedAt = 0;
 
   constructor() {
-    const readRpc =
-      process.env.REACT_APP_SOROBAN_RPC_URL ||
-      "https://soroban-testnet.stellar.org";
-    const sendRpc = process.env.REACT_APP_LEVERAGE_RPC_URL || readRpc;
-    this.server = new SorobanRpc.Server(readRpc);
-    this.sendServer = new SorobanRpc.Server(sendRpc);
+    this.server = new SorobanRpc.Server(TESTNET_RPC);
+    this.sendServer = new SorobanRpc.Server(TESTNET_RPC);
     this.vaultId = SOROBAN_CONFIG.leverage.vaultContractId;
-    this.networkPassphrase = STELLAR_NETWORK;
+    this.networkPassphrase = TESTNET_PASSPHRASE;
   }
 
   /** True when the leverage vault contract id is configured. */
@@ -153,7 +154,7 @@ export class SorobanLeverageService {
     const selectedModule = walletName === LOBSTR_ID ? new LobstrModule() : new FreighterModule();
     const walletId = walletName === LOBSTR_ID ? LOBSTR_ID : FREIGHTER_ID;
     const kit = new StellarWalletsKit({
-      network: WALLET_NETWORK as WalletNetwork,
+      network: WalletNetwork.TESTNET,
       selectedWalletId: walletId,
       modules: [selectedModule],
     });
