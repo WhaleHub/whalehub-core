@@ -354,9 +354,15 @@ impl LeverageVault {
 
         let config = Self::load_config(&env)?;
         let vault = env.current_contract_address();
+        let expiration = env.ledger().sequence() + APPROVE_TTL_LEDGERS;
 
-        // 1. Swap half the borrowed asset into the LP pair token.
+        let borrow_tok = token::TokenClient::new(&env, &config.borrow_asset);
+        let pair_tok = token::TokenClient::new(&env, &config.pair_token);
+
+        // 1. Swap half the borrowed asset into the LP pair token. The AMM pulls the
+        //    input via transfer_from, so the vault must approve it first.
         let half = amount / 2;
+        borrow_tok.approve(&vault, &config.amm_pool, &amount, &expiration);
         let amm = AmmPoolClient::new(&env, &config.amm_pool);
         amm.swap(
             &vault,
@@ -367,10 +373,10 @@ impl LeverageVault {
         );
 
         // 2. Deposit both sides (whatever the vault now holds) into the AMM for LP.
-        let borrow_tok = token::TokenClient::new(&env, &config.borrow_asset);
-        let pair_tok = token::TokenClient::new(&env, &config.pair_token);
+        //    Approve the AMM to pull both sides (transfer_from).
         let bal_borrow = borrow_tok.balance(&vault).max(0) as u128;
         let bal_pair = pair_tok.balance(&vault).max(0) as u128;
+        pair_tok.approve(&vault, &config.amm_pool, &(bal_pair as i128), &expiration);
 
         let mut desired: Vec<u128> = vec![&env, 0u128, 0u128];
         desired.set(config.borrow_idx, bal_borrow);

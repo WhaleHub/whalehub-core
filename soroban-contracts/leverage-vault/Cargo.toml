@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "leverage-vault",
+    "test-amm",
 ]
 resolver = "2"
 
