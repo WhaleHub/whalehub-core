@@ -23,6 +23,24 @@ export const SOROBAN_CONFIG = {
     staking: getRequiredEnv("REACT_APP_STAKING_CONTRACT_ID"),
     liquidity: getRequiredEnv("REACT_APP_LIQUIDITY_CONTRACT_ID"),
     rewards: getRequiredEnv("REACT_APP_REWARDS_CONTRACT_ID"),
+    // Leveraged LP farming (Blend flash-loan vault). Testnet-only for now;
+    // optional so the rest of the app loads when unset. See
+    // docs/technical/leveraged-lp-farming.md.
+    leverageVault: getOptionalEnv("REACT_APP_LEVERAGE_VAULT_CONTRACT_ID"),
+  },
+
+  // Leveraged LP farming stack (Blend on testnet)
+  leverage: {
+    vaultContractId: getOptionalEnv("REACT_APP_LEVERAGE_VAULT_CONTRACT_ID"),
+    blendPoolId: getOptionalEnv("REACT_APP_BLEND_POOL_ID"),
+    ammPoolId: getOptionalEnv("REACT_APP_LEVERAGE_AMM_POOL_ID"),
+    lpToken: getOptionalEnv("REACT_APP_LEVERAGE_LP_TOKEN"),
+    borrowAsset: getOptionalEnv("REACT_APP_LEVERAGE_BORROW_ASSET"),
+    pairToken: getOptionalEnv("REACT_APP_LEVERAGE_PAIR_TOKEN"),
+    // Enabled only when the vault contract id is configured.
+    get enabled(): boolean {
+      return Boolean(this.vaultContractId);
+    },
   },
 
   // Network Configuration

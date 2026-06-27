@@ -3,6 +3,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ToastContainer } from "react-toastify";
 import AppLayout from "./components/AppLayout";
 import Stake from "./pages/Stake";
+import Leverage from "./pages/Leverage";
 import Terms from "./pages/Terms";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import FAQ from "./pages/FAQ";
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/" element={<AppLayout />}>
                       <Route path="/" element={<Navigate to="/stake/aqua" />} />
                       <Route path="/stake/:tokenId" element={<Stake />} />
+                      <Route path="/leverage" element={<Leverage />} />
                       <Route path="/vote" element={<Vote />} />
                       <Route path="/terms" element={<Terms />} />
                       <Route path="/privacy" element={<PrivacyPolicy />} />
