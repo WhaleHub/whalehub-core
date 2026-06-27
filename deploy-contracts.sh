@@ -39,7 +39,6 @@ print_error() {
 NETWORK="mainnet"
 SOROBAN_RPC_URL="https://soroban-rpc.mainnet.stellar.network"
 SOROBAN_NETWORK_PASSPHRASE="Public Global Stellar Network ; September 2015"
-
 # Deployment account (the secret key should be set as an environment variable)
 # Set this before running: export DEPLOYER_SECRET_KEY="S..."
 if [ -z "$DEPLOYER_SECRET_KEY" ]; then
@@ -50,26 +49,26 @@ fi
 
 # Admin address (derived from deployer secret key)
 # This will be set automatically after we derive it from the secret key
-ADMIN_ADDRESS=""
+ADMIN_ADDRESS="GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO"
 
 # Contract addresses - UPDATE THESE WITH YOUR ACTUAL TOKEN/CONTRACT ADDRESSES
 # AQUA token address on mainnet
-AQUA_TOKEN_ADDRESS="CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
+AQUA_TOKEN_ADDRESS="CAUIKL3IYGMERDRUN6YSCLWVAKIFG5Q4YJHUKM4S4NJZQIA3BAS6OJPK"
 
 # BLUB token address on mainnet  
-BLUB_TOKEN_ADDRESS="CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
+BLUB_TOKEN_ADDRESS="CDSSDKJZACMXIE4C25TAVLWUQWLRNXSC2TLOFTTRSUAOZOMU5PXGZYEX"
 
 # Treasury address - UPDATE THIS
-TREASURY_ADDRESS="GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+TREASURY_ADDRESS="GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO"
 
 # Liquidity contract address (for liquidity pools) - UPDATE THIS
-LIQUIDITY_CONTRACT_ADDRESS="CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
+LIQUIDITY_CONTRACT_ADDRESS="CBL7MWLEZ4SU6YC5XL4T3WXKNKNO2UQVDVONOQSW5VVCYFWORROHY4AM"
 
-# ICE contract address (governance token) - UPDATE THIS
-ICE_CONTRACT_ADDRESS="CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
+# # ICE contract address (governance token) - UPDATE THIS
+# ICE_CONTRACT_ADDRESS="CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
 
 # Reward token address (typically same as AQUA or BLUB) - UPDATE THIS
-REWARD_TOKEN_ADDRESS="CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
+REWARD_TOKEN_ADDRESS="CDSSDKJZACMXIE4C25TAVLWUQWLRNXSC2TLOFTTRSUAOZOMU5PXGZYEX"
 
 ################################################################################
 # Rewards Contract Configuration
@@ -464,3 +463,143 @@ soroban keys rm "$DEPLOYER_IDENTITY" 2>/dev/null || true
 
 print_success "Deployment complete! 🎉"
 
+
+
+
+
+stellar contract invoke \ 
+  --id CAIPTIO4RN5SVE3M5IKD3ME4IPH5TOHIUNXRI7NCLYRHI3SXQLJRYJU5 \ 
+  --source whalehub-main \ 
+  --network mainnet \ 
+  -- \ 
+  initialize \ 
+  --admin GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO \ 
+  --treasury_address GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO \ 
+  --aqua_token CAUIKL3IYGMERDRUN6YSCLWVAKIFG5Q4YJHUKM4S4NJZQIA3BAS6OJPK \ 
+  --blub_token CDSSDKJZACMXIE4C25TAVLWUQWLRNXSC2TLOFTTRSUAOZOMU5PXGZYEX \ 
+  --liquidity_contract CBL7MWLEZ4SU6YC5XL4T3WXKNKNO2UQVDVONOQSW5VVCYFWORROHY4AM \ 
+  --ice_contract CBDNVN44VHKT3HZG45U6S7TC3FYUI2PM7IS6TB4VRFQLBRXFJSG2GQTA
+
+stellar contract invoke \ 
+  --id CBDNVN44VHKT3HZG45U6S7TC3FYUI2PM7IS6TB4VRFQLBRXFJSG2GQTA \ 
+  --source whalehub-main \ 
+  --network mainnet \ 
+  -- \ 
+  initialize \ 
+  --admin GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO \ 
+  --staking_contract CAIPTIO4RN5SVE3M5IKD3ME4IPH5TOHIUNXRI7NCLYRHI3SXQLJRYJU5 \ 
+  --treasury_address GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO \ 
+  --base_multiplier 10000 \ 
+  --max_time_multiplier 20000
+
+  stellar contract invoke \ 
+  --id CDITRAKZO7ZMORO4HJ267MSV5JBCMYM3J3P2J7DU4QDWIMUWUJBC3ZDS \ 
+  --source  whalehub-main \ 
+  --network mainnet \ 
+  -- \ 
+  initialize \ 
+  --admin GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO \ 
+  --staking_contract CAIPTIO4RN5SVE3M5IKD3ME4IPH5TOHIUNXRI7NCLYRHI3SXQLJRYJU5 \ 
+  --reward_token CDSSDKJZACMXIE4C25TAVLWUQWLRNXSC2TLOFTTRSUAOZOMU5PXGZYEX \ 
+  --treasury_address GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO \ 
+  --fee 10000000 \ 
+  --min_claim_amount 1000000 \ 
+  --max_claim_per_tx 1000000000 \ 
+  --claim_cooldown 86400 \ 
+  --treasury_fee_rate 500
+
+
+SBJJSC24J2TU73IADP64LJ2MQYXGWFHJHM74BK6WOV3ZMSBPHFJERAW6
+
+
+stellar contract invoke --id CDSSDKJZACMXIE4C25TAVLWUQWLRNXSC2TLOFTTRSUAOZOMU5PXGZYEX \                                           
+    --source SBJJSC24J2TU73IADP64LJ2MQYXGWFHJHM74BK6WOV3ZMSBPHFJERAW6 \                 
+    --network mainnet \                                 
+    -- set_admin \                                      
+    --new_admin GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO
+
+stellar contract invoke --id CDSSDKJZACMXIE4C25TAVLWUQWLRNXSC2TLOFTTRSUAOZOMU5PXGZYEX --source whalehub-main --network mainnet -- set_admin --new_admin  GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO
+
+
+stellar contract invoke --id <previous staking contract> --source <previous staking contract admin secret key> --network mainnet -- update_sac_admin --admin <previous staking contract admin address> --new_admin <new updated staking contract>
+
+soroban contract deploy --wasm $WASM_OUTPUT_DIR/whalehub_staking.wasm --source "deployer_mainnet" --network "mainnet"
+
+soroban contract deploy --wasm $WASM_OUTPUT_DIR/whalehub_staking.wasm --source "deployer_mainnet" --network "mainnet"
+
+
+soroban contract deploy --wasm "whalehub_staking.wasm" --source "whalehub-main" --network "mainnet"
+soroban contract deploy --wasm "whalehub_rewards.wasm" --source "whalehub-main" --network "mainnet"
+
+Staking = CBGYTUQDPZAKOM2YULOSBLQB4XPNSUGD6GBEK75EWEOAXLAVOD7C4HGO
+Rewards = CC67FMPFQNGSFTXK53VUJ5FUTYQC6XVJPFZJCVTP4EGH7ZCQBNFOXQ5P
+
+
+  stellar contract invoke --id CAIPTIO4RN5SVE3M5IKD3ME4IPH5TOHIUNXRI7NCLYRHI3SXQLJRYJU5 -- upgrade \
+    --admin GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO \
+    --new_wasm_hash 9e15f227bda12887d00451a1fa856878c9bf9b8887125fe5bd33ee53245f506c
+
+
+
+stellar contract invoke \
+    --id CBGYTUQDPZAKOM2YULOSBLQB4XPNSUGD6GBEK75EWEOAXLAVOD7C4HGO \
+    --source whalehub-main \
+    --network mainnet \
+    -- \
+    initialize \
+    --admin GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO \
+    --treasury_address GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO\
+    --aqua_token CAUIKL3IYGMERDRUN6YSCLWVAKIFG5Q4YJHUKM4S4NJZQIA3BAS6OJPK \
+    --blub_token CCZ6P3MF2DX5R2NTRLFUAYFTTM3AR5XMIAB7XICJYTYS72XPV6C2OZCR \
+    --liquidity_contract CBL7MWLEZ4SU6YC5XL4T3WXKNKNO2UQVDVONOQSW5VVCYFWORROHY4AM \
+    --ice_tokens '{"ice_token":"CARCKZ66U4AI2545NS4RAF47QVEXG3PRRCDA52H4Q3FDRAGSMP4BRU3W","govern_ice_token":"CCTE3UCZZ6RCG3IN7HGFQ6TVJS5UDSZL3BUAVC3OQVWXRLTPFGOLPSNV","upvote_ice_token":"CDSOP5Y4ZOWA7UNV76KB7QM6IZHX6UAMGYQ5THT35AEWRXF5QTKERG4R","downvote_ice_token":"CDZOOVFGMCNQNGGBYJ5BEMDXVOBE7QURYBBMXVXYXDEWIFK3BJ345QHX"}' \
+    --vault_treasury GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO \
+    --vault_fee_bps 100
+
+
+
+    stellar contract invoke \
+    --id CC67FMPFQNGSFTXK53VUJ5FUTYQC6XVJPFZJCVTP4EGH7ZCQBNFOXQ5P \
+    --source whalehub-main \
+    --network mainnet \
+    -- \
+    initialize \
+    --admin GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO \
+    --staking_contract CBGYTUQDPZAKOM2YULOSBLQB4XPNSUGD6GBEK75EWEOAXLAVOD7C4HGO \
+    --reward_token CAUIKL3IYGMERDRUN6YSCLWVAKIFG5Q4YJHUKM4S4NJZQIA3BAS6OJPK \
+    --treasury_address GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO \
+    --min_claim_amount 10000000 \
+    --max_claim_per_tx 100000000000 \
+    --claim_cooldown 86400 \
+    --treasury_fee_rate 500
+
+
+    stellar contract invoke --id CAIPTIO4RN5SVE3M5IKD3ME4IPH5TOHIUNXRI7NCLYRHI3SXQLJRYJU5 --source whalehub-main --network mainnet -- update_sac_admin --admin GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO --new_admin CBGYTUQDPZAKOM2YULOSBLQB4XPNSUGD6GBEK75EWEOAXLAVOD7C4HGO
+
+
+   stellar contract install \
+    --source whalehub-main \
+    --network mainnet \
+    --wasm whalehub_staking.wasm
+
+
+    a7fc77a01139a52eb4ed209b33222ffddada8833495fd802029d050da4f47fe0
+
+    stellar contract invoke \
+    --id CBGYTUQDPZAKOM2YULOSBLQB4XPNSUGD6GBEK75EWEOAXLAVOD7C4HGO \
+    --source whalehub-main \
+    --network mainnet \
+    -- \
+    upgrade \
+    --admin GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO \
+    --new_wasm_hash cac93e1c0bb350bf728945fb0d979357ca800c8b0b421c0253ed3167983f1a2d
+
+
+    stellar contract invoke \
+    --id CBGYTUQDPZAKOM2YULOSBLQB4XPNSUGD6GBEK75EWEOAXLAVOD7C4HGO \
+    --source whalehub-main \
+    --network mainnet \
+    -- \
+    update_blub_token \
+    --admin GBLH7JNNONQ7DZPL4J2FQOUWOKUKTCVRNYVPJLJBWHWCLYJHLVVGULGO \
+    --new_blub_token CDSSDKJZACMXIE4C25TAVLWUQWLRNXSC2TLOFTTRSUAOZOMU5PXGZYEX

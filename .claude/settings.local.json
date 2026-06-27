@@ -46,7 +46,23 @@
       "Read(//Users/viktorvostrikov/Desktop/whalehub/whalehub-server/src/**)",
       "WebFetch(domain:github.com)",
       "Bash(npm run *)",
-      "Bash(awk -F: '$1>=990 && $1<=1095')"
+      "Bash(awk -F: '$1>=990 && $1<=1095')",
+      "Bash(git commit -q -m ' *)",
+      "WebFetch(domain:docs.blend.capital)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(rm -rf aqua-amm)",
+      "Bash(gh repo *)",
+      "Bash(cargo update *)",
+      "Bash(cargo test *)",
+      "Bash(git pull *)",
+      "Bash(stellar --version)",
+      "Bash(stellar network *)",
+      "Read(//Users/viktorvostrikov/.config/stellar/**)",
+      "Bash(npm view *)",
+      "Bash(awk '{print $6, $7, $8, $9}')",
+      "Bash(read f *)",
+      "Bash(GENERATE_SOURCEMAP=false yarn build)",
+      "Bash(yarn install *)"
     ]
   }
 }
