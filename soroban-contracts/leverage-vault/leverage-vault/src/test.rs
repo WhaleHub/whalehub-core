@@ -16,6 +16,7 @@ fn test_initialize_and_config() {
     let client = LeverageVaultClient::new(&env, &contract_id);
 
     let admin = new_addr(&env);
+    let zapper = new_addr(&env);
     let blend_pool = new_addr(&env);
     let amm_pool = new_addr(&env);
     let lp_token = new_addr(&env);
@@ -24,6 +25,7 @@ fn test_initialize_and_config() {
 
     client.initialize(
         &admin,
+        &zapper,
         &blend_pool,
         &amm_pool,
         &lp_token,
@@ -62,10 +64,10 @@ fn test_double_initialize_fails() {
 
     let a = new_addr(&env);
     client.initialize(
-        &a, &a, &a, &a, &a, &a, &0u32, &1u32, &30_000u32,
+        &a, &a, &a, &a, &a, &a, &a, &0u32, &1u32, &30_000u32,
     );
     // second call must panic (AlreadyInitialized)
     client.initialize(
-        &a, &a, &a, &a, &a, &a, &0u32, &1u32, &30_000u32,
+        &a, &a, &a, &a, &a, &a, &a, &0u32, &1u32, &30_000u32,
     );
 }

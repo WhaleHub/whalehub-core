@@ -76,43 +76,15 @@ pub trait BlendPoolTrait {
 }
 
 // ============================================================================
-// AMM (Aquarius-style pool) interface
+// Zapper (separate flash-loan receiver) interface
 // ============================================================================
 //
-// `deposit`, `withdraw`, `get_reserves`, `get_total_shares` are verified against the
-// pool-level interface already used by the staking contract. `swap` is the pool-level
-// signature and MUST be re-verified against the concrete testnet AMM chosen at deploy
-// time (Aquarius LP pools are mainnet-only). See the design doc's "AMM caveat".
+// The vault stages zap params on the zapper right before calling flash_loan; Blend then
+// invokes the zapper's exec_op (a different contract, so no re-entrancy). See the zapper crate.
 
-#[contractclient(name = "AmmPoolClient")]
-pub trait AmmPoolTrait {
-    /// desired_amounts ordered by the pool's token index. Returns (amounts_used, shares).
-    fn deposit(
-        env: Env,
-        user: Address,
-        desired_amounts: Vec<u128>,
-        min_shares: u128,
-    ) -> (Vec<u128>, u128);
-
-    /// Burn `share_amount` LP, receive underlying. Returns amounts withdrawn.
-    fn withdraw(
-        env: Env,
-        user: Address,
-        share_amount: u128,
-        min_amounts: Vec<u128>,
-    ) -> Vec<u128>;
-
-    /// Swap `in_amount` of token at `in_idx` for token at `out_idx`. Returns out amount.
-    fn swap(
-        env: Env,
-        user: Address,
-        in_idx: u32,
-        out_idx: u32,
-        in_amount: u128,
-        out_min: u128,
-    ) -> u128;
-
-    fn get_reserves(env: Env) -> Vec<u128>;
+#[contractclient(name = "ZapperClient")]
+pub trait ZapperTrait {
+    fn prepare(env: Env, borrow_amount: i128, claim_lp: i128, min_pair_out: i128);
 }
 
 // ============================================================================
@@ -124,6 +96,9 @@ pub trait AmmPoolTrait {
 pub struct Config {
     /// Admin (config/upgrades, dust sweep).
     pub admin: Address,
+    /// Separate flash-loan receiver/zapper contract (avoids Soroban re-entrancy — the vault
+    /// is on the stack during flash_loan, so the receiver must be a different contract).
+    pub zapper: Address,
     /// Blend V2 pool that holds the leveraged position.
     pub blend_pool: Address,
     /// Aquarius-style AMM pool that mints the LP collateral.
@@ -152,26 +127,11 @@ pub struct UserPosition {
     pub debt: i128,
 }
 
-/// Transient state passed from `open_position` into the `exec_op` callback.
-#[contracttype]
-#[derive(Clone)]
-pub struct FlashState {
-    pub borrow_asset: Address,
-    pub borrow_amount: i128,
-    /// Minimum LP the zap must mint (== the SupplyCollateral leveraged amount claimed).
-    pub claim_lp: i128,
-    /// Total LP the pool will pull (initial user collateral + claim_lp). Approve target.
-    pub total_supply_lp: i128,
-    /// Slippage floor for the half-swap into pair_token.
-    pub min_pair_out: i128,
-}
-
 #[contracttype]
 #[derive(Clone)]
 pub enum DataKey {
     Config,
     Position(Address),
-    Flash,
     TotalCollateralLp,
     TotalDebt,
 }
@@ -206,6 +166,7 @@ impl LeverageVault {
     pub fn initialize(
         env: Env,
         admin: Address,
+        zapper: Address,
         blend_pool: Address,
         amm_pool: Address,
         lp_token: Address,
@@ -221,6 +182,7 @@ impl LeverageVault {
         admin.require_auth();
         let config = Config {
             admin,
+            zapper,
             blend_pool,
             amm_pool,
             lp_token,
@@ -274,28 +236,28 @@ impl LeverageVault {
             }
         }
 
+        let vault = env.current_contract_address();
         let lp = token::TokenClient::new(&env, &config.lp_token);
 
         // 1. Pull the user's up-front LP collateral into the vault.
         if collateral_lp_amount > 0 {
-            lp.transfer(&user, &env.current_contract_address(), &collateral_lp_amount);
+            lp.transfer(&user, &vault, &collateral_lp_amount);
         }
 
         let total_supply_lp = collateral_lp_amount + min_lp_out;
 
-        // 2. Stash transient state for the exec_op callback.
-        let flash_state = FlashState {
-            borrow_asset: config.borrow_asset.clone(),
-            borrow_amount,
-            claim_lp: min_lp_out,
-            total_supply_lp,
-            min_pair_out,
-        };
-        env.storage()
-            .temporary()
-            .set(&DataKey::Flash, &flash_state);
+        // 2. Pre-approve the Blend pool to pull the full LP collateral. After the zap the
+        //    vault holds `collateral_lp_amount` (from the user) + the LP the zapper mints and
+        //    transfers back; the pool's SupplyCollateral pulls `total_supply_lp` from here.
+        let expiration = env.ledger().sequence() + APPROVE_TTL_LEDGERS;
+        lp.approve(&vault, &config.blend_pool, &total_supply_lp, &expiration);
 
-        // 3. Flash-borrow, zap (in exec_op), then supply the full LP as collateral.
+        // 3. Stage the zap params on the (separate) zapper, then flash-loan with the zapper
+        //    as the receiver — a different contract, so Blend's exec_op callback does not
+        //    re-enter the vault.
+        let zapper = ZapperClient::new(&env, &config.zapper);
+        zapper.prepare(&borrow_amount, &min_lp_out, &min_pair_out);
+
         let requests = vec![
             &env,
             Request {
@@ -306,9 +268,9 @@ impl LeverageVault {
         ];
         let pool = BlendPoolClient::new(&env, &config.blend_pool);
         pool.flash_loan(
-            &env.current_contract_address(),
+            &vault,
             &FlashLoan {
-                contract: env.current_contract_address(),
+                contract: config.zapper.clone(),
                 asset: config.borrow_asset.clone(),
                 amount: borrow_amount,
             },
@@ -323,75 +285,6 @@ impl LeverageVault {
         Self::add_total_collateral(&env, total_supply_lp);
         Self::add_total_debt(&env, borrow_amount);
 
-        env.storage().temporary().remove(&DataKey::Flash);
-        Ok(())
-    }
-
-    /// Blend flash-loan callback. Invoked by the Blend pool after it transfers the
-    /// borrowed asset to this contract. Zaps the borrow into LP and approves the pool
-    /// to pull the resulting collateral.
-    ///
-    /// `caller` is the position owner (this vault). Guarded by the transient flash state
-    /// so it cannot be invoked outside an active `open_position`.
-    pub fn exec_op(
-        env: Env,
-        _caller: Address,
-        token_addr: Address,
-        amount: i128,
-        _fee: i128,
-    ) -> Result<(), Error> {
-        let fs: FlashState = env
-            .storage()
-            .temporary()
-            .get(&DataKey::Flash)
-            .ok_or(Error::NoActiveFlashLoan)?;
-        // Consume immediately: defends against re-entrant / external calls.
-        env.storage().temporary().remove(&DataKey::Flash);
-
-        if token_addr != fs.borrow_asset || amount != fs.borrow_amount {
-            return Err(Error::FlashAssetMismatch);
-        }
-
-        let config = Self::load_config(&env)?;
-        let vault = env.current_contract_address();
-        let expiration = env.ledger().sequence() + APPROVE_TTL_LEDGERS;
-
-        let borrow_tok = token::TokenClient::new(&env, &config.borrow_asset);
-        let pair_tok = token::TokenClient::new(&env, &config.pair_token);
-
-        // 1. Swap half the borrowed asset into the LP pair token. The AMM pulls the
-        //    input via transfer_from, so the vault must approve it first.
-        let half = amount / 2;
-        borrow_tok.approve(&vault, &config.amm_pool, &amount, &expiration);
-        let amm = AmmPoolClient::new(&env, &config.amm_pool);
-        amm.swap(
-            &vault,
-            &config.borrow_idx,
-            &config.pair_idx,
-            &(half as u128),
-            &(fs.min_pair_out as u128),
-        );
-
-        // 2. Deposit both sides (whatever the vault now holds) into the AMM for LP.
-        //    Approve the AMM to pull both sides (transfer_from).
-        let bal_borrow = borrow_tok.balance(&vault).max(0) as u128;
-        let bal_pair = pair_tok.balance(&vault).max(0) as u128;
-        pair_tok.approve(&vault, &config.amm_pool, &(bal_pair as i128), &expiration);
-
-        let mut desired: Vec<u128> = vec![&env, 0u128, 0u128];
-        desired.set(config.borrow_idx, bal_borrow);
-        desired.set(config.pair_idx, bal_pair);
-        amm.deposit(&vault, &desired, &(fs.claim_lp as u128));
-
-        // 3. Approve the Blend pool to pull the full LP collateral (transfer_from).
-        let lp = token::TokenClient::new(&env, &config.lp_token);
-        let expiration = env.ledger().sequence() + APPROVE_TTL_LEDGERS;
-        lp.approve(
-            &vault,
-            &config.blend_pool,
-            &fs.total_supply_lp,
-            &expiration,
-        );
         Ok(())
     }
 

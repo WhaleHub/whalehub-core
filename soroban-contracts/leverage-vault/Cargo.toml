@@ -2,6 +2,7 @@
 members = [
     "leverage-vault",
     "test-amm",
+    "zapper",
 ]
 resolver = "2"
 
