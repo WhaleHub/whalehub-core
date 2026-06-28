@@ -17,8 +17,8 @@
 //!   5. Blend pulls the total LP from the vault (pre-approved) to satisfy SupplyCollateral.
 
 use soroban_sdk::{
-    contract, contractclient, contracterror, contractimpl, contracttype, token, vec, Address, Env,
-    Vec,
+    contract, contractclient, contracterror, contractimpl, contracttype, token, vec, Address,
+    BytesN, Env, Vec,
 };
 
 #[contractclient(name = "AmmPoolClient")]
@@ -200,6 +200,14 @@ impl Zapper {
 
     pub fn get_config(env: Env) -> Result<Config, Error> {
         Self::load_config(&env)
+    }
+
+    /// Upgrade the contract wasm in place (admin only).
+    pub fn upgrade(env: Env, new_wasm_hash: BytesN<32>) -> Result<(), Error> {
+        let config = Self::load_config(&env)?;
+        config.admin.require_auth();
+        env.deployer().update_current_contract_wasm(new_wasm_hash);
+        Ok(())
     }
 
     fn load_config(env: &Env) -> Result<Config, Error> {

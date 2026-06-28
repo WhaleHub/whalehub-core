@@ -15,8 +15,9 @@
 //! automatically, with no per-event hook and no desync. See docs/technical/leveraged-lp-farming.md.
 
 use soroban_sdk::{
-    contract, contractclient, contracterror, contractimpl, contracttype, token, vec, Address, Env,
-    Map, Vec,
+    auth::{ContractContext, InvokerContractAuthEntry, SubContractInvocation},
+    contract, contractclient, contracterror, contractimpl, contracttype, token, vec, Address,
+    BytesN, Env, IntoVal, Map, Symbol, Vec,
 };
 
 // ============================================================================
@@ -327,10 +328,9 @@ impl LeverageVault {
 
         let mut requests: Vec<Request> = vec![&env];
         if repay_amount > 0 {
-            let borrow_tok = token::TokenClient::new(&env, &config.borrow_asset);
-            borrow_tok.transfer(&user, &vault, &repay_amount);
-            let expiration = env.ledger().sequence() + APPROVE_TTL_LEDGERS;
-            borrow_tok.approve(&vault, &config.blend_pool, &repay_amount, &expiration);
+            // Pull the repay funds from the user into the vault (user authorizes via signing).
+            token::TokenClient::new(&env, &config.borrow_asset)
+                .transfer(&user, &vault, &repay_amount);
             requests.push_back(Request {
                 request_type: RT_REPAY,
                 address: config.borrow_asset.clone(),
@@ -343,6 +343,22 @@ impl LeverageVault {
                 address: config.lp_token.clone(),
                 amount: withdraw_lp_amount,
             });
+        }
+
+        // Non-flash `submit` pulls the Repay tokens via `transfer(spender=vault → pool)`,
+        // which requires the vault's authorization. Pre-authorize that sub-invocation
+        // (the WithdrawCollateral pays out FROM the pool, so it needs no vault auth).
+        if repay_amount > 0 {
+            let mut auth: Vec<InvokerContractAuthEntry> = vec![&env];
+            auth.push_back(InvokerContractAuthEntry::Contract(SubContractInvocation {
+                context: ContractContext {
+                    contract: config.borrow_asset.clone(),
+                    fn_name: Symbol::new(&env, "transfer"),
+                    args: (vault.clone(), config.blend_pool.clone(), repay_amount).into_val(&env),
+                },
+                sub_invocations: vec![&env],
+            }));
+            env.authorize_as_current_contract(auth);
         }
 
         let pool = BlendPoolClient::new(&env, &config.blend_pool);
@@ -456,6 +472,14 @@ impl LeverageVault {
         config.admin.require_auth();
         config.admin = new_admin;
         env.storage().instance().set(&DataKey::Config, &config);
+        Ok(())
+    }
+
+    /// Upgrade the contract wasm in place (keeps the contract address + state stable).
+    pub fn upgrade(env: Env, new_wasm_hash: BytesN<32>) -> Result<(), Error> {
+        let config = Self::load_config(&env)?;
+        config.admin.require_auth();
+        env.deployer().update_current_contract_wasm(new_wasm_hash);
         Ok(())
     }
 
