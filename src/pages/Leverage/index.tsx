@@ -193,6 +193,69 @@ export default function Leverage() {
         </p>
       </header>
 
+      {/* ── Explainers ───────────────────────────────────────────────── */}
+      <section className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-3">
+        <Card title="How it works">
+          <ol className="space-y-2 text-sm text-white/70">
+            <li><span className="text-white/40">1.</span> You supply an LP token as collateral (your equity).</li>
+            <li><span className="text-white/40">2.</span> The vault <span className="text-white/90">flash-borrows</span> a stable asset against it.</li>
+            <li><span className="text-white/40">3.</span> It <span className="text-white/90">zaps</span> the borrow into more LP (swap half → add liquidity).</li>
+            <li><span className="text-white/40">4.</span> All the LP is supplied as collateral; the borrow stays as debt.</li>
+            <li><span className="text-white/40">5.</span> Result: an <span className="text-white/90">N× LP position</span> — all in one atomic transaction.</li>
+          </ol>
+          <p className="mt-3 text-[11px] leading-relaxed text-white/35">
+            Example: deposit 1,000 of LP, borrow 2,000 → you control 3,000 of LP (3× exposure)
+            with 2,000 of debt.
+          </p>
+        </Card>
+
+        <Card title="Where the yield comes from">
+          <p className="text-sm text-white/70">
+            Leverage doesn't create yield — it <span className="text-white/90">multiplies</span> the
+            LP's underlying yield, which comes from:
+          </p>
+          <ul className="mt-2 space-y-1 text-sm text-white/70">
+            <li>• AMM <span className="text-white/90">trading fees</span></li>
+            <li>• <span className="text-white/90">Liquidity-mining incentives</span> (AQUA / BLUB rewards, bribes)</li>
+          </ul>
+          <div className="mt-3 rounded-lg border border-white/10 bg-black/30 p-3 font-mono text-[11px] text-emerald-300/90">
+            Net APY = L · LP_APY − (L−1) · Borrow_APR
+          </div>
+          <p className="mt-2 text-[11px] leading-relaxed text-white/35">
+            At 3× with a 20% LP and 5% borrow: 3·20 − 2·5 = <span className="text-emerald-300/80">~50% APY</span>.
+            Profitable only while <span className="text-white/60">LP yield &gt; borrow cost</span>.
+          </p>
+        </Card>
+
+        <Card title="Risks">
+          <ul className="space-y-2 text-sm text-white/70">
+            <li>
+              <span className="text-amber-300/90">Liquidation</span> — if the LP value falls vs your
+              debt, Blend liquidates your collateral. Leverage shrinks the safety buffer.
+            </li>
+            <li>
+              <span className="text-amber-300/90">Negative carry</span> — if the borrow rate rises
+              above the LP yield, a leveraged position loses money.
+            </li>
+            <li>
+              <span className="text-amber-300/90">Impermanent loss &amp; slippage</span> — amplified by
+              leverage; the zap swaps cost slippage on entry/exit.
+            </li>
+          </ul>
+          <p className="mt-3 text-[11px] leading-relaxed text-white/35">
+            Watch your health factor and keep leverage conservative. Never use funds you can't
+            afford to have liquidated.
+          </p>
+        </Card>
+      </section>
+
+      <div className="mb-8 rounded-xl border border-sky-500/20 bg-sky-500/[0.06] p-4 text-xs leading-relaxed text-sky-200/80">
+        <span className="font-semibold text-sky-200">{isMainnet ? "Beta." : "Testnet."}</span>{" "}
+        {isMainnet
+          ? "This is an early release — start small and verify your health factor before sizing up."
+          : "This screen operates on Stellar testnet (separate from the rest of the app). Switch your wallet to testnet to interact. Yields here are simulated — the flow is real, but there are no live incentives on testnet."}
+      </div>
+
       {!configured ? (
         <div className="rounded-2xl border border-amber-500/20 bg-amber-500/[0.06] p-6 text-sm text-amber-200/90">
           <p className="font-semibold">Feature not yet configured.</p>
