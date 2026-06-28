@@ -35,33 +35,54 @@ export const SOROBAN_CONFIG = {
   // hidden page works on the mainnet prod build without any Netlify env changes. Env vars
   // still override if set. Deployed 2026-06-27 (identity `core`).
   leverage: {
+    // Each market is a separate leverage vault (LP collateral + borrow asset) on Blend.
+    // All on testnet; the /leverage service pins testnet RPC regardless of app network.
+    markets: [
+      {
+        id: "aqua-usdc",
+        label: "AQUA / USDC",
+        // pair tokens shown in the UI (for icons + labels)
+        tokenA: "AQUA",
+        tokenB: "USDC",
+        borrowSymbol: "USDC",
+        status: "live" as "live" | "activating",
+        note: "",
+        vault: getOptionalEnv(
+          "REACT_APP_LEVERAGE_VAULT_CONTRACT_ID",
+          "CC2JF2VP3LVNHYI7URF3R376FCVFSAI4HNVZ2WPZZHBJDAJSWX2X2PFH"
+        ),
+        zapper: "CCUDFI62LH2IMHGSRBLLF7SIKRPDQ3LZPA4TYFBFS5ENRYWZOHOKSHT2",
+        blendPool: "CDSFGJOQ5RHIPK5522VVCNYNOQH4ECGRTPWZK6QBQV4XXA4IAE5BVTW4",
+        amm: "CDOTVNSYEFF6TWAFSMO3AVSHYEMTMAWTR2E7GXUOOLOCSEC6UV6KJWGC",
+        lpToken: "CDOTVNSYEFF6TWAFSMO3AVSHYEMTMAWTR2E7GXUOOLOCSEC6UV6KJWGC",
+        borrowAsset: "CA2AYW5YFEI36LY5L7NTDN666KMR7SBCY4MLY6FA6UMAYBF3ZS7PR7WH",
+        pairToken: "CAMP6O2ZGMY65DDCJKC7RGZVSOWTFHQDHG6MHD2BRZXBUQBIYNQJMCUJ",
+      },
+      {
+        id: "xlm-usdc",
+        label: "XLM / USDC",
+        tokenA: "XLM",
+        tokenB: "USDC",
+        borrowSymbol: "USDC",
+        // Blend reserve for this LP is queued; activates ~2026-07-06 (1-week timelock).
+        status: "activating" as "live" | "activating",
+        note: "Blend reserve unlocks ~Jul 6, 2026",
+        vault: "CB7PYSZRGKRRCYXYDQ7WKIWOK5WLKXKN4FWK3XL5NDHT3WFY622XVSEH",
+        zapper: "CCWJ5FW5ZU6WSCFL4FO4TNAK3Q6G63WUILNIBOR26RRLNQBVUUUO7VHT",
+        blendPool: "CDSFGJOQ5RHIPK5522VVCNYNOQH4ECGRTPWZK6QBQV4XXA4IAE5BVTW4",
+        amm: "CAKZSBUEJCDXO7D5BFXPIY6NBVBUONHJ7RSFNK6R4C7SNKST7Y5FHQHC",
+        lpToken: "CAKZSBUEJCDXO7D5BFXPIY6NBVBUONHJ7RSFNK6R4C7SNKST7Y5FHQHC",
+        borrowAsset: "CA2AYW5YFEI36LY5L7NTDN666KMR7SBCY4MLY6FA6UMAYBF3ZS7PR7WH",
+        pairToken: "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC",
+      },
+    ],
+    // Legacy single-market fields (= market 0) for the service's default vault.
     vaultContractId: getOptionalEnv(
       "REACT_APP_LEVERAGE_VAULT_CONTRACT_ID",
       "CC2JF2VP3LVNHYI7URF3R376FCVFSAI4HNVZ2WPZZHBJDAJSWX2X2PFH"
     ),
-    blendPoolId: getOptionalEnv(
-      "REACT_APP_BLEND_POOL_ID",
-      "CDSFGJOQ5RHIPK5522VVCNYNOQH4ECGRTPWZK6QBQV4XXA4IAE5BVTW4"
-    ),
-    ammPoolId: getOptionalEnv(
-      "REACT_APP_LEVERAGE_AMM_POOL_ID",
-      "CDOTVNSYEFF6TWAFSMO3AVSHYEMTMAWTR2E7GXUOOLOCSEC6UV6KJWGC"
-    ),
-    lpToken: getOptionalEnv(
-      "REACT_APP_LEVERAGE_LP_TOKEN",
-      "CDOTVNSYEFF6TWAFSMO3AVSHYEMTMAWTR2E7GXUOOLOCSEC6UV6KJWGC"
-    ),
-    borrowAsset: getOptionalEnv(
-      "REACT_APP_LEVERAGE_BORROW_ASSET",
-      "CA2AYW5YFEI36LY5L7NTDN666KMR7SBCY4MLY6FA6UMAYBF3ZS7PR7WH"
-    ),
-    pairToken: getOptionalEnv(
-      "REACT_APP_LEVERAGE_PAIR_TOKEN",
-      "CAMP6O2ZGMY65DDCJKC7RGZVSOWTFHQDHG6MHD2BRZXBUQBIYNQJMCUJ"
-    ),
-    // Enabled only when the vault contract id is configured.
     get enabled(): boolean {
-      return Boolean(this.vaultContractId);
+      return this.markets.some((m) => Boolean(m.vault));
     },
   },
 

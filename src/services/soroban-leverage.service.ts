@@ -90,9 +90,14 @@ export class SorobanLeverageService {
     this.networkPassphrase = TESTNET_PASSPHRASE;
   }
 
-  /** True when the leverage vault contract id is configured. */
+  /** True when at least one leverage market is configured. */
   isConfigured(): boolean {
     return Boolean(this.vaultId);
+  }
+
+  /** Point the service at a specific market's vault (called when the user switches markets). */
+  setVault(vaultId: string): void {
+    this.vaultId = vaultId;
   }
 
   // ----------------------------------------------------------------- internals
@@ -243,15 +248,15 @@ export class SorobanLeverageService {
   async getConfig(): Promise<LeverageConfig | null> {
     try {
       const raw = await this.readCall<any>("get_config");
-      // The vault config no longer carries AMM/pair fields (those live on the zapper);
-      // source them from app config for display.
+      // The vault config carries only on-chain fields; AMM/pair come from the market config
+      // in the page (per selected market).
       return {
         admin: raw.admin,
         blendPool: raw.blend_pool,
-        ammPool: SOROBAN_CONFIG.leverage.ammPoolId,
+        ammPool: "",
         lpToken: raw.lp_token,
         borrowAsset: raw.borrow_asset,
-        pairToken: SOROBAN_CONFIG.leverage.pairToken,
+        pairToken: "",
         borrowIdx: 0,
         pairIdx: 1,
         maxLeverageBps: Number(raw.max_leverage_bps),

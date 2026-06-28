@@ -15,8 +15,50 @@ import {
   type LeverageConfig,
   type LeverageUserPosition,
 } from "../../services/soroban-leverage.service";
+import aquaLogo from "../../assets/images/aqua_logo.png";
+import usdcLogo from "../../assets/images/usdc.svg";
+import xlmLogo from "../../assets/images/xlm.png";
 
 const short = (a?: string) => (a ? `${a.slice(0, 6)}…${a.slice(-4)}` : "—");
+
+const TOKEN_LOGOS: Record<string, string> = {
+  AQUA: aquaLogo,
+  USDC: usdcLogo,
+  XLM: xlmLogo,
+  BLUB: "/blub_logo.png",
+};
+
+const markets = SOROBAN_CONFIG.leverage.markets;
+type Market = (typeof markets)[number];
+
+function TokenIcon({ code, size = 20 }: { code: string; size?: number }) {
+  const src = TOKEN_LOGOS[code];
+  if (!src) {
+    return (
+      <span
+        className="inline-flex items-center justify-center rounded-full bg-white/10 text-[9px] text-white/70"
+        style={{ width: size, height: size }}
+      >
+        {code.slice(0, 3)}
+      </span>
+    );
+  }
+  return (
+    <img src={src} alt={code} className="rounded-full" style={{ width: size, height: size }} />
+  );
+}
+
+/** Overlapping pair icons (token A over token B). */
+function PairIcons({ a, b, size = 22 }: { a: string; b: string; size?: number }) {
+  return (
+    <span className="inline-flex items-center" style={{ width: size * 1.6 }}>
+      <TokenIcon code={a} size={size} />
+      <span style={{ marginLeft: -size / 3 }}>
+        <TokenIcon code={b} size={size} />
+      </span>
+    </span>
+  );
+}
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -65,6 +107,12 @@ export default function Leverage() {
   const user = useSelector((state: RootState) => state.user);
   const configured = sorobanLeverageService.isConfigured();
 
+  const [selectedId, setSelectedId] = useState<string>(markets[0]?.id ?? "");
+  const market: Market | undefined = useMemo(
+    () => markets.find((m) => m.id === selectedId) ?? markets[0],
+    [selectedId]
+  );
+
   const [config, setConfig] = useState<LeverageConfig | null>(null);
   const [position, setPosition] = useState<LeverageUserPosition | null>(null);
   const [totals, setTotals] = useState<{ totalCollateralLp: string; totalDebt: string } | null>(null);
@@ -86,9 +134,11 @@ export default function Leverage() {
   );
 
   const refresh = useCallback(async () => {
-    if (!configured) return;
+    if (!configured || !market?.vault) return;
     setLoading(true);
     try {
+      // Point the service at the selected market's vault before reading.
+      sorobanLeverageService.setVault(market.vault);
       const [cfg, tot] = await Promise.all([
         sorobanLeverageService.getConfig(),
         sorobanLeverageService.getTotals(),
@@ -103,9 +153,17 @@ export default function Leverage() {
     } finally {
       setLoading(false);
     }
-  }, [configured, user?.userWalletAddress]);
+  }, [configured, market?.vault, user?.userWalletAddress]);
 
+  // Reset inputs + reload whenever the market changes.
   useEffect(() => {
+    setConfig(null);
+    setPosition(null);
+    setTotals(null);
+    setCollateralLp("");
+    setBorrowAmount("");
+    setRepayAmount("");
+    setWithdrawLp("");
     refresh();
   }, [refresh]);
 
@@ -126,8 +184,12 @@ export default function Leverage() {
 
   const onOpen = async () => {
     if (!user?.userWalletAddress) return toast.warn("Please connect wallet.");
+    if (!market?.vault) return;
+    if (market.status === "activating")
+      return toast.info("This market isn't live yet — its Blend reserve is still unlocking.");
     if (!borrowAmount || parseFloat(borrowAmount) <= 0) return toast.warn("Enter a borrow amount.");
     const { minLpOut, minPairOut } = estimateMins();
+    sorobanLeverageService.setVault(market.vault);
     setBusy(true);
     try {
       const res = await sorobanLeverageService.openPosition({
@@ -153,9 +215,11 @@ export default function Leverage() {
 
   const onClose = async () => {
     if (!user?.userWalletAddress) return toast.warn("Please connect wallet.");
+    if (!market?.vault) return;
     if ((!repayAmount || parseFloat(repayAmount) <= 0) && (!withdrawLp || parseFloat(withdrawLp) <= 0)) {
       return toast.warn("Enter a repay and/or withdraw amount.");
     }
+    sorobanLeverageService.setVault(market.vault);
     setBusy(true);
     try {
       const res = await sorobanLeverageService.repayAndWithdraw({
@@ -192,6 +256,52 @@ export default function Leverage() {
           Leverage amplifies both yield and liquidation risk.
         </p>
       </header>
+
+      {/* ── Market selector ─────────────────────────────────────────── */}
+      {configured && (
+        <section className="mb-8">
+          <p className="mb-2 text-xs uppercase tracking-wide text-white/40">Market</p>
+          <div className="flex flex-wrap gap-3">
+            {markets.map((m) => {
+              const active = m.id === selectedId;
+              return (
+                <button
+                  key={m.id}
+                  onClick={() => setSelectedId(m.id)}
+                  className={`flex items-center gap-3 rounded-2xl border px-4 py-3 transition ${
+                    active
+                      ? "border-[#37b06f]/60 bg-[#37b06f]/10"
+                      : "border-white/10 bg-white/[0.03] hover:bg-white/[0.06]"
+                  }`}
+                >
+                  <PairIcons a={m.tokenA} b={m.tokenB} />
+                  <span className="text-left">
+                    <span className="block text-sm font-semibold text-white">{m.label}</span>
+                    <span className="block text-[11px] text-white/45">
+                      collateral · borrow {m.borrowSymbol}
+                    </span>
+                  </span>
+                  {m.status === "live" ? (
+                    <span className="rounded-full bg-[#37b06f]/15 px-2 py-0.5 text-[10px] font-medium text-[#37b06f]">
+                      Live
+                    </span>
+                  ) : (
+                    <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-medium text-amber-300">
+                      Activating
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+          {market?.status === "activating" && (
+            <p className="mt-2 text-[11px] text-amber-300/70">
+              {market.note || "This market is not live yet."} — its Blend collateral reserve is in
+              a 1-week activation timelock; reads work, opening is disabled until it unlocks.
+            </p>
+          )}
+        </section>
+      )}
 
       {/* ── Explainers ───────────────────────────────────────────────── */}
       <section className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -269,12 +379,21 @@ export default function Leverage() {
       ) : (
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
           {/* Overview */}
-          <Card title="Vault">
+          <Card title="Market">
+            <div className="mb-3 flex items-center gap-3">
+              <PairIcons a={market?.tokenA ?? ""} b={market?.tokenB ?? ""} size={26} />
+              <div>
+                <div className="text-base font-semibold text-white">{market?.label}</div>
+                <div className="text-[11px] text-white/45">
+                  {market?.tokenA}/{market?.tokenB} LP collateral · borrow {market?.borrowSymbol}
+                </div>
+              </div>
+            </div>
             <dl className="space-y-2 text-sm">
-              <Row k="Blend pool" v={short(config?.blendPool)} />
-              <Row k="AMM pool" v={short(config?.ammPool)} />
-              <Row k="LP collateral token" v={short(config?.lpToken)} />
-              <Row k="Borrow asset" v={short(config?.borrowAsset)} />
+              <Row k="Status" v={market?.status === "live" ? "Live" : "Activating (~7d)"} />
+              <Row k="Blend pool" v={short(market?.blendPool)} />
+              <Row k="AMM (LP token)" v={short(market?.amm)} />
+              <Row k="Vault" v={short(market?.vault)} />
               <Row k="Max leverage" v={`${maxLeverageX}×`} />
               <Row k="Total collateral (LP)" v={totals?.totalCollateralLp ?? "—"} />
               <Row k="Total debt" v={totals?.totalDebt ?? "—"} />
@@ -326,10 +445,14 @@ export default function Leverage() {
               />
               <button
                 onClick={onOpen}
-                disabled={busy || !user?.userWalletAddress}
+                disabled={busy || !user?.userWalletAddress || market?.status === "activating"}
                 className="w-full rounded-xl bg-[#37b06f] py-3 font-semibold text-black hover:brightness-110 disabled:opacity-50"
               >
-                {busy ? "Working…" : "Open leveraged position"}
+                {busy
+                  ? "Working…"
+                  : market?.status === "activating"
+                  ? "Market activating (~7d)"
+                  : "Open leveraged position"}
               </button>
               <p className="text-[11px] leading-relaxed text-white/35">
                 Min-out floors are derived from your slippage tolerance. A precise
