@@ -1,14 +1,18 @@
 #![no_std]
 //! WhaleHub Leveraged LP Farming Vault.
 //!
-//! Multiplies an Aquarius-style LP yield-farming position by using the LP share
-//! token as collateral on a Blend V2 lending pool and recycling a flash-borrowed
-//! asset (XLM/USDC) back into more LP — atomically, in one transaction.
+//! Multiplies an Aquarius-style LP yield-farming position by using the LP share token as
+//! collateral on a Blend V2 lending pool and recycling a flash-borrowed asset (XLM/USDC)
+//! back into more LP — atomically, in one transaction, via a separate `zapper` receiver
+//! contract (the vault is on the stack during flash_loan, so the receiver must differ).
 //!
-//! Design: the vault is BOTH the Blend position owner (`from`) AND the flash-loan
-//! receiver (`exec_op`). This avoids per-user Soroban allowance/auth gymnastics and
-//! matches the team's existing "contract holds LP, tracks per-user shares" pattern.
-//! See docs/technical/leveraged-lp-farming.md for the full design.
+//! ## Liquidation-aware share accounting
+//! The vault owns ONE aggregate Blend position. Rather than store absolute per-user
+//! collateral/debt (which would desync the moment Blend liquidates the position), each user
+//! holds **collateral shares** and **debt shares**. A user's actual position is always
+//! derived from `shares × the live Blend position` (the bToken/dToken balances Blend tracks
+//! for this vault). So liquidations — and interest — socialize pro-rata across share holders
+//! automatically, with no per-event hook and no desync. See docs/technical/leveraged-lp-farming.md.
 
 use soroban_sdk::{
     contract, contractclient, contracterror, contractimpl, contracttype, token, vec, Address, Env,
@@ -19,7 +23,6 @@ use soroban_sdk::{
 // Blend V2 pool interface (verified against blend-contracts-v2 `main`)
 // ============================================================================
 
-/// A request a user makes against the Blend pool. Mirrors `pool::actions::Request`.
 #[contracttype]
 #[derive(Clone)]
 pub struct Request {
@@ -28,7 +31,6 @@ pub struct Request {
     pub amount: i128,
 }
 
-/// Flash loan arguments. Mirrors `pool::actions::FlashLoan`.
 #[contracttype]
 #[derive(Clone)]
 pub struct FlashLoan {
@@ -37,7 +39,6 @@ pub struct FlashLoan {
     pub amount: i128,
 }
 
-/// A user's Blend position. Mirrors `pool::user::Positions`.
 #[contracttype]
 #[derive(Clone)]
 pub struct Positions {
@@ -46,15 +47,13 @@ pub struct Positions {
     pub supply: Map<u32, i128>,
 }
 
-/// Blend `RequestType` discriminants (u32) used in `Request.request_type`.
 const RT_SUPPLY_COLLATERAL: u32 = 2;
 const RT_WITHDRAW_COLLATERAL: u32 = 3;
 const RT_REPAY: u32 = 5;
+const RT_DELETE_LIQ_AUCTION: u32 = 9;
 
 #[contractclient(name = "BlendPoolClient")]
 pub trait BlendPoolTrait {
-    /// Flash-borrow `flash_loan.amount` of `flash_loan.asset`, invoke the receiver's
-    /// `exec_op`, then process `requests` for `from` (via transfer_from/allowance).
     fn flash_loan(
         env: Env,
         from: Address,
@@ -62,7 +61,6 @@ pub trait BlendPoolTrait {
         requests: Vec<Request>,
     ) -> Positions;
 
-    /// Process `requests` for `from`; `spender` sends tokens, `to` receives them.
     fn submit(
         env: Env,
         from: Address,
@@ -71,16 +69,12 @@ pub trait BlendPoolTrait {
         requests: Vec<Request>,
     ) -> Positions;
 
-    /// Read `from`'s current positions.
     fn get_positions(env: Env, from: Address) -> Positions;
 }
 
 // ============================================================================
 // Zapper (separate flash-loan receiver) interface
 // ============================================================================
-//
-// The vault stages zap params on the zapper right before calling flash_loan; Blend then
-// invokes the zapper's exec_op (a different contract, so no re-entrancy). See the zapper crate.
 
 #[contractclient(name = "ZapperClient")]
 pub trait ZapperTrait {
@@ -96,34 +90,37 @@ pub trait ZapperTrait {
 pub struct Config {
     /// Admin (config/upgrades, dust sweep).
     pub admin: Address,
-    /// Separate flash-loan receiver/zapper contract (avoids Soroban re-entrancy — the vault
-    /// is on the stack during flash_loan, so the receiver must be a different contract).
+    /// Separate flash-loan receiver/zapper contract.
     pub zapper: Address,
     /// Blend V2 pool that holds the leveraged position.
     pub blend_pool: Address,
-    /// Aquarius-style AMM pool that mints the LP collateral.
-    pub amm_pool: Address,
-    /// LP share token (collateral asset, == amm_pool's share token).
+    /// LP share token (collateral asset). The AMM/pair config lives on the zapper.
     pub lp_token: Address,
     /// Asset borrowed against the LP (XLM or USDC SAC).
     pub borrow_asset: Address,
-    /// The other side of the LP pair, that we swap half the borrow into (e.g. AQUA).
-    pub pair_token: Address,
-    /// Index of `borrow_asset` within the AMM pool's token list (0 or 1).
-    pub borrow_idx: u32,
-    /// Index of `pair_token` within the AMM pool's token list (0 or 1).
-    pub pair_idx: u32,
+    /// Reserve index of the LP collateral within the Blend pool (from get_reserve_list).
+    pub lp_reserve_index: u32,
+    /// Reserve index of the borrow asset within the Blend pool.
+    pub borrow_reserve_index: u32,
     /// Max leverage allowed, in basis points (e.g. 30000 = 3.0x). Advisory cap.
     pub max_leverage_bps: u32,
 }
 
-/// Per-user leveraged position accounting (vault-internal CDP shares).
+/// Per-user accounting, stored as SHARES of the vault's aggregate Blend position.
+#[contracttype]
+#[derive(Clone)]
+pub struct UserShares {
+    pub collateral_shares: i128,
+    pub debt_shares: i128,
+}
+
+/// A user's derived position (live), returned by `get_position`. Units are the vault's
+/// Blend bToken/dToken balances attributable to the user (≈ underlying LP / borrow asset
+/// while pool rates are near 1).
 #[contracttype]
 #[derive(Clone)]
 pub struct UserPosition {
-    /// LP share tokens supplied as collateral on behalf of this user.
     pub collateral_lp: i128,
-    /// borrow_asset debt principal attributed to this user.
     pub debt: i128,
 }
 
@@ -131,9 +128,9 @@ pub struct UserPosition {
 #[derive(Clone)]
 pub enum DataKey {
     Config,
-    Position(Address),
-    TotalCollateralLp,
-    TotalDebt,
+    Shares(Address),
+    TotalCollateralShares,
+    TotalDebtShares,
 }
 
 #[contracterror]
@@ -144,14 +141,13 @@ pub enum Error {
     NotInitialized = 2,
     InvalidAmount = 3,
     LeverageTooHigh = 4,
-    NoActiveFlashLoan = 5,
-    FlashAssetMismatch = 6,
     NoPosition = 7,
     InsufficientCollateral = 8,
     InsufficientDebt = 9,
+    NothingMinted = 10,
 }
 
-const APPROVE_TTL_LEDGERS: u32 = 120; // ~10 min of ledgers; covers the single tx + buffer
+const APPROVE_TTL_LEDGERS: u32 = 120;
 
 // ============================================================================
 // Contract
@@ -162,18 +158,15 @@ pub struct LeverageVault;
 
 #[contractimpl]
 impl LeverageVault {
-    /// One-time initialization.
     pub fn initialize(
         env: Env,
         admin: Address,
         zapper: Address,
         blend_pool: Address,
-        amm_pool: Address,
         lp_token: Address,
         borrow_asset: Address,
-        pair_token: Address,
-        borrow_idx: u32,
-        pair_idx: u32,
+        lp_reserve_index: u32,
+        borrow_reserve_index: u32,
         max_leverage_bps: u32,
     ) -> Result<(), Error> {
         if env.storage().instance().has(&DataKey::Config) {
@@ -184,32 +177,23 @@ impl LeverageVault {
             admin,
             zapper,
             blend_pool,
-            amm_pool,
             lp_token,
             borrow_asset,
-            pair_token,
-            borrow_idx,
-            pair_idx,
+            lp_reserve_index,
+            borrow_reserve_index,
             max_leverage_bps,
         };
         env.storage().instance().set(&DataKey::Config, &config);
         env.storage()
             .instance()
-            .set(&DataKey::TotalCollateralLp, &0i128);
-        env.storage().instance().set(&DataKey::TotalDebt, &0i128);
+            .set(&DataKey::TotalCollateralShares, &0i128);
+        env.storage()
+            .instance()
+            .set(&DataKey::TotalDebtShares, &0i128);
         Ok(())
     }
 
     /// Open (or add to) a leveraged LP position for `user`.
-    ///
-    /// * `collateral_lp_amount` — LP share tokens the user supplies up front (pulled from
-    ///   the user's wallet). May be 0 if the user only wants to lever new borrow.
-    /// * `borrow_amount` — amount of `borrow_asset` to flash-borrow and recycle into LP.
-    /// * `min_lp_out` — minimum LP the zap must mint from `borrow_amount` (frontend
-    ///   simulates this; it is the leveraged collateral claimed against the borrow).
-    /// * `min_pair_out` — slippage floor for swapping half the borrow into `pair_token`.
-    ///
-    /// The resulting Blend position must end healthy or the whole tx reverts.
     pub fn open_position(
         env: Env,
         user: Address,
@@ -224,13 +208,9 @@ impl LeverageVault {
         if borrow_amount <= 0 || collateral_lp_amount < 0 || min_lp_out <= 0 {
             return Err(Error::InvalidAmount);
         }
-
-        // Advisory leverage cap: leveraged LP vs user-supplied LP.
-        // (Pure value-based health is enforced by Blend; this is a coarse UX guard.)
         if collateral_lp_amount > 0 {
-            let leverage_bps = (collateral_lp_amount + min_lp_out)
-                .saturating_mul(10_000)
-                / collateral_lp_amount;
+            let leverage_bps =
+                (collateral_lp_amount + min_lp_out).saturating_mul(10_000) / collateral_lp_amount;
             if leverage_bps > config.max_leverage_bps as i128 {
                 return Err(Error::LeverageTooHigh);
             }
@@ -239,22 +219,20 @@ impl LeverageVault {
         let vault = env.current_contract_address();
         let lp = token::TokenClient::new(&env, &config.lp_token);
 
-        // 1. Pull the user's up-front LP collateral into the vault.
+        // Snapshot the vault's Blend position BEFORE the leverage round.
+        let (b_before, d_before) = Self::read_blend_position(&env, &config);
+
+        // 1. Pull the user's up-front LP collateral.
         if collateral_lp_amount > 0 {
             lp.transfer(&user, &vault, &collateral_lp_amount);
         }
-
         let total_supply_lp = collateral_lp_amount + min_lp_out;
 
-        // 2. Pre-approve the Blend pool to pull the full LP collateral. After the zap the
-        //    vault holds `collateral_lp_amount` (from the user) + the LP the zapper mints and
-        //    transfers back; the pool's SupplyCollateral pulls `total_supply_lp` from here.
+        // 2. Pre-approve the pool to pull the full LP collateral after the zap.
         let expiration = env.ledger().sequence() + APPROVE_TTL_LEDGERS;
         lp.approve(&vault, &config.blend_pool, &total_supply_lp, &expiration);
 
-        // 3. Stage the zap params on the (separate) zapper, then flash-loan with the zapper
-        //    as the receiver — a different contract, so Blend's exec_op callback does not
-        //    re-enter the vault.
+        // 3. Stage the zap params on the zapper, then flash-loan with the zapper as receiver.
         let zapper = ZapperClient::new(&env, &config.zapper);
         zapper.prepare(&borrow_amount, &min_lp_out, &min_pair_out);
 
@@ -277,22 +255,42 @@ impl LeverageVault {
             &requests,
         );
 
-        // 4. Update per-user + global accounting.
-        let mut pos = Self::load_position(&env, &user);
-        pos.collateral_lp = pos.collateral_lp.saturating_add(total_supply_lp);
-        pos.debt = pos.debt.saturating_add(borrow_amount);
-        Self::save_position(&env, &user, &pos);
-        Self::add_total_collateral(&env, total_supply_lp);
-        Self::add_total_debt(&env, borrow_amount);
+        // 4. Mint shares from the ACTUAL change in the vault's Blend position (bToken/dToken
+        //    deltas), so accounting tracks the real position exactly.
+        let (b_after, d_after) = Self::read_blend_position(&env, &config);
+        let delta_b = b_after - b_before;
+        let delta_d = d_after - d_before;
+        if delta_b <= 0 {
+            return Err(Error::NothingMinted);
+        }
 
+        let total_c = Self::read_total(&env, &DataKey::TotalCollateralShares);
+        let total_d = Self::read_total(&env, &DataKey::TotalDebtShares);
+        let c_shares = if total_c == 0 || b_before <= 0 {
+            delta_b
+        } else {
+            delta_b.saturating_mul(total_c) / b_before
+        };
+        let d_shares = if delta_d <= 0 {
+            0
+        } else if total_d == 0 || d_before <= 0 {
+            delta_d
+        } else {
+            delta_d.saturating_mul(total_d) / d_before
+        };
+
+        let mut shares = Self::load_shares(&env, &user);
+        shares.collateral_shares = shares.collateral_shares.saturating_add(c_shares);
+        shares.debt_shares = shares.debt_shares.saturating_add(d_shares);
+        Self::save_shares(&env, &user, &shares);
+        Self::add_total(&env, &DataKey::TotalCollateralShares, c_shares);
+        Self::add_total(&env, &DataKey::TotalDebtShares, d_shares);
         Ok(())
     }
 
-    /// Deleverage / close: repay `repay_amount` of debt (pulled from `user`) and withdraw
-    /// `withdraw_lp_amount` of LP collateral back to `user`.
-    ///
-    /// v1 unwind: the user supplies the repay funds (no flash loan). Flash-loan-based
-    /// self-liquidating close is a documented follow-up (see design doc).
+    /// Deleverage: repay `repay_amount` of debt (pulled from `user`) and withdraw
+    /// `withdraw_lp_amount` of LP collateral back to `user`. Shares are burned from the change
+    /// in the vault's Blend position, keeping every other user's position whole.
     pub fn repay_and_withdraw(
         env: Env,
         user: Address,
@@ -302,33 +300,35 @@ impl LeverageVault {
     ) -> Result<(), Error> {
         user.require_auth();
         let config = Self::load_config(&env)?;
-        if repay_amount < 0 || withdraw_lp_amount < 0 {
+        if repay_amount < 0 || withdraw_lp_amount < 0 || (repay_amount == 0 && withdraw_lp_amount == 0) {
             return Err(Error::InvalidAmount);
-        }
-        if repay_amount == 0 && withdraw_lp_amount == 0 {
-            return Err(Error::InvalidAmount);
-        }
-
-        let mut pos = Self::load_position(&env, &user);
-        if pos.collateral_lp == 0 && pos.debt == 0 {
-            return Err(Error::NoPosition);
-        }
-        if repay_amount > pos.debt {
-            return Err(Error::InsufficientDebt);
-        }
-        if withdraw_lp_amount > pos.collateral_lp {
-            return Err(Error::InsufficientCollateral);
         }
         let _ = min_lp_out_to_user; // reserved for a future zap-out variant
 
-        let vault = env.current_contract_address();
-        let mut requests: Vec<Request> = vec![&env];
+        let shares = Self::load_shares(&env, &user);
+        if shares.collateral_shares == 0 && shares.debt_shares == 0 {
+            return Err(Error::NoPosition);
+        }
 
-        // 1. Pull repay funds from the user and queue the Repay.
+        let vault = env.current_contract_address();
+        let (b_before, d_before) = Self::read_blend_position(&env, &config);
+        let total_c = Self::read_total(&env, &DataKey::TotalCollateralShares);
+        let total_d = Self::read_total(&env, &DataKey::TotalDebtShares);
+
+        // The user can withdraw/repay at most their share-derived position.
+        let user_collateral = Self::shares_to_amount(shares.collateral_shares, b_before, total_c);
+        let user_debt = Self::shares_to_amount(shares.debt_shares, d_before, total_d);
+        if withdraw_lp_amount > user_collateral {
+            return Err(Error::InsufficientCollateral);
+        }
+        if repay_amount > user_debt {
+            return Err(Error::InsufficientDebt);
+        }
+
+        let mut requests: Vec<Request> = vec![&env];
         if repay_amount > 0 {
             let borrow_tok = token::TokenClient::new(&env, &config.borrow_asset);
             borrow_tok.transfer(&user, &vault, &repay_amount);
-            // Allow the pool to pull the repayment from the vault.
             let expiration = env.ledger().sequence() + APPROVE_TTL_LEDGERS;
             borrow_tok.approve(&vault, &config.blend_pool, &repay_amount, &expiration);
             requests.push_back(Request {
@@ -337,8 +337,6 @@ impl LeverageVault {
                 amount: repay_amount,
             });
         }
-
-        // 2. Queue the collateral withdrawal (pool sends LP to `to`).
         if withdraw_lp_amount > 0 {
             requests.push_back(Request {
                 request_type: RT_WITHDRAW_COLLATERAL,
@@ -347,16 +345,45 @@ impl LeverageVault {
             });
         }
 
-        // 3. Submit: vault is `from` (position owner) & spender; `user` receives the LP.
         let pool = BlendPoolClient::new(&env, &config.blend_pool);
         pool.submit(&vault, &vault, &user, &requests);
 
-        // 4. Update accounting.
-        pos.debt = pos.debt.saturating_sub(repay_amount);
-        pos.collateral_lp = pos.collateral_lp.saturating_sub(withdraw_lp_amount);
-        Self::save_position(&env, &user, &pos);
-        Self::add_total_debt(&env, -repay_amount);
-        Self::add_total_collateral(&env, -withdraw_lp_amount);
+        // Burn shares for the actual reduction in the vault's Blend position.
+        let (b_after, d_after) = Self::read_blend_position(&env, &config);
+        let removed_b = b_before - b_after;
+        let removed_d = d_before - d_after;
+
+        let mut new_shares = Self::load_shares(&env, &user);
+        if removed_b > 0 && b_before > 0 {
+            let burn = (removed_b.saturating_mul(total_c) / b_before).min(new_shares.collateral_shares);
+            new_shares.collateral_shares -= burn;
+            Self::add_total(&env, &DataKey::TotalCollateralShares, -burn);
+        }
+        if removed_d > 0 && d_before > 0 {
+            let burn = (removed_d.saturating_mul(total_d) / d_before).min(new_shares.debt_shares);
+            new_shares.debt_shares -= burn;
+            Self::add_total(&env, &DataKey::TotalDebtShares, -burn);
+        }
+        Self::save_shares(&env, &user, &new_shares);
+        Ok(())
+    }
+
+    /// Delete a stale liquidation auction on the vault (only valid once the vault's position
+    /// is healthy again). Permissionless to call — `from` is the vault, so it deletes the
+    /// vault's own auction. Lets anyone unstick the vault after a price recovery.
+    pub fn clear_auction(env: Env) -> Result<(), Error> {
+        let config = Self::load_config(&env)?;
+        let vault = env.current_contract_address();
+        let requests = vec![
+            &env,
+            Request {
+                request_type: RT_DELETE_LIQ_AUCTION,
+                address: vault.clone(),
+                amount: 0,
+            },
+        ];
+        let pool = BlendPoolClient::new(&env, &config.blend_pool);
+        pool.submit(&vault, &vault, &vault, &requests);
         Ok(())
     }
 
@@ -366,8 +393,25 @@ impl LeverageVault {
         Self::load_config(&env)
     }
 
+    /// The user's live, liquidation-adjusted position (derived from shares × the vault's
+    /// current Blend position).
     pub fn get_position(env: Env, user: Address) -> UserPosition {
-        Self::load_position(&env, &user)
+        let config = match Self::load_config(&env) {
+            Ok(c) => c,
+            Err(_) => return UserPosition { collateral_lp: 0, debt: 0 },
+        };
+        let shares = Self::load_shares(&env, &user);
+        let (b, d) = Self::read_blend_position(&env, &config);
+        let total_c = Self::read_total(&env, &DataKey::TotalCollateralShares);
+        let total_d = Self::read_total(&env, &DataKey::TotalDebtShares);
+        UserPosition {
+            collateral_lp: Self::shares_to_amount(shares.collateral_shares, b, total_c),
+            debt: Self::shares_to_amount(shares.debt_shares, d, total_d),
+        }
+    }
+
+    pub fn get_user_shares(env: Env, user: Address) -> UserShares {
+        Self::load_shares(&env, &user)
     }
 
     pub fn get_blend_positions(env: Env) -> Result<Positions, Error> {
@@ -376,16 +420,23 @@ impl LeverageVault {
         Ok(pool.get_positions(&env.current_contract_address()))
     }
 
+    /// (total collateral, total debt) of the vault's live Blend position (bToken/dToken units).
     pub fn get_totals(env: Env) -> (i128, i128) {
+        match Self::load_config(&env) {
+            Ok(config) => Self::read_blend_position(&env, &config),
+            Err(_) => (0, 0),
+        }
+    }
+
+    pub fn get_share_totals(env: Env) -> (i128, i128) {
         (
-            Self::read_i128(&env, &DataKey::TotalCollateralLp),
-            Self::read_i128(&env, &DataKey::TotalDebt),
+            Self::read_total(&env, &DataKey::TotalCollateralShares),
+            Self::read_total(&env, &DataKey::TotalDebtShares),
         )
     }
 
     // -------------------------------------------------------------------- admin
 
-    /// Sweep dust LP / leftover tokens left in the vault by zap rounding.
     pub fn sweep(env: Env, token_addr: Address, to: Address, amount: i128) -> Result<(), Error> {
         let config = Self::load_config(&env)?;
         config.admin.require_auth();
@@ -417,34 +468,46 @@ impl LeverageVault {
             .ok_or(Error::NotInitialized)
     }
 
-    fn load_position(env: &Env, user: &Address) -> UserPosition {
+    /// Read the vault's live Blend position as (collateral bTokens, debt dTokens).
+    fn read_blend_position(env: &Env, config: &Config) -> (i128, i128) {
+        let pool = BlendPoolClient::new(env, &config.blend_pool);
+        let positions = pool.get_positions(&env.current_contract_address());
+        let b = positions.collateral.get(config.lp_reserve_index).unwrap_or(0);
+        let d = positions.liabilities.get(config.borrow_reserve_index).unwrap_or(0);
+        (b, d)
+    }
+
+    fn shares_to_amount(user_shares: i128, total_amount: i128, total_shares: i128) -> i128 {
+        if total_shares <= 0 || user_shares <= 0 {
+            0
+        } else {
+            user_shares.saturating_mul(total_amount) / total_shares
+        }
+    }
+
+    fn load_shares(env: &Env, user: &Address) -> UserShares {
         env.storage()
             .persistent()
-            .get(&DataKey::Position(user.clone()))
-            .unwrap_or(UserPosition {
-                collateral_lp: 0,
-                debt: 0,
+            .get(&DataKey::Shares(user.clone()))
+            .unwrap_or(UserShares {
+                collateral_shares: 0,
+                debt_shares: 0,
             })
     }
 
-    fn save_position(env: &Env, user: &Address, pos: &UserPosition) {
+    fn save_shares(env: &Env, user: &Address, shares: &UserShares) {
         env.storage()
             .persistent()
-            .set(&DataKey::Position(user.clone()), pos);
+            .set(&DataKey::Shares(user.clone()), shares);
     }
 
-    fn read_i128(env: &Env, key: &DataKey) -> i128 {
+    fn read_total(env: &Env, key: &DataKey) -> i128 {
         env.storage().instance().get(key).unwrap_or(0)
     }
 
-    fn add_total_collateral(env: &Env, delta: i128) {
-        let v = Self::read_i128(env, &DataKey::TotalCollateralLp).saturating_add(delta);
-        env.storage().instance().set(&DataKey::TotalCollateralLp, &v);
-    }
-
-    fn add_total_debt(env: &Env, delta: i128) {
-        let v = Self::read_i128(env, &DataKey::TotalDebt).saturating_add(delta);
-        env.storage().instance().set(&DataKey::TotalDebt, &v);
+    fn add_total(env: &Env, key: &DataKey, delta: i128) {
+        let v = Self::read_total(env, key).saturating_add(delta);
+        env.storage().instance().set(key, &v);
     }
 }
 

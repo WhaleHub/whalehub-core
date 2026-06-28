@@ -18,39 +18,37 @@ fn test_initialize_and_config() {
     let admin = new_addr(&env);
     let zapper = new_addr(&env);
     let blend_pool = new_addr(&env);
-    let amm_pool = new_addr(&env);
     let lp_token = new_addr(&env);
     let borrow_asset = new_addr(&env);
-    let pair_token = new_addr(&env);
 
     client.initialize(
         &admin,
         &zapper,
         &blend_pool,
-        &amm_pool,
         &lp_token,
         &borrow_asset,
-        &pair_token,
-        &0u32,
-        &1u32,
+        &0u32, // lp_reserve_index
+        &1u32, // borrow_reserve_index
         &30_000u32,
     );
 
     let config = client.get_config();
     assert_eq!(config.admin, admin);
+    assert_eq!(config.zapper, zapper);
     assert_eq!(config.blend_pool, blend_pool);
     assert_eq!(config.lp_token, lp_token);
-    assert_eq!(config.borrow_idx, 0);
-    assert_eq!(config.pair_idx, 1);
+    assert_eq!(config.lp_reserve_index, 0);
+    assert_eq!(config.borrow_reserve_index, 1);
     assert_eq!(config.max_leverage_bps, 30_000);
 
-    let (total_lp, total_debt) = client.get_totals();
-    assert_eq!(total_lp, 0);
-    assert_eq!(total_debt, 0);
+    // Share accounting starts empty (pool-free getters).
+    let (total_c, total_d) = client.get_share_totals();
+    assert_eq!(total_c, 0);
+    assert_eq!(total_d, 0);
 
-    let pos = client.get_position(&new_addr(&env));
-    assert_eq!(pos.collateral_lp, 0);
-    assert_eq!(pos.debt, 0);
+    let shares = client.get_user_shares(&new_addr(&env));
+    assert_eq!(shares.collateral_shares, 0);
+    assert_eq!(shares.debt_shares, 0);
 }
 
 #[test]
@@ -64,10 +62,10 @@ fn test_double_initialize_fails() {
 
     let a = new_addr(&env);
     client.initialize(
-        &a, &a, &a, &a, &a, &a, &a, &0u32, &1u32, &30_000u32,
+        &a, &a, &a, &a, &a, &0u32, &1u32, &30_000u32,
     );
     // second call must panic (AlreadyInitialized)
     client.initialize(
-        &a, &a, &a, &a, &a, &a, &a, &0u32, &1u32, &30_000u32,
+        &a, &a, &a, &a, &a, &0u32, &1u32, &30_000u32,
     );
 }

@@ -243,15 +243,17 @@ export class SorobanLeverageService {
   async getConfig(): Promise<LeverageConfig | null> {
     try {
       const raw = await this.readCall<any>("get_config");
+      // The vault config no longer carries AMM/pair fields (those live on the zapper);
+      // source them from app config for display.
       return {
         admin: raw.admin,
         blendPool: raw.blend_pool,
-        ammPool: raw.amm_pool,
+        ammPool: SOROBAN_CONFIG.leverage.ammPoolId,
         lpToken: raw.lp_token,
         borrowAsset: raw.borrow_asset,
-        pairToken: raw.pair_token,
-        borrowIdx: Number(raw.borrow_idx),
-        pairIdx: Number(raw.pair_idx),
+        pairToken: SOROBAN_CONFIG.leverage.pairToken,
+        borrowIdx: 0,
+        pairIdx: 1,
         maxLeverageBps: Number(raw.max_leverage_bps),
       };
     } catch (e) {
