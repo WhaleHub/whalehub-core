@@ -3673,6 +3673,28 @@ impl StakingRegistry {
         if total_blub_unstaked > 0 {
             use soroban_sdk::token;
             let blub_client = token::Client::new(&env, &config.blub_token);
+
+            // ===== SELF-HEAL BLUB SHORTFALL =====
+            // POL routing moves BLUB out of the staking contract into the liquidity/POL
+            // contract, so the staking contract can end up holding less BLUB than a user's
+            // legitimately staked balance. When that happens the transfer below would fail
+            // with InsufficientBalance and the user could never withdraw what they staked.
+            //
+            // Mint exactly the shortfall to the contract before paying out. This is safe:
+            // `total_blub_unstaked` is capped per-entry at `entry.blub_locked` (see the loop
+            // above), so we never mint more than the user actually staked. Requires the
+            // staking contract to be the BLUB SAC admin (it already mints in `lock`).
+            let contract_balance = blub_client.balance(&contract_address);
+            if contract_balance < total_blub_unstaked {
+                let shortfall = total_blub_unstaked - contract_balance;
+                let blub_admin = token::StellarAssetClient::new(&env, &config.blub_token);
+                blub_admin.mint(&contract_address, &shortfall);
+                env.events().publish(
+                    (symbol_short!("mint_gap"), user.clone()),
+                    shortfall,
+                );
+            }
+
             let transfer_result = blub_client.try_transfer(&contract_address, &user, &total_blub_unstaked);
             if transfer_result.is_err() {
                 global_state.locked = false;
