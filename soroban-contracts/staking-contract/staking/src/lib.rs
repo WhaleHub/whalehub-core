@@ -1245,6 +1245,17 @@ impl StakingRegistry {
     ///
     /// # Authorization
     /// Requires authorization from the `user` address.
+    /// SECURITY (2026-07): require the stored admin (DataKey::AdminAddress) to have authorized
+    /// this call. Fails closed with Unauthorized if AdminAddress is unset. Shared by the
+    /// record_* backdoor closers and admin_purge_lock.
+    fn require_admin_auth(env: &Env) -> Result<(), Error> {
+        let stored_admin = env.storage().instance()
+            .get::<DataKey, Address>(&DataKey::AdminAddress)
+            .ok_or(Error::Unauthorized)?;
+        stored_admin.require_auth();
+        Ok(())
+    }
+
     pub fn record_lock(
         env: Env,
         user: Address,
@@ -1252,7 +1263,8 @@ impl StakingRegistry {
         duration_periods: u64,
         tx_hash: Bytes,
     ) -> Result<(), Error> {
-        user.require_auth();
+        // SECURITY (2026-07): admin-only (was user-auth-only; abused via record_lock+record_unlock).
+        Self::require_admin_auth(&env)?;
 
         if amount <= 0 {
             return Err(Error::InvalidInput);
@@ -1383,7 +1395,8 @@ impl StakingRegistry {
     /// - Updates global state
     /// - Transfers BLUB tokens and accumulated rewards to user
     pub fn record_unlock(env: Env, user: Address, amount: i128, tx_hash: Bytes) -> Result<(), Error> {
-        user.require_auth();
+        // SECURITY (2026-07): admin-only (cash-out leg of the record_lock drain exploit).
+        Self::require_admin_auth(&env)?;
         if amount <= 0 { return Err(Error::InvalidInput); }
 
         // ===== RE-ENTRANCY GUARD =====
@@ -1623,7 +1636,8 @@ impl StakingRegistry {
     /// # Authorization
     /// Requires authorization from the `user` address.
     pub fn record_blub_restake(env: Env, user: Address, amount: i128, tx_hash: Bytes) -> Result<(), Error> {
-        user.require_auth();
+        // SECURITY (2026-07): admin-only (closes the same self-record abuse surface).
+        Self::require_admin_auth(&env)?;
         if amount <= 0 { return Err(Error::InvalidInput); }
 
         // ===== RE-ENTRANCY GUARD =====
@@ -2560,6 +2574,24 @@ impl StakingRegistry {
         min_amounts.push_back(min_aqua as u128);
         min_amounts.push_back(min_blub as u128);
 
+        // Authorize the pool to burn our LP shares. Aquarius withdraw() internally calls
+        // burn(from=this_contract, amount), which requires our authorization as the LP holder.
+        // Without this the nested burn fails with Error(Auth, InvalidAction). Mirrors vault_withdraw.
+        use soroban_sdk::auth::{ContractContext, InvokerContractAuthEntry, SubContractInvocation};
+        let share_token = Self::get_pool_share_token(env.clone())?;
+        let auth_entries = soroban_sdk::vec![
+            &env,
+            InvokerContractAuthEntry::Contract(SubContractInvocation {
+                context: ContractContext {
+                    contract: share_token,
+                    fn_name: soroban_sdk::Symbol::new(&env, "burn"),
+                    args: (contract_address.clone(), share_amount).into_val(&env),
+                },
+                sub_invocations: soroban_sdk::vec![&env],
+            }),
+        ];
+        env.authorize_as_current_contract(auth_entries);
+
         // Call withdraw(user: address, share_amount: u128, min_amounts: vec<u128>) -> vec<u128>
         let result = env.try_invoke_contract::<soroban_sdk::Vec<u128>, soroban_sdk::Error>(
             &config.liquidity_contract,
@@ -2592,6 +2624,22 @@ impl StakingRegistry {
             Ok(Err(_)) => Err(Error::InvalidInput),
             Err(_) => Err(Error::InvalidInput)
         }
+    }
+
+    /// Admin: remove a fabricated / corrupt lock entry (e.g. a `record_lock`-injected phantom
+    /// identified during the 2026-07 audit). Deletes the `LockEntry` and removes its tx_hash
+    /// from the user's lock list. Moves NO tokens. Returns the `blub_locked` amount purged.
+    pub fn admin_purge_lock(env: Env, user: Address, tx_hash: Bytes) -> Result<(), Error> {
+        Self::require_admin_auth(&env)?;
+        // Delete the entry. Its tx_hash may remain in the user's UserLocks list, but a
+        // hash that resolves to no entry is skipped everywhere it is read (unstake,
+        // get_user_staking_info, get_user_lock_by_index), so the phantom is neutralized.
+        let key = DataKey::UserLockByTxHash(user, tx_hash);
+        if !env.storage().persistent().has(&key) {
+            return Err(Error::NotFound);
+        }
+        env.storage().persistent().remove(&key);
+        Ok(())
     }
 
     /// Retrieves the virtual price of the liquidity pool.
@@ -4435,7 +4483,6 @@ impl StakingRegistry {
         aqua_amount: i128,
         duration_years: u64,
     ) -> Result<u64, Error> {
-        let config = Self::get_config(env.clone())?;
         Self::require_manager_auth(&env, &manager)?;
 
         if aqua_amount <= 0 || duration_years == 0 || duration_years > 5 {
@@ -5389,7 +5436,6 @@ impl StakingRegistry {
         amount_a: i128,
         amount_b: i128,
     ) -> Result<i128, Error> {
-        let config = Self::get_config(env.clone())?;
         Self::require_manager_auth(&env, &manager)?;
 
         let mut pool_info: PoolInfo = env

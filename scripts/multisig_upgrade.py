@@ -14,8 +14,8 @@ from stellar_sdk import xdr as xdr_
 # ── Config ───────────────────────────────────────────────────────────────
 STAKING_CONTRACT   = "CC72BEVVKHQ57PB5FCKAZYRXCSR6DOQSTN46QR7RZMMM64YWNRPDS24S"
 MULTISIG_ADMIN     = "GALE4XON37AQ4KFTJKB3W32BUQGXFE46TQLKUIGBSIHSOEHTDBMKEI3M"
-NEW_WASM_HASH      = "9309715ef54a4d35b7d60c3f825702ca7ad6b1ca13d8b949e295c755dc99fb4c"
-RPC_URL            = "https://soroban-rpc.mainnet.stellar.gateway.fm"
+NEW_WASM_HASH      = "6e370b607e3ce105ae9280aa5d4953c9a08c9ef29e22d59bc6dcc58d719dce63"  # v2: adds withdraw_from_pool LP-burn authorization (POL top-up fix)
+RPC_URL            = "https://mainnet.sorobanrpc.com"
 NETWORK_PASSPHRASE = Network.PUBLIC_NETWORK_PASSPHRASE
 MAX_FEE            = 1_000_000
 
@@ -71,7 +71,7 @@ account = server.load_account(MULTISIG_ADMIN)
 tx = (
     TransactionBuilder(account, network_passphrase=NETWORK_PASSPHRASE, base_fee=MAX_FEE)
     .append_operation(invoke_op)
-    .set_timeout(300)
+    .set_timeout(3600)  # 1 hour window to collect the co-founder's 2nd signature
     .build()
 )
 
@@ -88,8 +88,14 @@ xdr = tx.to_xdr()
 link = "https://lab.stellar.org/transaction/sign?network=mainnet&xdr=" + urllib.parse.quote(xdr)
 
 import subprocess
-subprocess.run(["pbcopy"], input=xdr.encode(), check=True)
+try:
+    subprocess.run(["pbcopy"], input=xdr.encode(), check=True)
+except Exception:
+    pass
 
+print()
+print("RAW HALF-SIGNED XDR (copy this):")
+print(xdr)
 print()
 print("=" * 70)
 print("SIGNED WITH MASTER KEY — NEEDS ONE CO-FOUNDER SIGNATURE")

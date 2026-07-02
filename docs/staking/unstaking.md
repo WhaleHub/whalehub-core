@@ -13,10 +13,23 @@ flowchart TD
     Q2 -- Yes --> DEDUCT[Remove from staking balance]
     DEDUCT --> Q3{What type of lock?}
     Q3 -- AQUA lock --> SEND_A[Send AQUA back to user]
-    Q3 -- BLUB restake --> SEND_B[Send BLUB back to user]
+    Q3 -- BLUB restake --> Q4{Enough BLUB in the staking contract?}
+    Q4 -- Yes --> SEND_B[Send BLUB back to user]
+    Q4 -- No --> POL[Protocol withdraws from POL to replenish BLUB]
+    POL --> SEND_B
     SEND_A --> DONE[Done]
     SEND_B --> DONE
 ```
+
+## Liquidity backing (POL replenishment)
+
+A portion of staked value is held as **Protocol-Owned Liquidity (POL)** in the AQUA/BLUB
+pool rather than sitting idle in the staking contract. If the staking contract ever holds
+**insufficient BLUB to fulfil a withdrawal**, the protocol will **withdraw from POL** (unwinding
+part of the LP position back into AQUA + BLUB) to replenish the staking contract's BLUB balance
+as part of the unstaking procedure, so eligible users can withdraw successfully. This is an
+administrative step performed via the protocol's multisig and does not change your withdrawable
+amount.
 
 ## Timeline
 
@@ -33,3 +46,4 @@ Day 0          Day 30              Day 40
 - **Partial unstaking**: you can unstake specific lock positions without affecting others
 - **Rewards are separate**: unstaking does NOT claim your pending BLUB rewards — use [Claim Rewards](claiming-rewards.md) for that
 - **You receive back** the same token type you deposited (AQUA for AQUA locks, BLUB for BLUB restakes)
+- **Liquidity-backed**: if the staking contract is short on BLUB, the protocol withdraws from POL to cover your withdrawal (see [Liquidity backing](#liquidity-backing-pol-replenishment) above)
