@@ -1175,6 +1175,8 @@ impl StakingRegistry {
     }
 
 
+    // INTENTIONAL (2026-07): helper used only by process_pending_stakes for backend batch
+    // staking. Retained on purpose; not dead code to remove.
     fn create_blub_stake_entry(
         env: &Env,
         user: Address,
@@ -1975,6 +1977,10 @@ impl StakingRegistry {
     ///
     /// # State Changes
     /// - Updates user's reward totals based on reward kind
+    // INTENTIONAL (2026-07): manager-gated. The manager (single-sig backend) can credit rewards
+    // to a user; this power is NEEDED for backend reward distribution and is retained on purpose.
+    // Not migrating manager ops to multisig for now (per 2026-07 decision). Critical levers
+    // (mint authority / upgrade / config) remain multisig.
     pub fn credit_user_reward(
         env: Env,
         manager: Address,
@@ -3432,6 +3438,10 @@ impl StakingRegistry {
     /// # Returns
     /// * `Ok(u32)` - The number of stakes actually processed
     /// * `Err(Error)` if processing fails
+    // INTENTIONAL (2026-07): permissionless batch processor for the PendingStake queue.
+    // Currently inert (no code path writes PendingStakeCount/PendingStakeByIndex), and it only
+    // ever creates entries for already-queued pending stakes, so it cannot credit an unbacked
+    // stake. Retained on purpose for backend batch-staking; do NOT remove as "dead code".
     pub fn process_pending_stakes(env: Env, max_count: u32) -> Result<u32, Error> {
         let pending_count: u32 = env.storage().instance().get(&DataKey::PendingStakeCount).unwrap_or(0);
         
