@@ -1,5 +1,5 @@
 import {
-  SorobanRpc,
+  rpc,
   Address,
   Contract,
   Keypair,
@@ -38,8 +38,8 @@ interface TransactionOptions {
 }
 
 export class SorobanService {
-  private server: SorobanRpc.Server;
-  private fallbackServer: SorobanRpc.Server;
+  private server: rpc.Server;
+  private fallbackServer: rpc.Server;
   private contractConfig: ContractConfig;
 
   constructor() {
@@ -73,8 +73,8 @@ export class SorobanService {
       process.env.REACT_APP_SOROBAN_FALLBACK_RPC_URL ||
       "https://soroban-rpc.mainnet.stellar.gateway.fm";
 
-    this.server = new SorobanRpc.Server(this.contractConfig.rpcUrl);
-    this.fallbackServer = new SorobanRpc.Server(fallbackRpc);
+    this.server = new rpc.Server(this.contractConfig.rpcUrl);
+    this.fallbackServer = new rpc.Server(fallbackRpc);
 
     // Monkey-patch the primary server's read-path methods to retry and then
     // transparently fall over to the fallback. ~30 call sites in this file
@@ -123,7 +123,7 @@ export class SorobanService {
    * fallback server. Bound at construction so existing call sites are
    * unchanged.
    */
-  private installReadFailover<K extends keyof SorobanRpc.Server>(method: K): void {
+  private installReadFailover<K extends keyof rpc.Server>(method: K): void {
     const primary = this.server;
     const fallback = this.fallbackServer;
     const primaryFn = (primary[method] as any).bind(primary);
@@ -210,7 +210,7 @@ export class SorobanService {
         transaction
       );
 
-      if (SorobanRpc.Api.isSimulationError(simulationResponse)) {
+      if (rpc.Api.isSimulationError(simulationResponse)) {
         const error = `Simulation failed: ${simulationResponse.error}`;
         console.error("❌ [SorobanService] Simulation error:", error);
         return { success: false, error };
@@ -268,7 +268,7 @@ export class SorobanService {
         const simulationResponse = await this.server.simulateTransaction(
           transaction
         );
-        if (SorobanRpc.Api.isSimulationError(simulationResponse)) {
+        if (rpc.Api.isSimulationError(simulationResponse)) {
           return {
             success: false,
             error: `Simulation failed: ${simulationResponse.error}`,
@@ -499,7 +499,7 @@ export class SorobanService {
         throw simError;
       }
 
-      if (SorobanRpc.Api.isSimulationError(simulationResponse)) {
+      if (rpc.Api.isSimulationError(simulationResponse)) {
         const error = `Simulation failed: ${simulationResponse.error}`;
         console.error("❌ [SorobanService] Simulation error:", error);
         throw new Error(error);
@@ -512,7 +512,6 @@ export class SorobanService {
       console.log("📋 [SorobanService] Simulation returned:", {
         hasAuth: authCount > 0,
         authEntries: authCount,
-        cost: simulationResponse.cost,
         minResourceFee: simulationResponse.minResourceFee,
       });
 
@@ -523,7 +522,7 @@ export class SorobanService {
       }
 
       // Use assembleTransaction to add auth and resource data
-      transaction = SorobanRpc.assembleTransaction(
+      transaction = rpc.assembleTransaction(
         transaction,
         simulationResponse
       ).build();
@@ -808,14 +807,14 @@ export class SorobanService {
       return nativeToScVal(value, { type: "i128" });
     }
 
-    // Handle boolean
+    // Handle boolean (SDK 16 infers scvBool from a boolean; no type hint needed)
     if (typeof value === "boolean") {
-      return nativeToScVal(value, { type: "bool" });
+      return nativeToScVal(value);
     }
 
-    // Handle arrays
+    // Handle arrays (SDK 16 infers scvVec from an array; no type hint needed)
     if (Array.isArray(value)) {
-      return nativeToScVal(value, { type: "vec" });
+      return nativeToScVal(value);
     }
 
     // Handle other strings as symbols
@@ -1619,7 +1618,7 @@ export class SorobanService {
   /**
    * Get RPC server instance
    */
-  getServer(): SorobanRpc.Server {
+  getServer(): rpc.Server {
     return this.server;
   }
 

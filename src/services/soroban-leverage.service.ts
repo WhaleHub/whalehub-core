@@ -8,7 +8,7 @@
 import {
   Address,
   Contract,
-  SorobanRpc,
+  rpc,
   TransactionBuilder,
   nativeToScVal,
   scValToNative,
@@ -75,8 +75,8 @@ export interface TxResult {
 }
 
 export class SorobanLeverageService {
-  private server: SorobanRpc.Server;
-  private sendServer: SorobanRpc.Server;
+  private server: rpc.Server;
+  private sendServer: rpc.Server;
   private vaultId: string;
   private networkPassphrase: string;
 
@@ -84,8 +84,8 @@ export class SorobanLeverageService {
   private dummyAccountFetchedAt = 0;
 
   constructor() {
-    this.server = new SorobanRpc.Server(TESTNET_RPC);
-    this.sendServer = new SorobanRpc.Server(TESTNET_RPC);
+    this.server = new rpc.Server(TESTNET_RPC);
+    this.sendServer = new rpc.Server(TESTNET_RPC);
     this.vaultId = SOROBAN_CONFIG.leverage.vaultContractId;
     this.networkPassphrase = TESTNET_PASSPHRASE;
   }
@@ -144,10 +144,10 @@ export class SorobanLeverageService {
       .build();
 
     const sim = await this.withRetry(() => this.server.simulateTransaction(tx));
-    if (SorobanRpc.Api.isSimulationError(sim)) {
+    if (rpc.Api.isSimulationError(sim)) {
       throw new Error(`Simulation failed (${method}): ${sim.error}`);
     }
-    const retval = (sim as SorobanRpc.Api.SimulateTransactionSuccessResponse).result?.retval;
+    const retval = (sim as rpc.Api.SimulateTransactionSuccessResponse).result?.retval;
     return scValToNative(retval as any) as T;
   }
 
@@ -190,10 +190,10 @@ export class SorobanLeverageService {
         .build();
 
       const sim = await this.withRetry(() => this.server.simulateTransaction(tx));
-      if (SorobanRpc.Api.isSimulationError(sim)) {
+      if (rpc.Api.isSimulationError(sim)) {
         throw new Error(`Simulation failed: ${sim.error}`);
       }
-      tx = SorobanRpc.assembleTransaction(tx, sim).build();
+      tx = rpc.assembleTransaction(tx, sim).build();
 
       const txXdr = tx.toXDR();
       const signOpts = { address: userAddress, networkPassphrase: this.networkPassphrase };
