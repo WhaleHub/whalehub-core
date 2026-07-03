@@ -1,7 +1,7 @@
 import {
   Address,
   Contract,
-  SorobanRpc,
+  rpc,
   TransactionBuilder,
   Networks,
   nativeToScVal,
@@ -58,9 +58,9 @@ const isWCConnectionError = (e: any): boolean => {
 };
 
 export class SorobanVaultService {
-  private server: SorobanRpc.Server;      // reads: getAccount, simulate, getTransaction
-  private fallbackServer: SorobanRpc.Server; // fallback read RPC if primary fails
-  private sendServer: SorobanRpc.Server;  // writes: sendTransaction only (gateway FM)
+  private server: rpc.Server;      // reads: getAccount, simulate, getTransaction
+  private fallbackServer: rpc.Server; // fallback read RPC if primary fails
+  private sendServer: rpc.Server;  // writes: sendTransaction only (gateway FM)
   private stakingContractId: string;
   private networkPassphrase: string;
 
@@ -76,10 +76,10 @@ export class SorobanVaultService {
     // Send RPC: gateway FM handles complex tx submission better
     const sendRpc = process.env.REACT_APP_VAULT_RPC_URL || "https://soroban-rpc.mainnet.stellar.gateway.fm";
 
-    this.server = new SorobanRpc.Server(readRpc);
+    this.server = new rpc.Server(readRpc);
     // If primary read RPC fails, fall back to gateway FM (it can do reads too)
-    this.fallbackServer = new SorobanRpc.Server(sendRpc);
-    this.sendServer = new SorobanRpc.Server(sendRpc);
+    this.fallbackServer = new rpc.Server(sendRpc);
+    this.sendServer = new rpc.Server(sendRpc);
     this.stakingContractId = process.env.REACT_APP_STAKING_CONTRACT_ID || "";
     this.networkPassphrase = (network === "public" || network === "mainnet")
       ? Networks.PUBLIC
@@ -120,7 +120,7 @@ export class SorobanVaultService {
   }
 
   // Simulate with retry + automatic fallback to second RPC on failure
-  private async simulateTx(tx: any): Promise<SorobanRpc.Api.SimulateTransactionResponse> {
+  private async simulateTx(tx: any): Promise<rpc.Api.SimulateTransactionResponse> {
     try {
       return await this.withRetry(() => this.server.simulateTransaction(tx));
     } catch (primaryErr: any) {
@@ -222,7 +222,7 @@ export class SorobanVaultService {
 
       const simulated = await this.simulateTx(tx);
 
-      if (SorobanRpc.Api.isSimulationSuccess(simulated)) {
+      if (rpc.Api.isSimulationSuccess(simulated)) {
         const result = simulated.result?.retval;
         return result ? scValToNative(result) : 0;
       }
@@ -254,7 +254,7 @@ export class SorobanVaultService {
 
       const simulated = await this.simulateTx(tx);
 
-      if (SorobanRpc.Api.isSimulationSuccess(simulated)) {
+      if (rpc.Api.isSimulationSuccess(simulated)) {
         const result = simulated.result?.retval;
         const poolInfo = result ? scValToNative(result) : null;
 
@@ -300,7 +300,7 @@ export class SorobanVaultService {
 
       const simulated = await this.simulateTx(tx);
 
-      if (SorobanRpc.Api.isSimulationSuccess(simulated)) {
+      if (rpc.Api.isSimulationSuccess(simulated)) {
         const result = simulated.result?.retval;
         return result ? parseFloat(scValToNative(result)) : 0;
       }
@@ -337,7 +337,7 @@ export class SorobanVaultService {
 
       const simulated = await this.simulateTx(tx);
 
-      if (SorobanRpc.Api.isSimulationSuccess(simulated)) {
+      if (rpc.Api.isSimulationSuccess(simulated)) {
         const result = simulated.result?.retval;
         const position = result ? scValToNative(result) : null;
 
@@ -432,12 +432,12 @@ export class SorobanVaultService {
       // Simulate to prepare transaction
       const simulated = await this.simulateTx(tx);
 
-      if (SorobanRpc.Api.isSimulationError(simulated)) {
+      if (rpc.Api.isSimulationError(simulated)) {
         throw new Error(`Simulation failed: ${simulated.error}`);
       }
 
       // Prepare transaction with auth
-      tx = SorobanRpc.assembleTransaction(tx, simulated).build();
+      tx = rpc.assembleTransaction(tx, simulated).build();
 
       // Sign transaction — with WalletConnect reconnect retry on stale session
       const txXdr = tx.toXDR();
@@ -543,12 +543,12 @@ export class SorobanVaultService {
       // Simulate to prepare transaction
       const simulated = await this.simulateTx(tx);
 
-      if (SorobanRpc.Api.isSimulationError(simulated)) {
+      if (rpc.Api.isSimulationError(simulated)) {
         throw new Error(`Simulation failed: ${simulated.error}`);
       }
 
       // Prepare transaction with auth
-      tx = SorobanRpc.assembleTransaction(tx, simulated).build();
+      tx = rpc.assembleTransaction(tx, simulated).build();
 
       // Sign transaction
       const txXdr = tx.toXDR();
@@ -654,12 +654,12 @@ export class SorobanVaultService {
       // Simulate to prepare transaction
       const simulated = await this.simulateTx(tx);
 
-      if (SorobanRpc.Api.isSimulationError(simulated)) {
+      if (rpc.Api.isSimulationError(simulated)) {
         throw new Error(`Simulation failed: ${simulated.error}`);
       }
 
       // Prepare transaction with auth
-      tx = SorobanRpc.assembleTransaction(tx, simulated).build();
+      tx = rpc.assembleTransaction(tx, simulated).build();
 
       // Sign transaction — with WalletConnect reconnect retry on stale session
       const txXdr = tx.toXDR();
@@ -732,7 +732,7 @@ export class SorobanVaultService {
 
       const simulated = await this.simulateTx(tx);
 
-      if (SorobanRpc.Api.isSimulationSuccess(simulated)) {
+      if (rpc.Api.isSimulationSuccess(simulated)) {
         const result = simulated.result?.retval;
         const symbol = result ? scValToNative(result) : "UNKNOWN";
         // Convert "native" to "XLM" for display
@@ -862,7 +862,7 @@ export class SorobanVaultService {
 
       let reserveA = "0", reserveB = "0", totalLpSupply = "0";
 
-      if (SorobanRpc.Api.isSimulationSuccess(reservesSim)) {
+      if (rpc.Api.isSimulationSuccess(reservesSim)) {
         const result = reservesSim.result?.retval;
         const reserves = result ? scValToNative(result) : [0, 0];
         const raw0 = Number(reserves[0] || 0);
@@ -880,7 +880,7 @@ export class SorobanVaultService {
       }
 
       // Try get_total_shares from pool
-      if (SorobanRpc.Api.isSimulationSuccess(totalSharesSim)) {
+      if (rpc.Api.isSimulationSuccess(totalSharesSim)) {
         const result = totalSharesSim.result?.retval;
         const supply = result ? scValToNative(result) : 0;
         const supplyNum = typeof supply === 'bigint' ? Number(supply) : Number(supply);
@@ -890,7 +890,7 @@ export class SorobanVaultService {
       }
 
       // If still 0, try to get LP token from share_id and query its total_supply
-      if (totalLpSupply === "0" && SorobanRpc.Api.isSimulationSuccess(shareIdSim)) {
+      if (totalLpSupply === "0" && rpc.Api.isSimulationSuccess(shareIdSim)) {
         const result = shareIdSim.result?.retval;
         const actualLpToken = result ? scValToNative(result) : null;
 
@@ -905,7 +905,7 @@ export class SorobanVaultService {
             .build();
 
           const supplySim = await this.simulateTx(supplyTx);
-          if (SorobanRpc.Api.isSimulationSuccess(supplySim)) {
+          if (rpc.Api.isSimulationSuccess(supplySim)) {
             const supplyResult = supplySim.result?.retval;
             const supply = supplyResult ? scValToNative(supplyResult) : 0;
             const supplyNum = typeof supply === 'bigint' ? Number(supply) : Number(supply);
@@ -928,7 +928,7 @@ export class SorobanVaultService {
           .build();
 
         const supplySim = await this.simulateTx(supplyTx);
-        if (SorobanRpc.Api.isSimulationSuccess(supplySim)) {
+        if (rpc.Api.isSimulationSuccess(supplySim)) {
           const supplyResult = supplySim.result?.retval;
           const supply = supplyResult ? scValToNative(supplyResult) : 0;
           const supplyNum = typeof supply === 'bigint' ? Number(supply) : Number(supply);
@@ -971,7 +971,7 @@ export class SorobanVaultService {
 
       const simulated = await this.simulateTx(tx);
 
-      if (SorobanRpc.Api.isSimulationSuccess(simulated)) {
+      if (rpc.Api.isSimulationSuccess(simulated)) {
         const result = simulated.result?.retval;
         const balance = result ? scValToNative(result) : 0;
         // Convert from stroops (7 decimals) to human readable
@@ -1030,7 +1030,7 @@ export class SorobanVaultService {
 
       const simulated = await this.simulateTx(tx);
 
-      if (SorobanRpc.Api.isSimulationSuccess(simulated)) {
+      if (rpc.Api.isSimulationSuccess(simulated)) {
         const result = simulated.result?.retval;
         const stats = result ? scValToNative(result) : null;
 
@@ -1077,7 +1077,7 @@ export class SorobanVaultService {
 
       const simulated = await this.simulateTx(tx);
 
-      if (SorobanRpc.Api.isSimulationSuccess(simulated)) {
+      if (rpc.Api.isSimulationSuccess(simulated)) {
         const result = simulated.result?.retval;
         const data = result ? scValToNative(result) : null;
 
@@ -1142,7 +1142,7 @@ export class SorobanVaultService {
           .setTimeout(30)
           .build();
         const sim = await this.simulateTx(tx);
-        if (SorobanRpc.Api.isSimulationSuccess(sim) && sim.result?.retval) {
+        if (rpc.Api.isSimulationSuccess(sim) && sim.result?.retval) {
           poolLp = Number(scValToNative(sim.result.retval)) / 1e7;
         }
       }
