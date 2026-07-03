@@ -23,10 +23,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install Puppeteer (bundled Chromium)
-        run: npm init -y && npm install puppeteer@^23
-
-      - name: Read live APY from the dApp
+      - name: Read live APY from the backend (same endpoint the dApp uses)
         run: node scripts/fetch-live-apy.cjs
 
       - name: Commit apy.json if changed

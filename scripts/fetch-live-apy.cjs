@@ -1,51 +1,51 @@
 #!/usr/bin/env node
 /**
- * Reads the LIVE "Current APY" the dApp itself renders at app.whalehub.io/stake/aqua
- * (the value is in the public DOM — no wallet needed) and writes website-redesign/apy.json.
+ * Publishes website-redesign/apy.json with the SAME "Current APY" the dApp shows
+ * at app.whalehub.io/stake/aqua.
  *
- * This is formula-agnostic: the website always shows exactly what the dApp shows, even as
- * the on-chain APY math evolves. Run hourly by .github/workflows/live-apy.yml.
+ * The dApp reads GET /public/staking-apy?window_days=7 and renders that value,
+ * falling back to a fixed steady-state rate when the indexer has no events in the
+ * window (see src/hooks/useStakingApy.ts + STKAqua.tsx, which calls it with 7).
+ * We read the exact same endpoint here, so the website always matches the dApp
+ * without a headless browser (no Puppeteer/Chromium, no DOM-scrape races).
  *
- * Local run:  PUPPETEER_EXECUTABLE_PATH="C:/Program Files/Google/Chrome/Application/chrome.exe" node scripts/fetch-live-apy.cjs
- * CI:         `npm i puppeteer` provides a bundled Chromium automatically.
+ * Run hourly by .github/workflows/live-apy.yml.
+ * Local run:  node scripts/fetch-live-apy.cjs
  */
 const fs = require('fs');
 const path = require('path');
 
-const URL = process.env.DAPP_URL || 'https://app.whalehub.io/stake/aqua';
+const API =
+  process.env.STAKING_APY_URL ||
+  'https://whalehub-server-28ipy.ondigitalocean.app/public/staking-apy';
+// Must match the window STKAqua passes to useStakingApy (currently 7).
+const WINDOW_DAYS = process.env.STAKING_APY_WINDOW_DAYS || '7';
+// Must match FALLBACK_APY in src/hooks/useStakingApy.ts.
+const FALLBACK_APY = '17.88';
 const OUT = path.join(__dirname, '..', 'website-redesign', 'apy.json');
 
-let puppeteer;
-try { puppeteer = require('puppeteer'); }
-catch { puppeteer = require('puppeteer-core'); }
-
 (async () => {
-  const launchOpts = { headless: 'new', args: ['--no-sandbox', '--disable-gpu'] };
-  if (process.env.PUPPETEER_EXECUTABLE_PATH) launchOpts.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+  const url = `${API}?window_days=${WINDOW_DAYS}`;
+  const res = await fetch(url, { headers: { accept: 'application/json' } });
+  if (!res.ok) throw new Error(`staking-apy HTTP ${res.status}`);
+  const data = await res.json();
 
-  const browser = await puppeteer.launch(launchOpts);
-  const page = await browser.newPage();
-  await page.goto(URL, { waitUntil: 'networkidle2', timeout: 60000 });
+  // Reproduce the dApp's exact logic: use the indexer value only when the window
+  // actually has events, otherwise show the fallback (never "--", never 0).
+  const hasEvents = data && data.apy && data.apy !== '--' && Number(data.eventCount) > 0;
+  const raw = hasEvents ? data.apy : FALLBACK_APY;
+  const apy = parseFloat(raw);
+  if (isNaN(apy)) throw new Error(`unparseable apy: ${raw}`);
 
-  // Wait until "Current APY … NN.NN%" is rendered (on-chain read resolves client-side).
-  await page.waitForFunction(
-    () => /Current APY[\s\S]{0,40}?\d+(?:\.\d+)?\s*%/.test(document.body.innerText),
-    { timeout: 45000 }
-  );
-
-  const apy = await page.evaluate(() => {
-    const m = document.body.innerText.match(/Current APY[\s\S]{0,40}?([\d,]+(?:\.\d+)?)\s*%/);
-    return m ? m[1].replace(/,/g, '') : null;
-  });
-  await browser.close();
-
-  if (!apy || isNaN(parseFloat(apy))) throw new Error('could not read Current APY from dApp');
-
-  const payload = { apy: parseFloat(apy).toFixed(2), updated: new Date().toISOString(), source: 'app.whalehub.io' };
+  const payload = {
+    apy: apy.toFixed(2),
+    updated: new Date().toISOString(),
+    source: hasEvents ? 'staking-apy indexer' : 'fallback',
+  };
   fs.writeFileSync(OUT, JSON.stringify(payload, null, 2) + '\n');
   console.log('live APY ->', payload);
 })().catch((e) => {
   // Never break the site — keep the previous apy.json.
-  console.warn('live-apy: keeping previous value —', e.message || e);
+  console.warn('live-apy: keeping previous value -', e.message || e);
   process.exit(0);
 });
