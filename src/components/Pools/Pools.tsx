@@ -269,12 +269,12 @@ function BlubAqua() {
         provideLiquidity({
           asset1: {
             code: poolAsset1.code,
-            issuer: poolAsset1.isNative() ? "" : poolAsset1.issuer,
+            issuer: poolAsset1.isNative() ? "" : poolAsset1.issuer ?? "",
             amount: stakeAmount1,
           },
           asset2: {
             code: poolAsset2.code,
-            issuer: poolAsset2.isNative() ? "" : poolAsset2.issuer,
+            issuer: poolAsset2.isNative() ? "" : poolAsset2.issuer ?? "",
             amount: stakeAmount2,
           },
           signedTxXdr,
