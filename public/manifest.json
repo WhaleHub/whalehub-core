@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "WhaleHub",
+  "name": "WhaleHub — Stake AQUA, Earn BLUB Rewards",
+  "description": "WhaleHub is a Stellar yield-optimization platform. Stake AQUA to mint BLUB and earn boosted liquidity-mining rewards.",
   "icons": [
     {
       "src": "favicon.ico",

@@ -4,8 +4,45 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Stake AQUA and earn rewards." />
+    <meta name="theme-color" content="#0E111B" />
+
+    <!-- Primary SEO meta -->
+    <meta
+      name="description"
+      content="WhaleHub is a Stellar yield-optimization platform. Stake AQUA to mint BLUB and earn boosted AMM liquidity-mining rewards, vote with ICE, and access leveraged LP farming."
+    />
+    <meta
+      name="keywords"
+      content="WhaleHub, AQUA staking, BLUB, Stellar DeFi, Aquarius, liquidity mining, yield optimization, ICE voting, leveraged farming, stake AQUA, Stellar rewards"
+    />
+    <meta name="author" content="WhaleHub" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://app.whalehub.io/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="WhaleHub" />
+    <meta property="og:url" content="https://app.whalehub.io/" />
+    <meta property="og:title" content="WhaleHub — Stake AQUA, Earn Boosted BLUB Rewards on Stellar" />
+    <meta
+      property="og:description"
+      content="Stake AQUA to mint BLUB and earn boosted liquidity-mining rewards on Stellar. Vote with ICE and access leveraged LP farming with WhaleHub."
+    />
+    <meta property="og:image" content="https://app.whalehub.io/whalehub_logo.png" />
+    <meta property="og:image:alt" content="WhaleHub logo" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@whalehubdefi" />
+    <meta name="twitter:creator" content="@whalehubdefi" />
+    <meta name="twitter:title" content="WhaleHub — Stake AQUA, Earn Boosted BLUB Rewards on Stellar" />
+    <meta
+      name="twitter:description"
+      content="Stake AQUA to mint BLUB and earn boosted liquidity-mining rewards on Stellar. Vote with ICE and access leveraged LP farming with WhaleHub."
+    />
+    <meta name="twitter:image" content="https://app.whalehub.io/whalehub_logo.png" />
+
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
@@ -29,7 +66,48 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>Whalehub AQUA Staking</title>
+    <title>WhaleHub — Stake AQUA, Earn Boosted BLUB Rewards on Stellar</title>
+
+    <!-- Structured data for Google & AI answer engines -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://app.whalehub.io/#organization",
+            "name": "WhaleHub",
+            "url": "https://app.whalehub.io/",
+            "logo": "https://app.whalehub.io/whalehub_logo.png",
+            "description": "WhaleHub is a Stellar yield-optimization platform that lets users stake AQUA for boosted rewards by minting BLUB.",
+            "email": "contact@whalehub.io",
+            "sameAs": [
+              "https://twitter.com/whalehubdefi",
+              "https://x.com/whalehubdefi",
+              "https://github.com/WhaleHubDev"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://app.whalehub.io/#website",
+            "url": "https://app.whalehub.io/",
+            "name": "WhaleHub",
+            "publisher": { "@id": "https://app.whalehub.io/#organization" },
+            "description": "Stake AQUA to mint BLUB and earn boosted liquidity-mining rewards on Stellar."
+          },
+          {
+            "@type": "WebApplication",
+            "name": "WhaleHub",
+            "url": "https://app.whalehub.io/",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "Web",
+            "browserRequirements": "Requires JavaScript and a Stellar-compatible wallet.",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "description": "WhaleHub lets Stellar users stake AQUA to mint BLUB and earn boosted AMM liquidity-mining rewards, vote with ICE, and access leveraged LP farming."
+          }
+        ]
+      }
+    </script>
 
     <!-- Cookiebot Consent Manager -->
     <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="f7cf79ad-5f55-4380-8621-f9ce77189d9e" data-blockingmode="auto" type="text/javascript"></script>
