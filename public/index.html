@@ -63,6 +63,24 @@
       #CybotCookiebotDialog input:checked + .CybotCookiebotDialogBodyLevelButtonSlider { background: #00CC99 !important; }
       #CybotCookiebotDialogPoweredByText a { color: #6B7280 !important; }
       #CybotCookiebotDialogBodyEdgeMoreDetailsLink { color: #00CC99 !important; }
+      /* Show the consent dialog anchored to the bottom instead of centered */
+      #CybotCookiebotDialog {
+        top: auto !important;
+        bottom: 24px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        margin: 0 !important;
+      }
+      @media (max-width: 600px) {
+        #CybotCookiebotDialog {
+          bottom: 0 !important;
+          left: 0 !important;
+          transform: none !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          border-radius: 0 !important;
+        }
+      }
     </style>
   </head>
   <body>
