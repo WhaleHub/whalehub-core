@@ -27,3 +27,4 @@ docs/planning/prd.md
 /_bmad
 scripts/
 deploy-contracts.sh
+soroban-contracts/**/test_snapshots/

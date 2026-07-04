@@ -4,6 +4,9 @@ use soroban_sdk::{
     auth::{ContractContext, InvokerContractAuthEntry, SubContractInvocation},
 };
 
+#[cfg(test)]
+mod test;
+
 // ============================================================================
 // Aquarius Pool Interface (External Contract)
 // ============================================================================
@@ -13,16 +16,16 @@ mod aquarius_pool {
 
     #[contractclient(name = "AquariusPoolClient")]
     pub trait AquariusPoolTrait {
-        /// Claims rewards from the pool
-        /// Returns: Amount of reward tokens claimed
+        // Claims rewards from the pool
+        // Returns: Amount of reward tokens claimed
         fn claim(env: Env, user: Address) -> u128;
 
-        /// Deposits tokens to the pool
-        /// Parameters:
-        /// - user: Address depositing
-        /// - desired_amounts: Vec<u128> of [token_a_amount, token_b_amount]
-        /// - min_shares: u128 minimum LP tokens to receive
-        /// Returns: (actual_amounts: Vec<u128>, shares_minted: u128)
+        // Deposits tokens to the pool
+        // Parameters:
+        // - user: Address depositing
+        // - desired_amounts: Vec<u128> of [token_a_amount, token_b_amount]
+        // - min_shares: u128 minimum LP tokens to receive
+        // Returns: (actual_amounts: Vec<u128>, shares_minted: u128)
         fn deposit(
             env: Env,
             user: Address,
@@ -30,12 +33,12 @@ mod aquarius_pool {
             min_shares: u128,
         ) -> (Vec<u128>, u128);
 
-        /// Withdraws from the pool
-        /// Parameters:
-        /// - user: Address withdrawing
-        /// - share_amount: u128 LP tokens to burn
-        /// - min_amounts: Vec<u128> minimum tokens to receive
-        /// Returns: Vec<u128> actual amounts withdrawn
+        // Withdraws from the pool
+        // Parameters:
+        // - user: Address withdrawing
+        // - share_amount: u128 LP tokens to burn
+        // - min_amounts: Vec<u128> minimum tokens to receive
+        // Returns: Vec<u128> actual amounts withdrawn
         fn withdraw(
             env: Env,
             user: Address,
@@ -43,20 +46,20 @@ mod aquarius_pool {
             min_amounts: Vec<u128>,
         ) -> Vec<u128>;
 
-        /// Gets pool information
+        // Gets pool information
         fn get_info(env: Env) -> Map<Symbol, Val>;
 
-        /// Gets pool reserves
+        // Gets pool reserves
         fn get_reserves(env: Env) -> Vec<u128>;
 
-        /// Gets total LP shares in circulation
+        // Gets total LP shares in circulation
         fn get_total_shares(env: Env) -> u128;
     }
 }
 
 use aquarius_pool::AquariusPoolClient;
 
-/// Old Config struct for migration (matches deployed v1.0.0 contract)
+// Old Config struct for migration (matches deployed v1.0.0 contract)
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct OldConfig {
@@ -72,7 +75,7 @@ pub struct OldConfig {
     pub version: u32,
 }
 
-/// Config struct for v1.1.0 (before cooldown fields were added)
+// Config struct for v1.1.0 (before cooldown fields were added)
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ConfigV1_1 {
@@ -93,9 +96,9 @@ pub struct ConfigV1_1 {
     pub vault_fee_bps: u32,
 }
 
-/// New Config struct (v1.2.0)
-/// Version encoding: major * 10000 + minor * 100 + patch
-/// 1.2.0 = 10200
+// New Config struct (v1.2.0)
+// Version encoding: major * 10000 + minor * 100 + patch
+// 1.2.0 = 10200
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Config {
@@ -193,11 +196,11 @@ pub struct LpPosition {
 // SYNTHETIX-STYLE REWARD SYSTEM (v1.2.0)
 // ============================================================================
 
-/// Precision constant for reward calculations (1e12)
-/// Used to maintain precision in reward_per_token calculations
+// Precision constant for reward calculations (1e12)
+// Used to maintain precision in reward_per_token calculations
 pub const REWARD_PRECISION: i128 = 1_000_000_000_000;
 
-/// Global reward state - tracks accumulated rewards for the entire pool
+// Global reward state - tracks accumulated rewards for the entire pool
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct RewardState {
@@ -208,7 +211,7 @@ pub struct RewardState {
     pub total_rewards_claimed: i128,
 }
 
-/// Per-user reward state - tracks each user's reward accounting
+// Per-user reward state - tracks each user's reward accounting
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct UserRewardState {
@@ -219,7 +222,7 @@ pub struct UserRewardState {
     pub total_claimed: i128,
 }
 
-/// Event emitted when backend adds rewards
+// Event emitted when backend adds rewards
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct RewardsAddedEvent {
@@ -229,7 +232,7 @@ pub struct RewardsAddedEvent {
     pub timestamp: u64,
 }
 
-/// Event emitted when user claims rewards
+// Event emitted when user claims rewards
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct RewardsClaimedEvent {
@@ -239,7 +242,7 @@ pub struct RewardsClaimedEvent {
     pub timestamp: u64,
 }
 
-/// User reward info for view function
+// User reward info for view function
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct UserRewardInfo {
@@ -251,7 +254,7 @@ pub struct UserRewardInfo {
     pub claim_available_at: u64,
 }
 
-/// Unstake status for a specific lock entry
+// Unstake status for a specific lock entry
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct UnstakeStatus {
@@ -378,8 +381,8 @@ pub struct UserVaultPosition {
     pub active: bool,
 }
 
-/// Tracks cumulative compound stats per vault pool.
-/// Stored separately from PoolInfo to preserve upgrade compatibility.
+// Tracks cumulative compound stats per vault pool.
+// Stored separately from PoolInfo to preserve upgrade compatibility.
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct PoolCompoundStats {
@@ -567,8 +570,8 @@ pub struct PolContributionEvent {
     pub tx_hash: Bytes,
 }
 
-/// Event emitted when tokens are sent to admin for LP deposit
-/// Backend should listen for this event and deposit to AQUA/BLUB pool
+// Event emitted when tokens are sent to admin for LP deposit
+// Backend should listen for this event and deposit to AQUA/BLUB pool
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct PolDepositTriggerEvent {
@@ -590,7 +593,7 @@ pub struct PolRewardsClaimedEvent {
     pub timestamp: u64,
 }
 
-/// Event emitted when AQUA revenue is converted to BLUB rewards
+// Event emitted when AQUA revenue is converted to BLUB rewards
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct AquaRewardsConvertedEvent {
@@ -616,23 +619,23 @@ pub struct StakingRegistry;
 
 #[contractimpl]
 impl StakingRegistry {
-    /// Initializes the staking contract with required configuration.
-    ///
-    /// # Arguments
-    /// * `env` - The contract environment
-    /// * `admin` - The administrator address that will have privileged access
-    /// * `treasury_address` - Address where treasury fees are sent
-    /// * `aqua_token` - Contract address of the AQUA token
-    /// * `blub_token` - Contract address of the BLUB token (Stellar asset)
-    /// * `liquidity_contract` - Address of the AQUA/BLUB StableSwap pool contract
-    /// * `ice_contract` - Address of the ICE locking contract for governance
-    ///
-    /// # Returns
-    /// * `Ok(())` on success
-    /// * `Err(Error::AlreadyInitialized)` if contract is already initialized
-    ///
-    /// # Authorization
-    /// Requires authorization from the `admin` address.
+    // Initializes the staking contract with required configuration.
+    //
+    // # Arguments
+    // * `env` - The contract environment
+    // * `admin` - The administrator address that will have privileged access
+    // * `treasury_address` - Address where treasury fees are sent
+    // * `aqua_token` - Contract address of the AQUA token
+    // * `blub_token` - Contract address of the BLUB token (Stellar asset)
+    // * `liquidity_contract` - Address of the AQUA/BLUB StableSwap pool contract
+    // * `ice_contract` - Address of the ICE locking contract for governance
+    //
+    // # Returns
+    // * `Ok(())` on success
+    // * `Err(Error::AlreadyInitialized)` if contract is already initialized
+    //
+    // # Authorization
+    // Requires authorization from the `admin` address.
     pub fn initialize(
         env: Env,
         admin: Address,
@@ -720,11 +723,11 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Retrieves the current contract configuration.
-    ///
-    /// # Returns
-    /// * `Ok(Config)` - The contract configuration
-    /// * `Err(Error::NotInitialized)` if contract is not initialized
+    // Retrieves the current contract configuration.
+    //
+    // # Returns
+    // * `Ok(Config)` - The contract configuration
+    // * `Err(Error::NotInitialized)` if contract is not initialized
     pub fn get_config(env: Env) -> Result<Config, Error> {
         env.storage()
             .instance()
@@ -734,8 +737,8 @@ impl StakingRegistry {
 
     // Staking/unstaking/restaking logic
 
-    /// Helper function to deposit POL assets to AQUA-BLUB LP pool on Stellar network
-    /// Uses the existing StableSwap pool interface
+    // Helper function to deposit POL assets to AQUA-BLUB LP pool on Stellar network
+    // Uses the existing StableSwap pool interface
     fn deposit_pol_to_lp(
         env: &Env,
         config: &Config,
@@ -909,18 +912,18 @@ impl StakingRegistry {
         }
     }
 
-    /// Updates the admin for the BLUB Stellar Asset Contract (SAC).
-    ///
-    /// # Arguments
-    /// * `admin` - The current admin address
-    /// * `new_admin` - The new admin address to set
-    ///
-    /// # Returns
-    /// * `Ok(())` on success
-    /// * `Err(Error::Unauthorized)` if caller is not the admin
-    ///
-    /// # Authorization
-    /// Requires authorization from the current `admin` address.
+    // Updates the admin for the BLUB Stellar Asset Contract (SAC).
+    //
+    // # Arguments
+    // * `admin` - The current admin address
+    // * `new_admin` - The new admin address to set
+    //
+    // # Returns
+    // * `Ok(())` on success
+    // * `Err(Error::Unauthorized)` if caller is not the admin
+    //
+    // # Authorization
+    // Requires authorization from the current `admin` address.
     pub fn update_sac_admin(env: Env, admin: Address, new_admin: Address) -> Result<(), Error> {
         admin.require_auth();
         
@@ -938,34 +941,34 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Stake AQUA tokens and automatically mint BLUB tokens for staking.
-    ///
-    /// This function performs the following operations:
-    /// - Transfers AQUA from user to contract
-    /// - Mints 1.1x BLUB tokens (110% of AQUA amount)
-    /// - Sends 90% of AQUA to ICE contract for governance
-    /// - Keeps 10% AQUA for Protocol Owned Liquidity (POL)
-    /// - Stakes the equivalent 1x BLUB for rewards
-    /// - Automatically deposits 0.1x BLUB + 10% AQUA to LP pool
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user staking tokens
-    /// * `amount` - The amount of AQUA tokens to stake
-    /// * `duration_periods` - The number of period units to lock tokens (multiplied by period_unit_minutes)
-    ///
-    /// # Returns
-    /// * `Ok(())` - Success
-    /// * `Err(Error::InvalidInput)` if amount is <= 0
-    /// * `Err(Error::ReentrancyDetected)` if a reentrant call is detected
-    /// * `Err(Error::InsufficientBalance)` if user doesn't have enough AQUA
-    ///
-    /// # Authorization
-    /// Requires authorization from the `user` address.
-    ///
-    /// # State Changes
-    /// - Creates a new lock entry for the user
-    /// - Updates global state with new locked amounts
-    /// - Updates POL contribution tracking
+    // Stake AQUA tokens and automatically mint BLUB tokens for staking.
+    //
+    // This function performs the following operations:
+    // - Transfers AQUA from user to contract
+    // - Mints 1.1x BLUB tokens (110% of AQUA amount)
+    // - Sends 90% of AQUA to ICE contract for governance
+    // - Keeps 10% AQUA for Protocol Owned Liquidity (POL)
+    // - Stakes the equivalent 1x BLUB for rewards
+    // - Automatically deposits 0.1x BLUB + 10% AQUA to LP pool
+    //
+    // # Arguments
+    // * `user` - The address of the user staking tokens
+    // * `amount` - The amount of AQUA tokens to stake
+    // * `duration_periods` - The number of period units to lock tokens (multiplied by period_unit_minutes)
+    //
+    // # Returns
+    // * `Ok(())` - Success
+    // * `Err(Error::InvalidInput)` if amount is <= 0
+    // * `Err(Error::ReentrancyDetected)` if a reentrant call is detected
+    // * `Err(Error::InsufficientBalance)` if user doesn't have enough AQUA
+    //
+    // # Authorization
+    // Requires authorization from the `user` address.
+    //
+    // # State Changes
+    // - Creates a new lock entry for the user
+    // - Updates global state with new locked amounts
+    // - Updates POL contribution tracking
     pub fn lock(
         env: Env,
         user: Address,
@@ -1229,27 +1232,27 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Records a lock entry for tracking purposes without performing token transfers.
-    ///
-    /// This function only records metadata about a lock that occurred elsewhere.
-    /// Useful for tracking locks that happened on a different chain or contract.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user whose lock is being recorded
-    /// * `amount` - The amount of tokens locked
-    /// * `duration_periods` - The number of period units for the lock
-    /// * `tx_hash` - The transaction hash from the external lock
-    ///
-    /// # Returns
-    /// * `Ok(())` - Success
-    /// * `Err(Error::InvalidInput)` if amount is <= 0
-    /// * `Err(Error::ReentrancyDetected)` if a reentrant call is detected
-    ///
-    /// # Authorization
-    /// Requires authorization from the `user` address.
-    /// SECURITY (2026-07): require the stored admin (DataKey::AdminAddress) to have authorized
-    /// this call. Fails closed with Unauthorized if AdminAddress is unset. Shared by the
-    /// record_* backdoor closers and admin_purge_lock.
+    // Records a lock entry for tracking purposes without performing token transfers.
+    //
+    // This function only records metadata about a lock that occurred elsewhere.
+    // Useful for tracking locks that happened on a different chain or contract.
+    //
+    // # Arguments
+    // * `user` - The address of the user whose lock is being recorded
+    // * `amount` - The amount of tokens locked
+    // * `duration_periods` - The number of period units for the lock
+    // * `tx_hash` - The transaction hash from the external lock
+    //
+    // # Returns
+    // * `Ok(())` - Success
+    // * `Err(Error::InvalidInput)` if amount is <= 0
+    // * `Err(Error::ReentrancyDetected)` if a reentrant call is detected
+    //
+    // # Authorization
+    // Requires authorization from the `user` address.
+    // SECURITY (2026-07): require the stored admin (DataKey::AdminAddress) to have authorized
+    // this call. Fails closed with Unauthorized if AdminAddress is unset. Shared by the
+    // record_* backdoor closers and admin_purge_lock.
     fn require_admin_auth(env: &Env) -> Result<(), Error> {
         let stored_admin = env.storage().instance()
             .get::<DataKey, Address>(&DataKey::AdminAddress)
@@ -1375,27 +1378,27 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Records an unlock event and transfers locked BLUB plus rewards to the user.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user unlocking tokens
-    /// * `amount` - The amount of tokens to unlock
-    /// * `tx_hash` - The transaction hash for tracking
-    ///
-    /// # Returns
-    /// * `Ok(())` - Success
-    /// * `Err(Error::InvalidInput)` if amount is <= 0
-    /// * `Err(Error::ReentrancyDetected)` if a reentrant call is detected
-    /// * `Err(Error::InsufficientBalance)` if contract doesn't have enough BLUB
-    ///
-    /// # Authorization
-    /// Requires authorization from the `user` address.
-    ///
-    /// # State Changes
-    /// - Creates a new unlock entry
-    /// - Updates user lock totals
-    /// - Updates global state
-    /// - Transfers BLUB tokens and accumulated rewards to user
+    // Records an unlock event and transfers locked BLUB plus rewards to the user.
+    //
+    // # Arguments
+    // * `user` - The address of the user unlocking tokens
+    // * `amount` - The amount of tokens to unlock
+    // * `tx_hash` - The transaction hash for tracking
+    //
+    // # Returns
+    // * `Ok(())` - Success
+    // * `Err(Error::InvalidInput)` if amount is <= 0
+    // * `Err(Error::ReentrancyDetected)` if a reentrant call is detected
+    // * `Err(Error::InsufficientBalance)` if contract doesn't have enough BLUB
+    //
+    // # Authorization
+    // Requires authorization from the `user` address.
+    //
+    // # State Changes
+    // - Creates a new unlock entry
+    // - Updates user lock totals
+    // - Updates global state
+    // - Transfers BLUB tokens and accumulated rewards to user
     pub fn record_unlock(env: Env, user: Address, amount: i128, tx_hash: Bytes) -> Result<(), Error> {
         // SECURITY (2026-07): admin-only (cash-out leg of the record_lock drain exploit).
         Self::require_admin_auth(&env)?;
@@ -1485,30 +1488,30 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Restake BLUB tokens to earn more BLUB rewards.
-    ///
-    /// Allows users to stake their BLUB tokens (obtained from previous stakes or rewards)
-    /// to earn additional BLUB rewards.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user staking BLUB
-    /// * `amount` - The amount of BLUB tokens to stake
-    /// * `duration_periods` - The number of period units to lock tokens
-    ///
-    /// # Returns
-    /// * `Ok(())` - Success
-    /// * `Err(Error::InvalidInput)` if amount is <= 0
-    /// * `Err(Error::ReentrancyDetected)` if a reentrant call is detected
-    /// * `Err(Error::InsufficientBalance)` if user doesn't have enough BLUB
-    ///
-    /// # Authorization
-    /// Requires authorization from the `user` address.
-    ///
-    /// # State Changes
-    /// - Creates a new BLUB lock entry
-    /// - Updates lock totals
-    /// - Updates global state:
-    /// - Transfers BLUB from user to contract
+    // Restake BLUB tokens to earn more BLUB rewards.
+    //
+    // Allows users to stake their BLUB tokens (obtained from previous stakes or rewards)
+    // to earn additional BLUB rewards.
+    //
+    // # Arguments
+    // * `user` - The address of the user staking BLUB
+    // * `amount` - The amount of BLUB tokens to stake
+    // * `duration_periods` - The number of period units to lock tokens
+    //
+    // # Returns
+    // * `Ok(())` - Success
+    // * `Err(Error::InvalidInput)` if amount is <= 0
+    // * `Err(Error::ReentrancyDetected)` if a reentrant call is detected
+    // * `Err(Error::InsufficientBalance)` if user doesn't have enough BLUB
+    //
+    // # Authorization
+    // Requires authorization from the `user` address.
+    //
+    // # State Changes
+    // - Creates a new BLUB lock entry
+    // - Updates lock totals
+    // - Updates global state:
+    // - Transfers BLUB from user to contract
     pub fn stake(
         env: Env,
         user: Address,
@@ -1623,20 +1626,20 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Records a BLUB restake entry for tracking purposes.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user restaking BLUB
-    /// * `amount` - The amount of BLUB being restaked
-    /// * `tx_hash` - The transaction hash for tracking
-    ///
-    /// # Returns
-    /// * `Ok(())` - Success
-    /// * `Err(Error::InvalidInput)` if amount is <= 0
-    /// * `Err(Error::ReentrancyDetected)` if a reentrant call is detected
-    ///
-    /// # Authorization
-    /// Requires authorization from the `user` address.
+    // Records a BLUB restake entry for tracking purposes.
+    //
+    // # Arguments
+    // * `user` - The address of the user restaking BLUB
+    // * `amount` - The amount of BLUB being restaked
+    // * `tx_hash` - The transaction hash for tracking
+    //
+    // # Returns
+    // * `Ok(())` - Success
+    // * `Err(Error::InvalidInput)` if amount is <= 0
+    // * `Err(Error::ReentrancyDetected)` if a reentrant call is detected
+    //
+    // # Authorization
+    // Requires authorization from the `user` address.
     pub fn record_blub_restake(env: Env, user: Address, amount: i128, tx_hash: Bytes) -> Result<(), Error> {
         // SECURITY (2026-07): admin-only (closes the same self-record abuse surface).
         Self::require_admin_auth(&env)?;
@@ -1702,28 +1705,28 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Records an LP (Liquidity Pool) deposit for a user.
-    ///
-    /// # Arguments
-    /// * `admin` - The admin address authorizing this operation
-    /// * `user` - The address of the user depositing liquidity
-    /// * `pool_id` - The unique identifier of the liquidity pool
-    /// * `amount_a` - The amount of token A deposited
-    /// * `amount_b` - The amount of token B deposited
-    /// * `tx_hash` - The transaction hash for tracking
-    ///
-    /// # Returns
-    /// * `Ok(())` on success
-    /// * `Err(Error::Unauthorized)` if caller is not the admin
-    /// * `Err(Error::InvalidInput)` if amounts are negative
-    ///
-    /// # Authorization
-    /// Requires authorization from the `admin` address.
-    ///
-    /// # State Changes
-    /// - Updates or creates LP position for user
-    /// - Updates global LP staked amount
-    /// - Calculates and credits any pending LP rewards
+    // Records an LP (Liquidity Pool) deposit for a user.
+    //
+    // # Arguments
+    // * `admin` - The admin address authorizing this operation
+    // * `user` - The address of the user depositing liquidity
+    // * `pool_id` - The unique identifier of the liquidity pool
+    // * `amount_a` - The amount of token A deposited
+    // * `amount_b` - The amount of token B deposited
+    // * `tx_hash` - The transaction hash for tracking
+    //
+    // # Returns
+    // * `Ok(())` on success
+    // * `Err(Error::Unauthorized)` if caller is not the admin
+    // * `Err(Error::InvalidInput)` if amounts are negative
+    //
+    // # Authorization
+    // Requires authorization from the `admin` address.
+    //
+    // # State Changes
+    // - Updates or creates LP position for user
+    // - Updates global LP staked amount
+    // - Calculates and credits any pending LP rewards
     pub fn record_lp_deposit(
         env: Env,
         manager: Address,
@@ -1808,19 +1811,19 @@ impl StakingRegistry {
 
     // Reward calculation and distribution functions
 
-    /// Calculates the total rewards for a user from both locked stakes and LP positions.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user to calculate rewards for
-    ///
-    /// # Returns
-    /// * `Ok(UserRewardTotals)` - The user's reward totals including pending and accumulated rewards
-    /// * `Err(Error)` if calculation fails
-    ///
-    /// # Note
-    /// This is a view function that doesn't modify state. It calculates:
-    /// - Pending rewards from locked stakes (based on time elapsed and multipliers)
-    /// - Pending rewards from LP positions (based on global reward rates)
+    // Calculates the total rewards for a user from both locked stakes and LP positions.
+    //
+    // # Arguments
+    // * `user` - The address of the user to calculate rewards for
+    //
+    // # Returns
+    // * `Ok(UserRewardTotals)` - The user's reward totals including pending and accumulated rewards
+    // * `Err(Error)` if calculation fails
+    //
+    // # Note
+    // This is a view function that doesn't modify state. It calculates:
+    // - Pending rewards from locked stakes (based on time elapsed and multipliers)
+    // - Pending rewards from LP positions (based on global reward rates)
     pub fn calculate_user_rewards(env: Env, user: Address) -> Result<UserRewardTotals, Error> {
         let now = env.ledger().timestamp();
         
@@ -1866,29 +1869,29 @@ impl StakingRegistry {
         Ok(totals)
     }
 
-    /// Records a reward distribution event.
-    ///
-    /// # Arguments
-    /// * `admin` - The admin address authorizing this operation
-    /// * `kind` - The type of reward distribution (0 = LP rewards, 1 = locked rewards)
-    /// * `pool_id` - The pool identifier (if applicable)
-    /// * `total_reward` - The total amount of rewards distributed
-    /// * `distributed_amount` - The amount distributed to users
-    /// * `treasury_amount` - The amount sent to treasury
-    /// * `tx_hash` - The transaction hash for tracking
-    ///
-    /// # Returns
-    /// * `Ok(u32)` - The index of the distribution record
-    /// * `Err(Error::Unauthorized)` if caller is not the admin
-    /// * `Err(Error::InvalidInput)` if amounts are negative
-    ///
-    /// # Authorization
-    /// Requires authorization from the `admin` address.
-    ///
-    /// # State Changes
-    /// - Updates global reward rates for future calculations
-    /// - Creates a new distribution record
-    /// - Emits batch reward calculation event
+    // Records a reward distribution event.
+    //
+    // # Arguments
+    // * `admin` - The admin address authorizing this operation
+    // * `kind` - The type of reward distribution (0 = LP rewards, 1 = locked rewards)
+    // * `pool_id` - The pool identifier (if applicable)
+    // * `total_reward` - The total amount of rewards distributed
+    // * `distributed_amount` - The amount distributed to users
+    // * `treasury_amount` - The amount sent to treasury
+    // * `tx_hash` - The transaction hash for tracking
+    //
+    // # Returns
+    // * `Ok(u32)` - The index of the distribution record
+    // * `Err(Error::Unauthorized)` if caller is not the admin
+    // * `Err(Error::InvalidInput)` if amounts are negative
+    //
+    // # Authorization
+    // Requires authorization from the `admin` address.
+    //
+    // # State Changes
+    // - Updates global reward rates for future calculations
+    // - Creates a new distribution record
+    // - Emits batch reward calculation event
     pub fn record_reward_distribution(
         env: Env,
         manager: Address,
@@ -1957,26 +1960,26 @@ impl StakingRegistry {
         Ok(idx)
     }
 
-    /// Credits a reward amount to a specific user.
-    ///
-    /// # Arguments
-    /// * `admin` - The admin address authorizing this operation
-    /// * `kind` - The type of reward (0 = LP rewards, 1 = locked rewards)
-    /// * `user` - The address of the user receiving the reward
-    /// * `pool_id` - The pool identifier (if applicable)
-    /// * `amount` - The amount of reward to credit
-    /// * `tx_hash` - The transaction hash for tracking
-    ///
-    /// # Returns
-    /// * `Ok(())` on success
-    /// * `Err(Error::Unauthorized)` if caller is not the admin
-    /// * `Err(Error::InvalidInput)` if amount is <= 0
-    ///
-    /// # Authorization
-    /// Requires authorization from the `admin` address.
-    ///
-    /// # State Changes
-    /// - Updates user's reward totals based on reward kind
+    // Credits a reward amount to a specific user.
+    //
+    // # Arguments
+    // * `admin` - The admin address authorizing this operation
+    // * `kind` - The type of reward (0 = LP rewards, 1 = locked rewards)
+    // * `user` - The address of the user receiving the reward
+    // * `pool_id` - The pool identifier (if applicable)
+    // * `amount` - The amount of reward to credit
+    // * `tx_hash` - The transaction hash for tracking
+    //
+    // # Returns
+    // * `Ok(())` on success
+    // * `Err(Error::Unauthorized)` if caller is not the admin
+    // * `Err(Error::InvalidInput)` if amount is <= 0
+    //
+    // # Authorization
+    // Requires authorization from the `admin` address.
+    //
+    // # State Changes
+    // - Updates user's reward totals based on reward kind
     // INTENTIONAL (2026-07): manager-gated. The manager (single-sig backend) can credit rewards
     // to a user; this power is NEEDED for backend reward distribution and is retained on purpose.
     // Not migrating manager ops to multisig for now (per 2026-07 decision). Critical levers
@@ -2013,27 +2016,27 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Records POL (Protocol Owned Liquidity) rewards claimed from AQUA-BLUB pair voting.
-    ///
-    /// The rewards are split: 70% distributed to users, 30% to treasury.
-    ///
-    /// # Arguments
-    /// * `admin` - The admin address authorizing this operation
-    /// * `reward_amount` - The total amount of rewards claimed
-    /// * `ice_voting_power` - The ICE voting power used to obtain these rewards
-    ///
-    /// # Returns
-    /// * `Ok(())` on success
-    /// * `Err(Error::Unauthorized)` if caller is not the admin
-    /// * `Err(Error::InvalidInput)` if reward_amount is <= 0
-    ///
-    /// # Authorization
-    /// Requires authorization from the `admin` address.
-    ///
-    /// # State Changes
-    /// - Updates POL state with new reward totals
-    /// - Creates a daily POL snapshot
-    /// - Emits POL rewards claimed event
+    // Records POL (Protocol Owned Liquidity) rewards claimed from AQUA-BLUB pair voting.
+    //
+    // The rewards are split: 70% distributed to users, 30% to treasury.
+    //
+    // # Arguments
+    // * `admin` - The admin address authorizing this operation
+    // * `reward_amount` - The total amount of rewards claimed
+    // * `ice_voting_power` - The ICE voting power used to obtain these rewards
+    //
+    // # Returns
+    // * `Ok(())` on success
+    // * `Err(Error::Unauthorized)` if caller is not the admin
+    // * `Err(Error::InvalidInput)` if reward_amount is <= 0
+    //
+    // # Authorization
+    // Requires authorization from the `admin` address.
+    //
+    // # State Changes
+    // - Updates POL state with new reward totals
+    // - Creates a daily POL snapshot
+    // - Emits POL rewards claimed event
     pub fn record_pol_rewards(
         env: Env,
         manager: Address,
@@ -2093,7 +2096,7 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Update global state including BLUB supply
+    // Update global state including BLUB supply
 
     fn update_reward_rates(env: &Env, kind: u32, distributed_amount: i128) -> Result<(), Error> {
         let mut global_state = Self::get_global_state(env.clone())?;
@@ -2131,7 +2134,7 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Update POL contribution tracking
+    // Update POL contribution tracking
     fn update_pol_contribution(env: &Env, aqua_amount: i128, blub_amount: i128) -> Result<(), Error> {
         let mut pol: ProtocolOwnedLiquidity = env
             .storage()
@@ -2147,7 +2150,7 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Get Protocol Owned Liquidity state
+    // Get Protocol Owned Liquidity state
     fn get_pol(env: &Env) -> ProtocolOwnedLiquidity {
         env.storage()
             .instance()
@@ -2176,7 +2179,7 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Update lock totals including BLUB minted
+    // Update lock totals including BLUB minted
     fn update_lock_totals_with_blub(env: &Env, aqua_amount: i128, blub_amount: i128, _reward_multiplier: i128) -> Result<(), Error> {
         let mut totals: LockTotals = env
             .storage()
@@ -2225,11 +2228,11 @@ impl StakingRegistry {
     // Old reward system functions (calculate_pending_rewards, get_user_total_multiplier) removed.
     // Rewards are now handled exclusively by the Synthetix-style system (v1.2.0).
 
-    /// Retrieves the global contract state.
-    ///
-    /// # Returns
-    /// * `Ok(GlobalState)` - The current global state including locked amounts, supply, and reward rates
-    /// * `Err(Error::NotInitialized)` if contract is not initialized
+    // Retrieves the global contract state.
+    //
+    // # Returns
+    // * `Ok(GlobalState)` - The current global state including locked amounts, supply, and reward rates
+    // * `Err(Error::NotInitialized)` if contract is not initialized
     pub fn get_global_state(env: Env) -> Result<GlobalState, Error> {
         env.storage()
             .instance()
@@ -2239,25 +2242,25 @@ impl StakingRegistry {
 
     // Getters (gas-optimized, return only essential data)
     
-    /// Retrieves the lock totals for a specific user.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user
-    ///
-    /// # Returns
-    /// * `Some(LockTotals)` if user has locks
-    /// * `None` if user has no locks
+    // Retrieves the lock totals for a specific user.
+    //
+    // # Arguments
+    // * `user` - The address of the user
+    //
+    // # Returns
+    // * `Some(LockTotals)` if user has locks
+    // * `None` if user has no locks
     pub fn get_user_lock_totals(env: Env, user: Address) -> Option<LockTotals> {
         env.storage().persistent().get(&DataKey::UserLockTotals(user))
     }
 
-    /// Gets the number of lock entries for a user.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user
-    ///
-    /// # Returns
-    /// The count of lock entries (0 if none)
+    // Gets the number of lock entries for a user.
+    //
+    // # Arguments
+    // * `user` - The address of the user
+    //
+    // # Returns
+    // The count of lock entries (0 if none)
     pub fn get_user_lock_count(env: Env, user: Address) -> u32 {
         let user_locks: Vec<Bytes> = env
             .storage()
@@ -2267,15 +2270,15 @@ impl StakingRegistry {
         user_locks.len()
     }
 
-    /// Retrieves a specific lock entry by index for a user.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user
-    /// * `index` - The index of the lock entry
-    ///
-    /// # Returns
-    /// * `Some(LockEntry)` if the entry exists
-    /// * `None` if the entry doesn't exist
+    // Retrieves a specific lock entry by index for a user.
+    //
+    // # Arguments
+    // * `user` - The address of the user
+    // * `index` - The index of the lock entry
+    //
+    // # Returns
+    // * `Some(LockEntry)` if the entry exists
+    // * `None` if the entry doesn't exist
     pub fn get_user_lock_by_index(env: Env, user: Address, index: u32) -> Option<LockEntry> {
         let user_locks: Vec<Bytes> = env
             .storage()
@@ -2290,49 +2293,49 @@ impl StakingRegistry {
         }
     }
 
-    /// Gets all pool IDs that a user has LP positions in.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user
-    ///
-    /// # Returns
-    /// A vector of pool IDs (empty if none)
+    // Gets all pool IDs that a user has LP positions in.
+    //
+    // # Arguments
+    // * `user` - The address of the user
+    //
+    // # Returns
+    // A vector of pool IDs (empty if none)
     pub fn get_user_pools(env: Env, user: Address) -> Vec<Bytes> {
         env.storage().persistent().get(&DataKey::UserPools(user)).unwrap_or(Vec::new(&env))
     }
 
-    /// Retrieves a user's LP position for a specific pool.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user
-    /// * `pool_id` - The pool identifier
-    ///
-    /// # Returns
-    /// * `Some(LpPosition)` if the position exists
-    /// * `None` if no position found
+    // Retrieves a user's LP position for a specific pool.
+    //
+    // # Arguments
+    // * `user` - The address of the user
+    // * `pool_id` - The pool identifier
+    //
+    // # Returns
+    // * `Some(LpPosition)` if the position exists
+    // * `None` if no position found
     pub fn get_user_lp(env: Env, user: Address, pool_id: Bytes) -> Option<LpPosition> {
         env.storage().persistent().get(&DataKey::UserLp(user, pool_id))
     }
 
-    /// Retrieves accumulated reward totals for a user.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user
-    ///
-    /// # Returns
-    /// * `Some(UserRewardTotals)` if user has rewards
-    /// * `None` if no rewards found
+    // Retrieves accumulated reward totals for a user.
+    //
+    // # Arguments
+    // * `user` - The address of the user
+    //
+    // # Returns
+    // * `Some(UserRewardTotals)` if user has rewards
+    // * `None` if no rewards found
     pub fn get_user_rewards(env: Env, user: Address) -> Option<UserRewardTotals> {
         env.storage().persistent().get(&DataKey::UserRewards(user))
     }
 
-    /// Gets the number of unlock entries for a user.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user
-    ///
-    /// # Returns
-    /// The count of unlock entries (0 if none)
+    // Gets the number of unlock entries for a user.
+    //
+    // # Arguments
+    // * `user` - The address of the user
+    //
+    // # Returns
+    // The count of unlock entries (0 if none)
     pub fn get_unlock_count(env: Env, user: Address) -> u32 {
         let user_unlocks: Vec<Bytes> = env
             .storage()
@@ -2342,15 +2345,15 @@ impl StakingRegistry {
         user_unlocks.len()
     }
 
-    /// Retrieves a specific unlock entry by index for a user.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user
-    /// * `index` - The index of the unlock entry
-    ///
-    /// # Returns
-    /// * `Some(UnlockEntry)` if the entry exists
-    /// * `None` if the entry doesn't exist
+    // Retrieves a specific unlock entry by index for a user.
+    //
+    // # Arguments
+    // * `user` - The address of the user
+    // * `index` - The index of the unlock entry
+    //
+    // # Returns
+    // * `Some(UnlockEntry)` if the entry exists
+    // * `None` if the entry doesn't exist
     pub fn get_unlock_by_index(env: Env, user: Address, index: u32) -> Option<UnlockEntry> {
         let user_unlocks: Vec<Bytes> = env
             .storage()
@@ -2365,13 +2368,13 @@ impl StakingRegistry {
         }
     }
 
-    /// Gets the number of BLUB restake entries for a user.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user
-    ///
-    /// # Returns
-    /// The count of BLUB restake entries (0 if none)
+    // Gets the number of BLUB restake entries for a user.
+    //
+    // # Arguments
+    // * `user` - The address of the user
+    //
+    // # Returns
+    // The count of BLUB restake entries (0 if none)
     pub fn get_blub_restake_count(env: Env, user: Address) -> u32 {
         let user_restakes: Vec<Bytes> = env
             .storage()
@@ -2381,15 +2384,15 @@ impl StakingRegistry {
         user_restakes.len()
     }
 
-    /// Retrieves a specific BLUB restake entry by index for a user.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user
-    /// * `index` - The index of the restake entry
-    ///
-    /// # Returns
-    /// * `Some(BlubRestakeEntry)` if the entry exists
-    /// * `None` if the entry doesn't exist
+    // Retrieves a specific BLUB restake entry by index for a user.
+    //
+    // # Arguments
+    // * `user` - The address of the user
+    // * `index` - The index of the restake entry
+    //
+    // # Returns
+    // * `Some(BlubRestakeEntry)` if the entry exists
+    // * `None` if the entry doesn't exist
     pub fn get_blub_restake_by_index(env: Env, user: Address, index: u32) -> Option<BlubRestakeEntry> {
         let user_restakes: Vec<Bytes> = env
             .storage()
@@ -2404,55 +2407,55 @@ impl StakingRegistry {
         }
     }
 
-    /// Gets the total number of reward distributions recorded.
-    ///
-    /// # Returns
-    /// The count of distribution entries (0 if none)
+    // Gets the total number of reward distributions recorded.
+    //
+    // # Returns
+    // The count of distribution entries (0 if none)
     pub fn get_distribution_count(env: Env) -> u32 {
         env.storage().instance().get(&DataKey::DistributionCount).unwrap_or(0)
     }
 
-    /// Retrieves a specific reward distribution entry by index.
-    ///
-    /// # Arguments
-    /// * `index` - The index of the distribution entry
-    ///
-    /// # Returns
-    /// * `Some(RewardDistribution)` if the entry exists
-    /// * `None` if the entry doesn't exist
+    // Retrieves a specific reward distribution entry by index.
+    //
+    // # Arguments
+    // * `index` - The index of the distribution entry
+    //
+    // # Returns
+    // * `Some(RewardDistribution)` if the entry exists
+    // * `None` if the entry doesn't exist
     pub fn get_distribution_by_index(env: Env, index: u32) -> Option<RewardDistribution> {
         env.storage().instance().get(&DataKey::DistributionByIndex(index))
     }
 
-    /// Retrieves the Protocol Owned Liquidity (POL) state.
-    ///
-    /// # Returns
-    /// The current POL state including AQUA/BLUB contributions and LP positions
+    // Retrieves the Protocol Owned Liquidity (POL) state.
+    //
+    // # Returns
+    // The current POL state including AQUA/BLUB contributions and LP positions
     pub fn get_protocol_owned_liquidity(env: Env) -> ProtocolOwnedLiquidity {
         Self::get_pol(&env)
     }
 
-    /// Retrieves a daily POL snapshot for a specific day.
-    ///
-    /// # Arguments
-    /// * `day` - The day number (timestamp / 86400)
-    ///
-    /// # Returns
-    /// * `Some(ProtocolOwnedLiquidity)` if a snapshot exists for that day
-    /// * `None` if no snapshot found
+    // Retrieves a daily POL snapshot for a specific day.
+    //
+    // # Arguments
+    // * `day` - The day number (timestamp / 86400)
+    //
+    // # Returns
+    // * `Some(ProtocolOwnedLiquidity)` if a snapshot exists for that day
+    // * `None` if no snapshot found
     pub fn get_daily_pol_snapshot(env: Env, day: u64) -> Option<ProtocolOwnedLiquidity> {
         env.storage().instance().get(&DataKey::DailyPolSnapshot(day))
     }
 
-    /// Calculates the total POL contribution for a specific user.
-    ///
-    /// Sums up all POL contributions from the user's lock entries.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user
-    ///
-    /// # Returns
-    /// The total amount of AQUA contributed to POL by this user
+    // Calculates the total POL contribution for a specific user.
+    //
+    // Sums up all POL contributions from the user's lock entries.
+    //
+    // # Arguments
+    // * `user` - The address of the user
+    //
+    // # Returns
+    // The total amount of AQUA contributed to POL by this user
     pub fn get_user_pol_contribution(env: Env, user: Address) -> i128 {
         let user_locks: Vec<Bytes> = env
             .storage()
@@ -2472,11 +2475,11 @@ impl StakingRegistry {
         total_contribution
     }
 
-    /// Retrieves the current reserves from the AQUA/BLUB liquidity pool.
-    ///
-    /// # Returns
-    /// * `Ok((i128, i128))` - A tuple of (aqua_reserve, blub_reserve)
-    /// * `Err(Error::InvalidInput)` if the pool query fails
+    // Retrieves the current reserves from the AQUA/BLUB liquidity pool.
+    //
+    // # Returns
+    // * `Ok((i128, i128))` - A tuple of (aqua_reserve, blub_reserve)
+    // * `Err(Error::InvalidInput)` if the pool query fails
     pub fn get_pool_reserves(env: Env) -> Result<(i128, i128), Error> {
         let config = Self::get_config(env.clone())?;
         
@@ -2504,11 +2507,11 @@ impl StakingRegistry {
         }
     }
 
-    /// Retrieves the LP share token address from the liquidity pool.
-    ///
-    /// # Returns
-    /// * `Ok(Address)` - The share token contract address
-    /// * `Err(Error::InvalidInput)` if the pool query fails
+    // Retrieves the LP share token address from the liquidity pool.
+    //
+    // # Returns
+    // * `Ok(Address)` - The share token contract address
+    // * `Err(Error::InvalidInput)` if the pool query fails
     pub fn get_pool_share_token(env: Env) -> Result<Address, Error> {
         let config = Self::get_config(env.clone())?;
         
@@ -2526,30 +2529,30 @@ impl StakingRegistry {
         }
     }
 
-    /// Withdraws liquidity from the pool (admin-only).
-    ///
-    /// Used to manage Protocol Owned Liquidity or rebalance the pool.
-    ///
-    /// # Arguments
-    /// * `admin` - The admin address authorizing this operation
-    /// * `share_amount` - The amount of LP share tokens to burn
-    /// * `min_aqua` - Minimum AQUA to receive (slippage protection)
-    /// * `min_blub` - Minimum BLUB to receive (slippage protection)
-    ///
-    /// # Returns
-    /// * `Ok((i128, i128))` - A tuple of (aqua_withdrawn, blub_withdrawn)
-    /// * `Err(Error::Unauthorized)` if caller is not the admin
-    /// * `Err(Error::InvalidInput)` if parameters are invalid or withdrawal fails
-    ///
-    /// # Authorization
-    /// Requires authorization from the `admin` address.
-    ///
-    /// # State Changes
-    /// - Reduces POL LP position tracking
-    /// - Burns LP share tokens
-    /// - Transfers withdrawn tokens to contract
-    /// Withdraws LP from the POL pool.
-    /// Protected by admin (multisig) — manager cannot drain LP principal.
+    // Withdraws liquidity from the pool (admin-only).
+    //
+    // Used to manage Protocol Owned Liquidity or rebalance the pool.
+    //
+    // # Arguments
+    // * `admin` - The admin address authorizing this operation
+    // * `share_amount` - The amount of LP share tokens to burn
+    // * `min_aqua` - Minimum AQUA to receive (slippage protection)
+    // * `min_blub` - Minimum BLUB to receive (slippage protection)
+    //
+    // # Returns
+    // * `Ok((i128, i128))` - A tuple of (aqua_withdrawn, blub_withdrawn)
+    // * `Err(Error::Unauthorized)` if caller is not the admin
+    // * `Err(Error::InvalidInput)` if parameters are invalid or withdrawal fails
+    //
+    // # Authorization
+    // Requires authorization from the `admin` address.
+    //
+    // # State Changes
+    // - Reduces POL LP position tracking
+    // - Burns LP share tokens
+    // - Transfers withdrawn tokens to contract
+    // Withdraws LP from the POL pool.
+    // Protected by admin (multisig) — manager cannot drain LP principal.
     pub fn withdraw_from_pool(
         env: Env,
         admin: Address,
@@ -2573,6 +2576,23 @@ impl StakingRegistry {
 
         let contract_address = env.current_contract_address();
 
+        // Pool-0 share token — reused by the POL-surplus guard and the burn auth below.
+        let share_token = Self::get_pool_share_token(env.clone())?;
+
+        // POL-surplus guard (2026-07): admin may only withdraw pool-0 LP the
+        // contract holds ABOVE vault credit (`pool_info[0].total_lp_tokens`).
+        // Pool 0 commingles POL and vault LP; withdrawing into vault-backed LP
+        // leaves `vault_withdraw` (burns real LP) unable to settle. (2026-07-02.)
+        {
+            use soroban_sdk::token as pol_token;
+            let contract_lp =
+                pol_token::Client::new(&env, &share_token).balance(&contract_address);
+            let vault_lp = Self::get_pool_info(env.clone(), 0u32)?.total_lp_tokens;
+            if share_amount > contract_lp.saturating_sub(vault_lp) {
+                return Err(Error::InsufficientBalance);
+            }
+        }
+
         use soroban_sdk::IntoVal;
 
         // Prepare min_amounts vector
@@ -2584,7 +2604,6 @@ impl StakingRegistry {
         // burn(from=this_contract, amount), which requires our authorization as the LP holder.
         // Without this the nested burn fails with Error(Auth, InvalidAction). Mirrors vault_withdraw.
         use soroban_sdk::auth::{ContractContext, InvokerContractAuthEntry, SubContractInvocation};
-        let share_token = Self::get_pool_share_token(env.clone())?;
         let auth_entries = soroban_sdk::vec![
             &env,
             InvokerContractAuthEntry::Contract(SubContractInvocation {
@@ -2632,9 +2651,9 @@ impl StakingRegistry {
         }
     }
 
-    /// Admin: remove a fabricated / corrupt lock entry (e.g. a `record_lock`-injected phantom
-    /// identified during the 2026-07 audit). Deletes the `LockEntry` and removes its tx_hash
-    /// from the user's lock list. Moves NO tokens. Returns the `blub_locked` amount purged.
+    // Admin: remove a fabricated / corrupt lock entry (e.g. a `record_lock`-injected phantom
+    // identified during the 2026-07 audit). Deletes the `LockEntry` and removes its tx_hash
+    // from the user's lock list. Moves NO tokens. Returns the `blub_locked` amount purged.
     pub fn admin_purge_lock(env: Env, user: Address, tx_hash: Bytes) -> Result<(), Error> {
         Self::require_admin_auth(&env)?;
         // Delete the entry. Its tx_hash may remain in the user's UserLocks list, but a
@@ -2648,13 +2667,13 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Retrieves the virtual price of the liquidity pool.
-    ///
-    /// The virtual price represents the price of an LP token in terms of underlying assets.
-    ///
-    /// # Returns
-    /// * `Ok(i128)` - The virtual price
-    /// * `Err(Error::InvalidInput)` if the pool query fails
+    // Retrieves the virtual price of the liquidity pool.
+    //
+    // The virtual price represents the price of an LP token in terms of underlying assets.
+    //
+    // # Returns
+    // * `Ok(i128)` - The virtual price
+    // * `Err(Error::InvalidInput)` if the pool query fails
     pub fn get_pool_virtual_price(env: Env) -> Result<i128, Error> {
         let config = Self::get_config(env.clone())?;
         
@@ -2672,22 +2691,22 @@ impl StakingRegistry {
         }
     }
 
-    /// Claims accumulated rewards from the liquidity pool (admin-only).
-    ///
-    /// # Arguments
-    /// * `admin` - The admin address authorizing this operation
-    ///
-    /// # Returns
-    /// * `Ok(i128)` - The amount of rewards claimed
-    /// * `Err(Error::Unauthorized)` if caller is not the admin
-    /// * `Err(Error::InvalidInput)` if the claim fails
-    ///
-    /// # Authorization
-    /// Requires authorization from the `admin` address.
-    ///
-    /// # State Changes
-    /// - Updates POL total rewards earned
-    /// - Updates last reward claim timestamp
+    // Claims accumulated rewards from the liquidity pool (admin-only).
+    //
+    // # Arguments
+    // * `admin` - The admin address authorizing this operation
+    //
+    // # Returns
+    // * `Ok(i128)` - The amount of rewards claimed
+    // * `Err(Error::Unauthorized)` if caller is not the admin
+    // * `Err(Error::InvalidInput)` if the claim fails
+    //
+    // # Authorization
+    // Requires authorization from the `admin` address.
+    //
+    // # State Changes
+    // - Updates POL total rewards earned
+    // - Updates last reward claim timestamp
     pub fn claim_pool_rewards(
         env: Env,
         manager: Address,
@@ -2725,11 +2744,11 @@ impl StakingRegistry {
         }
     }
 
-    /// Retrieves the pending rewards available from the liquidity pool.
-    ///
-    /// # Returns
-    /// * `Ok(i128)` - The amount of pending rewards
-    /// * `Err(Error::InvalidInput)` if the pool query fails
+    // Retrieves the pending rewards available from the liquidity pool.
+    //
+    // # Returns
+    // * `Ok(i128)` - The amount of pending rewards
+    // * `Err(Error::InvalidInput)` if the pool query fails
     pub fn get_pool_pending_rewards(env: Env) -> Result<i128, Error> {
         let config = Self::get_config(env.clone())?;
         let contract_address = env.current_contract_address();
@@ -2750,19 +2769,19 @@ impl StakingRegistry {
 
     // Admin functions for gas optimization
     
-    /// Updates the base reward rate (admin-only).
-    ///
-    /// # Arguments
-    /// * `admin` - The admin address authorizing this operation
-    /// * `new_rate` - The new reward rate in basis points per period (max 1000 = 10%)
-    ///
-    /// # Returns
-    /// * `Ok(())` on success
-    /// * `Err(Error::Unauthorized)` if caller is not the admin
-    /// * `Err(Error::InvalidInput)` if new_rate > 1000
-    ///
-    /// # Authorization
-    /// Requires authorization from the `admin` address.
+    // Updates the base reward rate (admin-only).
+    //
+    // # Arguments
+    // * `admin` - The admin address authorizing this operation
+    // * `new_rate` - The new reward rate in basis points per period (max 1000 = 10%)
+    //
+    // # Returns
+    // * `Ok(())` on success
+    // * `Err(Error::Unauthorized)` if caller is not the admin
+    // * `Err(Error::InvalidInput)` if new_rate > 1000
+    //
+    // # Authorization
+    // Requires authorization from the `admin` address.
     pub fn update_reward_rate(env: Env, admin: Address, new_rate: i128) -> Result<(), Error> {
         let mut cfg = Self::get_config(env.clone())?;
         admin.require_auth();
@@ -2774,25 +2793,25 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Manually deposits accumulated POL to the AQUA-BLUB LP pool (admin-only).
-    ///
-    /// # Arguments
-    /// * `admin` - The admin address authorizing this operation
-    /// * `aqua_amount` - The amount of AQUA to deposit to LP
-    /// * `blub_amount` - The amount of BLUB to deposit to LP
-    ///
-    /// # Returns
-    /// * `Ok(())` on success
-    /// * `Err(Error::Unauthorized)` if caller is not the admin
-    /// * `Err(Error::InvalidInput)` if amounts are <= 0
-    /// * `Err(Error::InsufficientBalance)` if contract doesn't have enough tokens
-    ///
-    /// # Authorization
-    /// Requires authorization from the `admin` address.
-    ///
-    /// # State Changes
-    /// - Transfers tokens to LP pool
-    /// - Updates POL LP position tracking
+    // Manually deposits accumulated POL to the AQUA-BLUB LP pool (admin-only).
+    //
+    // # Arguments
+    // * `admin` - The admin address authorizing this operation
+    // * `aqua_amount` - The amount of AQUA to deposit to LP
+    // * `blub_amount` - The amount of BLUB to deposit to LP
+    //
+    // # Returns
+    // * `Ok(())` on success
+    // * `Err(Error::Unauthorized)` if caller is not the admin
+    // * `Err(Error::InvalidInput)` if amounts are <= 0
+    // * `Err(Error::InsufficientBalance)` if contract doesn't have enough tokens
+    //
+    // # Authorization
+    // Requires authorization from the `admin` address.
+    //
+    // # State Changes
+    // - Transfers tokens to LP pool
+    // - Updates POL LP position tracking
     pub fn manual_deposit_pol(
         env: Env,
         manager: Address,
@@ -2834,19 +2853,42 @@ impl StakingRegistry {
         Ok(())
     }
 
+    // Admin-only one-shot correction of the POL LP counter.
+    //
+    // `aqua_blub_lp_position` drifted deeply negative because the pre-guard
+    // `withdraw_from_pool` decremented it by full withdrawn share amounts that
+    // included vault-backed LP (pool 0 commingles POL and vault LP). After the
+    // true POL position is reconciled off-chain, the admin sets the corrected
+    // value here. Purely informational — no funds move, no other state changes.
+    pub fn sync_pol_position(
+        env: Env,
+        manager: Address,
+        new_value: i128,
+    ) -> Result<(), Error> {
+        Self::require_manager_auth(&env, &manager)?;
 
-    /// Updates the liquidity pool contract address (admin-only).
-    ///
-    /// # Arguments
-    /// * `admin` - The admin address authorizing this operation
-    /// * `new_liquidity_contract` - The new liquidity pool contract address
-    ///
-    /// # Returns
-    /// * `Ok(())` on success
-    /// * `Err(Error::Unauthorized)` if caller is not the admin
-    ///
-    /// # Authorization
-    /// Requires authorization from the `admin` address.
+        let mut pol = Self::get_pol(&env);
+        pol.aqua_blub_lp_position = new_value;
+        env.storage()
+            .instance()
+            .set(&DataKey::ProtocolOwnedLiquidity, &pol);
+
+        Ok(())
+    }
+
+
+    // Updates the liquidity pool contract address (admin-only).
+    //
+    // # Arguments
+    // * `admin` - The admin address authorizing this operation
+    // * `new_liquidity_contract` - The new liquidity pool contract address
+    //
+    // # Returns
+    // * `Ok(())` on success
+    // * `Err(Error::Unauthorized)` if caller is not the admin
+    //
+    // # Authorization
+    // Requires authorization from the `admin` address.
     pub fn update_liquidity_contract(env: Env, admin: Address, new_liquidity_contract: Address) -> Result<(), Error> {
         let mut cfg = Self::get_config(env.clone())?;
         admin.require_auth();
@@ -2863,18 +2905,18 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Updates BLUB token contract address (admin-only).
-    ///
-    /// # Arguments
-    /// * `admin` - The admin address authorizing this operation
-    /// * `new_blub_token` - The new BLUB token contract address
-    ///
-    /// # Returns
-    /// * `Ok(())` on success
-    /// * `Err(Error::Unauthorized)` if caller is not the admin
-    ///
-    /// # Authorization
-    /// Requires authorization from the `admin` address.
+    // Updates BLUB token contract address (admin-only).
+    //
+    // # Arguments
+    // * `admin` - The admin address authorizing this operation
+    // * `new_blub_token` - The new BLUB token contract address
+    //
+    // # Returns
+    // * `Ok(())` on success
+    // * `Err(Error::Unauthorized)` if caller is not the admin
+    //
+    // # Authorization
+    // Requires authorization from the `admin` address.
     pub fn update_blub_token(
         env: Env,
         admin: Address,
@@ -2897,7 +2939,7 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Updates vault treasury address (admin-only).
+    // Updates vault treasury address (admin-only).
     pub fn update_vault_treasury(env: Env, admin: Address, new_treasury: Address) -> Result<(), Error> {
         let mut cfg = Self::get_config(env.clone())?;
         admin.require_auth();
@@ -2914,8 +2956,8 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Updates vault fee in basis points (admin-only).
-    /// Max 5000 (50%).
+    // Updates vault fee in basis points (admin-only).
+    // Max 5000 (50%).
     pub fn update_vault_fee_bps(env: Env, admin: Address, new_fee_bps: u32) -> Result<(), Error> {
         let mut cfg = Self::get_config(env.clone())?;
         admin.require_auth();
@@ -2933,7 +2975,7 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Updates ICE token addresses (admin-only).
+    // Updates ICE token addresses (admin-only).
     pub fn update_ice_tokens(
         env: Env,
         admin: Address,
@@ -2964,14 +3006,14 @@ impl StakingRegistry {
     // Contract Upgrade & Migration Functions
     // ============================================================================
 
-    /// Upgrades the contract to a new WASM hash (admin-only).
-    ///
-    /// # Arguments
-    /// * `admin` - The admin address authorizing this operation
-    /// * `new_wasm_hash` - The hash of the new WASM to upgrade to
-    ///
-    /// # Authorization
-    /// Requires authorization from the `admin` address.
+    // Upgrades the contract to a new WASM hash (admin-only).
+    //
+    // # Arguments
+    // * `admin` - The admin address authorizing this operation
+    // * `new_wasm_hash` - The hash of the new WASM to upgrade to
+    //
+    // # Authorization
+    // Requires authorization from the `admin` address.
     pub fn upgrade(env: Env, admin: Address, new_wasm_hash: soroban_sdk::BytesN<32>) -> Result<(), Error> {
         admin.require_auth();
 
@@ -3011,17 +3053,17 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Migrate contract from v1.1.0 to v1.2.0
-    /// - Adds cooldown fields to Config
-    /// - Initializes RewardStateV2 with correct total_staked
-    ///
-    /// # Arguments
-    /// * `admin` - Admin address for authorization
-    ///
-    /// # Returns
-    /// * `Ok(())` on success
-    /// * `Err(Error::AlreadyInitialized)` if already v1.2.0
-    /// * `Err(Error::Unauthorized)` if not admin
+    // Migrate contract from v1.1.0 to v1.2.0
+    // - Adds cooldown fields to Config
+    // - Initializes RewardStateV2 with correct total_staked
+    //
+    // # Arguments
+    // * `admin` - Admin address for authorization
+    //
+    // # Returns
+    // * `Ok(())` on success
+    // * `Err(Error::AlreadyInitialized)` if already v1.2.0
+    // * `Err(Error::Unauthorized)` if not admin
     pub fn migrate_v1_2_0(env: Env, admin: Address) -> Result<(), Error> {
         admin.require_auth();
 
@@ -3096,14 +3138,14 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Sets the manager address (admin-only).
-    ///
-    /// The manager is a single-sig backend wallet (e.g. blub-issuer-v2) that handles
-    /// routine backend operations: adding rewards, compounding, claiming POL rewards, etc.
-    /// The admin (multisig cold wallet) retains upgrade/config/pool authority.
-    ///
-    /// # Authorization
-    /// Requires admin authorization (via AdminAddress key).
+    // Sets the manager address (admin-only).
+    //
+    // The manager is a single-sig backend wallet (e.g. blub-issuer-v2) that handles
+    // routine backend operations: adding rewards, compounding, claiming POL rewards, etc.
+    // The admin (multisig cold wallet) retains upgrade/config/pool authority.
+    //
+    // # Authorization
+    // Requires admin authorization (via AdminAddress key).
     pub fn set_manager(env: Env, admin: Address, new_manager: Address) -> Result<(), Error> {
         admin.require_auth();
         let stored_admin = env.storage()
@@ -3118,19 +3160,19 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Returns the current manager address, or None if not yet set.
+    // Returns the current manager address, or None if not yet set.
     pub fn get_manager_address(env: Env) -> Option<Address> {
         env.storage().instance().get(&DataKey::ManagerAddress)
     }
 
-    /// Migration from v1.2.0 to v1.4.0: sets ManagerAddress = current admin.
-    ///
-    /// After this migration:
-    /// 1. Transfer admin to the new multisig cold wallet via `set_admin` (or re-initialize).
-    /// 2. The existing blub-issuer-v2 will continue as manager unchanged.
-    ///
-    /// # Authorization
-    /// Requires current admin authorization.
+    // Migration from v1.2.0 to v1.4.0: sets ManagerAddress = current admin.
+    //
+    // After this migration:
+    // 1. Transfer admin to the new multisig cold wallet via `set_admin` (or re-initialize).
+    // 2. The existing blub-issuer-v2 will continue as manager unchanged.
+    //
+    // # Authorization
+    // Requires current admin authorization.
     pub fn migrate_v1_4_0(env: Env, admin: Address) -> Result<(), Error> {
         admin.require_auth();
         let stored_admin = env.storage()
@@ -3148,20 +3190,20 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Migrate vault from broken ratio system to vault-share model (v1.8.0).
-    ///
-    /// Fixes critical bug where share_ratios could sum to >100%, causing LP
-    /// double-counting. Converts to ERC-4626-style shares where:
-    ///   user_lp = user_shares * total_lp / total_shares
-    ///
-    /// Compensates affected_user with LP from POL if their fair LP > current LP.
-    ///
-    /// # Arguments
-    /// * `admin` - Admin address (requires auth)
-    /// * `primary_user` - User with inflated 100% share (GAO3EX)
-    /// * `affected_user` - User who lost LP due to the bug (GBTU)
-    ///
-    /// Must be called ONCE after upgrading to v1.8.0 WASM.
+    // Migrate vault from broken ratio system to vault-share model (v1.8.0).
+    //
+    // Fixes critical bug where share_ratios could sum to >100%, causing LP
+    // double-counting. Converts to ERC-4626-style shares where:
+    //   user_lp = user_shares * total_lp / total_shares
+    //
+    // Compensates affected_user with LP from POL if their fair LP > current LP.
+    //
+    // # Arguments
+    // * `admin` - Admin address (requires auth)
+    // * `primary_user` - User with inflated 100% share (GAO3EX)
+    // * `affected_user` - User who lost LP due to the bug (GBTU)
+    //
+    // Must be called ONCE after upgrading to v1.8.0 WASM.
     pub fn migrate_v1_8_0(
         env: Env,
         admin: Address,
@@ -3260,9 +3302,9 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Admin function to adjust a user's vault shares and LP.
-    /// Used for one-time corrections. Adjusts both user shares and total shares/LP.
-    /// Extra LP comes from POL (protocol-owned liquidity).
+    // Admin function to adjust a user's vault shares and LP.
+    // Used for one-time corrections. Adjusts both user shares and total shares/LP.
+    // Extra LP comes from POL (protocol-owned liquidity).
     pub fn admin_adjust_vault_position(
         env: Env,
         admin: Address,
@@ -3325,14 +3367,14 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Returns the current config version.
-    /// Transfers admin role to a new address (e.g. multisig cold wallet).
-    ///
-    /// Updates both `AdminAddress` (upgrade key) and `Config.admin`.
-    /// After this call, the old admin has no special authority.
-    ///
-    /// # Authorization
-    /// Requires current admin authorization.
+    // Returns the current config version.
+    // Transfers admin role to a new address (e.g. multisig cold wallet).
+    //
+    // Updates both `AdminAddress` (upgrade key) and `Config.admin`.
+    // After this call, the old admin has no special authority.
+    //
+    // # Authorization
+    // Requires current admin authorization.
     pub fn transfer_admin(env: Env, admin: Address, new_admin: Address) -> Result<(), Error> {
         admin.require_auth();
         let stored_admin = env.storage()
@@ -3356,8 +3398,8 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// For old config: returns the old version number
-    /// For new config: returns encoded version (10100 = v1.1.0)
+    // For old config: returns the old version number
+    // For new config: returns encoded version (10100 = v1.1.0)
     pub fn get_version(env: Env) -> Result<u32, Error> {
         // Try new config first
         if let Ok(cfg) = Self::get_config(env.clone()) {
@@ -3372,19 +3414,19 @@ impl StakingRegistry {
         Ok(old_cfg.version)
     }
 
-    /// Test function to validate staking calculations without executing transactions.
-    ///
-    /// # Arguments
-    /// * `aqua_amount` - The amount of AQUA to simulate staking
-    ///
-    /// # Returns
-    /// * `Ok((i128, i128, i128, i128, i128))` - A tuple containing:
-    ///   - blub_minted: Total BLUB tokens that would be minted (1.1x AQUA)
-    ///   - blub_staked: BLUB amount that would be staked (1x AQUA)
-    ///   - blub_to_lp: BLUB amount that would go to LP (0.1x AQUA)
-    ///   - pol_aqua: AQUA amount for POL (10% of AQUA)
-    ///   - ice_aqua: AQUA amount to ICE contract (90% of AQUA)
-    /// * `Err(Error::InvalidInput)` if aqua_amount is <= 0
+    // Test function to validate staking calculations without executing transactions.
+    //
+    // # Arguments
+    // * `aqua_amount` - The amount of AQUA to simulate staking
+    //
+    // # Returns
+    // * `Ok((i128, i128, i128, i128, i128))` - A tuple containing:
+    //   - blub_minted: Total BLUB tokens that would be minted (1.1x AQUA)
+    //   - blub_staked: BLUB amount that would be staked (1x AQUA)
+    //   - blub_to_lp: BLUB amount that would go to LP (0.1x AQUA)
+    //   - pol_aqua: AQUA amount for POL (10% of AQUA)
+    //   - ice_aqua: AQUA amount to ICE contract (90% of AQUA)
+    // * `Err(Error::InvalidInput)` if aqua_amount is <= 0
     pub fn test_staking_calculations(_env: Env, aqua_amount: i128) -> Result<(i128, i128, i128, i128, i128), Error> {
         if aqua_amount <= 0 {
             return Err(Error::InvalidInput);
@@ -3400,13 +3442,13 @@ impl StakingRegistry {
         Ok((blub_minted, blub_staked, blub_to_lp, pol_aqua, ice_aqua))
     }
 
-    /// Retrieves the available POL balance that can be deposited to the LP pool.
-    ///
-    /// Calculates available POL by subtracting currently locked/staked amounts from total balances.
-    ///
-    /// # Returns
-    /// * `Ok((i128, i128))` - A tuple of (available_aqua, available_blub)
-    /// * `Err(Error)` if unable to retrieve state
+    // Retrieves the available POL balance that can be deposited to the LP pool.
+    //
+    // Calculates available POL by subtracting currently locked/staked amounts from total balances.
+    //
+    // # Returns
+    // * `Ok((i128, i128))` - A tuple of (available_aqua, available_blub)
+    // * `Err(Error)` if unable to retrieve state
     pub fn get_available_pol_balance(env: Env) -> Result<(i128, i128), Error> {
         let cfg = Self::get_config(env.clone())?;
         let contract_address = env.current_contract_address();
@@ -3428,16 +3470,16 @@ impl StakingRegistry {
         Ok((available_aqua, available_blub))
     }
 
-    /// Processes pending stake entries in batches.
-    ///
-    /// This function avoids reentrancy by processing stakes in a separate transaction.
-    ///
-    /// # Arguments
-    /// * `max_count` - Maximum number of pending stakes to process (capped at 10)
-    ///
-    /// # Returns
-    /// * `Ok(u32)` - The number of stakes actually processed
-    /// * `Err(Error)` if processing fails
+    // Processes pending stake entries in batches.
+    //
+    // This function avoids reentrancy by processing stakes in a separate transaction.
+    //
+    // # Arguments
+    // * `max_count` - Maximum number of pending stakes to process (capped at 10)
+    //
+    // # Returns
+    // * `Ok(u32)` - The number of stakes actually processed
+    // * `Err(Error)` if processing fails
     // INTENTIONAL (2026-07): permissionless batch processor for the PendingStake queue.
     // Currently inert (no code path writes PendingStakeCount/PendingStakeByIndex), and it only
     // ever creates entries for already-queued pending stakes, so it cannot credit an unbacked
@@ -3488,22 +3530,22 @@ impl StakingRegistry {
         Ok(processed)
     }
 
-    /// Retrieves the total number of pending stake entries.
-    ///
-    /// # Returns
-    /// The count of pending stake entries (0 if none)
+    // Retrieves the total number of pending stake entries.
+    //
+    // # Returns
+    // The count of pending stake entries (0 if none)
     pub fn get_pending_stake_count(env: Env) -> u32 {
         env.storage().instance().get(&DataKey::PendingStakeCount).unwrap_or(0)
     }
 
-    /// Retrieves a specific pending stake entry by index.
-    ///
-    /// # Arguments
-    /// * `index` - The index of the pending stake entry
-    ///
-    /// # Returns
-    /// * `Some(PendingStake)` if the entry exists
-    /// * `None` if the entry doesn't exist
+    // Retrieves a specific pending stake entry by index.
+    //
+    // # Arguments
+    // * `index` - The index of the pending stake entry
+    //
+    // # Returns
+    // * `Some(PendingStake)` if the entry exists
+    // * `None` if the entry doesn't exist
     pub fn get_pending_stake(env: Env, index: u32) -> Option<PendingStake> {
         env.storage().instance().get(&DataKey::PendingStakeByIndex(index))
     }
@@ -3512,19 +3554,19 @@ impl StakingRegistry {
     // ADMIN FUNCTIONS - Staking Period Configuration
     // ============================================================================
 
-    /// Updates the staking period unit in minutes (admin-only).
-    ///
-    /// # Arguments
-    /// * `admin` - The admin address authorizing this operation
-    /// * `period_unit_minutes` - The new period unit in minutes (must be > 0)
-    ///
-    /// # Returns
-    /// * `Ok(())` on success
-    /// * `Err(Error::Unauthorized)` if caller is not the admin
-    /// * `Err(Error::InvalidPeriod)` if period_unit_minutes is 0
-    ///
-    /// # Authorization
-    /// Requires authorization from the `admin` address.
+    // Updates the staking period unit in minutes (admin-only).
+    //
+    // # Arguments
+    // * `admin` - The admin address authorizing this operation
+    // * `period_unit_minutes` - The new period unit in minutes (must be > 0)
+    //
+    // # Returns
+    // * `Ok(())` on success
+    // * `Err(Error::Unauthorized)` if caller is not the admin
+    // * `Err(Error::InvalidPeriod)` if period_unit_minutes is 0
+    //
+    // # Authorization
+    // Requires authorization from the `admin` address.
     pub fn update_period_unit(
         env: Env,
         admin: Address,
@@ -3557,20 +3599,20 @@ impl StakingRegistry {
     // USER STAKING INFO
     // ===========================================================================
 
-    /// Retrieves comprehensive staking information for a user.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user
-    ///
-    /// # Returns
-    /// * `Ok(UserStakingInfo)` - Detailed staking information including:
-    ///   - total_staked_blub: Total BLUB currently locked/staked
-    ///   - unstaking_available: BLUB available to unstake (from unlocked positions)
-    ///   - accumulated_rewards: Total accumulated rewards
-    ///   - pending_rewards: Rewards not yet accumulated
-    ///   - total_locked_entries: Number of currently locked positions
-    ///   - total_unlocked_entries: Number of unlocked positions ready to unstake
-    /// * `Err(Error)` if calculation fails
+    // Retrieves comprehensive staking information for a user.
+    //
+    // # Arguments
+    // * `user` - The address of the user
+    //
+    // # Returns
+    // * `Ok(UserStakingInfo)` - Detailed staking information including:
+    //   - total_staked_blub: Total BLUB currently locked/staked
+    //   - unstaking_available: BLUB available to unstake (from unlocked positions)
+    //   - accumulated_rewards: Total accumulated rewards
+    //   - pending_rewards: Rewards not yet accumulated
+    //   - total_locked_entries: Number of currently locked positions
+    //   - total_unlocked_entries: Number of unlocked positions ready to unstake
+    // * `Err(Error)` if calculation fails
     pub fn get_user_staking_info(env: Env, user: Address) -> Result<UserStakingInfo, Error> {
         
         let user_locks: Vec<Bytes> = env
@@ -3615,31 +3657,31 @@ impl StakingRegistry {
         })
     }
 
-    /// Unstakes tokens and transfers them along with accumulated rewards to the user.
-    ///
-    /// Users can unstake immediately without waiting for unlock periods.
-    /// This function automatically calculates and includes pending rewards.
-    ///
-    /// # Arguments
-    /// * `user` - The address of the user unstaking tokens
-    /// * `amount` - The amount of BLUB to unstake
-    ///
-    /// # Returns
-    /// * `Ok(())` on success
-    /// * `Err(Error::InvalidInput)` if amount is <= 0
-    /// * `Err(Error::NotFound)` if user has no lock entries
-    /// * `Err(Error::NoUnlockableAmount)` if no tokens available to unstake
-    /// * `Err(Error::ReentrancyDetected)` if a reentrant call is detected
-    /// * `Err(Error::InsufficientBalance)` if contract doesn't have enough BLUB
-    ///
-    /// # Authorization
-    /// Requires authorization from the `user` address.
-    ///
-    /// # State Changes
-    /// - Marks lock entries as unlocked
-    /// - Updates user lock totals
-    /// - Updates global state
-    /// - Transfers BLUB and rewards to user
+    // Unstakes tokens and transfers them along with accumulated rewards to the user.
+    //
+    // Users can unstake immediately without waiting for unlock periods.
+    // This function automatically calculates and includes pending rewards.
+    //
+    // # Arguments
+    // * `user` - The address of the user unstaking tokens
+    // * `amount` - The amount of BLUB to unstake
+    //
+    // # Returns
+    // * `Ok(())` on success
+    // * `Err(Error::InvalidInput)` if amount is <= 0
+    // * `Err(Error::NotFound)` if user has no lock entries
+    // * `Err(Error::NoUnlockableAmount)` if no tokens available to unstake
+    // * `Err(Error::ReentrancyDetected)` if a reentrant call is detected
+    // * `Err(Error::InsufficientBalance)` if contract doesn't have enough BLUB
+    //
+    // # Authorization
+    // Requires authorization from the `user` address.
+    //
+    // # State Changes
+    // - Marks lock entries as unlocked
+    // - Updates user lock totals
+    // - Updates global state
+    // - Transfers BLUB and rewards to user
     pub fn unstake(
         env: Env,
         user: Address,
@@ -3779,7 +3821,7 @@ impl StakingRegistry {
     // SYNTHETIX-STYLE REWARD SYSTEM (v1.2.0)
     // ============================================================================
 
-    /// Internal: Get the global reward state
+    // Internal: Get the global reward state
     fn get_reward_state(env: &Env) -> RewardState {
         env.storage()
             .instance()
@@ -3793,8 +3835,8 @@ impl StakingRegistry {
             })
     }
 
-    /// Internal: Require manager authorization.
-    /// Falls back to admin if ManagerAddress is not yet set (pre-migration).
+    // Internal: Require manager authorization.
+    // Falls back to admin if ManagerAddress is not yet set (pre-migration).
     fn require_manager_auth(env: &Env, manager: &Address) -> Result<(), Error> {
         manager.require_auth();
         let stored = env.storage()
@@ -3820,7 +3862,7 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Internal: Get a user's reward state
+    // Internal: Get a user's reward state
     fn get_user_reward_state(env: &Env, user: &Address) -> UserRewardState {
         env.storage()
             .persistent()
@@ -3837,8 +3879,8 @@ impl StakingRegistry {
     // get_user_reward_state removed - not needed for fresh deployment
     // Use get_user_reward_state directly instead
 
-    /// Internal: Calculate pending rewards for a user
-    /// Formula: earned = balance * (reward_per_token - user_paid) / PRECISION + user_earned
+    // Internal: Calculate pending rewards for a user
+    // Formula: earned = balance * (reward_per_token - user_paid) / PRECISION + user_earned
     fn calculate_user_pending_rewards(
         reward_state: &RewardState,
         user_state: &UserRewardState,
@@ -3859,9 +3901,9 @@ impl StakingRegistry {
         user_state.rewards_earned.saturating_add(new_rewards)
     }
 
-    /// Internal: Checkpoint a user's rewards before any balance change
-    /// This MUST be called BEFORE changing a user's staked balance
-    /// It locks in all earned rewards up to this point
+    // Internal: Checkpoint a user's rewards before any balance change
+    // This MUST be called BEFORE changing a user's staked balance
+    // It locks in all earned rewards up to this point
     fn checkpoint_user_internal(
         env: &Env,
         user: &Address,
@@ -3884,8 +3926,8 @@ impl StakingRegistry {
         user_state
     }
 
-    /// Internal: Update user's staked balance after checkpoint
-    /// Called after checkpoint_user_internal
+    // Internal: Update user's staked balance after checkpoint
+    // Called after checkpoint_user_internal
     fn update_user_staked_balance(
         env: &Env,
         user: &Address,
@@ -3913,15 +3955,15 @@ impl StakingRegistry {
             .set(&DataKey::UserRewardStateV2(user.clone()), &user_state);
     }
 
-    /// Backend calls this to add BLUB rewards to the pool
-    /// The rewards are distributed proportionally to all stakers based on their share
-    ///
-    /// # Arguments
-    /// * `admin` - Admin address for authorization
-    /// * `amount` - Amount of BLUB rewards to add
-    ///
-    /// # Authorization
-    /// Requires admin authorization
+    // Backend calls this to add BLUB rewards to the pool
+    // The rewards are distributed proportionally to all stakers based on their share
+    //
+    // # Arguments
+    // * `admin` - Admin address for authorization
+    // * `amount` - Amount of BLUB rewards to add
+    //
+    // # Authorization
+    // Requires admin authorization
     pub fn add_rewards(env: Env, manager: Address, amount: i128) -> Result<(), Error> {
         let config = Self::get_config(env.clone())?;
         Self::require_manager_auth(&env, &manager)?;
@@ -3981,20 +4023,20 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Emergency: drain incorrectly added BLUB and reset reward accumulator.
-    ///
-    /// Call this when `add_rewards` was accidentally called with a bad amount
-    /// (e.g. the BLUB issuer's sentinel balance i64::MAX). The function:
-    ///   1. Transfers all BLUB currently held by the contract back to `admin`.
-    ///   2. Resets `reward_per_token_stored` to `correct_reward_per_token`.
-    ///   3. Resets `total_rewards_added` to `correct_total_rewards_added`.
-    ///
-    /// Per-user states (reward_per_token_paid, rewards_earned) are NOT modified.
-    /// Users who had already checkpointed against the corrupted accumulator will
-    /// see 0 pending rewards until new legitimate rewards are added (safe outcome).
-    ///
-    /// # Authorization
-    /// Requires admin (multisig) auth.
+    // Emergency: drain incorrectly added BLUB and reset reward accumulator.
+    //
+    // Call this when `add_rewards` was accidentally called with a bad amount
+    // (e.g. the BLUB issuer's sentinel balance i64::MAX). The function:
+    //   1. Transfers all BLUB currently held by the contract back to `admin`.
+    //   2. Resets `reward_per_token_stored` to `correct_reward_per_token`.
+    //   3. Resets `total_rewards_added` to `correct_total_rewards_added`.
+    //
+    // Per-user states (reward_per_token_paid, rewards_earned) are NOT modified.
+    // Users who had already checkpointed against the corrupted accumulator will
+    // see 0 pending rewards until new legitimate rewards are added (safe outcome).
+    //
+    // # Authorization
+    // Requires admin (multisig) auth.
     pub fn admin_emergency_reset_rewards(
         env: Env,
         admin: Address,
@@ -4042,23 +4084,23 @@ impl StakingRegistry {
         Ok(blub_balance)
     }
 
-    /// Accepts AQUA protocol revenue and mints equivalent BLUB as staker rewards.
-    ///
-    /// The admin specifies both the AQUA amount (protocol revenue collected) and
-    /// the BLUB reward amount (based on off-chain market rate lookup). The AQUA is
-    /// transferred to the contract (tracked as POL), and BLUB is minted and
-    /// distributed to stakers via the Synthetix reward accumulator.
-    ///
-    /// # Arguments
-    /// * `admin` - Admin address (must match config.admin)
-    /// * `aqua_amount` - Amount of AQUA to transfer from admin to contract
-    /// * `blub_reward_amount` - Amount of BLUB to mint as staker rewards
-    ///
-    /// # Returns
-    /// * `Ok(())` on success
-    /// * `Err(Unauthorized)` if caller is not admin
-    /// * `Err(InvalidInput)` if either amount <= 0
-    /// * `Err(InsufficientBalance)` if AQUA transfer fails
+    // Accepts AQUA protocol revenue and mints equivalent BLUB as staker rewards.
+    //
+    // The admin specifies both the AQUA amount (protocol revenue collected) and
+    // the BLUB reward amount (based on off-chain market rate lookup). The AQUA is
+    // transferred to the contract (tracked as POL), and BLUB is minted and
+    // distributed to stakers via the Synthetix reward accumulator.
+    //
+    // # Arguments
+    // * `admin` - Admin address (must match config.admin)
+    // * `aqua_amount` - Amount of AQUA to transfer from admin to contract
+    // * `blub_reward_amount` - Amount of BLUB to mint as staker rewards
+    //
+    // # Returns
+    // * `Ok(())` on success
+    // * `Err(Unauthorized)` if caller is not admin
+    // * `Err(InvalidInput)` if either amount <= 0
+    // * `Err(InsufficientBalance)` if AQUA transfer fails
     pub fn add_rewards_from_aqua(
         env: Env,
         manager: Address,
@@ -4142,16 +4184,16 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// User claims their accumulated BLUB rewards
-    /// Subject to claim cooldown (default 7 days)
-    ///
-    /// # Arguments
-    /// * `user` - User address claiming rewards
-    ///
-    /// # Returns
-    /// * `Ok(i128)` - Amount of rewards claimed
-    /// * `Err(ClaimCooldownActive)` - If cooldown hasn't elapsed
-    /// * `Err(NoRewardsToClaim)` - If no rewards available
+    // User claims their accumulated BLUB rewards
+    // Subject to claim cooldown (default 7 days)
+    //
+    // # Arguments
+    // * `user` - User address claiming rewards
+    //
+    // # Returns
+    // * `Ok(i128)` - Amount of rewards claimed
+    // * `Err(ClaimCooldownActive)` - If cooldown hasn't elapsed
+    // * `Err(NoRewardsToClaim)` - If no rewards available
     pub fn claim_rewards(env: Env, user: Address) -> Result<i128, Error> {
         user.require_auth();
 
@@ -4218,26 +4260,26 @@ impl StakingRegistry {
         Ok(pending)
     }
 
-    /// View function: Get user's pending rewards (without claiming)
-    ///
-    /// # Arguments
-    /// * `user` - User address to check
-    ///
-    /// # Returns
-    /// Amount of pending BLUB rewards
+    // View function: Get user's pending rewards (without claiming)
+    //
+    // # Arguments
+    // * `user` - User address to check
+    //
+    // # Returns
+    // Amount of pending BLUB rewards
     pub fn get_pending_rewards(env: Env, user: Address) -> i128 {
         let reward_state = Self::get_reward_state(&env);
         let user_state = Self::get_user_reward_state(&env, &user);
         Self::calculate_user_pending_rewards(&reward_state, &user_state)
     }
 
-    /// View function: Get comprehensive reward info for a user
-    ///
-    /// # Arguments
-    /// * `user` - User address to check
-    ///
-    /// # Returns
-    /// UserRewardInfo with pending, claimed, balance, and cooldown status
+    // View function: Get comprehensive reward info for a user
+    //
+    // # Arguments
+    // * `user` - User address to check
+    //
+    // # Returns
+    // UserRewardInfo with pending, claimed, balance, and cooldown status
     pub fn get_user_reward_info(env: Env, user: Address) -> UserRewardInfo {
         let config = Self::get_config(env.clone()).unwrap_or(Config {
             admin: user.clone(),
@@ -4279,14 +4321,14 @@ impl StakingRegistry {
         }
     }
 
-    /// View function: Check if a specific lock entry can be unstaked
-    ///
-    /// # Arguments
-    /// * `user` - User address
-    /// * `lock_index` - Index of the lock entry
-    ///
-    /// # Returns
-    /// UnstakeStatus with availability info
+    // View function: Check if a specific lock entry can be unstaked
+    //
+    // # Arguments
+    // * `user` - User address
+    // * `lock_index` - Index of the lock entry
+    //
+    // # Returns
+    // UnstakeStatus with availability info
     pub fn get_unstake_status(env: Env, user: Address, lock_index: u32) -> UnstakeStatus {
         let config = Self::get_config(env.clone()).unwrap_or(Config {
             admin: user.clone(),
@@ -4342,16 +4384,16 @@ impl StakingRegistry {
         }
     }
 
-    /// Get the global reward state (view function)
+    // Get the global reward state (view function)
     pub fn get_reward_state_view(env: Env) -> RewardState {
         Self::get_reward_state(&env)
     }
 
-    /// Admin: Update the unstake cooldown period
-    ///
-    /// # Arguments
-    /// * `admin` - Admin address
-    /// * `cooldown_seconds` - New cooldown in seconds
+    // Admin: Update the unstake cooldown period
+    //
+    // # Arguments
+    // * `admin` - Admin address
+    // * `cooldown_seconds` - New cooldown in seconds
     pub fn update_unstake_cooldown(
         env: Env,
         admin: Address,
@@ -4375,11 +4417,11 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Admin: Update the claim reward cooldown period
-    ///
-    /// # Arguments
-    /// * `admin` - Admin address
-    /// * `cooldown_seconds` - New cooldown in seconds
+    // Admin: Update the claim reward cooldown period
+    //
+    // # Arguments
+    // * `admin` - Admin address
+    // * `cooldown_seconds` - New cooldown in seconds
     pub fn update_claim_cooldown(
         env: Env,
         admin: Address,
@@ -4403,8 +4445,8 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Internal helper: Checkpoint and update staked balance for reward tracking
-    /// Call this after modifying a user's staked BLUB balance
+    // Internal helper: Checkpoint and update staked balance for reward tracking
+    // Call this after modifying a user's staked BLUB balance
     fn sync_user_reward_balance(env: &Env, user: &Address, new_blub_balance: i128) {
         let mut reward_state = Self::get_reward_state(env);
         let user_state = Self::checkpoint_user_internal(env, user, &reward_state);
@@ -4412,7 +4454,7 @@ impl StakingRegistry {
         Self::update_user_staked_balance(env, user, new_blub_balance, &mut reward_state, old_balance);
     }
 
-    /// Get user's total staked BLUB from all lock entries
+    // Get user's total staked BLUB from all lock entries
     fn get_user_total_staked_blub(env: &Env, user: &Address) -> i128 {
         let user_locks: Vec<Bytes> = env
             .storage()
@@ -4441,11 +4483,11 @@ impl StakingRegistry {
     // ICE LOCKING FUNCTIONS (Request 1)
     // ============================================================================
 
-    /// One-time setup to establish trustlines for all 4 ICE token types.
-    /// Must be called by admin before contract can receive ICE tokens.
-    ///
-    /// # Authorization
-    /// Requires admin authorization
+    // One-time setup to establish trustlines for all 4 ICE token types.
+    // Must be called by admin before contract can receive ICE tokens.
+    //
+    // # Authorization
+    // Requires admin authorization
     pub fn setup_ice_trustlines(env: Env, manager: Address) -> Result<(), Error> {
         let config = Self::get_config(env.clone())?;
         Self::require_manager_auth(&env, &manager)?;
@@ -4475,18 +4517,18 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Authorizes an ICE lock for a specific amount and duration.
-    /// Backend cron will execute the actual locking on Stellar Classic.
-    ///
-    /// # Arguments
-    /// * `aqua_amount` - Amount of AQUA to lock for ICE
-    /// * `duration_years` - Lock duration (1-5 years)
-    ///
-    /// # Returns
-    /// Lock ID for tracking
-    ///
-    /// # Authorization
-    /// Requires admin authorization
+    // Authorizes an ICE lock for a specific amount and duration.
+    // Backend cron will execute the actual locking on Stellar Classic.
+    //
+    // # Arguments
+    // * `aqua_amount` - Amount of AQUA to lock for ICE
+    // * `duration_years` - Lock duration (1-5 years)
+    //
+    // # Returns
+    // Lock ID for tracking
+    //
+    // # Authorization
+    // Requires admin authorization
     pub fn authorize_ice_lock(
         env: Env,
         manager: Address,
@@ -4536,15 +4578,15 @@ impl StakingRegistry {
         Ok(lock_id)
     }
 
-    /// Transfers authorized AQUA from contract to admin for ICE locking.
-    /// Backend calls this after authorization to move AQUA to admin wallet,
-    /// then creates claimable balance on Stellar Classic.
-    ///
-    /// # Arguments
-    /// * `lock_id` - The authorization ID
-    ///
-    /// # Authorization
-    /// Requires admin authorization
+    // Transfers authorized AQUA from contract to admin for ICE locking.
+    // Backend calls this after authorization to move AQUA to admin wallet,
+    // then creates claimable balance on Stellar Classic.
+    //
+    // # Arguments
+    // * `lock_id` - The authorization ID
+    //
+    // # Authorization
+    // Requires admin authorization
     pub fn transfer_authorized_aqua(env: Env, manager: Address, lock_id: u64) -> Result<(), Error> {
         let config = Self::get_config(env.clone())?; // needed for aqua_token address
         Self::require_manager_auth(&env, &manager)?;
@@ -4601,11 +4643,11 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Syncs all ICE token balances from SAC contracts.
-    /// Backend calls this after ICE tokens are received.
-    ///
-    /// # Authorization
-    /// Requires admin authorization
+    // Syncs all ICE token balances from SAC contracts.
+    // Backend calls this after ICE tokens are received.
+    //
+    // # Authorization
+    // Requires admin authorization
     pub fn sync_all_ice_balances(env: Env, manager: Address) -> Result<(), Error> {
         let config = Self::get_config(env.clone())?;
         Self::require_manager_auth(&env, &manager)?;
@@ -4652,16 +4694,16 @@ impl StakingRegistry {
     // VAULT FUNCTIONS (Request 2 - Boost Farming)
     // ============================================================================
 
-    /// Adds a new pool to the vault (max 10 pools).
-    ///
-    /// # Arguments
-    /// * `pool_address` - Aquarius pool contract address
-    /// * `token_a` - First token in the pair
-    /// * `token_b` - Second token in the pair
-    /// * `share_token` - LP token address
-    ///
-    /// # Authorization
-    /// Requires admin authorization
+    // Adds a new pool to the vault (max 10 pools).
+    //
+    // # Arguments
+    // * `pool_address` - Aquarius pool contract address
+    // * `token_a` - First token in the pair
+    // * `token_b` - Second token in the pair
+    // * `share_token` - LP token address
+    //
+    // # Authorization
+    // Requires admin authorization
     pub fn add_pool(
         env: Env,
         manager: Address,
@@ -4712,10 +4754,10 @@ impl StakingRegistry {
         Ok(pool_id)
     }
 
-    /// Updates a pool's active status.
-    ///
-    /// # Authorization
-    /// Requires admin authorization
+    // Updates a pool's active status.
+    //
+    // # Authorization
+    // Requires admin authorization
     pub fn update_pool_status(env: Env, pool_id: u32, active: bool) -> Result<(), Error> {
         let config = Self::get_config(env.clone())?;
         config.admin.require_auth();
@@ -4740,18 +4782,18 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Deposits tokens to a vault pool.
-    /// User deposits token_a + token_b, contract adds liquidity to Aquarius pool.
-    ///
-    /// # Arguments
-    /// * `user` - User address
-    /// * `pool_id` - Pool ID
-    /// * `desired_a` - Amount of token_a to deposit
-    /// * `desired_b` - Amount of token_b to deposit
-    /// * `min_shares` - Minimum LP shares to receive (slippage protection)
-    ///
-    /// # Authorization
-    /// Requires user authorization
+    // Deposits tokens to a vault pool.
+    // User deposits token_a + token_b, contract adds liquidity to Aquarius pool.
+    //
+    // # Arguments
+    // * `user` - User address
+    // * `pool_id` - Pool ID
+    // * `desired_a` - Amount of token_a to deposit
+    // * `desired_b` - Amount of token_b to deposit
+    // * `min_shares` - Minimum LP shares to receive (slippage protection)
+    //
+    // # Authorization
+    // Requires user authorization
     pub fn vault_deposit(
         env: Env,
         user: Address,
@@ -4980,16 +5022,16 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Single-asset vault deposit.
-    /// Deposits a single token into an Aquarius pool. The AMM handles the
-    /// internal swap to balance the deposit across both pool tokens.
-    ///
-    /// # Arguments
-    /// * `user` - User address
-    /// * `pool_id` - Pool ID
-    /// * `token_in` - Address of the token being deposited (must be token_a or token_b of the pool)
-    /// * `amount_in` - Amount of token_in to deposit (in raw units, 7 decimals)
-    /// * `min_shares` - Minimum LP shares to receive (slippage protection)
+    // Single-asset vault deposit.
+    // Deposits a single token into an Aquarius pool. The AMM handles the
+    // internal swap to balance the deposit across both pool tokens.
+    //
+    // # Arguments
+    // * `user` - User address
+    // * `pool_id` - Pool ID
+    // * `token_in` - Address of the token being deposited (must be token_a or token_b of the pool)
+    // * `amount_in` - Amount of token_in to deposit (in raw units, 7 decimals)
+    // * `min_shares` - Minimum LP shares to receive (slippage protection)
     pub fn vault_deposit_single(
         env: Env,
         user: Address,
@@ -5151,18 +5193,18 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Withdraws tokens from a vault pool.
-    /// User withdraws their share, contract removes liquidity from Aquarius pool.
-    ///
-    /// # Arguments
-    /// * `user` - User address
-    /// * `pool_id` - Pool ID
-    /// * `share_percent` - Percentage of user's position to withdraw (0-10000 = 0-100%)
-    /// * `min_a` - Minimum amount of token_a to receive (slippage protection)
-    /// * `min_b` - Minimum amount of token_b to receive (slippage protection)
-    ///
-    /// # Authorization
-    /// Requires user authorization
+    // Withdraws tokens from a vault pool.
+    // User withdraws their share, contract removes liquidity from Aquarius pool.
+    //
+    // # Arguments
+    // * `user` - User address
+    // * `pool_id` - Pool ID
+    // * `share_percent` - Percentage of user's position to withdraw (0-10000 = 0-100%)
+    // * `min_a` - Minimum amount of token_a to receive (slippage protection)
+    // * `min_b` - Minimum amount of token_b to receive (slippage protection)
+    //
+    // # Authorization
+    // Requires user authorization
     pub fn vault_withdraw(
         env: Env,
         user: Address,
@@ -5357,22 +5399,22 @@ impl StakingRegistry {
         Ok(())
     }
 
-    /// Claims boosted rewards from a pool and auto-compounds.
-    /// Treasury cut is `config.vault_fee_bps` (default 1500 = 15%); remainder auto-compounds.
-    /// Pool 0 (POL+vault mixed): backend applies an additional cut on the POL share
-    /// in `handleStakingRewardDistribution` so POL effectively pays 30%.
-    /// Backend cron calls this 4x daily using ICE balance for boost.
-    ///
-    /// # Arguments
-    /// * `pool_id` - Pool ID to claim rewards from
-    ///
-    /// # Authorization
-    /// Requires admin authorization
-    /// Claims boosted rewards from a pool, sends `vault_fee_bps` to treasury and the rest to admin.
-    /// The admin (backend) must then swap the AQUA to both pool tokens and call
-    /// `admin_compound_deposit` to complete the compound cycle.
-    ///
-    /// Returns: (total_rewards, treasury_amount, compound_amount) — all in AQUA raw units.
+    // Claims boosted rewards from a pool and auto-compounds.
+    // Treasury cut is `config.vault_fee_bps` (default 1500 = 15%); remainder auto-compounds.
+    // Pool 0 (POL+vault mixed): backend applies an additional cut on the POL share
+    // in `handleStakingRewardDistribution` so POL effectively pays 30%.
+    // Backend cron calls this 4x daily using ICE balance for boost.
+    //
+    // # Arguments
+    // * `pool_id` - Pool ID to claim rewards from
+    //
+    // # Authorization
+    // Requires admin authorization
+    // Claims boosted rewards from a pool, sends `vault_fee_bps` to treasury and the rest to admin.
+    // The admin (backend) must then swap the AQUA to both pool tokens and call
+    // `admin_compound_deposit` to complete the compound cycle.
+    //
+    // Returns: (total_rewards, treasury_amount, compound_amount) — all in AQUA raw units.
     pub fn claim_and_compound(env: Env, manager: Address, pool_id: u32) -> Result<(i128, i128, i128), Error> {
         let config = Self::get_config(env.clone())?;
         Self::require_manager_auth(&env, &manager)?;
@@ -5431,14 +5473,14 @@ impl StakingRegistry {
         Ok((total_rewards as i128, treasury_amount as i128, compound_amount as i128))
     }
 
-    /// Deposits tokens from admin into an Aquarius pool on behalf of the contract.
-    /// Called by backend after swapping AQUA into both pool tokens.
-    /// This completes the compound cycle started by `claim_and_compound`.
-    ///
-    /// # Arguments
-    /// * `pool_id` - Pool ID to deposit into
-    /// * `amount_a` - Amount of token_a to deposit (from admin wallet)
-    /// * `amount_b` - Amount of token_b to deposit (from admin wallet)
+    // Deposits tokens from admin into an Aquarius pool on behalf of the contract.
+    // Called by backend after swapping AQUA into both pool tokens.
+    // This completes the compound cycle started by `claim_and_compound`.
+    //
+    // # Arguments
+    // * `pool_id` - Pool ID to deposit into
+    // * `amount_a` - Amount of token_a to deposit (from admin wallet)
+    // * `amount_b` - Amount of token_b to deposit (from admin wallet)
     pub fn admin_compound_deposit(
         env: Env,
         manager: Address,
@@ -5566,7 +5608,7 @@ impl StakingRegistry {
     // QUERY FUNCTIONS - ICE & Vault
     // ============================================================================
 
-    /// Gets pending AQUA available for ICE locking.
+    // Gets pending AQUA available for ICE locking.
     pub fn get_pending_aqua_for_ice(env: Env) -> Result<i128, Error> {
         let global_state: GlobalState = env
             .storage()
@@ -5577,7 +5619,7 @@ impl StakingRegistry {
         Ok(global_state.pending_aqua_for_ice)
     }
 
-    /// Gets all 4 ICE token balances.
+    // Gets all 4 ICE token balances.
     pub fn get_all_ice_balances(env: Env) -> Result<(i128, i128, i128, i128), Error> {
         let global_state: GlobalState = env
             .storage()
@@ -5593,7 +5635,7 @@ impl StakingRegistry {
         ))
     }
 
-    /// Gets upvoteICE balance for voting.
+    // Gets upvoteICE balance for voting.
     pub fn get_upvote_ice_balance(env: Env) -> Result<i128, Error> {
         let global_state: GlobalState = env
             .storage()
@@ -5604,7 +5646,7 @@ impl StakingRegistry {
         Ok(global_state.upvote_ice_balance)
     }
 
-    /// Gets ICE lock authorization by ID.
+    // Gets ICE lock authorization by ID.
     pub fn get_ice_lock_authorization(env: Env, lock_id: u64) -> Result<IceLockAuthorization, Error> {
         env.storage()
             .persistent()
@@ -5612,7 +5654,7 @@ impl StakingRegistry {
             .ok_or(Error::NotFound)
     }
 
-    /// Gets pool information by ID.
+    // Gets pool information by ID.
     pub fn get_pool_info(env: Env, pool_id: u32) -> Result<PoolInfo, Error> {
         env.storage()
             .persistent()
@@ -5620,7 +5662,7 @@ impl StakingRegistry {
             .ok_or(Error::PoolNotFound)
     }
 
-    /// Gets total vault shares for a pool (v1.8.0+).
+    // Gets total vault shares for a pool (v1.8.0+).
     pub fn get_vault_total_shares(env: Env, pool_id: u32) -> i128 {
         env.storage()
             .persistent()
@@ -5628,7 +5670,7 @@ impl StakingRegistry {
             .unwrap_or(0)
     }
 
-    /// Gets user's vault position in a specific pool.
+    // Gets user's vault position in a specific pool.
     pub fn get_user_vault_position(env: Env, user: Address, pool_id: u32) -> Result<UserVaultPosition, Error> {
         env.storage()
             .persistent()
@@ -5636,8 +5678,8 @@ impl StakingRegistry {
             .ok_or(Error::PositionNotFound)
     }
 
-    /// Gets total number of vault pools.
-    /// Gets compound stats for a vault pool.
+    // Gets total number of vault pools.
+    // Gets compound stats for a vault pool.
     pub fn get_pool_compound_stats(env: Env, pool_id: u32) -> PoolCompoundStats {
         env.storage()
             .persistent()
@@ -5651,8 +5693,8 @@ impl StakingRegistry {
             })
     }
 
-    /// Gets user's compound gains for a specific pool.
-    /// Returns (current_lp, deposited_lp, compound_gain_lp).
+    // Gets user's compound gains for a specific pool.
+    // Returns (current_lp, deposited_lp, compound_gain_lp).
     pub fn get_user_compound_gains(env: Env, user: Address, pool_id: u32) -> (i128, i128, i128) {
         let pool_info: PoolInfo = env
             .storage()
@@ -5709,7 +5751,7 @@ impl StakingRegistry {
         (current_lp, deposited_lp, compound_gain)
     }
 
-    /// Gets total number of vault pools.
+    // Gets total number of vault pools.
     pub fn get_pool_count(env: Env) -> Result<u32, Error> {
         let global_state: GlobalState = env
             .storage()
