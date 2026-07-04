@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>What Is Liquidity Mining? A Beginner's Guide | WhaleHub</title>
+<meta name="description" content="Liquidity mining means providing assets to a pool to earn token rewards on top of trading fees. Here's how it works, how it differs from staking and yield farming, and the risks." />
+<link rel="canonical" href="https://whalehub.io/blog/what-is-liquidity-mining.html" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="liquidity mining, what is liquidity mining, liquidity mining crypto, yield farming vs liquidity mining" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/what-is-liquidity-mining.html" />
+<meta property="og:title" content="What Is Liquidity Mining? A Beginner's Guide" />
+<meta property="og:description" content="A plain-English guide to liquidity mining: earning token rewards for providing liquidity, how it differs from staking and yield farming, impermanent loss, and how it works on Stellar." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/what-is-liquidity-mining.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-07-04" />
+<meta property="article:modified_time" content="2026-07-04" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="What Is Liquidity Mining? A Beginner's Guide" />
+<meta name="twitter:description" content="A plain-English guide to liquidity mining: token rewards for providing liquidity, how it differs from staking and yield farming, impermanent loss, and Stellar." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/what-is-liquidity-mining.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/what-is-liquidity-mining.html#article",
+      "headline": "What Is Liquidity Mining? A Beginner's Guide",
+      "description": "A plain-English guide to liquidity mining: earning token rewards for providing liquidity, how it differs from staking and yield farming, impermanent loss, and how it works on Stellar.",
+      "image": "https://whalehub.io/assets/blog/what-is-liquidity-mining.png",
+      "datePublished": "2026-07-04",
+      "dateModified": "2026-07-04",
+      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "WhaleHub",
+        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+      },
+      "mainEntityOfPage": "https://whalehub.io/blog/what-is-liquidity-mining.html"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
+        { "@type": "ListItem", "position": 2, "name": "What Is Liquidity Mining?", "item": "https://whalehub.io/blog/what-is-liquidity-mining.html" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "What is liquidity mining?", "acceptedAnswer": { "@type": "Answer", "text": "Liquidity mining is depositing a pair of tokens into a liquidity pool so traders can swap against them, and earning rewards in return. You collect a share of the pool's trading fees plus extra token incentives that the protocol emits to attract liquidity. It is one of the most common ways to earn yield in DeFi." } },
+        { "@type": "Question", "name": "What is the difference between liquidity mining and staking?", "acceptedAnswer": { "@type": "Answer", "text": "Staking usually means locking a single token to help secure a network or earn protocol rewards, with no exposure to a second asset. Liquidity mining means supplying two tokens to a trading pool, earning fees and incentives, but taking on impermanent loss if the two prices diverge." } },
+        { "@type": "Question", "name": "Is liquidity mining the same as yield farming?", "acceptedAnswer": { "@type": "Answer", "text": "No, but they overlap. Liquidity mining is the specific act of earning token rewards for providing liquidity. Yield farming is the broader strategy of moving capital between pools, protocols, and reward programs to maximise return. Liquidity mining is often one step inside a larger yield-farming plan." } },
+        { "@type": "Question", "name": "What is impermanent loss in liquidity mining?", "acceptedAnswer": { "@type": "Answer", "text": "Impermanent loss is the gap between holding two tokens and depositing them in a pool. As prices diverge, the pool rebalances and you end up with more of the falling asset and less of the rising one. A 2x price move on one asset causes roughly 5.7% impermanent loss before fees and rewards." } },
+        { "@type": "Question", "name": "How does liquidity mining work on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "On Stellar, you provide liquidity to an Aquarius AMM pool and earn trading fees plus AQUA emissions. Emissions are directed by ICE voting, so the most-voted pools earn the most. Roughly five-second finality and sub-cent fees make frequent claiming and compounding practical." } },
+        { "@type": "Question", "name": "Is liquidity mining profitable?", "acceptedAnswer": { "@type": "Answer", "text": "It can be, but returns are not guaranteed. Fees and token emissions add up, yet impermanent loss, falling reward prices, and changing emission schedules can erode gains. Stable or correlated pairs reduce impermanent loss. Always compare rewards against simply holding, and check the live APY before depositing." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../index.html"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../index.html#how">How it works</a>
+      <a href="../index.html#why">Why WhaleHub</a>
+      <a href="./index.html" class="active">Blog</a>
+      <a href="../about.html">About</a>
+      <a href="../faq.html">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./index.html">Blog</a> &nbsp;/&nbsp; Fundamentals</div>
+      <span class="tag">Fundamentals</span>
+      <h1>What Is Liquidity Mining? A Beginner's Guide</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: July 2026</span>
+        <span class="dot-sep"></span>
+        <span>9 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/what-is-liquidity-mining.png" alt="What Is Liquidity Mining — WhaleHub beginner's guide cover" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">Liquidity mining is depositing a pair of tokens into a liquidity pool and earning rewards for it — a slice of the pool's trading fees plus extra tokens the protocol emits to attract liquidity. It's one of the oldest ways to earn yield in DeFi, and on Stellar it runs on the Aquarius AMM, where roughly five-second finality and sub-cent fees make frequent claiming and compounding actually worthwhile.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#what-is">What is liquidity mining?</a></li>
+        <li><a href="#vs-staking">Liquidity mining vs staking</a></li>
+        <li><a href="#vs-farming">Liquidity mining vs yield farming</a></li>
+        <li><a href="#emissions">How rewards &amp; emissions work</a></li>
+        <li><a href="#impermanent-loss">Impermanent loss, with numbers</a></li>
+        <li><a href="#stellar">Liquidity mining on Stellar</a></li>
+        <li><a href="#whalehub">Where WhaleHub removes the friction</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="what-is">What is liquidity mining?</h2>
+      <p class="answer">Liquidity mining is depositing a pair of tokens into a liquidity pool so traders can swap against them, and earning rewards in return. You collect a share of the pool's trading fees plus extra token incentives that the protocol emits to attract liquidity. It is one of the most common ways to earn yield in DeFi.</p>
+      <p>Every decentralized exchange needs assets sitting in reserve for people to trade against. Instead of paying market makers, most protocols crowdsource those reserves: anyone can become a <strong>liquidity provider (LP)</strong> by depositing two tokens in equal value into an automated market maker (AMM) pool. In exchange, you receive an LP position that represents your share of the pool.</p>
+      <p>That position earns money two ways. First, every swap pays a small fee that is split among all LPs. Second — and this is the "mining" part — the protocol mints and hands out a reward token to LPs on top of the fees, to bootstrap deeper liquidity. Together, fees plus emissions are your yield.</p>
+      <p>The term dates back to the 2020 DeFi boom, when protocols began "distributing" governance tokens to liquidity providers block by block, the way proof-of-work coins were mined. If you're new to the wider ecosystem, our <a href="stellar-defi-guide.html">Stellar DeFi guide</a> maps out where liquidity mining sits among staking, lending, and AMMs.</p>
+
+      <h2 id="vs-staking">Liquidity mining vs staking</h2>
+      <p class="answer">Staking usually means locking a single token to help secure a network or earn protocol rewards, with no exposure to a second asset. Liquidity mining means supplying two tokens to a trading pool, earning fees and incentives, but taking on impermanent loss if the two prices diverge.</p>
+      <p>The two are often confused because both "lock up tokens to earn more tokens." The critical difference is exposure. When you stake one asset, your token count only changes through rewards. When you provide liquidity, the pool constantly rebalances the ratio of your two assets as their prices move — so the mix you withdraw is rarely the mix you put in.</p>
+      <p>That extra moving part is the source of both liquidity mining's higher advertised yields and its main risk. Staking is simpler and lower-variance; liquidity mining pays you for taking on price-divergence risk between a pair. If you want the single-asset route, our <a href="how-to-stake-aqua.html">guide to staking AQUA</a> walks through it step by step.</p>
+
+      <h2 id="vs-farming">Liquidity mining vs yield farming</h2>
+      <p class="answer">Liquidity mining is the specific act of earning token rewards for providing liquidity. Yield farming is the broader strategy of moving capital between pools, protocols, and reward programs to maximise return. Liquidity mining is often one step inside a larger yield-farming plan.</p>
+      <p>Think of yield farming as the whole game and liquidity mining as one of its most-used moves. A yield farmer might supply liquidity, then take the LP position and stake it somewhere else, chase a fresh incentive program, or rotate to whichever pool is emitting the most this week. Liquidity mining is simply the earn-rewards-for-providing-liquidity leg of that.</p>
+      <p>Here's how the three ideas line up:</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th></th><th>Staking</th><th>Liquidity mining</th><th>Yield farming</th></tr></thead>
+        <tbody>
+          <tr><td><strong>What you deposit</strong></td><td>One token</td><td>A token pair</td><td>Any of the above, often rotated</td></tr>
+          <tr><td><strong>Where reward comes from</strong></td><td>Protocol / network rewards</td><td>Trading fees + token emissions</td><td>Stacked incentives across protocols</td></tr>
+          <tr><td><strong>Main risk</strong></td><td>Lock-up, token price</td><td>Impermanent loss</td><td>Impermanent loss + complexity</td></tr>
+          <tr><td><strong>Effort</strong></td><td>Low</td><td>Low–medium</td><td>High, active management</td></tr>
+          <tr><td><strong>Typical goal</strong></td><td>Steady base yield</td><td>Fees + incentive rewards</td><td>Maximise total return</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>If the active, rotate-for-the-best-rate approach appeals to you, we go deep on it in <a href="stellar-yield-farming.html">Yield Farming on Stellar</a>.</p>
+
+      <h2 id="emissions">How rewards and emissions work</h2>
+      <p class="answer">Liquidity-mining rewards come from two streams: trading fees paid by swappers, and token emissions the protocol releases on a schedule to incentivize liquidity. Emissions are often directed by governance votes, so pools that attract the most votes receive the largest share of the reward token each period.</p>
+      <p>Trading fees are organic — the more volume a pool does, the more it pays. Emissions are policy: the protocol decides how many reward tokens to release per period and how to split them across pools. That split is where the strategy lives.</p>
+      <h3>Vote-directed emissions</h3>
+      <p>Many modern AMMs let token holders vote on which pools get emissions. This turns liquidity mining into a two-layer game: provide liquidity to a pool, and make sure that pool is winning enough votes to keep its emissions high. On Stellar, that voting layer is <a href="ice-voting-bribes-aquarius.html">ICE voting on Aquarius</a>, and projects can even offer "bribes" to attract votes to their pool.</p>
+      <h3>The catch for small providers</h3>
+      <ul>
+        <li>Emissions shift every epoch, so last week's best pool may not be this week's.</li>
+        <li>Rewards arrive as a separate token that must be claimed, then sold or re-deposited to actually compound.</li>
+        <li>On expensive chains, claiming and compounding small amounts can cost more in gas than it earns.</li>
+      </ul>
+      <p>This is exactly the friction that yield optimizers exist to remove — more on that below.</p>
+
+      <h2 id="impermanent-loss">Impermanent loss, explained with numbers</h2>
+      <p class="answer">Impermanent loss is the gap between holding two tokens and depositing them in a pool. As prices diverge, the pool rebalances and you end up with more of the falling asset and less of the rising one. A 2x price move on one asset causes roughly 5.7% impermanent loss before fees and rewards.</p>
+      <p>This is the single most important risk in liquidity mining, and the one beginners underestimate. It's easiest to see with a concrete, glass-box example. Suppose you provide liquidity to a Token&nbsp;A / XLM pool where both are worth $1, and the pool is a standard constant-product AMM (reserves multiplied together stay constant).</p>
+      <pre><code>Deposit:      100 A ($1) + 100 XLM ($1) = $200 total
+Pool rule:    A_reserve  x  XLM_reserve  =  k  (stays constant)
+              100 x 100 = 10,000  ->  k = 10,000
+
+Now A doubles in price: 1 A is worth 2 XLM.
+The pool rebalances so that XLM_reserve / A_reserve = 2,
+while A_reserve x XLM_reserve still equals 10,000.
+
+  A_reserve   = sqrt(10,000 / 2)  = 70.71 A
+  XLM_reserve = sqrt(10,000 x 2)  = 141.42 XLM
+
+Value of your LP position:
+  70.71 A x $2  +  141.42 XLM x $1  = $282.84
+
+If you had just HELD the two tokens instead:
+  100 A x $2   +  100 XLM x $1      = $300.00
+
+Impermanent loss = 300.00 - 282.84 = $17.16  (~5.7%)</code></pre>
+      <p>You still made money — your position rose from $200 to $282.84 — but you'd have $300 if you'd simply held. That ~5.7% gap is the impermanent loss. It's called "impermanent" because if prices return to where they started, the gap closes. It only becomes permanent when you withdraw while prices are diverged.</p>
+      <p>Two takeaways. First, the wider the price divergence, the larger the loss — a 4x move costs about 20%. Second, fees and emissions are what compensate you for it: a pool is worth mining when its fees plus rewards outrun the impermanent loss. That's also why <strong>correlated or stable pairs</strong> (two assets that move together) are popular for lower-risk mining.</p>
+
+      <div class="cta-band">
+        <div>
+          <div class="t">Let the compounding run itself</div>
+          <div class="s">WhaleHub's liquidity vaults auto-compound Aquarius rewards roughly 48 times a day, so you don't claim and re-deposit by hand.</div>
+        </div>
+        <a href="https://app.whalehub.io/" class="btn btn-primary">Launch app</a>
+      </div>
+
+      <h2 id="stellar">Liquidity mining on Stellar via Aquarius</h2>
+      <p class="answer">On Stellar, you provide liquidity to an Aquarius AMM pool and earn trading fees plus AQUA emissions. Emissions are directed by ICE voting, so the most-voted pools earn the most. Roughly five-second finality and sub-cent fees make frequent claiming and compounding practical instead of gas-prohibitive.</p>
+      <p><strong>Aquarius</strong> is Stellar's main liquidity-incentive protocol, launched in 2021. It layers reward emissions on top of Stellar's native constant-product AMM pools, and its <a href="what-is-aqua-token.html">AQUA token</a> decides where those rewards flow. Holders lock AQUA to receive <strong>ICE</strong> — non-transferable voting power — and vote AQUA emissions toward specific pools. Full mechanics live in <a href="aquarius-amm-explained.html">Aquarius AMM Explained</a>.</p>
+      <p>Stellar's economics change what's practical. A base transaction costs 0.00001 XLM and finalizes in about five seconds via the Stellar Consensus Protocol. Reward-claiming and compounding strategies that would be eaten alive by gas on a congested chain become rounding error here — which is the whole reason high-frequency compounding is viable on Stellar at all.</p>
+      <p>The manual version still has friction, though: you'd lock AQUA for ICE, track which market is hottest each epoch, vote every cycle, then claim and re-deposit rewards by hand. Most people won't do that consistently.</p>
+
+      <h2 id="whalehub">Where WhaleHub removes the friction</h2>
+      <p class="answer">WhaleHub is a yield-optimization protocol on Stellar, often called "Convex for Stellar." It pools users' deposits, aggregates their ICE voting power to direct emissions to the highest-yielding Aquarius pool, and auto-compounds the rewards — turning multi-step liquidity mining into a single deposit.</p>
+      <p>The two-layer game we described — provide liquidity, then keep your pool winning votes — is precisely what WhaleHub automates. Individually, a small holder has negligible ICE weight and pays real effort to claim and re-stake. Pooled together, thousands of holders wield whale-tier voting power and reach a scale no single account could.</p>
+      <p>There are two ways to earn:</p>
+      <ol>
+        <li><strong>Staking.</strong> Lock AQUA and earn <a href="what-is-blub-token.html">BLUB</a>, WhaleHub's reward token, minted 1&nbsp;:&nbsp;1 on stake as a liquid derivative of your staked position. Longer locks earn a higher reward multiplier. The backend claims Aquarius rewards roughly every 30 minutes, swaps to BLUB, and distributes them proportionally.</li>
+        <li><strong>Liquidity vaults.</strong> Deposit a token pair into an auto-compounding AMM vault; the backend re-deposits rewards roughly 48 times per day, so your position compounds without you lifting a finger. See <a href="auto-compounding-explained.html">how auto-compounding works</a> for the mechanics.</li>
+      </ol>
+      <p>Either way, the tedious steps — voting, harvesting, swapping, re-depositing — happen in the background. You keep the exposure decision; WhaleHub keeps the busywork. Check the live APY on the <a href="https://app.whalehub.io/">app</a> before you decide.</p>
+      <hr />
+      <p>Liquidity mining is a genuinely useful way to earn — you're being paid to make markets work — but it isn't free money. The reward tokens and fees are real, and so is impermanent loss. Understand the pair you're providing, compare your total yield against simply holding, and lean on tooling that makes the compounding cheap. On Stellar, low fees do a lot of that heavy lifting for you.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is liquidity mining?</summary><p>Liquidity mining is depositing a pair of tokens into a liquidity pool so traders can swap against them, and earning rewards in return. You collect a share of the pool's trading fees plus extra token incentives that the protocol emits to attract liquidity. It is one of the most common ways to earn yield in DeFi.</p></details>
+      <details><summary>What is the difference between liquidity mining and staking?</summary><p>Staking usually means locking a single token to help secure a network or earn protocol rewards, with no exposure to a second asset. Liquidity mining means supplying two tokens to a trading pool, earning fees and incentives, but taking on impermanent loss if the two prices diverge.</p></details>
+      <details><summary>Is liquidity mining the same as yield farming?</summary><p>No, but they overlap. Liquidity mining is the specific act of earning token rewards for providing liquidity. Yield farming is the broader strategy of moving capital between pools, protocols, and reward programs to maximise return. Liquidity mining is often one step inside a larger yield-farming plan.</p></details>
+      <details><summary>What is impermanent loss in liquidity mining?</summary><p>Impermanent loss is the gap between holding two tokens and depositing them in a pool. As prices diverge, the pool rebalances and you end up with more of the falling asset and less of the rising one. A 2x price move on one asset causes roughly 5.7% impermanent loss before fees and rewards.</p></details>
+      <details><summary>How does liquidity mining work on Stellar?</summary><p>On Stellar, you provide liquidity to an Aquarius AMM pool and earn trading fees plus AQUA emissions. Emissions are directed by ICE voting, so the most-voted pools earn the most. Roughly five-second finality and sub-cent fees make frequent claiming and compounding practical.</p></details>
+      <details><summary>Is liquidity mining profitable?</summary><p>It can be, but returns are not guaranteed. Fees and token emissions add up, yet impermanent loss, falling reward prices, and changing emission schedules can erode gains. Stable or correlated pairs reduce impermanent loss. Always compare rewards against simply holding, and check the live APY before depositing.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="aquarius-amm-explained.html"><img src="../assets/blog/aquarius-amm-explained.png" alt="" /><span>Aquarius AMM Explained</span></a>
+        <a href="stellar-yield-farming.html"><img src="../assets/blog/stellar-yield-farming.png" alt="" /><span>Yield Farming on Stellar</span></a>
+        <a href="stellar-defi-guide.html"><img src="../assets/blog/stellar-defi-guide.png" alt="" /><span>What Is Stellar DeFi?</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Mine liquidity without the busywork</h2>
+      <p>Deposit once and let WhaleHub's aggregated ICE and auto-compounding vaults do the voting, harvesting, and re-investing for you.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational purposes only and is not financial advice. DeFi involves risk, including the potential loss of capital. Do your own research and consult a qualified professional before making investment decisions.</p>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../index.html#how">How it works</a>
+        <a href="../index.html#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./index.html">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about.html">About</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

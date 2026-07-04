@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Auto-Compounding Crypto: How It Boosts Yield | WhaleHub</title>
+<meta name="description" content="Auto-compounding automatically reinvests crypto rewards so you earn yield on yield. Here's how it turns APR into a higher APY, why frequency matters, and why Stellar makes it viable." />
+<link rel="canonical" href="https://whalehub.io/blog/auto-compounding-explained.html" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="auto compounding crypto, auto compound, compound interest crypto, apy vs apr, auto compounding vault, stellar defi" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/auto-compounding-explained.html" />
+<meta property="og:title" content="Auto-Compounding Crypto: How It Boosts Yield" />
+<meta property="og:description" content="How auto-compounding reinvests rewards to earn yield on yield, the APR vs APY distinction, and why Stellar's sub-cent fees make compounding ~48 times a day viable." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/auto-compounding-explained.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-07-04" />
+<meta property="article:modified_time" content="2026-07-04" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="Auto-Compounding Crypto: How It Boosts Yield" />
+<meta name="twitter:description" content="How auto-compounding turns APR into a higher APY, why frequency matters, and why Stellar makes compounding ~48 times a day viable." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/auto-compounding-explained.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/auto-compounding-explained.html#article",
+      "headline": "Auto-Compounding Crypto: How It Boosts Yield",
+      "description": "Auto-compounding automatically reinvests crypto rewards so you earn yield on yield. Here's how it turns APR into a higher APY, why compounding frequency matters, and why Stellar makes it viable.",
+      "image": "https://whalehub.io/assets/blog/auto-compounding-explained.png",
+      "datePublished": "2026-07-04",
+      "dateModified": "2026-07-04",
+      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "WhaleHub",
+        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+      },
+      "mainEntityOfPage": "https://whalehub.io/blog/auto-compounding-explained.html"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
+        { "@type": "ListItem", "position": 2, "name": "Auto-Compounding Crypto", "item": "https://whalehub.io/blog/auto-compounding-explained.html" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "What is auto-compounding in crypto?", "acceptedAnswer": { "@type": "Answer", "text": "Auto-compounding is when a protocol automatically harvests your staking or liquidity rewards and reinvests them into the same position, so future rewards are calculated on a larger balance. You earn yield on your yield without manually claiming and re-depositing, and the compounding runs on a fixed schedule in the background." } },
+        { "@type": "Question", "name": "What is the difference between APR and APY?", "acceptedAnswer": { "@type": "Answer", "text": "APR is the simple annual rate with no reinvestment. APY is the effective rate once rewards are compounded back into the balance. Compounding is exactly what turns an APR into a higher APY: the more often you reinvest, the larger the gap, up to a continuous-compounding ceiling." } },
+        { "@type": "Question", "name": "Does compounding more often always mean more yield?", "acceptedAnswer": { "@type": "Answer", "text": "More frequent compounding always raises APY, but with diminishing returns. Moving from yearly to daily is a big jump; moving from daily to every 30 minutes adds very little at moderate rates. The real benefit of high frequency is smoother, hands-off growth and capturing gains sooner at higher APRs." } },
+        { "@type": "Question", "name": "Why is auto-compounding not viable on high-fee chains?", "acceptedAnswer": { "@type": "Answer", "text": "Each compound is an on-chain transaction. When gas costs dollars, claiming and reinvesting many times a day can cost more than the rewards being reinvested, so frequent compounding destroys value. It only makes sense where fees are a tiny fraction of the harvested reward." } },
+        { "@type": "Question", "name": "How often does WhaleHub compound?", "acceptedAnswer": { "@type": "Answer", "text": "WhaleHub's liquidity vaults re-deposit rewards roughly 48 times a day, about every 30 minutes. Stellar's base fee of 0.00001 XLM means each compound costs a fraction of a cent, so high-frequency reinvestment is economical rather than being eaten by fees." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../index.html"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../index.html#how">How it works</a>
+      <a href="../index.html#why">Why WhaleHub</a>
+      <a href="./index.html" class="active">Blog</a>
+      <a href="../about.html">About</a>
+      <a href="../faq.html">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./index.html">Blog</a> &nbsp;/&nbsp; Fundamentals</div>
+      <span class="tag">Fundamentals</span>
+      <h1>Auto-Compounding Crypto: How It Boosts Yield</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: July 2026</span>
+        <span class="dot-sep"></span>
+        <span>7 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/auto-compounding-explained.png" alt="Auto-compounding crypto explained — WhaleHub guide cover" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">Auto-compounding is a protocol automatically reinvesting your rewards back into your position, so you start earning yield on your yield instead of letting rewards sit idle. It's the mechanism that turns a plain APR into a higher effective APY — and the more often it runs, the wider that gap. The catch is cost: on chains where gas runs into dollars, compounding often is uneconomical. Stellar's base fee of 0.00001 XLM changes the math, which is why WhaleHub's vaults can reinvest roughly 48 times a day.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#what-is">What is auto-compounding?</a></li>
+        <li><a href="#apr-vs-apy">APR vs APY: the difference</a></li>
+        <li><a href="#worked-example">How frequency raises APY</a></li>
+        <li><a href="#frequency">Why frequency (and fees) matter</a></li>
+        <li><a href="#stellar">Why Stellar makes it viable</a></li>
+        <li><a href="#how-whalehub">How WhaleHub auto-compounds</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="what-is">What is auto-compounding in crypto?</h2>
+      <p class="answer">Auto-compounding is when a protocol automatically harvests your staking or liquidity rewards and reinvests them into the same position, so future rewards are calculated on a larger balance. You earn yield on your yield without manually claiming and re-depositing, and the compounding runs on a fixed schedule in the background.</p>
+      <p>Left to their own devices, most people don't reinvest efficiently. Rewards accrue, you forget to claim, and even when you do, you pay a fee, swap, and re-deposit by hand — often only every few weeks. Every idle day is yield you could have been earning on those rewards but weren't.</p>
+      <p>Auto-compounding removes that friction. A vault or contract does the claim-swap-redeposit loop for you, on a clock, so your principal grows continuously. This is standard in mature DeFi — auto-compounding vaults were one of the features that made yield farming approachable — and it's exactly what happens inside <a href="stellar-yield-farming.html">Stellar yield-farming</a> vaults.</p>
+
+      <h2 id="apr-vs-apy">APR vs APY: what's the difference?</h2>
+      <p class="answer">APR is the simple annual rate with no reinvestment. APY is the effective rate once rewards are compounded back into the balance. Compounding is exactly what turns an APR into a higher APY: the more often you reinvest, the larger the gap, up to a continuous-compounding ceiling.</p>
+      <p>They describe the same underlying rate but assume different behaviour. APR ("annual percentage rate") is what you'd earn if rewards were paid out once and never reinvested. APY ("annual percentage yield") is what you actually earn once those rewards are folded back in and start compounding.</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>&nbsp;</th><th>APR</th><th>APY</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Stands for</strong></td><td>Annual percentage rate</td><td>Annual percentage yield</td></tr>
+          <tr><td><strong>Reinvestment</strong></td><td>None — rewards sit idle</td><td>Rewards compounded back in</td></tr>
+          <tr><td><strong>Effect of frequency</strong></td><td>Ignores it</td><td>Higher frequency → higher APY</td></tr>
+          <tr><td><strong>Which is larger?</strong></td><td>Lower (baseline)</td><td>Equal or higher than APR</td></tr>
+          <tr><td><strong>Best for</strong></td><td>Quoting a raw reward rate</td><td>Comparing real, compounded returns</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>The takeaway: if two products quote the same headline number but one is APR and the other is APY, they are <em>not</em> equivalent. Auto-compounding is the machinery that closes the gap in your favour — and to compare fairly you should always know which figure you're looking at.</p>
+
+      <h2 id="worked-example">How compounding frequency raises APY</h2>
+      <p class="answer">Compounding frequency raises APY through the formula APY = (1 + APR / n)^n − 1, where n is how many times a year rewards are reinvested. As n grows, APY rises toward a continuous-compounding ceiling. The jump from yearly to daily is large; beyond daily the gains shrink but still count at higher rates.</p>
+      <p>Here is the glass-box version. The relationship between a nominal APR and the effective APY is a single formula:</p>
+      <pre><code>APY = (1 + APR / n) ^ n − 1
+
+  APR = nominal annual rate
+  n   = number of compounding periods per year</code></pre>
+      <p>To see frequency at work, take an <strong>illustrative</strong> 20% APR (this is a made-up teaching number, not a WhaleHub rate) and vary how often it compounds:</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Compounding frequency</th><th>Periods / year (n)</th><th>Effective APY</th></tr></thead>
+        <tbody>
+          <tr><td>Simple — paid once, not reinvested</td><td>1</td><td>20.00%</td></tr>
+          <tr><td>Monthly</td><td>12</td><td>21.94%</td></tr>
+          <tr><td>Daily</td><td>365</td><td>22.13%</td></tr>
+          <tr><td>Every ~30 min (≈ 48×/day)</td><td>17,520</td><td>22.14%</td></tr>
+          <tr><td>Continuous limit (e<sup>APR</sup> − 1)</td><td>∞</td><td>22.14%</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>Two lessons fall out of these <strong>illustrative</strong> numbers. First, the biggest single win is just <em>turning compounding on</em> — going from simple 20.00% to monthly 21.94% captures most of the benefit. Second, once you compound daily you're already brushing against the continuous-compounding ceiling, so pushing to every 30 minutes adds only a sliver at this rate. The extra frequency matters more as APRs climb, and it also means your balance grows smoothly and hands-off rather than in monthly steps.</p>
+
+      <div class="cta-band">
+        <div>
+          <div class="t">Let the compounding run itself</div>
+          <div class="s">WhaleHub's vaults harvest and re-deposit rewards for you — roughly every 30 minutes, for a fraction of a cent.</div>
+        </div>
+        <a href="https://app.whalehub.io/" class="btn btn-primary">Launch app</a>
+      </div>
+
+      <h2 id="frequency">Why frequency matters — and why fees usually kill it</h2>
+      <p class="answer">Each compound is an on-chain transaction with a fee. Frequent compounding only helps if that fee is a tiny fraction of the reward being reinvested. On expensive chains, claiming and re-depositing many times a day can cost more than it earns, so high-frequency auto-compounding is uneconomical there.</p>
+      <p>Compounding isn't free. To reinvest, a vault has to claim rewards, often swap them into the right asset, and deposit again — and every one of those steps is a transaction that costs gas. The economics are simple:</p>
+      <ul>
+        <li><strong>If the fee is much smaller than the harvested reward</strong>, compounding often is pure upside — you capture the reward sooner and it starts working immediately.</li>
+        <li><strong>If the fee approaches the reward</strong>, each compound barely breaks even, and beyond a point you're paying to compound.</li>
+      </ul>
+      <p>On a chain where a single transaction can cost several dollars, compounding a modest position 48 times a day would burn far more in fees than it earns. So high-fee networks are forced into infrequent compounding — often only when accrued rewards are large enough to justify the gas — which leaves APY on the table. Frequency is only an advantage where fees are negligible.</p>
+
+      <h2 id="stellar">Why Stellar makes ~48×/day compounding viable</h2>
+      <p class="answer">Stellar's base transaction fee is 0.00001 XLM — a fraction of a cent — and it finalizes in about five seconds. At that cost, reinvesting rewards every 30 minutes is essentially free relative to the rewards being compounded, so high-frequency auto-compounding becomes practical instead of fee-prohibitive.</p>
+      <p>This is where Stellar's design pays off directly. The same loop that is ruinously expensive elsewhere — claim, swap, re-deposit, repeat — costs rounding-error fees here, and it clears in about five seconds with deterministic finality. There's no waiting on probabilistic confirmations and no gas auction to win.</p>
+      <p>That's what makes an auto-compounding vault genuinely worthwhile on Stellar rather than a fee sink. Rewards get folded back into your position dozens of times a day, so you sit near the continuous-compounding end of the table above instead of the monthly rung. It's the same economic edge that lets the broader <a href="stellar-yield-farming.html">Stellar DeFi</a> stack run active strategies passively — and it's built on the AQUA and Aquarius incentive layer you can <a href="how-to-stake-aqua.html">stake into directly</a>.</p>
+
+      <h2 id="how-whalehub">How WhaleHub auto-compounds your rewards</h2>
+      <p class="answer">WhaleHub's liquidity vaults deposit your token pair into an auto-compounding AMM pool and re-invest the rewards for you roughly 48 times a day, about every 30 minutes. The backend claims accrued rewards, swaps them as needed, and re-deposits — so your position grows continuously without any manual claiming.</p>
+      <p>Concretely, the compounding loop inside a WhaleHub vault looks like this:</p>
+      <ol>
+        <li><strong>Deposit once.</strong> You add a token pair to a vault; it goes into the underlying auto-compounding AMM pool.</li>
+        <li><strong>Rewards accrue.</strong> The pool earns trading fees and AQUA emissions as it does its job.</li>
+        <li><strong>Harvest on a clock.</strong> Roughly every 30 minutes the backend claims those accrued rewards.</li>
+        <li><strong>Swap and re-deposit.</strong> Rewards are converted as needed and added straight back into the position — growing the balance the next harvest is calculated on.</li>
+        <li><strong>Repeat ~48×/day.</strong> The loop runs continuously, so you sit near the high-frequency end of the APY curve with no manual effort.</li>
+      </ol>
+      <p>The same philosophy runs through the staking side of the protocol: WhaleHub aggregates ICE voting power from all stakers, votes AQUA emissions to the highest-yielding markets, and reinvests rewards to grow protocol-owned liquidity. When you stake AQUA you receive <a href="what-is-blub-token.html">BLUB</a> — minted 1:1 as a liquid derivative of your staked AQUA — and earn a proportional share of everything the pool harvests. You can read how that token works in <a href="what-is-blub-token.html">What Is the BLUB Token?</a></p>
+      <hr />
+      <p>Auto-compounding is one of the least glamorous and most powerful ideas in yield: reinvest automatically, earn on your earnings, and let time do the heavy lifting. The math is settled — frequency raises APY — the only real constraint is fees. On Stellar that constraint mostly disappears, which is why compounding every 30 minutes is ordinary here rather than a luxury.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is auto-compounding in crypto?</summary><p>Auto-compounding is when a protocol automatically harvests your staking or liquidity rewards and reinvests them into the same position, so future rewards are calculated on a larger balance. You earn yield on your yield without manually claiming and re-depositing, and the compounding runs on a fixed schedule in the background.</p></details>
+      <details><summary>What is the difference between APR and APY?</summary><p>APR is the simple annual rate with no reinvestment. APY is the effective rate once rewards are compounded back into the balance. Compounding is exactly what turns an APR into a higher APY: the more often you reinvest, the larger the gap, up to a continuous-compounding ceiling.</p></details>
+      <details><summary>Does compounding more often always mean more yield?</summary><p>More frequent compounding always raises APY, but with diminishing returns. Moving from yearly to daily is a big jump; moving from daily to every 30 minutes adds very little at moderate rates. The real benefit of high frequency is smoother, hands-off growth and capturing gains sooner at higher APRs.</p></details>
+      <details><summary>Why is auto-compounding not viable on high-fee chains?</summary><p>Each compound is an on-chain transaction. When gas costs dollars, claiming and reinvesting many times a day can cost more than the rewards being reinvested, so frequent compounding destroys value. It only makes sense where fees are a tiny fraction of the harvested reward.</p></details>
+      <details><summary>How often does WhaleHub compound?</summary><p>WhaleHub's liquidity vaults re-deposit rewards roughly 48 times a day, about every 30 minutes. Stellar's base fee of 0.00001 XLM means each compound costs a fraction of a cent, so high-frequency reinvestment is economical rather than being eaten by fees.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="stellar-yield-farming.html"><img src="../assets/blog/stellar-yield-farming.png" alt="" /><span>Yield Farming on Stellar</span></a>
+        <a href="how-to-stake-aqua.html"><img src="../assets/blog/how-to-stake-aqua.png" alt="" /><span>How to Stake AQUA &amp; Earn</span></a>
+        <a href="what-is-blub-token.html"><img src="../assets/blog/what-is-blub-token.png" alt="" /><span>What Is the BLUB Token?</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Put compounding to work</h2>
+      <p>Deposit once and let WhaleHub's vaults harvest and reinvest your rewards roughly every 30 minutes on Stellar.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational purposes only and is not financial advice. The APR and APY figures used are illustrative examples, not quoted WhaleHub returns. DeFi involves risk, including the potential loss of capital. Do your own research and consult a qualified professional before making investment decisions.</p>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../index.html#how">How it works</a>
+        <a href="../index.html#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./index.html">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about.html">About</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

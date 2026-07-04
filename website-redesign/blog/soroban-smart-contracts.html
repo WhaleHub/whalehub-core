@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Soroban Smart Contracts Explained (Stellar) | WhaleHub</title>
+<meta name="description" content="Soroban is Stellar's smart-contract platform: contracts written in Rust, compiled to WebAssembly, with resource-metered fees and state TTL. Here's how it works and why it matters." />
+<link rel="canonical" href="https://whalehub.io/blog/soroban-smart-contracts.html" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="soroban smart contracts, soroban stellar, stellar smart contracts, what is soroban, stellar asset contract, soroban rust webassembly" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/soroban-smart-contracts.html" />
+<meta property="og:title" content="Soroban Smart Contracts Explained (Stellar)" />
+<meta property="og:description" content="A plain-English guide to Soroban: Rust contracts compiled to WebAssembly, resource-metered fees, state TTL, and the Stellar Asset Contract that wraps classic assets." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/soroban-smart-contracts.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-07-04" />
+<meta property="article:modified_time" content="2026-07-04" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="Soroban Smart Contracts Explained (Stellar)" />
+<meta name="twitter:description" content="How Soroban works: Rust compiled to WebAssembly, resource-metered fees, state TTL, and the Stellar Asset Contract that wraps assets like AQUA and BLUB." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/soroban-smart-contracts.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/soroban-smart-contracts.html#article",
+      "headline": "Soroban Smart Contracts Explained (Stellar)",
+      "description": "A plain-English guide to Soroban: Rust contracts compiled to WebAssembly, resource-metered fees, state TTL, and the Stellar Asset Contract that wraps classic assets for on-chain use.",
+      "image": "https://whalehub.io/assets/blog/soroban-smart-contracts.png",
+      "datePublished": "2026-07-04",
+      "dateModified": "2026-07-04",
+      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "WhaleHub",
+        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+      },
+      "mainEntityOfPage": "https://whalehub.io/blog/soroban-smart-contracts.html"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
+        { "@type": "ListItem", "position": 2, "name": "Soroban Smart Contracts Explained", "item": "https://whalehub.io/blog/soroban-smart-contracts.html" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "What is Soroban on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "Soroban is Stellar's smart-contract platform, launched in 2023. Developers write contracts in Rust and compile them to WebAssembly (Wasm), which the network executes. It adds programmable, composable logic to Stellar while interoperating with existing classic assets through the Stellar Asset Contract." } },
+        { "@type": "Question", "name": "What language are Soroban contracts written in?", "acceptedAnswer": { "@type": "Answer", "text": "Soroban contracts are written in Rust and compiled to WebAssembly (Wasm). Rust gives strong memory safety and a mature tool-chain, while Wasm gives a compact, sandboxed, deterministic execution target. This differs from Ethereum, which typically uses Solidity compiled to EVM bytecode." } },
+        { "@type": "Question", "name": "How is Soroban different from Ethereum smart contracts?", "acceptedAnswer": { "@type": "Answer", "text": "Soroban uses Rust compiled to WebAssembly instead of Solidity on the EVM, meters fees by actual resources used rather than a single gas price, and charges state rent through TTL so stored data must be periodically renewed. It also runs alongside Stellar's classic payment layer." } },
+        { "@type": "Question", "name": "What is a Stellar Asset Contract (SAC)?", "acceptedAnswer": { "@type": "Answer", "text": "The Stellar Asset Contract is a built-in Soroban contract that exposes a classic Stellar asset, like AQUA, through a standard token interface so smart contracts can transfer and hold it. It bridges the classic asset layer and the Soroban contract layer." } },
+        { "@type": "Question", "name": "What is state TTL and state rent on Soroban?", "acceptedAnswer": { "@type": "Answer", "text": "Every piece of Soroban contract data has a time-to-live (TTL) measured in ledgers. To keep data alive you pay rent to extend its TTL; if it expires the entry is archived and must be restored before use. This keeps on-chain state from growing without bound." } },
+        { "@type": "Question", "name": "Is BLUB a Soroban smart contract?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. WhaleHub's BLUB is a Soroban token implemented as a Stellar Asset Contract with 7 decimals. Its mint authority is the staking contract, so BLUB is created on-chain when users stake AQUA and is transferable between contracts and accounts like any Soroban token." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../index.html"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../index.html#how">How it works</a>
+      <a href="../index.html#why">Why WhaleHub</a>
+      <a href="./index.html" class="active">Blog</a>
+      <a href="../about.html">About</a>
+      <a href="../faq.html">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./index.html">Blog</a> &nbsp;/&nbsp; Technical</div>
+      <span class="tag blue">Technical</span>
+      <h1>Soroban Smart Contracts Explained (Stellar)</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: July 2026</span>
+        <span class="dot-sep"></span>
+        <span>8 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/soroban-smart-contracts.png" alt="Soroban Smart Contracts Explained — WhaleHub guide cover" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">Soroban is Stellar's smart-contract platform, launched in 2023. You write contracts in <strong>Rust</strong>, compile them to <strong>WebAssembly (Wasm)</strong>, and the network runs them with fees metered by the exact resources each call consumes. It sits beside Stellar's classic payment layer and connects to it through the Stellar Asset Contract, which lets contracts hold and move existing assets like AQUA and BLUB — the ingredient that turned Stellar's fast, sub-cent settlement into a base for composable DeFi.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#what-is">What is Soroban?</a></li>
+        <li><a href="#rust-wasm">Rust, compiled to WebAssembly</a></li>
+        <li><a href="#vs-evm">Soroban vs. the EVM</a></li>
+        <li><a href="#fees">Fees, resource metering &amp; state TTL</a></li>
+        <li><a href="#sac">The Stellar Asset Contract (SAC)</a></li>
+        <li><a href="#defi">Why it unlocks composable DeFi</a></li>
+        <li><a href="#blub">Example: BLUB is a Soroban SAC</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="what-is">What is Soroban?</h2>
+      <p class="answer">Soroban is Stellar's smart-contract platform, launched in 2023. Developers write contracts in Rust and compile them to WebAssembly (Wasm), which the network executes deterministically. It adds programmable, composable logic to Stellar while interoperating with the existing "classic" assets and accounts through a built-in bridge called the Stellar Asset Contract.</p>
+      <p>For most of its life, Stellar was a payments network: it could issue assets, run a built-in order-book exchange (the SDEX), and settle transactions in about five seconds for a fraction of a cent — but it couldn't run arbitrary programmable logic. Soroban filled that gap without throwing away what already worked.</p>
+      <p>The key design choice is separation. Soroban is a distinct execution layer from the classic transaction system, so contract execution can be metered, sandboxed, and eventually parallelised, while everyday payments stay simple and cheap. The two layers meet through well-defined bridges rather than being fused into one monolith. If you're new to the wider ecosystem, our <a href="stellar-defi-guide.html">Stellar DeFi guide</a> maps how Soroban fits alongside AQUA and the Aquarius AMM.</p>
+
+      <h2 id="rust-wasm">Rust, compiled to WebAssembly</h2>
+      <p class="answer">Soroban contracts are written in Rust and compiled to WebAssembly (Wasm). Rust brings strong memory safety and a mature tool-chain; Wasm is a compact, sandboxed, deterministic execution target already used across browsers and cloud runtimes. The network stores and runs the resulting Wasm bytecode, so any language that compiles to Wasm could, in principle, target Soroban.</p>
+      <p>In practice that means installing the Rust tool-chain, adding the <code>soroban-sdk</code> crate, and building to the <code>wasm32-unknown-unknown</code> target. The SDK provides the contract macros, host types, and storage helpers. A minimal contract looks like this — the "glass box" of what a Soroban program actually is:</p>
+      <pre><code>#![no_std]
+use soroban_sdk::{contract, contractimpl, symbol_short, Env, Symbol};
+
+const COUNTER: Symbol = symbol_short!("COUNTER");
+
+#[contract]
+pub struct CounterContract;
+
+#[contractimpl]
+impl CounterContract {
+    /// Increment a stored counter and return the new value.
+    pub fn increment(env: Env) -> u32 {
+        let mut count: u32 = env.storage().instance().get(&amp;COUNTER).unwrap_or(0);
+        count += 1;
+        env.storage().instance().set(&amp;COUNTER, &amp;count);
+
+        // Keep the contract's data alive by extending its TTL.
+        env.storage().instance().extend_ttl(100, 100);
+        count
+    }
+}</code></pre>
+      <p>A few things are worth noticing. The <code>#![no_std]</code> attribute keeps the binary tiny by dropping the standard library. All host interaction — storage, events, ledger access — flows through the <code>Env</code> object, which keeps contracts deterministic and sandboxed. And even this toy example has to think about <code>extend_ttl</code>, because on Soroban stored data does not live forever by default.</p>
+
+      <h2 id="vs-evm">Soroban vs. the EVM</h2>
+      <p class="answer">Soroban differs from Ethereum's EVM in three big ways: it uses Rust compiled to WebAssembly instead of Solidity on EVM bytecode; it meters fees by the actual resources a call uses rather than a single gas price; and it charges rent for stored state via a time-to-live (TTL) instead of storing data permanently. It also runs alongside Stellar's classic payment layer.</p>
+      <p>If you're coming from Solidity, the mental model shifts. Here's a side-by-side of the pieces that trip people up most:</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Aspect</th><th>Soroban (Stellar)</th><th>EVM (Ethereum &amp; forks)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Language</strong></td><td>Rust (any Wasm-targeting language in theory)</td><td>Solidity, Vyper</td></tr>
+          <tr><td><strong>Compiles to</strong></td><td>WebAssembly (Wasm)</td><td>EVM bytecode</td></tr>
+          <tr><td><strong>Fee model</strong></td><td>Resource metering — CPU, memory, ledger reads/writes priced separately</td><td>Single gas unit × gas price</td></tr>
+          <tr><td><strong>Storage</strong></td><td>Rent via TTL; data can expire and be archived</td><td>Permanent unless deleted; one-time cost</td></tr>
+          <tr><td><strong>Asset interop</strong></td><td>Native classic assets via the Stellar Asset Contract</td><td>Assets are themselves contracts (ERC-20)</td></tr>
+          <tr><td><strong>Finality</strong></td><td>~5s deterministic (Stellar Consensus Protocol)</td><td>Probabilistic, minutes to full finality</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>None of these make one platform strictly "better." They reflect different priorities: Soroban optimises for predictable low fees, bounded state growth, and reuse of Stellar's existing asset rails.</p>
+
+      <h2 id="fees">Fees, resource metering &amp; state TTL</h2>
+      <p class="answer">Soroban prices each transaction by the concrete resources it consumes — CPU instructions, memory, and the number of ledger entries read and written — rather than one blended gas number. Stored contract data carries a time-to-live (TTL) measured in ledgers; to keep it you pay rent to extend the TTL, and if it lapses the entry is archived until restored.</p>
+      <p>Resource metering makes costs legible. Instead of guessing a gas limit, a contract's fee is a function of the specific work it did, which is why Stellar can keep base fees at a fraction of a cent while staying spam-resistant.</p>
+      <h3>How state rent works, step by step</h3>
+      <ol>
+        <li>A contract writes an entry (a balance, a config value). That entry is created with an initial TTL — a deadline expressed in ledgers.</li>
+        <li>Each read or write can bump the TTL forward by paying a small rent fee, as the <code>extend_ttl</code> call in the snippet above does.</li>
+        <li>If an entry's TTL passes without renewal, it is <strong>archived</strong> — removed from the live state but recoverable.</li>
+        <li>To use archived data again, a transaction must <strong>restore</strong> it, paying to bring it back into the active ledger.</li>
+      </ol>
+      <p>This is Soroban's answer to state bloat, the problem where permanent storage on other chains grows forever and every node must carry it. Rent gives inactive data a natural way to fall out of the working set.</p>
+
+      <div class="cta-band">
+        <div>
+          <div class="t">See Soroban working in production</div>
+          <div class="s">WhaleHub's staking and reward contracts run on Soroban today — stake AQUA and watch on-chain compounding in action.</div>
+        </div>
+        <a href="https://app.whalehub.io/" class="btn btn-primary">Launch app</a>
+      </div>
+
+      <h2 id="sac">The Stellar Asset Contract (SAC)</h2>
+      <p class="answer">The Stellar Asset Contract is a built-in Soroban contract that exposes a classic Stellar asset — like AQUA — through a standard token interface so smart contracts can hold, transfer, and reason about it. It is the bridge between Stellar's classic asset layer and the Soroban contract layer, giving every classic asset a contract-native address.</p>
+      <p>This matters because Stellar already had assets long before Soroban existed. Rather than forcing every issuer to redeploy as a bespoke token contract, the SAC wraps a classic asset in a canonical interface (balances, transfers, allowances) that any Soroban contract can call. A single asset can therefore live in both worlds at once: usable in classic payments and in programmable contract logic.</p>
+      <p>Some tokens are <em>only</em> Soroban tokens, issued natively as a SAC with a contract as their mint authority. That's exactly how WhaleHub's <a href="what-is-blub-token.html">BLUB token</a> is built.</p>
+
+      <h2 id="defi">Why it unlocks composable DeFi</h2>
+      <p>Composability is the ability for one contract to call another and build higher-order behaviour without permission. Before Soroban, Stellar had assets and an AMM but no way to program logic on top of them. With Soroban, a contract can hold assets via SACs, call the AMM, claim rewards, and re-invest — all atomically.</p>
+      <ul>
+        <li><strong>Contracts can custody assets.</strong> Through SACs, a vault contract can hold AQUA, receive emissions, and route them without a human in the loop.</li>
+        <li><strong>Strategies become programs.</strong> Voting, claiming, and compounding can be encoded once and executed repeatedly for near-zero fees.</li>
+        <li><strong>Low fees make automation viable.</strong> Compounding dozens of times a day would be gas-prohibitive elsewhere; on Stellar it's rounding error.</li>
+      </ul>
+      <p>That last point is the whole thesis behind yield optimizers. To see where AQUA and ICE voting come into it, read <a href="aquarius-amm-explained.html">Aquarius AMM Explained</a> and <a href="ice-voting-bribes-aquarius.html">ICE Voting &amp; Bribes</a>.</p>
+
+      <h2 id="blub">A real example: BLUB is a Soroban SAC</h2>
+      <p class="answer">WhaleHub's BLUB is a Soroban token implemented as a Stellar Asset Contract with 7 decimals, whose mint authority is the staking contract. When a user stakes AQUA, the contract mints BLUB on-chain as a liquid receipt. Because BLUB is a SAC, it moves freely between contracts, the Aquarius AMM, and ordinary accounts — a concrete illustration of Soroban plus SACs in production.</p>
+      <p>Here's the flow in practice. A user locks AQUA in the staking contract. That contract — the SAC's mint authority — mints BLUB 1:1 to the user's staking balance as a liquid derivative of their staked position. BLUB then trades in the Aquarius BLUB-AQUA pool, so its value is market-determined by pool reserves rather than fixed. Rewards the protocol harvests are swapped to BLUB and distributed proportionally, and the whole cycle runs as Soroban contract calls.</p>
+      <p>For reference, the BLUB contract address is <code>CBMFDIRY5OKI4JJURXC4SMEQPWB4UUADIADJK4NA6CYBNOYK4W4TMLLF</code>. It's a compact, verifiable demonstration of everything above: Rust compiled to Wasm, resource-metered execution, TTL-managed state, and a classic-compatible asset interface. The deeper mechanics live in <a href="what-is-blub-token.html">What Is the BLUB Token?</a>.</p>
+      <hr />
+      <p>Soroban is the piece that made Stellar programmable without sacrificing its speed or cost. Rust to Wasm gives a safe, portable runtime; resource metering and state TTL keep fees and storage honest; and the Stellar Asset Contract stitches new contract logic onto Stellar's existing assets. Put together, that's what lets protocols like WhaleHub automate strategies that would be uneconomical anywhere fees are high.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is Soroban on Stellar?</summary><p>Soroban is Stellar's smart-contract platform, launched in 2023. Developers write contracts in Rust and compile them to WebAssembly (Wasm), which the network executes. It adds programmable, composable logic to Stellar while interoperating with existing classic assets through the Stellar Asset Contract.</p></details>
+      <details><summary>What language are Soroban contracts written in?</summary><p>Soroban contracts are written in Rust and compiled to WebAssembly (Wasm). Rust gives strong memory safety and a mature tool-chain, while Wasm gives a compact, sandboxed, deterministic execution target. This differs from Ethereum, which typically uses Solidity compiled to EVM bytecode.</p></details>
+      <details><summary>How is Soroban different from Ethereum smart contracts?</summary><p>Soroban uses Rust compiled to WebAssembly instead of Solidity on the EVM, meters fees by actual resources used rather than a single gas price, and charges state rent through TTL so stored data must be periodically renewed. It also runs alongside Stellar's classic payment layer.</p></details>
+      <details><summary>What is a Stellar Asset Contract (SAC)?</summary><p>The Stellar Asset Contract is a built-in Soroban contract that exposes a classic Stellar asset, like AQUA, through a standard token interface so smart contracts can transfer and hold it. It bridges the classic asset layer and the Soroban contract layer.</p></details>
+      <details><summary>What is state TTL and state rent on Soroban?</summary><p>Every piece of Soroban contract data has a time-to-live (TTL) measured in ledgers. To keep data alive you pay rent to extend its TTL; if it expires the entry is archived and must be restored before use. This keeps on-chain state from growing without bound.</p></details>
+      <details><summary>Is BLUB a Soroban smart contract?</summary><p>Yes. WhaleHub's BLUB is a Soroban token implemented as a Stellar Asset Contract with 7 decimals. Its mint authority is the staking contract, so BLUB is created on-chain when users stake AQUA and is transferable between contracts and accounts like any Soroban token.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers — all on Soroban contracts. This series explains the Stellar DeFi stack in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="stellar-defi-guide.html"><img src="../assets/blog/stellar-defi-guide.png" alt="" /><span>What Is Stellar DeFi?</span></a>
+        <a href="what-is-blub-token.html"><img src="../assets/blog/what-is-blub-token.png" alt="" /><span>What Is the BLUB Token?</span></a>
+        <a href="aquarius-amm-explained.html"><img src="../assets/blog/aquarius-amm-explained.png" alt="" /><span>Aquarius AMM Explained</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Soroban, put to work</h2>
+      <p>Stake AQUA, get BLUB 1:1, and let WhaleHub's Soroban contracts aggregate ICE and auto-compound rewards for you.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational purposes only and is not financial advice. DeFi involves risk, including the potential loss of capital. Do your own research and consult a qualified professional before making investment decisions.</p>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../index.html#how">How it works</a>
+        <a href="../index.html#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./index.html">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about.html">About</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

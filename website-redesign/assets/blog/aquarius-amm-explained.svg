@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="bg" cx="28%" cy="0%" r="120%">
+      <stop offset="0%" stop-color="#161b2e"/>
+      <stop offset="55%" stop-color="#0e111b"/>
+      <stop offset="100%" stop-color="#0b0d15"/>
+    </radialGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00cc99"/>
+      <stop offset="100%" stop-color="#005f99"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="85%" cy="30%" r="55%">
+      <stop offset="0%" stop-color="#00cc99" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#00cc99" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- signature vertical accent bar -->
+  <rect x="0" y="0" width="10" height="630" fill="url(#accent)"/>
+
+  <!-- decorative concentric wave rings, bottom-right -->
+  <g stroke="#00cc99" fill="none" opacity="0.16">
+    <circle cx="1080" cy="520" r="70"/>
+    <circle cx="1080" cy="520" r="130"/>
+    <circle cx="1080" cy="520" r="200"/>
+  </g>
+  <path d="M60 470 Q 260 430 460 470 T 860 470" stroke="#00cc99" stroke-width="2" fill="none" opacity="0.28"/>
+
+  <!-- brand wordmark -->
+  <g>
+    <circle cx="92" cy="86" r="13" fill="url(#accent)"/>
+    <text x="118" y="95" font-family="Poppins, Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#ffffff" letter-spacing="-0.5">WhaleHub</text>
+  </g>
+
+  <!-- category tag -->
+  <g>
+    <rect x="80" y="168" width="204" height="40" rx="20" fill="rgba(0,204,153,0.12)" stroke="rgba(0,204,153,0.30)"/>
+    <text x="106" y="194" font-family="Poppins, Helvetica, Arial, sans-serif" font-size="17" font-weight="600" fill="#1fe0a8" letter-spacing="2">FUNDAMENTALS</text>
+  </g>
+
+  <!-- headline -->
+  <text x="80" y="300" font-family="Poppins, Helvetica, Arial, sans-serif" font-size="66" font-weight="800" fill="#ffffff" letter-spacing="-1.5">Aquarius AMM</text>
+    <text x="80" y="378" font-family="Poppins, Helvetica, Arial, sans-serif" font-size="66" font-weight="800" fill="#ffffff" letter-spacing="-1.5">Explained</text>
+
+  <!-- accent underline -->
+  <rect x="82" y="404" width="120" height="6" rx="3" fill="url(#accent)"/>
+
+  <!-- subtitle -->
+  <text x="80" y="456" font-family="Inter, Helvetica, Arial, sans-serif" font-size="27" font-weight="500" fill="#b1b3b8">Stellar's liquidity layer</text>
+
+  <!-- footer domain -->
+  <text x="80" y="588" font-family="Inter, Helvetica, Arial, sans-serif" font-size="19" font-weight="600" fill="#6b7280" letter-spacing="0.5">whalehub.io/blog</text>
+  <text x="1120" y="588" text-anchor="end" font-family="Inter, Helvetica, Arial, sans-serif" font-size="17" font-weight="500" fill="#3a827f">Live on Stellar</text>
+</svg>
