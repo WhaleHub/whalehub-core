@@ -1,0 +1,38 @@
+# Netlify config for the whalehub.io marketing site (Netlify project: whalehub-website).
+# This file is only read when the site's "Base directory" is set to `website-redesign`
+# (Site settings → Build & deploy → Build settings). The app site (app.whalehub.io)
+# uses the repo-root netlify.toml and is unaffected by this file.
+#
+# Static site — no build step. Publish this folder as-is.
+[build]
+  base = "website-redesign"
+  publish = "."
+  command = ""
+
+# Long-cache immutable assets (logos, 3D coins, blog covers).
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# HTML should always revalidate so new blog posts appear immediately.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/blog/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Correct content types for the crawl files.
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Content-Type = "application/xml"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Content-Type = "text/plain"
