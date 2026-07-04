@@ -13,7 +13,7 @@ body{
 }
 ::selection{background:var(--teal-500);color:#06241c}
 a{text-decoration:none;color:inherit}
-img{display:block;max-width:100%}
+img{display:block;max-width:100%;height:auto}
 h1,h2,h3,h4{font-family:var(--font-heading, 'Poppins', sans-serif);color:var(--text-heading);letter-spacing:-.02em;line-height:1.2}
 .wrap{max-width:1200px;margin:0 auto;padding:0 28px}
 

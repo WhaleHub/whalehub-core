@@ -7,9 +7,13 @@ const types = { '.html':'text/html', '.css':'text/css', '.js':'text/javascript',
   '.jpg':'image/jpeg', '.jpeg':'image/jpeg', '.json':'application/json' };
 http.createServer((req, res) => {
   let p = decodeURIComponent(req.url.split('?')[0]);
-  if (p === '/') p = '/index.html';
-  const file = path.join(root, p);
+  if (p.endsWith('/')) p += 'index.html';   // directory → index.html (e.g. /blog/)
+  let file = path.join(root, p);
   if (!file.startsWith(root)) { res.writeHead(403); return res.end('forbidden'); }
+  // if an extension-less path is actually a directory, serve its index.html
+  if (!path.extname(file) && fs.existsSync(file) && fs.statSync(file).isDirectory()) {
+    file = path.join(file, 'index.html');
+  }
   fs.readFile(file, (err, data) => {
     if (err) { res.writeHead(404); return res.end('not found'); }
     res.writeHead(200, { 'Content-Type': types[path.extname(file).toLowerCase()] || 'application/octet-stream' });
