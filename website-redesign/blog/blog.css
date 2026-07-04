@@ -30,8 +30,8 @@ h1,h2,h3,h4{font-family:var(--font-heading, 'Poppins', sans-serif);color:var(--t
 .btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--font-heading, 'Poppins', sans-serif);font-weight:600;
   font-size:15px;border-radius:12px;padding:13px 22px;cursor:pointer;border:1px solid transparent;transition:transform .2s,box-shadow .2s,filter .2s;white-space:nowrap}
 .btn:active{transform:scale(.97)}
-.btn-primary{background:linear-gradient(110deg,var(--teal-400) 0%,var(--blue-700) 100%);color:#fff}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 26px 3px rgba(0,204,153,.4)}
+.btn-primary{background:linear-gradient(120deg,#00e0a3 0%,#0aa0c4 52%,#0b6aa6 100%);color:#fff;font-weight:600;box-shadow:0 2px 14px -2px rgba(0,204,153,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 30px 3px rgba(0,204,153,.5)}
 .btn-ghost{background:transparent;color:var(--text-body);border:1px solid var(--border-default)}
 .btn-ghost:hover{border-color:var(--border-accent);color:var(--text-heading)}
 .ic-whale{display:block;flex-shrink:0;border-radius:5px}
