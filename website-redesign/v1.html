@@ -4,21 +4,21 @@
 <script>document.documentElement.classList.add('js');</script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>WhaleHub | Earn BLUB from Aquarius bribes</title>
-<meta name="description" content="WhaleHub harvests Aquarius bribes and turns them into BLUB rewards for stakers. Deposit AQUA, get BLUB (1:1), your liquid AQUA staking token." />
+<title>WhaleHub v1 | Daily growth staking on Aquarius</title>
+<meta name="description" content="Convert AQUA to BLUB 1 : 1 and start earning. WhaleHub pools every backer into one position to reach yield no individual could alone. No lockups, no vote management, no hassle." />
 <!-- Real design-system tokens + webfonts (Poppins / Inter / JetBrains Mono) -->
 <link rel="icon" type="image/webp" href="./assets/logo-icon.webp" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="WhaleHub" />
 <meta property="og:url" content="https://whalehub.io/" />
-<meta property="og:title" content="WhaleHub | Earn BLUB from Aquarius bribes" />
-<meta property="og:description" content="WhaleHub harvests Aquarius bribes and turns them into BLUB rewards for stakers. Deposit AQUA, get BLUB (1:1), your liquid AQUA staking token." />
+<meta property="og:title" content="WhaleHub v1 | Daily growth staking on Aquarius" />
+<meta property="og:description" content="Convert AQUA to BLUB 1 : 1 and start earning. WhaleHub pools every backer into one position to reach yield no individual could alone. No lockups, no vote management, no hassle." />
 <meta property="og:image" content="https://whalehub.io/assets/whaley-banner-site.png" />
 <meta property="og:image:width" content="1500" />
 <meta property="og:image:height" content="500" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="WhaleHub | Earn BLUB from Aquarius bribes" />
-<meta name="twitter:description" content="Harvest Aquarius bribes into BLUB. Deposit AQUA, get BLUB (1:1), your liquid AQUA staking token." />
+<meta name="twitter:title" content="WhaleHub v1 | Daily growth staking on Aquarius" />
+<meta name="twitter:description" content="Convert AQUA to BLUB 1 : 1 and start earning. Pooled AQUA staking that reaches whale-tier yield." />
 <meta name="twitter:image" content="https://whalehub.io/assets/whaley-banner-site.png" />
 <link rel="stylesheet" href="./styles.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -357,17 +357,17 @@
   .vtoggle a{padding:6px 12px;color:var(--text-muted);transition:background var(--dur-base) var(--ease-out),color var(--dur-base)}
   .vtoggle a.on{background:var(--grad-brand);color:#fff}
   .vtoggle a:not(.on):hover{color:var(--text-heading)}
-  /* v2 current-version notice bar */
-  .v2-bar{position:relative;z-index:40;text-align:center;font-size:13.5px;padding:9px 16px;
-    background:linear-gradient(90deg,rgba(0,204,153,.10),rgba(0,204,153,.04));border-bottom:1px solid rgba(0,204,153,.28);color:var(--text-body)}
-  .v2-bar b{color:var(--teal-300);font-weight:600}
-  .v2-bar a{color:var(--teal-400);font-weight:600;white-space:nowrap}
-  .v2-bar a:hover{color:var(--teal-300)}
+  /* legacy (v1) notice bar */
+  .legacy-bar{position:relative;z-index:40;text-align:center;font-size:13.5px;padding:9px 16px;
+    background:linear-gradient(90deg,rgba(252,211,77,.12),rgba(252,211,77,.05));border-bottom:1px solid rgba(252,211,77,.28);color:var(--text-body)}
+  .legacy-bar b{color:#fcd34d;font-weight:600}
+  .legacy-bar a{color:var(--teal-400);font-weight:600;white-space:nowrap}
+  .legacy-bar a:hover{color:var(--teal-300)}
 </style>
 </head>
 <body class="wh-root">
 
-<div class="v2-bar">You're viewing <b>WhaleHub v2 (Bribe Harvesting)</b>, the current model. <a href="./v1.html">View v1 (currently paused) →</a></div>
+<div class="legacy-bar">You're viewing <b>WhaleHub v1 (legacy)</b>. It is currently paused pending the asset-registry whitelisting process on Aquarius, and resumes once approved. v2 (Bribe Harvesting) is now live. <a href="./index.html">Switch to v2 →</a></div>
 
 <header id="hdr">
   <nav class="nav">
@@ -382,7 +382,7 @@
       <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
     </div>
     <div class="nav-right">
-      <span class="vtoggle" role="group" aria-label="Protocol version"><a href="./index.html" class="on">v2</a><a href="./v1.html">v1</a></span>
+      <span class="vtoggle" role="group" aria-label="Protocol version"><a href="./index.html">v2</a><a href="./v1.html" class="on">v1</a></span>
       <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="./assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
       <button class="menu-btn" id="menuBtn" aria-label="Menu"><i data-lucide="menu"></i></button>
     </div>
@@ -408,9 +408,9 @@
     <div>
       <h1 data-reveal>Enhanced staking<br>& <span class="grad-text">compounding</span></h1>
       <p class="lead" data-reveal>
-        WhaleHub is a yield optimizer on Stellar. Your AQUA powers an automated
-        engine that harvests market bribes and turns them into BLUB. Deposit AQUA,
-        get BLUB (1:1), your liquid AQUA staking token.
+        WhaleHub is a yield optimizer on Stellar. Deposit AQUA. Get BLUB
+        (1:1, same value). Watch it grow. Three ways to earn, one protocol,
+        zero complexity.
       </p>
       <div class="hero-actions" data-reveal>
         <a href="https://app.whalehub.io/" class="btn btn-primary btn-lg"><img class="ic-whale" src="./assets/logo-icon.webp" alt="" width="20" height="20" style="display:block;flex-shrink:0;border-radius:5px"> Start Earning</a>
@@ -419,7 +419,7 @@
       <div class="ticker" data-reveal>
         <div class="stat"><div class="v"><span id="liveApy">—</span><span class="u">%</span></div><div class="l">Live APY</div></div>
         <div class="stat"><div class="v">1<span class="u"> : </span>1</div><div class="l">AQUA → BLUB</div></div>
-        <div class="stat"><div class="v">Liquid</div><div class="l">AQUA staking token</div></div>
+        <div class="stat"><div class="v"><span data-count="24">0</span><span class="u">×</span></div><div class="l">Auto-compounds / day</div></div>
       </div>
     </div>
 
@@ -431,26 +431,26 @@
       </div>
       <div class="gauge">
         <div class="gauge-head">
-          <span class="t">Bribe harvesting · 3 steps</span>
-          <span class="more"><i data-lucide="arrow-down"></i> to BLUB</span>
+          <span class="t">Yield depth · 3 layers</span>
+          <span class="more"><i data-lucide="arrow-down"></i> more yield</span>
         </div>
         <div class="layer">
-          <span class="lx">01</span>
-          <span class="ic"><i data-lucide="vote"></i></span>
-          <div><div class="n">Vote</div><div class="d">ICE on the best-yield market</div></div>
-          <span class="tag">each epoch</span>
+          <span class="lx">L1</span>
+          <span class="ic"><i data-lucide="waves"></i></span>
+          <div><div class="n">Stake</div><div class="d">Daily passive rewards</div></div>
+          <span class="tag">deposit AQUA</span>
         </div>
         <div class="layer">
-          <span class="lx">02</span>
-          <span class="ic"><i data-lucide="coins"></i></span>
-          <div><div class="n">Harvest</div><div class="d">Collect bribes, converted to BLUB</div></div>
-          <span class="tag">to BLUB</span>
+          <span class="lx">L2</span>
+          <span class="ic"><i data-lucide="droplets"></i></span>
+          <div><div class="n">Provide liquidity</div><div class="d">Swap fees + rewards</div></div>
+          <span class="tag">AQUA–BLUB pool</span>
         </div>
         <div class="layer">
-          <span class="lx">03</span>
+          <span class="lx">L3</span>
           <span class="ic"><i data-lucide="repeat"></i></span>
-          <div><div class="n">Restake</div><div class="d">Compound BLUB to grow your position</div></div>
-          <span class="tag">optional</span>
+          <div><div class="n">Compound</div><div class="d">Accelerated growth</div></div>
+          <span class="tag">re-stake BLUB</span>
         </div>
       </div>
     </div>
@@ -474,40 +474,40 @@
   <div class="wrap how-content">
     <div class="how-copy">
       <div class="sec-head" data-reveal>
-        <span class="overline">Bribe Harvesting Module</span>
-        <h2>Where your BLUB actually comes from.</h2>
-        <p>WhaleHub turns its ICE voting power into a steady BLUB stream for stakers, harvested from Aquarius bribes.</p>
+        <span class="overline">One Protocol · Three Ways to Earn</span>
+        <h2>Your AQUA earns more when it doesn't work alone.</h2>
+        <p>WhaleHub combines your tokens with a larger pool to unlock higher yield.</p>
       </div>
       <div class="layer-list">
         <div class="layer-item" data-reveal>
-          <span class="ic"><i data-lucide="vote"></i></span>
+          <span class="ic"><i data-lucide="waves"></i></span>
           <div>
-            <div class="lh"><span class="tag">Step 1</span><h3>Vote the best market</h3><span class="sub">Each epoch</span></div>
-            <p>WhaleHub casts its large ICE position on the Aquarius market with the highest expected yield. An optimizer picks the best income for our voting power, not the biggest sticker bribe.</p>
+            <div class="lh"><span class="tag">Layer 1</span><h3>Stake</h3><span class="sub">Daily passive rewards</span></div>
+            <p>Deposit AQUA, get BLUB (1:1, same value). Done. You're earning from minute one. Every new staker strengthens the pool. Your position grows daily.</p>
           </div>
         </div>
         <div class="layer-item" data-reveal>
-          <span class="ic"><i data-lucide="coins"></i></span>
+          <span class="ic"><i data-lucide="droplets"></i></span>
           <div>
-            <div class="lh"><span class="tag">Step 2</span><h3>Harvest the bribes</h3><span class="sub">Converted to BLUB</span></div>
-            <p>Those votes earn bribes, which WhaleHub continuously harvests and turns into BLUB rewards for stakers. <a href="https://whalehub-1.gitbook.io/whalehub/tokenomics/bribes-harvesting" target="_blank" rel="noopener" style="color:var(--teal-400)">See the full mechanics →</a></p>
+            <div class="lh"><span class="tag">Layer 2</span><h3>Provide liquidity</h3><span class="sub">Maximum yield</span></div>
+            <p>Add to the AQUA-BLUB pool. Earn swap fees plus rewards, auto-compounded 24 times a day. This is the full cycle.</p>
           </div>
         </div>
         <div class="layer-item" data-reveal>
           <span class="ic"><i data-lucide="repeat"></i></span>
           <div>
-            <div class="lh"><span class="tag">Step 3</span><h3>Restake &amp; compound</h3><span class="sub">Grow your position</span></div>
-            <p>Your earned BLUB is yours to restake. Compound it back into your position and each round your share grows, so your rewards earn rewards.</p>
+            <div class="lh"><span class="tag">Layer 3</span><h3>Compound</h3><span class="sub">Accelerated growth</span></div>
+            <p>Re-stake your earned BLUB. Each round, your share of the pool gets bigger. Your rewards earn rewards. Classic snowball.</p>
           </div>
         </div>
       </div>
     </div>
 
-    <figure class="how-fly" data-reveal aria-label="WhaleHub bribe harvesting flywheel">
-      <img src="./assets/flywheel.png" alt="WhaleHub bribe harvesting flywheel: vote, harvest, restake" />
-      <span class="lbl fw-arrow fw-a1">Vote ICE</span>
-      <span class="lbl fw-arrow fw-a2">Harvest bribes</span>
-      <span class="lbl fw-arrow fw-a3">Restake &amp; grow</span>
+    <figure class="how-fly" data-reveal aria-label="WhaleHub yield flywheel">
+      <img src="./assets/flywheel.png" alt="WhaleHub yield flywheel: stake, provide liquidity, compound" />
+      <span class="lbl fw-arrow fw-a1">Get BLUB</span>
+      <span class="lbl fw-arrow fw-a2">Fees + rewards</span>
+      <span class="lbl fw-arrow fw-a3">Bigger share</span>
     </figure>
   </div>
 </section>
@@ -517,26 +517,26 @@
   <div class="wrap">
     <div class="sec-head" data-reveal>
       <span class="overline">The honest comparison</span>
-      <h2>Why not just chase bribes on Aquarius yourself?</h2>
-      <p>You could. Here's what running your own ICE voting looks like, versus letting WhaleHub harvest for you.</p>
+      <h2>Why not just earn on Aquarius directly?</h2>
+      <p>You could. Here's what that actually looks like, versus letting the pool do the heavy lifting.</p>
     </div>
     <div class="cmp">
       <div class="cmp-panel solo">
-        <span class="pill">Solo voting</span>
+        <span class="pill">Solo earning</span>
         <ul>
-          <li><i data-lucide="x"></i> Lock AQUA into ICE yourself</li>
-          <li><i data-lucide="x"></i> Track every bribe market each epoch</li>
-          <li><i data-lucide="x"></i> Re-vote and claim by hand</li>
-          <li><i data-lucide="x"></i> Small position, so your votes get diluted</li>
+          <li><i data-lucide="x"></i> Lock AQUA for 5 years</li>
+          <li><i data-lucide="x"></i> Manage votes every epoch</li>
+          <li><i data-lucide="x"></i> Compound by hand</li>
+          <li><i data-lucide="x"></i> Small position, base rate only</li>
         </ul>
       </div>
       <div class="cmp-panel hub">
         <img class="brand-pill" src="./assets/logo-full.webp" alt="WhaleHub" />
         <ul>
           <li data-reveal><i data-lucide="check"></i> No lockup. BLUB stays liquid, 1:1</li>
-          <li data-reveal><i data-lucide="check"></i> Optimizer votes the best-yield market for you</li>
-          <li data-reveal><i data-lucide="check"></i> Bribes harvested and paid out as BLUB rewards</li>
-          <li data-reveal><i data-lucide="check"></i> Restake your BLUB to compound and grow</li>
+          <li data-reveal><i data-lucide="check"></i> Pooled ICE voting handled for you</li>
+          <li data-reveal><i data-lucide="check"></i> Auto-compounding 24×/day</li>
+          <li data-reveal><i data-lucide="check"></i> Pooled position earns a higher tier</li>
         </ul>
         <div class="hub-stat"><span class="num" id="liveApy2">17.88</span><span class="u">%</span><span class="cap">Live APY</span></div>
       </div>
@@ -564,11 +564,11 @@
       </div>
       <div class="ncard" data-reveal>
         <div class="top"><span class="b"><i data-lucide="box"></i></span><h3>Soroban Smart Contracts</h3><span class="h">@whalehubdefi</span></div>
-        <p>The engine. WhaleHub's staking, bribe harvesting, and reward distribution all run on Soroban.</p>
+        <p>The engine. WhaleHub's staking logic, vault compounding, and reward distribution all run on Soroban.</p>
       </div>
       <div class="ncard" data-reveal>
         <div class="top"><span class="b"><img src="./assets/token-aqua-white.png" alt="Aquarius" /></span><h3>Aquarius Liquidity Layer</h3><span class="h">@aqua_token</span></div>
-        <p>The source. ICE governance, epoch voting, and market bribes. Where WhaleHub's yield comes from.</p>
+        <p>The source. ICE governance, epoch voting, reward zones. Where WhaleHub's yield comes from.</p>
       </div>
     </div>
   </div>
