@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import { SOROBAN_CONFIG } from "../../config/soroban.config";
 import VaultCard, { VaultConfig } from "./VaultCard";
 import DepositEntry from "./DepositEntry";
+import RestakeToggle from "./RestakeToggle";
 
 const ENABLED_KEY = "wh_v2_enabled_vaults";
 
@@ -59,14 +60,17 @@ const V2: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
-          {/* Feature 3: deposit entry points (XLM/USDC/EURC auto-routed) */}
-          <div className="lg:col-span-1 lg:sticky lg:top-6">
+          {/* Feature 3 + 5: deposit entry points + auto-restake toggle */}
+          <div className="lg:col-span-1 lg:sticky lg:top-6 flex flex-col gap-5">
             <DepositEntry
               vaults={vaults}
               onDeposit={(asset, amount, route) => {
                 // Swap+deposit wiring lands with the vault deposit flow.
                 console.log("[v2] deposit", amount, asset, "->", route.vault?.key);
               }}
+            />
+            <RestakeToggle
+              onChange={(on) => console.log("[v2] auto-restake", on)}
             />
           </div>
 
