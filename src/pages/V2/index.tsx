@@ -8,6 +8,7 @@
 import React from "react";
 import { SOROBAN_CONFIG } from "../../config/soroban.config";
 import VaultCard, { VaultConfig } from "./VaultCard";
+import DepositEntry from "./DepositEntry";
 
 const V2: React.FC = () => {
   const vaults = (SOROBAN_CONFIG as { vaults?: VaultConfig[] }).vaults ?? [];
@@ -29,19 +30,31 @@ const V2: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {vaults.map((v) => (
-            <VaultCard
-              key={v.key}
-              vault={v}
-              apr={null}
-              onDeposit={(vault) => {
-                // Deposit wiring lands with the contract pool registration.
-                // Until then only "live" vaults enable the button.
-                console.log("[v2] deposit requested for", vault.key);
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
+          {/* Feature 3: deposit entry points (XLM/USDC/EURC auto-routed) */}
+          <div className="lg:col-span-1 lg:sticky lg:top-6">
+            <DepositEntry
+              vaults={vaults}
+              onDeposit={(asset, amount, route) => {
+                // Swap+deposit wiring lands with the vault deposit flow.
+                console.log("[v2] deposit", amount, asset, "->", route.vault?.key);
               }}
             />
-          ))}
+          </div>
+
+          {/* Feature 2: vault cards */}
+          <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {vaults.map((v) => (
+              <VaultCard
+                key={v.key}
+                vault={v}
+                apr={null}
+                onDeposit={(vault) => {
+                  console.log("[v2] deposit requested for", vault.key);
+                }}
+              />
+            ))}
+          </div>
         </div>
 
         {vaults.length === 0 && (
