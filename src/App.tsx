@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import AppLayout from "./components/AppLayout";
 import Stake from "./pages/Stake";
 import Leverage from "./pages/Leverage";
+import V2 from "./pages/V2";
 import Terms from "./pages/Terms";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import FAQ from "./pages/FAQ";
@@ -36,6 +37,7 @@ function App() {
                       <Route path="/" element={<Navigate to="/stake/aqua" />} />
                       <Route path="/stake/:tokenId" element={<Stake />} />
                       <Route path="/leverage" element={<Leverage />} />
+                      <Route path="/v2" element={<V2 />} />
                       <Route path="/vote" element={<Vote />} />
                       <Route path="/terms" element={<Terms />} />
                       <Route path="/privacy" element={<PrivacyPolicy />} />

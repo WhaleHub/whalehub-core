@@ -187,6 +187,53 @@ export const SOROBAN_CONFIG = {
     },
   },
 
+  // Multi-pair yield-farming vaults (feature 2). Each maps to an Aquarius
+  // mainnet pool; WhaleHub supplies pooled-ICE-boosted LP and auto-compounds.
+  // `status`: "live" = registered as a contract vault pool (deposits open);
+  // "activating" = Aquarius pool exists, pending add_pool registration + ICE boost.
+  vaults: [
+    {
+      key: "xlm-aqua",
+      name: "XLM / AQUA",
+      assetA: "XLM",
+      assetB: "AQUA",
+      poolType: "volatile" as const,
+      aquariusPool: "CCY2PXGMKNQHO7WNYXEWX76L2C5BH3JUW3RCATGUYKY7QQTRILBZIFWV",
+      poolId: 2,
+      status: "live" as const,
+    },
+    {
+      key: "xlm-usdc",
+      name: "XLM / USDC",
+      assetA: "XLM",
+      assetB: "USDC",
+      poolType: "volatile" as const,
+      aquariusPool: "",
+      poolId: null,
+      status: "activating" as const,
+    },
+    {
+      key: "aqua-susd",
+      name: "AQUA / sUSD",
+      assetA: "AQUA",
+      assetB: "sUSD",
+      poolType: "volatile" as const,
+      aquariusPool: "CAF63CNDJBATL376WDN5KUNN32JQKNYC26SQ62OLXYMAWBYE23P6M5WT",
+      poolId: null,
+      status: "activating" as const,
+    },
+    {
+      key: "susd-usdc",
+      name: "sUSD / USDC",
+      assetA: "sUSD",
+      assetB: "USDC",
+      poolType: "stable" as const,
+      aquariusPool: "CDD3OQDUVL3ITL4ZJF27WVSO65PFEQQ5AOHEUPUHC7YNL7VUYM4QRLZ5",
+      poolId: null,
+      status: "activating" as const,
+    },
+  ],
+
   // POL Configuration
   pol: {
     contributionPercentage: 0.1, // 10% of locked AQUA
