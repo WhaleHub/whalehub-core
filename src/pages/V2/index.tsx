@@ -5,13 +5,41 @@
  * Feature 2 (multi-pair yield farming) lives here first; features 3–6 will be
  * added as sections/tabs on this same v2 surface.
  */
-import React from "react";
+import React, { useState } from "react";
 import { SOROBAN_CONFIG } from "../../config/soroban.config";
 import VaultCard, { VaultConfig } from "./VaultCard";
 import DepositEntry from "./DepositEntry";
 
+const ENABLED_KEY = "wh_v2_enabled_vaults";
+
 const V2: React.FC = () => {
   const vaults = (SOROBAN_CONFIG as { vaults?: VaultConfig[] }).vaults ?? [];
+
+  // Feature 4: per-vault participation, persisted locally.
+  const [enabled, setEnabled] = useState<Set<string>>(() => {
+    try {
+      const raw = localStorage.getItem(ENABLED_KEY);
+      return new Set<string>(raw ? JSON.parse(raw) : []);
+    } catch {
+      return new Set<string>();
+    }
+  });
+
+  const toggle = (vault: VaultConfig, next: boolean) => {
+    setEnabled((prev) => {
+      const s = new Set(prev);
+      if (next) s.add(vault.key);
+      else s.delete(vault.key);
+      try {
+        localStorage.setItem(ENABLED_KEY, JSON.stringify([...s]));
+      } catch {
+        /* ignore */
+      }
+      return s;
+    });
+  };
+
+  const selectedCount = vaults.filter((v) => enabled.has(v.key)).length;
 
   return (
     <div className="min-h-screen bg-[#0E111B] text-white">
@@ -42,18 +70,31 @@ const V2: React.FC = () => {
             />
           </div>
 
-          {/* Feature 2: vault cards */}
-          <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {vaults.map((v) => (
-              <VaultCard
-                key={v.key}
-                vault={v}
-                apr={null}
-                onDeposit={(vault) => {
-                  console.log("[v2] deposit requested for", vault.key);
-                }}
-              />
-            ))}
+          {/* Feature 2 + 4: vault cards with participation toggles */}
+          <div className="lg:col-span-2 flex flex-col gap-5">
+            {/* Feature 4: selection summary — layers with the staking position */}
+            <div className="rounded-2xl border border-[#1C2235] bg-[#0E111B] px-5 py-3 flex items-center justify-between">
+              <span className="text-[13px] text-[#B1B3B8]">
+                <span className="text-white font-medium">{selectedCount}</span>{" "}
+                vault{selectedCount === 1 ? "" : "s"} on — combined with your
+                staking position for layered yield
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {vaults.map((v) => (
+                <VaultCard
+                  key={v.key}
+                  vault={v}
+                  apr={null}
+                  enabled={enabled.has(v.key)}
+                  onToggle={toggle}
+                  onDeposit={(vault) => {
+                    console.log("[v2] deposit requested for", vault.key);
+                  }}
+                />
+              ))}
+            </div>
           </div>
         </div>
 

@@ -19,12 +19,29 @@ interface Props {
   vault: VaultConfig;
   apr?: number | null; // live APR once wired; null = not yet available
   onDeposit?: (vault: VaultConfig) => void;
+  // Feature 4: per-vault participation toggle. Rendered only when provided.
+  enabled?: boolean;
+  onToggle?: (vault: VaultConfig, next: boolean) => void;
 }
 
-const VaultCard: React.FC<Props> = ({ vault, apr, onDeposit }) => {
+const VaultCard: React.FC<Props> = ({
+  vault,
+  apr,
+  onDeposit,
+  enabled,
+  onToggle,
+}) => {
   const isLive = vault.status === "live";
+  const showToggle = typeof onToggle === "function";
   return (
-    <div className="rounded-2xl border border-[#1C2235] bg-[#151A29] p-5 flex flex-col gap-4 transition-colors hover:border-[#2a3050]">
+    <div
+      className={
+        "rounded-2xl border p-5 flex flex-col gap-4 transition-colors " +
+        (showToggle && enabled
+          ? "border-[rgba(0,204,153,0.4)] bg-[#141d24]"
+          : "border-[#1C2235] bg-[#151A29] hover:border-[#2a3050]")
+      }
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex -space-x-2">
@@ -65,6 +82,33 @@ const VaultCard: React.FC<Props> = ({ vault, apr, onDeposit }) => {
           Auto-compounded · ICE-boosted emissions
         </div>
       </div>
+
+      {showToggle && (
+        <div className="flex items-center justify-between border-t border-[#1C2235] pt-3">
+          <span className="text-[13px] text-[#B1B3B8]">
+            {enabled ? "Participating" : "Participate"}
+          </span>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={!!enabled}
+            disabled={!isLive}
+            onClick={() => isLive && onToggle?.(vault, !enabled)}
+            className={
+              "relative w-11 h-6 rounded-full transition-colors " +
+              (enabled ? "bg-[#00cc99]" : "bg-[#2a3050]") +
+              (isLive ? " cursor-pointer" : " opacity-40 cursor-not-allowed")
+            }
+          >
+            <span
+              className={
+                "absolute top-0.5 w-5 h-5 rounded-full bg-white transition-all " +
+                (enabled ? "left-[22px]" : "left-0.5")
+              }
+            />
+          </button>
+        </div>
+      )}
 
       <button
         disabled={!isLive}
