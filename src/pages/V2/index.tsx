@@ -31,7 +31,7 @@ const V2: React.FC = () => {
       if (next) s.add(vault.key);
       else s.delete(vault.key);
       try {
-        localStorage.setItem(ENABLED_KEY, JSON.stringify([...s]));
+        localStorage.setItem(ENABLED_KEY, JSON.stringify(Array.from(s)));
       } catch {
         /* ignore */
       }
