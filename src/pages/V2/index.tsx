@@ -10,6 +10,7 @@ import { SOROBAN_CONFIG } from "../../config/soroban.config";
 import VaultCard, { VaultConfig } from "./VaultCard";
 import DepositEntry from "./DepositEntry";
 import RestakeToggle from "./RestakeToggle";
+import Analytics from "./Analytics";
 
 const ENABLED_KEY = "wh_v2_enabled_vaults";
 
@@ -101,6 +102,9 @@ const V2: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Feature 6: analytics + yield projections */}
+        {vaults.length > 0 && <Analytics vaults={vaults} />}
 
         {vaults.length === 0 && (
           <div className="text-center text-[#6B7280] mt-10">
