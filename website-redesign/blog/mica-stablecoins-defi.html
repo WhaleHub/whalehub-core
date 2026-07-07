@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MiCA Explained: EU Rules for Stablecoins &amp; DeFi | WhaleHub</title>
+<meta name="description" content="MiCA is the EU's Markets in Crypto-Assets Regulation. A plain-English guide to its stablecoin categories (EMTs and ARTs), issuer rules, timeline, and what it means for DeFi." />
+<link rel="canonical" href="https://whalehub.io/blog/mica-stablecoins-defi.html" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="mica regulation, mica stablecoins, mica crypto, what is mica, emt art tokens, eu crypto regulation" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/mica-stablecoins-defi.html" />
+<meta property="og:title" content="MiCA Explained: EU Rules for Stablecoins &amp; DeFi" />
+<meta property="og:description" content="A plain-English guide to MiCA — the EU's crypto regulation. Stablecoin categories (EMTs vs ARTs), issuer requirements, the 2024 timeline, and what it means for DeFi." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/mica-stablecoins-defi.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-07-04" />
+<meta property="article:modified_time" content="2026-07-04" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="MiCA Explained: EU Rules for Stablecoins &amp; DeFi" />
+<meta name="twitter:description" content="Plain-English guide to MiCA: stablecoin categories (EMTs vs ARTs), issuer rules, the 2024 timeline, and what it means for DeFi." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/mica-stablecoins-defi.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/mica-stablecoins-defi.html#article",
+      "headline": "MiCA Explained: EU Rules for Stablecoins & DeFi",
+      "description": "A plain-English guide to MiCA, the EU's Markets in Crypto-Assets Regulation: stablecoin categories (EMTs and ARTs), issuer requirements, the 2024 timeline, and what it means for DeFi.",
+      "image": "https://whalehub.io/assets/blog/mica-stablecoins-defi.png",
+      "datePublished": "2026-07-04",
+      "dateModified": "2026-07-04",
+      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "WhaleHub",
+        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+      },
+      "mainEntityOfPage": "https://whalehub.io/blog/mica-stablecoins-defi.html"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
+        { "@type": "ListItem", "position": 2, "name": "MiCA Explained", "item": "https://whalehub.io/blog/mica-stablecoins-defi.html" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "What is MiCA?", "acceptedAnswer": { "@type": "Answer", "text": "MiCA is the EU's Markets in Crypto-Assets Regulation, a single rulebook that governs the issuance, offering, and servicing of crypto-assets across all 27 member states. It creates licensing regimes for stablecoin issuers and crypto service providers, aiming to protect consumers and harmonise rules that were previously fragmented country by country." } },
+        { "@type": "Question", "name": "What is the difference between an EMT and an ART under MiCA?", "acceptedAnswer": { "@type": "Answer", "text": "An e-money token (EMT) references a single official currency, such as the euro or the US dollar — most fiat-backed stablecoins fall here. An asset-referenced token (ART) references any other value or basket: multiple currencies, a commodity like gold, or a mix. EMTs and ARTs face different issuer and reserve rules." } },
+        { "@type": "Question", "name": "When did MiCA's rules take effect?", "acceptedAnswer": { "@type": "Answer", "text": "MiCA entered into force in 2023. Its stablecoin rules for EMT and ART issuers began applying on 30 June 2024, and the rules for crypto-asset service providers (CASPs) began applying on 30 December 2024. A transitional period for existing service providers runs until 1 July 2026 in many member states." } },
+        { "@type": "Question", "name": "Is USDC MiCA-compliant?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Circle obtained an Electronic Money Institution licence in France and, from mid-2024, issues USDC and its euro stablecoin EURC in the EU as MiCA-compliant e-money tokens. EURC is a euro-referenced EMT designed around MiCA from the start. This is general information, not an endorsement." } },
+        { "@type": "Question", "name": "Does MiCA regulate DeFi?", "acceptedAnswer": { "@type": "Answer", "text": "MiCA largely targets identifiable issuers and service providers, not fully decentralised protocols. Services offered by an intermediary can fall in scope, while genuinely decentralised DeFi is mostly left for future review. The picture is evolving, so treat any DeFi position as subject to change and seek professional advice." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../index.html"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../index.html#how">How it works</a>
+      <a href="../index.html#why">Why WhaleHub</a>
+      <a href="./index.html" class="active">Blog</a>
+      <a href="../about.html">About</a>
+      <a href="../faq.html">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./index.html">Blog</a> &nbsp;/&nbsp; Regulation</div>
+      <span class="tag blue">Regulation</span>
+      <h1>MiCA Explained: EU Rules for Stablecoins &amp; DeFi</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: July 2026</span>
+        <span class="dot-sep"></span>
+        <span>9 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/mica-stablecoins-defi.png" alt="MiCA Explained — EU rules for stablecoins and DeFi, WhaleHub guide cover" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">MiCA — the EU's <strong>Markets in Crypto-Assets Regulation</strong> — is the first comprehensive crypto rulebook for a major economy, covering all 27 EU member states. It sorts stablecoins into two legal buckets (EMTs and ARTs), sets licensing rules for issuers and service providers, and phased in during 2024: stablecoin rules from 30 June 2024 and service-provider rules from 30 December 2024. This is a plain-English explainer, not legal advice.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#what-is">What is MiCA?</a></li>
+        <li><a href="#categories">The two stablecoin categories</a></li>
+        <li><a href="#issuers">What MiCA asks of issuers</a></li>
+        <li><a href="#timeline">The MiCA timeline</a></li>
+        <li><a href="#stablecoins">What it means for USDC, EURC &amp; friends</a></li>
+        <li><a href="#defi">What it means for DeFi</a></li>
+        <li><a href="#stellar">MiCA and Stellar stablecoins</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="what-is">What is MiCA?</h2>
+      <p class="answer">MiCA is the EU's Markets in Crypto-Assets Regulation — a single rulebook governing how crypto-assets are issued, offered, and serviced across all 27 member states. It creates licensing regimes for stablecoin issuers and for crypto service providers, aiming to protect consumers and replace a patchwork of national rules with one harmonised, passportable framework.</p>
+      <p>Before MiCA, a crypto business in Europe faced a different rulebook in every country — or, often, no clear rulebook at all. MiCA entered into force in 2023 and set out to fix that with three goals: protect consumers, preserve financial stability, and let compliant firms operate EU-wide under a single authorisation ("passporting").</p>
+      <p>It's helpful to know what MiCA does <em>not</em> cover. Assets that already qualify as financial instruments (like tokenised securities) sit under existing EU securities law, not MiCA. NFTs that are genuinely unique are largely outside scope. And truly decentralised systems with no identifiable issuer or intermediary are mostly left for a future review — a nuance we return to below.</p>
+
+      <div class="callout">
+        <div class="k">Who this affects</div>
+        <ul>
+          <li><strong>Stablecoin issuers</strong> — anyone minting a euro- or dollar-referenced token for EU users needs an authorisation.</li>
+          <li><strong>Exchanges, custodians &amp; wallets</strong> ("CASPs") — firms offering crypto services to EU customers need a MiCA licence.</li>
+          <li><strong>EU users</strong> — the tokens and platforms available to you increasingly depend on who holds a MiCA licence.</li>
+          <li><strong>Builders outside the EU</strong> — if you serve EU customers, MiCA can reach you regardless of where you're based.</li>
+        </ul>
+      </div>
+
+      <h2 id="categories">The two stablecoin categories</h2>
+      <p class="answer">MiCA splits stablecoins into two types. An <strong>e-money token (EMT)</strong> references a single official currency — for example a euro or US-dollar stablecoin. An <strong>asset-referenced token (ART)</strong> references anything else: a basket of currencies, a commodity such as gold, or a mix of assets. The category a token falls into determines which rules and reserves apply.</p>
+      <p>The distinction matters because the two buckets carry different obligations. EMTs are treated much like electronic money and must be issued by regulated banks or e-money institutions. ARTs are a broader, more novel category and face a heavier authorisation and disclosure regime. A third, unofficial "bucket" is everything else — utility and payment tokens like AQUA or XLM that don't claim to hold a stable value and therefore aren't stablecoins at all.</p>
+
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>MiCA token type</th><th>What it is</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><strong>EMT</strong> (e-money token)</td><td>References one official currency; behaves like digital cash</td><td>USDC, EURC (USD- and EUR-referenced)</td></tr>
+          <tr><td><strong>ART</strong> (asset-referenced token)</td><td>References a basket, a commodity, or several assets</td><td>A gold-referenced or multi-currency-basket token</td></tr>
+          <tr><td>Other crypto-assets</td><td>Utility / payment tokens with no stable-value claim</td><td>XLM, <a href="what-is-aqua-token.html">AQUA</a>, BLUB</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>Note that "stablecoin" isn't itself a legal term in MiCA — the regulation only ever talks about EMTs and ARTs. When you read that a coin is "MiCA-compliant," it almost always means it's a properly authorised EMT.</p>
+
+      <h2 id="issuers">What MiCA asks of issuers</h2>
+      <p class="answer">MiCA requires stablecoin issuers to be authorised entities, to hold reserves that fully back the tokens in circulation, and to let holders redeem at par at any time. Reserves must be safeguarded and, for EMTs, kept largely in low-risk, liquid form. Issuers must also publish clear disclosures and, notably, cannot pay interest to token holders.</p>
+      <p>In plain terms, the core issuer obligations look like this:</p>
+      <ul>
+        <li><strong>Be authorised.</strong> EMT issuers must be a credit institution (a bank) or an authorised electronic money institution (EMI). ART issuers need a specific MiCA authorisation.</li>
+        <li><strong>Back the tokens fully.</strong> Reserves must cover the tokens in issue, be segregated from the issuer's own funds, and be held in safe, liquid assets.</li>
+        <li><strong>Honour redemption.</strong> Holders can redeem their tokens for the referenced currency at any time, at par.</li>
+        <li><strong>No interest.</strong> Issuers may not grant interest tied simply to how long someone holds the token — a rule that reshapes "yield-bearing stablecoin" models in the EU.</li>
+        <li><strong>Disclose.</strong> Issuers publish a white paper and ongoing information so users understand the reserves and risks.</li>
+      </ul>
+      <p>There are also scale-based limits: very large EMTs and ARTs used widely as a means of payment face extra supervision and caps, part of the EU's concern that a private stablecoin could grow large enough to matter for monetary stability.</p>
+
+      <div class="cta-band">
+        <div>
+          <div class="t">Earning on Stellar, minus the guesswork</div>
+          <div class="s">WhaleHub stakes AQUA, aggregates ICE voting power, and auto-compounds Aquarius rewards — while you stay in control of your assets.</div>
+        </div>
+        <a href="https://app.whalehub.io/" class="btn btn-primary">Launch app</a>
+      </div>
+
+      <h2 id="timeline">The MiCA timeline</h2>
+      <p class="answer">MiCA entered into force in 2023 and applied in phases. The stablecoin rules for EMT and ART issuers began applying on 30 June 2024. The rules for crypto-asset service providers (CASPs) — exchanges, custodians, brokers — began applying on 30 December 2024. A transitional "grandfathering" window for existing providers runs until 1 July 2026 in many member states.</p>
+      <p>Here is the sequence at a glance:</p>
+      <pre><code>2023        MiCA enters into force (published in the EU Official Journal)
+30 Jun 2024 Stablecoin rules apply — EMT &amp; ART issuers need authorisation
+30 Dec 2024 CASP rules apply — exchanges, custodians, wallets need a licence
+~2025-2026  Transitional period; existing CASPs seek authorisation
+ 1 Jul 2026 Grandfathering window closes in many member states</code></pre>
+      <p>The staggered dates are deliberate: stablecoins came first because a large, poorly-backed stablecoin poses the sharpest systemic risk, while the broader service-provider regime followed six months later. Exact transitional deadlines vary by member state, so the picture on the ground differs a little country to country.</p>
+
+      <h2 id="stablecoins">What it means for USDC, EURC &amp; friends</h2>
+      <p class="answer">In practice, MiCA has already reshaped which stablecoins EU platforms list. Circle secured an Electronic Money Institution licence in France and issues USDC and its euro stablecoin EURC as MiCA-compliant e-money tokens. Tokens whose issuers haven't obtained authorisation have been delisted or restricted for EU users by several exchanges.</p>
+      <p>Circle was the first major global issuer to line up with MiCA, using a French EMI authorisation that passports across the EU. That makes <strong>USDC</strong> (a US-dollar EMT) and <strong>EURC</strong> (a euro EMT built around MiCA from the outset) the reference examples of compliant stablecoins. Other large dollar stablecoins whose issuers had not obtained EU authorisation saw EU access curtailed on some platforms — a concrete sign that MiCA has teeth.</p>
+      <p>For an everyday user, the practical upshot is that the euro-denominated, fully-reserved, redeemable stablecoin is becoming the default building block for EU-facing payments and on-ramps. If you want the deeper picture of how fiat-backed stablecoins actually work on-chain, our companion piece <a href="stablecoins-on-stellar.html">Stablecoins on Stellar</a> walks through issuance, reserves, and redemption.</p>
+
+      <h2 id="defi">What it means for DeFi</h2>
+      <p class="answer">MiCA mainly targets identifiable issuers and intermediaries, not fully decentralised protocols. A service offered "in a fully decentralised manner without any intermediary" is largely outside current scope, while anything with a company, a front-end operator, or a token issuer behind it can be pulled in. The EU has signalled it will study DeFi further, so the boundary is not fixed.</p>
+      <p>That leaves DeFi in a grey but improving zone. Three practical takeaways:</p>
+      <h3>Stablecoins are DeFi's plumbing</h3>
+      <p>Most lending markets, AMMs, and yield strategies are quoted in stablecoins. As compliant EMTs like EURC become the standard in the EU, they increasingly become the assets that flow through DeFi pools too — so MiCA's stablecoin rules touch DeFi indirectly even where they don't regulate the protocol directly.</p>
+      <h3>The "who operates it" test</h3>
+      <p>Regulators look at whether a real person or company controls or profits from a service. A genuinely autonomous smart contract is treated differently from a slick app with a company, a team, and a token treasury behind it. Where a protocol sits on that spectrum matters.</p>
+      <h3>The rules will keep moving</h3>
+      <p>MiCA explicitly left DeFi for a later review, and further EU guidance is expected over time. Treat today's position as a snapshot, not a settled answer — which is exactly why this article is educational context, not legal advice.</p>
+
+      <h2 id="stellar">MiCA and Stellar stablecoins</h2>
+      <p class="answer">Stellar is a natural home for MiCA-style stablecoins: it was built for regulated, fiat-backed digital money, settles in about five seconds for a fraction of a cent, and issues assets like USDC and EURC natively. That makes it well suited to the fully-reserved, redeemable EMT model MiCA favours — while WhaleHub focuses on a separate job: optimising yield on Stellar's AQUA ecosystem.</p>
+      <p>Circle issues USDC on Stellar, and the network's design — cheap, fast, with assets and a DEX at the protocol layer — fits the compliance-first direction MiCA points in. If you're new to the ecosystem, <a href="stellar-defi-guide.html">our Stellar DeFi guide</a> maps the whole stack, and <a href="soroban-smart-contracts.html">Soroban smart contracts</a> explains how tokens (via the Stellar Asset Contract) become programmable on-chain.</p>
+      <p>Where does WhaleHub fit? It isn't a stablecoin issuer and doesn't touch the EMT/ART regime. WhaleHub is a yield optimiser: you stake AQUA, receive <a href="what-is-blub-token.html">BLUB</a> minted 1:1 as a liquid receipt, and earn a share of Aquarius rewards that the protocol aggregates and auto-compounds. BLUB's value floats with the market — it is not a stablecoin and makes no stable-value claim, so it sits in MiCA's "other crypto-assets" bucket rather than the stablecoin one.</p>
+      <hr />
+      <p>MiCA's headline idea is simple: a stablecoin used by the public should be fully backed, redeemable, and issued by someone accountable. The detail is where it gets involved — two token categories, staggered dates, and an evolving line around DeFi. If you remember EMT vs ART, the 2024 timeline, and "compliant means authorised," you have the shape of it.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is MiCA?</summary><p>MiCA is the EU's Markets in Crypto-Assets Regulation, a single rulebook that governs the issuance, offering, and servicing of crypto-assets across all 27 member states. It creates licensing regimes for stablecoin issuers and crypto service providers, aiming to protect consumers and harmonise rules that were previously fragmented country by country.</p></details>
+      <details><summary>What is the difference between an EMT and an ART under MiCA?</summary><p>An e-money token (EMT) references a single official currency, such as the euro or the US dollar — most fiat-backed stablecoins fall here. An asset-referenced token (ART) references any other value or basket: multiple currencies, a commodity like gold, or a mix. EMTs and ARTs face different issuer and reserve rules.</p></details>
+      <details><summary>When did MiCA's rules take effect?</summary><p>MiCA entered into force in 2023. Its stablecoin rules for EMT and ART issuers began applying on 30 June 2024, and the rules for crypto-asset service providers (CASPs) began applying on 30 December 2024. A transitional period for existing service providers runs until 1 July 2026 in many member states.</p></details>
+      <details><summary>Is USDC MiCA-compliant?</summary><p>Yes. Circle obtained an Electronic Money Institution licence in France and, from mid-2024, issues USDC and its euro stablecoin EURC in the EU as MiCA-compliant e-money tokens. EURC is a euro-referenced EMT designed around MiCA from the start. This is general information, not an endorsement.</p></details>
+      <details><summary>Does MiCA regulate DeFi?</summary><p>MiCA largely targets identifiable issuers and service providers, not fully decentralised protocols. Services offered by an intermediary can fall in scope, while genuinely decentralised DeFi is mostly left for future review. The picture is evolving, so treat any DeFi position as subject to change and seek professional advice.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — and the regulation around it — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="stablecoins-on-stellar.html"><img src="../assets/blog/stablecoins-on-stellar.png" alt="" /><span>Stablecoins on Stellar</span></a>
+        <a href="stellar-defi-guide.html"><img src="../assets/blog/stellar-defi-guide.png" alt="" /><span>What Is Stellar DeFi?</span></a>
+        <a href="soroban-smart-contracts.html"><img src="../assets/blog/soroban-smart-contracts.png" alt="" /><span>Soroban Smart Contracts</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Earn on a compliance-ready network</h2>
+      <p>Stellar was built for regulated digital money. Put its AQUA ecosystem to work with WhaleHub — stake, get BLUB 1:1, and auto-compound.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not legal, tax, or financial advice. Crypto regulation, including MiCA, evolves and varies by jurisdiction; nothing here should be relied on for compliance decisions. DeFi involves risk, including the potential loss of capital. Do your own research and consult a qualified professional before making decisions.</p>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../index.html#how">How it works</a>
+        <a href="../index.html#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./index.html">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about.html">About</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

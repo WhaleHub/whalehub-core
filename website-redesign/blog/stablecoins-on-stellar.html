@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stablecoins on Stellar: USDC, EURC, sUSD &amp; PYUSD | WhaleHub</title>
+<meta name="description" content="A plain-English guide to stablecoins on Stellar: Circle's native USDC and EURC, PayPal's PYUSD, dollar coins like sUSD, how trustlines work, and how they power DeFi yield." />
+<link rel="canonical" href="https://whalehub.io/blog/stablecoins-on-stellar.html" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="stellar stablecoins, usdc stellar, eurc stellar, pyusd stellar, stablecoins on stellar" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/stablecoins-on-stellar.html" />
+<meta property="og:title" content="Stablecoins on Stellar: USDC, EURC, sUSD &amp; PYUSD" />
+<meta property="og:description" content="How stablecoins work on Stellar: native USDC and EURC from Circle, PayPal's PYUSD, trustlines, fast cheap transfers, and how they power DeFi yield." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/stablecoins-on-stellar.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-07-04" />
+<meta property="article:modified_time" content="2026-07-04" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="Stablecoins on Stellar: USDC, EURC, sUSD &amp; PYUSD" />
+<meta name="twitter:description" content="Native USDC and EURC, PayPal's PYUSD, trustlines, and how stablecoins power DeFi yield on Stellar." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/stablecoins-on-stellar.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/stablecoins-on-stellar.html#article",
+      "headline": "Stablecoins on Stellar: USDC, EURC, sUSD & PYUSD",
+      "description": "A plain-English guide to stablecoins on Stellar: Circle's native USDC and EURC, PayPal's PYUSD, dollar coins like sUSD, how trustlines work, and how they power DeFi yield.",
+      "image": "https://whalehub.io/assets/blog/stablecoins-on-stellar.png",
+      "datePublished": "2026-07-04",
+      "dateModified": "2026-07-04",
+      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "WhaleHub",
+        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+      },
+      "mainEntityOfPage": "https://whalehub.io/blog/stablecoins-on-stellar.html"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
+        { "@type": "ListItem", "position": 2, "name": "Stablecoins on Stellar", "item": "https://whalehub.io/blog/stablecoins-on-stellar.html" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "Which stablecoins are available on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "Stellar hosts several fiat-backed stablecoins. The largest are Circle's USDC and EURC, both issued natively on Stellar. PayPal USD (PYUSD) is also live on Stellar. Other regulated coins include GYEN and ZUSD from GMO Trust and AUDD from Novatti, plus dollar coins such as sUSD used in Aquarius stable pools." } },
+        { "@type": "Question", "name": "Is USDC on Stellar native or bridged?", "acceptedAnswer": { "@type": "Answer", "text": "USDC on Stellar is native. Circle issues it directly as a Stellar asset under its own issuing account, so it is not a wrapped or bridged token from another chain. That means it works with Stellar trustlines, anchors, and path payments as a first-class asset." } },
+        { "@type": "Question", "name": "Is PYUSD available on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. PayPal USD (PYUSD) is available on the Stellar network, expanding it beyond its original chains. On Stellar it settles in about five seconds for a fraction of a cent, and it remains fully backed by dollar deposits, US Treasuries, and cash equivalents under NYDFS regulation." } },
+        { "@type": "Question", "name": "How do you hold a stablecoin on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "You add a trustline. On Stellar an account must explicitly opt in to an asset before it can hold it, which authorizes your account to receive that specific stablecoin from its issuer. Once the trustline exists, you can receive, send, swap, or provide liquidity with the coin in a Stellar wallet." } },
+        { "@type": "Question", "name": "Can you earn yield on stablecoins on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. You can provide stablecoins to Aquarius stable pools, such as a dollar-to-dollar pair, and earn trading fees plus AQUA emissions with low price divergence. Yield optimizers like WhaleHub can auto-compound liquidity-vault positions many times a day so you do not have to reinvest manually." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../index.html"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../index.html#how">How it works</a>
+      <a href="../index.html#why">Why WhaleHub</a>
+      <a href="./index.html" class="active">Blog</a>
+      <a href="../about.html">About</a>
+      <a href="../faq.html">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./index.html">Blog</a> &nbsp;/&nbsp; Fundamentals</div>
+      <span class="tag">Fundamentals</span>
+      <h1>Stablecoins on Stellar: USDC, EURC, sUSD &amp; PYUSD</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: July 2026</span>
+        <span class="dot-sep"></span>
+        <span>9 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/stablecoins-on-stellar.png" alt="Stablecoins on Stellar — USDC, EURC, sUSD and PYUSD, WhaleHub guide cover" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">Stablecoins on Stellar are dollar- and euro-pegged digital tokens that move across the network in about five seconds for a fraction of a cent. The two largest are Circle's <strong>USDC</strong> and <strong>EURC</strong>, both issued natively on Stellar, joined by PayPal's <strong>PYUSD</strong> and dollar coins such as <strong>sUSD</strong>. Because Stellar was built as a payments network first, it is one of the most practical chains for holding, sending, and earning yield on stable value.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#what-are">What are stablecoins on Stellar?</a></li>
+        <li><a href="#why-stellar">Why Stellar is strong for stablecoins</a></li>
+        <li><a href="#the-coins">The main Stellar stablecoins</a></li>
+        <li><a href="#how-they-work">How they work: trustlines &amp; backing</a></li>
+        <li><a href="#defi">How stablecoins power DeFi &amp; yield</a></li>
+        <li><a href="#risks">Risks to understand</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="what-are">What are stablecoins on Stellar?</h2>
+      <p class="answer">Stablecoins on Stellar are tokens designed to hold a steady value — usually one US dollar or one euro — that live as native Stellar assets. Most are fiat-backed: an issuer holds cash and short-term government debt in reserve and issues one token per unit held. On Stellar they settle in roughly five seconds for well under a cent, making them ideal for payments and DeFi.</p>
+      <p>A stablecoin tries to do one thing well: stay worth what it says it is worth. The dominant model is <strong>fiat-backed</strong> — for every token in circulation, the issuer keeps a matching unit of cash or an equivalent asset (typically short-duration US Treasuries) in reserve, and publishes attestations of those holdings. Redeem a token and the issuer removes it from supply.</p>
+      <p>Stellar has carried stablecoins since its early days because the network was designed around moving value, not just recording it. The result is a small but serious set of regulated, fiat-backed coins that plug directly into Stellar's payments rails and its <a href="stellar-defi-guide.html">DeFi ecosystem</a>.</p>
+
+      <h2 id="why-stellar">Why Stellar is strong for stablecoins</h2>
+      <p class="answer">Stellar is payments-first: transactions finalize in about five seconds through the Stellar Consensus Protocol, the base fee is 0.00001 XLM (a fraction of a cent), and path payments can route one asset to another in a single operation. For stablecoins — which are used to move money, not to speculate — those properties matter more than raw programmability.</p>
+      <p>Three network features make Stellar a natural home for stable value:</p>
+      <ul>
+        <li><strong>Sub-cent fees and ~5s finality.</strong> Sending a stablecoin costs a rounding error and confirms in seconds with deterministic finality — no waiting through probabilistic confirmations. That makes remittances and micro-payments actually viable.</li>
+        <li><strong>Path payments.</strong> Stellar can send one asset and deliver another in a single atomic operation, routing through the built-in DEX and AMM pools. Someone can send EURC and have the recipient receive USDC, with the conversion handled on-chain.</li>
+        <li><strong>Anchors and trustlines.</strong> Regulated on- and off-ramps ("anchors") connect banks to Stellar, and the trustline model gives each account explicit control over which assets it holds — a compliance-friendly design issuers value.</li>
+      </ul>
+      <p>In short, Stellar treats a stablecoin the way it treats its native asset XLM: as money that should move instantly and cost almost nothing to send.</p>
+
+      <h2 id="the-coins">The main Stellar stablecoins</h2>
+      <p class="answer">The leading stablecoins on Stellar are Circle's USDC (US dollar) and EURC (euro), both issued natively on the network, and PayPal USD (PYUSD). Other regulated coins include GYEN and ZUSD from GMO Trust and AUDD from Novatti, alongside dollar coins such as sUSD that trade in Aquarius stable pools.</p>
+
+      <h3>Circle: USDC and EURC</h3>
+      <p><strong>USDC</strong> is the dollar-denominated stablecoin issued by Circle, and on Stellar it is a native asset — not a bridged or wrapped token. Circle backs it with cash and short-duration US Treasury holdings and publishes regular reserve attestations. <strong>EURC</strong> is the euro counterpart, structured the same way against euro-denominated reserves. Because both are native, they work directly with Stellar trustlines, anchors, and path payments.</p>
+
+      <h3>PayPal USD (PYUSD)</h3>
+      <p><strong>PYUSD</strong> is PayPal's US-dollar stablecoin, and it is available on Stellar in addition to its original networks. It is fully backed by dollar deposits, US Treasuries, and cash equivalents, and is regulated by the New York State Department of Financial Services. On Stellar, PYUSD inherits the same ~5-second, sub-cent settlement as every other asset.</p>
+
+      <h3>sUSD and other dollar coins</h3>
+      <p><strong>sUSD</strong> is a dollar-denominated stablecoin that circulates on Stellar and appears in Aquarius <a href="aquarius-amm-explained.html">stable pools</a> such as sUSD/USDC. Because it trades against USDC at close to a 1:1 rate, it is a common building block for low-divergence liquidity provision. Always confirm an asset's issuing account in a Stellar explorer before trusting any lesser-known coin.</p>
+
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Stablecoin</th><th>Issuer / type</th><th>Backing</th></tr></thead>
+        <tbody>
+          <tr><td><strong>USDC</strong></td><td>Circle · native Stellar asset</td><td>USD cash + short-term US Treasuries</td></tr>
+          <tr><td><strong>EURC</strong></td><td>Circle · native Stellar asset</td><td>Euro-denominated reserves</td></tr>
+          <tr><td><strong>PYUSD</strong></td><td>PayPal (Paxos) · fiat-backed</td><td>USD deposits, Treasuries, cash equivalents (NYDFS-regulated)</td></tr>
+          <tr><td><strong>sUSD</strong></td><td>Dollar stablecoin · used in Aquarius stable pools</td><td>Verify issuing account in a Stellar explorer</td></tr>
+          <tr><td><strong>GYEN / ZUSD</strong></td><td>GMO Trust · regulated JPY / USD</td><td>Fiat reserves (yen / dollar)</td></tr>
+          <tr><td><strong>AUDD</strong></td><td>Novatti · Australian dollar</td><td>Fully collateralised AUD reserves</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>This list evolves as issuers launch and expand coverage, so treat it as a snapshot of the main coins rather than an exhaustive registry.</p>
+
+      <h2 id="how-they-work">How stablecoins work on Stellar: trustlines &amp; backing</h2>
+      <p class="answer">To hold a Stellar stablecoin, your account must first establish a trustline to the asset — an explicit opt-in authorizing your account to hold that specific token from its issuer. After that, receiving, sending, and swapping the coin are ordinary Stellar operations that settle in seconds for a fraction of a cent.</p>
+      <p>Every non-native asset on Stellar, including stablecoins, is identified by a code plus its issuer account. Before you can receive one, your wallet adds a trustline. Here is the lifecycle of holding and moving a stablecoin:</p>
+      <pre><code>1. Add trustline      → your account opts in to USDC (issuer = Circle's account)
+2. Receive / on-ramp  → an anchor or sender delivers USDC to your account
+3. Hold               → balance sits in your wallet; issuer keeps reserves 1:1
+4. Send / path pay    → transfer USDC, or send USDC → recipient gets EURC
+5. Off-ramp / redeem  → an anchor converts USDC back to a bank balance</code></pre>
+      <p>The trustline model is deliberate: it means no one can force an unwanted asset into your account, and it gives issuers a clean, per-account authorization surface. For fiat-backed coins, the "1:1" you see refers to the issuer's reserve promise — one token issued per unit of currency held in reserve — verified through published attestations, not an on-chain guarantee.</p>
+
+      <div class="cta-band">
+        <div>
+          <div class="t">Put stable value to work</div>
+          <div class="s">WhaleHub's liquidity vaults auto-compound Aquarius pool rewards — including stablecoin pairs — many times a day.</div>
+        </div>
+        <a href="https://app.whalehub.io/" class="btn btn-primary">Launch app</a>
+      </div>
+
+      <h2 id="defi">How stablecoins power DeFi &amp; yield on Stellar</h2>
+      <p class="answer">Stablecoins are the backbone of Stellar DeFi. They form the safest liquidity-provision pairs — stable-to-stable pools like sUSD/USDC on Aquarius show little price divergence, so providers collect trading fees and AQUA emissions with reduced impermanent loss. Yield optimizers such as WhaleHub can auto-compound those positions many times per day.</p>
+      <p>On <a href="aquarius-amm-explained.html">Aquarius</a>, Stellar's main liquidity-incentive AMM, a "stable pool" pairs two assets that should trade near parity — for example one dollar coin against another. Because the two sides barely diverge in price, liquidity providers face far less <a href="what-is-liquidity-mining.html">impermanent loss</a> than they would in a volatile pair, while still earning a share of swap fees and AQUA rewards directed to the pool by ICE voters.</p>
+      <p>The catch is that harvesting those rewards and reinvesting them by hand is tedious and, on most chains, expensive. Stellar's sub-cent fees remove the cost problem, and a yield optimizer removes the effort. WhaleHub's <strong>liquidity vaults</strong> let you deposit a token pair once; the backend then re-deposits accumulated rewards roughly 48 times a day so your position compounds automatically. Stablecoin pairs are a natural fit because their low volatility keeps the compounding steady.</p>
+      <p>WhaleHub's other track — staking AQUA for <a href="what-is-blub-token.html">BLUB</a> rewards — sits alongside the vaults. BLUB is a floating, market-priced token minted when you stake AQUA; it is not a stablecoin and its value is set by the market, not pegged. Stablecoins are what keep the yield side of the equation denominated in something steady. For the broader picture, see our guide to <a href="stellar-yield-farming.html">yield farming on Stellar</a>.</p>
+      <p>Regulation is also shaping which stablecoins thrive. Frameworks like the EU's MiCA regime set reserve and disclosure rules that favor exactly the kind of fully-backed, attested coins Stellar hosts — we cover that in <a href="mica-stablecoins-defi.html">MiCA, stablecoins &amp; DeFi</a>.</p>
+
+      <h2 id="risks">Risks to understand</h2>
+      <p>Stablecoins reduce price volatility, but they are not risk-free. Before holding or LPing with them, weigh these:</p>
+      <ul>
+        <li><strong>Issuer &amp; reserve risk.</strong> A fiat-backed coin is only as sound as the issuer and the reserves behind it. Stick to regulated issuers that publish attestations.</li>
+        <li><strong>De-peg risk.</strong> A stablecoin can trade away from its target price during stress. "Stable" is a design goal, not a guarantee.</li>
+        <li><strong>Smart-contract &amp; pool risk.</strong> Providing liquidity means trusting AMM contracts; bugs or exploits can affect deposited funds.</li>
+        <li><strong>Impermanent loss.</strong> Even stable-to-stable pairs can diverge slightly, and a genuine de-peg turns a "safe" pool into an unbalanced one.</li>
+        <li><strong>Wrong-issuer risk.</strong> Anyone can issue an asset called "USDC." Always verify the issuing account before adding a trustline.</li>
+      </ul>
+      <p>Stellar's low fees make it cheap to react — you can exit or rebalance for pennies — but they do not remove the underlying exposure.</p>
+      <hr />
+      <p>Stablecoins are where Stellar's payments-first design pays off most clearly: native USDC and EURC, PayPal's PYUSD, and dollar coins like sUSD all move in seconds for almost nothing and slot directly into the DeFi stack. Whether you are sending value or earning yield on it, understanding trustlines and reserves is the foundation everything else is built on.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>Which stablecoins are available on Stellar?</summary><p>Stellar hosts several fiat-backed stablecoins. The largest are Circle's USDC and EURC, both issued natively on Stellar. PayPal USD (PYUSD) is also live on Stellar. Other regulated coins include GYEN and ZUSD from GMO Trust and AUDD from Novatti, plus dollar coins such as sUSD used in Aquarius stable pools.</p></details>
+      <details><summary>Is USDC on Stellar native or bridged?</summary><p>USDC on Stellar is native. Circle issues it directly as a Stellar asset under its own issuing account, so it is not a wrapped or bridged token from another chain. That means it works with Stellar trustlines, anchors, and path payments as a first-class asset.</p></details>
+      <details><summary>Is PYUSD available on Stellar?</summary><p>Yes. PayPal USD (PYUSD) is available on the Stellar network, expanding it beyond its original chains. On Stellar it settles in about five seconds for a fraction of a cent, and it remains fully backed by dollar deposits, US Treasuries, and cash equivalents under NYDFS regulation.</p></details>
+      <details><summary>How do you hold a stablecoin on Stellar?</summary><p>You add a trustline. On Stellar an account must explicitly opt in to an asset before it can hold it, which authorizes your account to receive that specific stablecoin from its issuer. Once the trustline exists, you can receive, send, swap, or provide liquidity with the coin in a Stellar wallet.</p></details>
+      <details><summary>Can you earn yield on stablecoins on Stellar?</summary><p>Yes. You can provide stablecoins to Aquarius stable pools, such as a dollar-to-dollar pair, and earn trading fees plus AQUA emissions with low price divergence. Yield optimizers like WhaleHub can auto-compound liquidity-vault positions many times a day so you do not have to reinvest manually.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="mica-stablecoins-defi.html"><img src="../assets/blog/mica-stablecoins-defi.png" alt="" /><span>MiCA, Stablecoins &amp; DeFi</span></a>
+        <a href="stellar-defi-guide.html"><img src="../assets/blog/stellar-defi-guide.png" alt="" /><span>What Is Stellar DeFi?</span></a>
+        <a href="what-is-liquidity-mining.html"><img src="../assets/blog/what-is-liquidity-mining.png" alt="" /><span>What Is Liquidity Mining?</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Earn on stable value</h2>
+      <p>Deposit into WhaleHub's liquidity vaults and let aggregated ICE voting and auto-compounding do the work — on Stellar, for pennies.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational purposes only and is not financial advice. Stablecoins and DeFi involve risk, including issuer risk, de-peg risk, and the potential loss of capital. Do your own research and consult a qualified professional before making investment decisions.</p>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../index.html#how">How it works</a>
+        <a href="../index.html#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./index.html">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about.html">About</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>What Is a Yield Aggregator? WhaleHub, JewelSwap &amp; More | WhaleHub</title>
+<meta name="description" content="A yield aggregator pools deposits, auto-compounds rewards and optimizes DeFi yield. Compare Yearn, Beefy, Convex, JewelSwap and WhaleHub, the Stellar-native option." />
+<link rel="canonical" href="https://whalehub.io/blog/best-yield-aggregators.html" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="yield aggregator, crypto yield aggregator, best yield aggregators, defi yield optimizer" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/best-yield-aggregators.html" />
+<meta property="og:title" content="What Is a Yield Aggregator? WhaleHub, JewelSwap &amp; More" />
+<meta property="og:description" content="What a yield aggregator is, how auto-compounding works, and how Yearn, Beefy, Convex, JewelSwap and WhaleHub compare across chains." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/best-yield-aggregators.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-07-04" />
+<meta property="article:modified_time" content="2026-07-04" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="What Is a Yield Aggregator? WhaleHub, JewelSwap &amp; More" />
+<meta name="twitter:description" content="What a yield aggregator is, how auto-compounding works, and how Yearn, Beefy, Convex, JewelSwap and WhaleHub compare." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/best-yield-aggregators.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/best-yield-aggregators.html#article",
+      "headline": "What Is a Yield Aggregator? WhaleHub, JewelSwap & More",
+      "description": "A plain-English guide to yield aggregators: what they are, how auto-compounding works, and how Yearn, Beefy, Convex, JewelSwap and WhaleHub compare across chains.",
+      "image": "https://whalehub.io/assets/blog/best-yield-aggregators.png",
+      "datePublished": "2026-07-04",
+      "dateModified": "2026-07-04",
+      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "WhaleHub",
+        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+      },
+      "mainEntityOfPage": "https://whalehub.io/blog/best-yield-aggregators.html"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
+        { "@type": "ListItem", "position": 2, "name": "What Is a Yield Aggregator?", "item": "https://whalehub.io/blog/best-yield-aggregators.html" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "What is a yield aggregator?", "acceptedAnswer": { "@type": "Answer", "text": "A yield aggregator is a DeFi protocol that pools many users' deposits into one position, then automatically finds, harvests, and re-invests rewards on their behalf. It packages tasks like reward claiming and auto-compounding into a single deposit, so users earn optimized yield without managing each step manually." } },
+        { "@type": "Question", "name": "How is a yield aggregator different from a yield farm?", "acceptedAnswer": { "@type": "Answer", "text": "A yield farm is the underlying source of rewards, such as an AMM pool that pays emissions. A yield aggregator sits on top: it deposits your capital into farms, then automates the claiming, swapping, and re-depositing. The farm generates yield; the aggregator captures and compounds it." } },
+        { "@type": "Question", "name": "Are yield aggregators safe?", "acceptedAnswer": { "@type": "Answer", "text": "Yield aggregators carry smart-contract risk, the risk of the underlying farm, and market risk on the tokens you hold. They add a layer of code that can contain bugs. Prefer audited, established protocols, understand where the yield comes from, and never deposit more than you can afford to lose." } },
+        { "@type": "Question", "name": "Do yield aggregators actually increase returns?", "acceptedAnswer": { "@type": "Answer", "text": "They can, mainly through frequent auto-compounding and pooled scale. Compounding rewards many times a day turns a base APR into a higher APY, and pooling lets small depositors share benefits like boosted voting power. Net gains depend on fees and gas, which is why low-fee chains help." } },
+        { "@type": "Question", "name": "Is WhaleHub a yield aggregator?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. WhaleHub is a yield-optimization protocol on Stellar, often called 'Convex for Stellar.' It aggregates ICE voting power from all stakers, votes AQUA emissions toward the best Aquarius pools, and auto-compounds the harvested rewards, distributing them to stakers proportionally." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../index.html"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../index.html#how">How it works</a>
+      <a href="../index.html#why">Why WhaleHub</a>
+      <a href="./index.html" class="active">Blog</a>
+      <a href="../about.html">About</a>
+      <a href="../faq.html">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./index.html">Blog</a> &nbsp;/&nbsp; Compare</div>
+      <span class="tag">Compare</span>
+      <h1>What Is a Yield Aggregator? WhaleHub, JewelSwap &amp; More</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: July 2026</span>
+        <span class="dot-sep"></span>
+        <span>10 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/best-yield-aggregators.png" alt="What Is a Yield Aggregator — WhaleHub, JewelSwap and more compared" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">A yield aggregator is a DeFi protocol that pools deposits, automatically harvests rewards, and re-invests them for you — turning tedious manual farming into a single deposit. This guide explains how they work and compares the notable ones across chains: Yearn and Beefy on EVM, Convex on Curve, JewelSwap on MultiversX, and WhaleHub, the Stellar-native option that auto-compounds Aquarius rewards roughly every 30 minutes.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#what-is">What is a yield aggregator?</a></li>
+        <li><a href="#how">How a yield aggregator works</a></li>
+        <li><a href="#notable">Notable aggregators by chain</a></li>
+        <li><a href="#whalehub">WhaleHub: the Stellar option</a></li>
+        <li><a href="#evaluate">How to evaluate one</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="what-is">What is a yield aggregator?</h2>
+      <p class="answer">A yield aggregator (also called a yield optimizer) is a DeFi protocol that pools many users' deposits into one large position, then automates the profitable-but-tedious work of earning: finding the best opportunities, claiming rewards, swapping them, and re-investing the proceeds. It packages that complexity into a single deposit, so users earn optimized, compounded yield without managing each step by hand.</p>
+      <p>The core idea is delegation of effort, not of custody. You deposit an asset, the protocol deploys it into an underlying strategy — a lending market, an AMM pool, a staking system — and you receive a receipt token that tracks your growing share. Under the hood, bots do the repetitive work that would otherwise cost you time and transaction fees.</p>
+      <p>Yearn Finance, launched in 2020, is generally considered the original yield aggregator. Since then the pattern has spread to nearly every chain, and the label now covers a spectrum: simple auto-compounders, governance aggregators that pool voting power, and liquid-staking optimizers. What they share is automation on top of an existing yield source.</p>
+
+      <h2 id="how">How a yield aggregator works</h2>
+      <p class="answer">Most yield aggregators run the same loop: accept deposits into a shared vault, deploy that capital into a yield source, periodically harvest the rewards it emits, swap those rewards back into the deposited asset, and re-deposit the larger sum. Repeating this many times a day is called auto-compounding, and it is the single biggest advantage aggregators brought to DeFi.</p>
+      <p>Concretely, the harvest cycle looks like this:</p>
+      <pre><code>1. Deposit    → user adds an asset to a shared vault, gets a receipt token
+2. Deploy     → vault routes capital into a strategy (pool / lender / staking)
+3. Accrue     → the strategy earns rewards (fees + token emissions)
+4. Harvest    → a bot claims the accumulated rewards
+5. Swap       → rewards are traded back into the deposit asset
+6. Compound   → the larger balance is re-deposited into the strategy
+   ↑___________________ repeat, often dozens of times per day ___________________|</code></pre>
+      <p>Why does repetition matter so much? Compounding. A base rate compounded frequently produces a higher effective annual yield (APY) than the same rate taken as simple interest (APR). Doing it manually would mean paying gas on every claim and swap — which is why aggregators thrive on low-fee chains and why frequency is a real differentiator. We break down the math in <a href="auto-compounding-explained.html">Auto-Compounding Explained</a>.</p>
+      <p>A second, subtler mechanism is <strong>pooled scale</strong>. Some aggregators don't just compound — they aggregate governance power. By locking many users' tokens together, they wield voting weight no single small holder could, then direct rewards toward the pools their depositors are in. That is the model Convex pioneered on Curve, and the one WhaleHub uses on Stellar.</p>
+
+      <h2 id="notable">Notable yield aggregators by chain</h2>
+      <p class="answer">The best-known yield aggregators are Yearn and Beefy on EVM chains, Convex on Curve/Ethereum, JewelSwap on MultiversX, and WhaleHub on Stellar. They differ in what they optimize — some auto-compound generic strategies, others pool governance power or wrap liquid staking — but all automate reward capture and re-investment for their depositors.</p>
+      <p>Here is how the major players line up:</p>
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Aggregator</th><th>Chain(s)</th><th>Model</th><th>Auto-compound</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Yearn</strong></td><td>Ethereum / EVM</td><td>Multi-strategy vaults; routes capital to the best risk-adjusted venue</td><td>Yes</td></tr>
+          <tr><td><strong>Beefy</strong></td><td>20+ EVM chains</td><td>LP &amp; single-asset vaults that harvest and reinvest farm rewards</td><td>Yes</td></tr>
+          <tr><td><strong>Convex</strong></td><td>Ethereum (Curve)</td><td>Pools CRV as veCRV to boost Curve LP rewards + share voting power</td><td>Yes</td></tr>
+          <tr><td><strong>JewelSwap</strong></td><td>MultiversX &amp; more</td><td>Dual-token liquid staking + peer-to-pool lending &amp; leveraged farming</td><td>Yes</td></tr>
+          <tr><td><strong><a href="../index.html">WhaleHub</a></strong></td><td>Stellar</td><td>Pools ICE voting power, votes AQUA emissions, compounds rewards</td><td>Yes</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <h3>Yearn &amp; Beefy (EVM)</h3>
+      <p><a href="https://whalehub-1.gitbook.io/whalehub">Yearn</a> is the archetype: you deposit into a vault, its strategies allocate across venues like lending markets and Curve, and a receipt token accrues yield you redeem later. Beefy took the same auto-compounding idea multichain, running vaults across 20-plus EVM networks with a "we only earn when you earn" performance-fee model. Both are generalists — point them at almost any farm and they harvest, swap, and reinvest.</p>
+      <h3>Convex (Curve / Ethereum)</h3>
+      <p>Convex is a governance aggregator. Instead of every Curve liquidity provider locking their own CRV for four years to earn a boost, Convex pools CRV, locks it collectively as veCRV, and shares the boosted rewards and voting power with depositors. LPs get near-maximum boost plus extra token rewards without the individual lock-up. This "pool the governance token, share the boost" design is the direct conceptual ancestor of WhaleHub.</p>
+      <h3>JewelSwap (MultiversX)</h3>
+      <p>JewelSwap optimizes yield on MultiversX (and has expanded to other chains) through dual-token liquid staking, peer-to-pool lending, and leveraged yield farming. Deposit EGLD and you receive a liquid staking derivative that keeps working while it appreciates, layered with lending and farming strategies on top. It is a good example of an aggregator built around liquid staking rather than generic vaults. We compare the two ecosystems in <a href="stellar-vs-multiversx-defi.html">Stellar vs MultiversX DeFi</a>.</p>
+
+      <div class="cta-band">
+        <div>
+          <div class="t">The Stellar-native aggregator</div>
+          <div class="s">WhaleHub pools everyone's AQUA, votes with aggregated ICE, and auto-compounds the rewards — no manual claiming.</div>
+        </div>
+        <a href="https://app.whalehub.io/" class="btn btn-primary">Launch app</a>
+      </div>
+
+      <h2 id="whalehub">WhaleHub: the Stellar-native option</h2>
+      <p class="answer">WhaleHub is a yield-optimization protocol on Stellar, often described as "Convex for Stellar." It aggregates ICE voting power from all stakers, votes AQUA emissions toward the highest-yielding Aquarius pools, harvests the rewards each epoch, and auto-compounds them. The backend claims and re-invests roughly every 30 minutes, distributing rewards to stakers proportionally.</p>
+      <p>Stellar is unusually well-suited to the aggregator model. Transactions finalize in about five seconds and cost a fraction of a cent, so the harvest loop that would be gas-prohibitive elsewhere runs cheaply and often. On the <a href="stellar-defi-guide.html">Stellar DeFi</a> stack, the main incentive layer is <a href="what-is-aqua-token.html">Aquarius</a>: lock AQUA to receive ICE, non-transferable voting power, then vote AQUA emissions toward specific AMM pools. The most-voted pools earn the most rewards.</p>
+      <p>Doing that well alone is hard — you'd need to lock AQUA, track which markets pay best each epoch, vote every cycle, and claim and re-stake constantly. WhaleHub does it collectively. Here's the mechanism:</p>
+      <ol>
+        <li><strong>Stake AQUA.</strong> You lock AQUA and, for every 1 AQUA, 1.0 <a href="what-is-blub-token.html">BLUB</a> is minted to your staking balance as a liquid receipt. BLUB is a floating, market-priced derivative of staked AQUA — minted 1 : 1 on stake, but not redeemable for AQUA and not pegged.</li>
+        <li><strong>Aggregate ICE.</strong> The protocol pools voting power from every staker, reaching whale-tier weight that directs emissions no small holder could influence alone.</li>
+        <li><strong>Vote &amp; harvest.</strong> That ICE votes toward the highest-yielding pools; the backend claims AQUA rewards and bribes each epoch — read more in <a href="ice-voting-bribes-aquarius.html">ICE Voting &amp; Bribes</a>.</li>
+        <li><strong>Compound &amp; distribute.</strong> Rewards are swapped to BLUB and distributed to stakers, with a share reinvested into more ICE and protocol-owned liquidity. Stakers claim accrued BLUB (with a 7-day cooldown between claims).</li>
+      </ol>
+      <p>There's also a second route: <strong>liquidity vaults</strong>, where you deposit a token pair into an auto-compounding AMM pool and the backend re-deposits rewards roughly 48 times a day. Either way, the aggregator pattern is the same — pool, harvest, compound — tuned for Stellar's economics. For live numbers, see the APY on the <a href="https://app.whalehub.io/">app</a> rather than any figure quoted here.</p>
+
+      <h2 id="evaluate">How to evaluate a yield aggregator</h2>
+      <p class="answer">Judge a yield aggregator on three things: fees (deposit, withdrawal, and the performance cut it takes from harvested yield), security (audits, track record, and the risk of the underlying strategy), and the source of yield — whether returns come from real fees and revenue or from inflationary token emissions that may not last.</p>
+      <h3>1. Fees</h3>
+      <p>Most reputable aggregators skip deposit and withdrawal fees and instead take a performance fee — a percentage of the yield they harvest — so they only earn when you do. Check the exact structure. A high headline APY means little if fees and gas eat the compounding advantage, which is precisely why low-fee chains change the calculus.</p>
+      <h3>2. Security</h3>
+      <p>An aggregator adds a layer of smart-contract code on top of the farm it uses, so you inherit both risk surfaces. Favor audited, battle-tested protocols with a real track record. Understand what the strategy actually does — leverage, for example, amplifies both returns and liquidation risk.</p>
+      <h3>3. Real yield vs emissions</h3>
+      <p>Ask where the return comes from. Yield backed by trading fees, lending interest, or protocol revenue is more durable than yield paid in freshly minted governance tokens, whose price and emission rate can fall. Sustainable aggregators are transparent about the split. This distinction matters more than any single APY headline — see <a href="stellar-yield-farming.html">Yield Farming on Stellar</a> for how emissions-driven returns behave over time.</p>
+      <hr />
+      <p>Yield aggregators exist because DeFi yield is real but the work to capture it — claiming, swapping, compounding, voting — is repetitive and fee-sensitive. Different chains produced different flavors: generalist vaults on EVM, governance aggregation on Curve, liquid-staking optimization on MultiversX, and ICE-powered compounding on Stellar. The right one for you depends on where your assets live and how the yield is actually generated.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is a yield aggregator?</summary><p>A yield aggregator is a DeFi protocol that pools many users' deposits into one position, then automatically finds, harvests, and re-invests rewards on their behalf. It packages tasks like reward claiming and auto-compounding into a single deposit, so users earn optimized yield without managing each step manually.</p></details>
+      <details><summary>How is a yield aggregator different from a yield farm?</summary><p>A yield farm is the underlying source of rewards, such as an AMM pool that pays emissions. A yield aggregator sits on top: it deposits your capital into farms, then automates the claiming, swapping, and re-depositing. The farm generates yield; the aggregator captures and compounds it.</p></details>
+      <details><summary>Are yield aggregators safe?</summary><p>Yield aggregators carry smart-contract risk, the risk of the underlying farm, and market risk on the tokens you hold. They add a layer of code that can contain bugs. Prefer audited, established protocols, understand where the yield comes from, and never deposit more than you can afford to lose.</p></details>
+      <details><summary>Do yield aggregators actually increase returns?</summary><p>They can, mainly through frequent auto-compounding and pooled scale. Compounding rewards many times a day turns a base APR into a higher APY, and pooling lets small depositors share benefits like boosted voting power. Net gains depend on fees and gas, which is why low-fee chains help.</p></details>
+      <details><summary>Is WhaleHub a yield aggregator?</summary><p>Yes. WhaleHub is a yield-optimization protocol on Stellar, often called "Convex for Stellar." It aggregates ICE voting power from all stakers, votes AQUA emissions toward the best Aquarius pools, and auto-compounds the harvested rewards, distributing them to stakers proportionally.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains DeFi yield and the Stellar stack in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="stellar-vs-multiversx-defi.html"><img src="../assets/blog/stellar-vs-multiversx-defi.png" alt="" /><span>Stellar vs MultiversX DeFi</span></a>
+        <a href="stellar-defi-guide.html"><img src="../assets/blog/stellar-defi-guide.png" alt="" /><span>What Is Stellar DeFi?</span></a>
+        <a href="auto-compounding-explained.html"><img src="../assets/blog/auto-compounding-explained.png" alt="" /><span>Auto-Compounding Explained</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Try the Stellar-native aggregator</h2>
+      <p>Stake AQUA, get BLUB 1:1, and let WhaleHub's aggregated ICE and auto-compounding do the work.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational purposes only and is not financial advice. DeFi involves risk, including the potential loss of capital. Do your own research and consult a qualified professional before making investment decisions.</p>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../index.html#how">How it works</a>
+        <a href="../index.html#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./index.html">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about.html">About</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>
