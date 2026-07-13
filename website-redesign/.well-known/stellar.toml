@@ -1,0 +1,19 @@
+VERSION = "1.0"
+
+[DOCUMENTATION]
+ORG_NAME = "WhaleHub"
+ORG_URL = "https://whalehub.io"
+ORG_DESCRIPTION = "WhaleHub is a yield optimization platform that allows users to stake AQUA for boosted rewards by minting BLUB."
+ORG_LOGO = "https://gray-occasional-trout-50.mypinata.cloud/ipfs/bafkreihz5fsc5qrdiryxeaigqh5albve4xlp224husvaeftljn5gwfenxa"
+ORG_TWITTER = "@whalehubdefi"
+ORG_GITHUB = "WhaleHubDev"
+ORG_OFFICIAL_EMAIL = "contact@whalehub.io"
+
+[[CURRENCIES]]
+code = "BLUB"
+issuer = "GDERSSCKJQPPXUQOZIOXGRVAGNLVPVZCJ2MAX7RCMVMWGRPVAEG7XGTK"
+display_decimals = 7
+name = "Blubber Token"
+desc = "BLUB is a liquid derivative version of AQUA, which participates in the liquidity mining of the BLUB-AQUA pair. The WhaleHub reward asset is BLUBBER or BLUB for short."
+conditions = "No specific restrictions. Note, BLUB is not redeemable for AQUA."
+image = "https://gray-occasional-trout-50.mypinata.cloud/ipfs/bafkreihz5fsc5qrdiryxeaigqh5albve4xlp224husvaeftljn5gwfenxa"

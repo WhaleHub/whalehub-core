@@ -30,3 +30,12 @@
   for = "/robots.txt"
   [headers.values]
     Content-Type = "text/plain"
+
+# SEP-1 stellar.toml — wallets/explorers read the BLUB issuer's home_domain
+# (whalehub.io) and fetch this file for the asset icon + verification. SEP-1
+# requires text/plain and permissive CORS (Freighter fetches it client-side).
+[[headers]]
+  for = "/.well-known/stellar.toml"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+    Access-Control-Allow-Origin = "*"
