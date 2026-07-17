@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stellar Community Fund (SCF): How Stellar Grants Work | WhaleHub</title>
+<meta name="description" content="The Stellar Community Fund (SCF) is Stellar's grant program funding builders in XLM. How SCF rounds, community voting, award tracks, and applications actually work." />
+<link rel="canonical" href="https://whalehub.io/blog/stellar-community-fund-scf.html" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="stellar community fund, scf, stellar grants, stellar development foundation grants, how to apply scf, stellar funding" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/stellar-community-fund-scf.html" />
+<meta property="og:title" content="Stellar Community Fund (SCF): How Stellar Grants Work" />
+<meta property="og:description" content="A plain-English guide to the Stellar Community Fund — Stellar's grant program that funds builders in XLM through funded submission rounds and community voting." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/stellar-community-fund-scf.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-07-17" />
+<meta property="article:modified_time" content="2026-07-17" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="Stellar Community Fund (SCF): How Stellar Grants Work" />
+<meta name="twitter:description" content="How the Stellar Community Fund works: funded submission rounds, community voting, award tracks like Kickstart and Build, and payouts in XLM." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/stellar-community-fund-scf.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/stellar-community-fund-scf.html#article",
+      "headline": "Stellar Community Fund (SCF): How Stellar Grants Work",
+      "description": "A plain-English guide to the Stellar Community Fund, Stellar's grant program that funds builders in XLM through funded submission rounds, community voting, and award tracks like Kickstart and Build.",
+      "image": "https://whalehub.io/assets/blog/stellar-community-fund-scf.png",
+      "datePublished": "2026-07-17",
+      "dateModified": "2026-07-17",
+      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "WhaleHub",
+        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+      },
+      "mainEntityOfPage": "https://whalehub.io/blog/stellar-community-fund-scf.html"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
+        { "@type": "ListItem", "position": 2, "name": "Stellar Community Fund (SCF)", "item": "https://whalehub.io/blog/stellar-community-fund-scf.html" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "What is the Stellar Community Fund?", "acceptedAnswer": { "@type": "Answer", "text": "The Stellar Community Fund (SCF) is a grant program run by the Stellar Development Foundation that funds people building on Stellar and Soroban. It distributes awards in XLM through funded submission rounds, using community input and voting to help decide which projects receive support." } },
+        { "@type": "Question", "name": "How much can SCF award?", "acceptedAnswer": { "@type": "Answer", "text": "Award sizes depend on the track. Smaller programs such as Kickstart have supported early proofs of concept with awards on the order of a few thousand dollars in XLM, while the main Build track has funded validated projects with larger milestone-based amounts. Exact figures change between rounds, so always confirm current numbers on the official SCF site." } },
+        { "@type": "Question", "name": "Who can apply to SCF?", "acceptedAnswer": { "@type": "Answer", "text": "Individuals, teams, and companies building on Stellar or Soroban can apply — infrastructure, apps, developer tooling, and DeFi protocols are all in scope. You typically signal interest through a form, and eligible projects are invited into an open, funded submission round for review and community voting." } },
+        { "@type": "Question", "name": "How long does SCF take?", "acceptedAnswer": { "@type": "Answer", "text": "Interest submissions are reviewed on a rolling basis, then eligible projects join a scheduled round with community discussion and voting that generally runs over several weeks. Larger Build awards are paid across milestones, so funds arrive over time as work is delivered rather than all at once." } },
+        { "@type": "Question", "name": "Is SCF the same as a Stellar grant?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — SCF is the main grant channel run by the Stellar Development Foundation, so people often use \"Stellar grant\" and \"SCF award\" interchangeably. The Foundation also runs other support programs, but SCF is the community-driven route most builders mean when they talk about getting a Stellar grant." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../index.html"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../index.html#how">How it works</a>
+      <a href="../index.html#why">Why WhaleHub</a>
+      <a href="./index.html" class="active">Blog</a>
+      <a href="../about.html">About</a>
+      <a href="../faq.html">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./index.html">Blog</a> &nbsp;/&nbsp; Ecosystem</div>
+      <span class="tag blue">Ecosystem</span>
+      <h1>Stellar Community Fund (SCF): How Stellar Grants Work</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: July 2026</span>
+        <span class="dot-sep"></span>
+        <span>8 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/stellar-community-fund-scf.png" alt="Stellar Community Fund (SCF) — how Stellar grants work, WhaleHub guide cover" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">The <strong>Stellar Community Fund</strong> (SCF) is how the Stellar Development Foundation puts money into the hands of builders. It funds projects on Stellar and Soroban with awards paid in <strong>XLM</strong>, decided through funded submission rounds and community voting rather than a single closed committee. This guide explains how SCF works, what it funds, how to apply, and where a protocol like WhaleHub sits in the wider Stellar ecosystem. It's educational context, not financial or grant advice.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#what-is">What is the Stellar Community Fund?</a></li>
+        <li><a href="#how">How SCF funding works</a></li>
+        <li><a href="#who">What SCF funds</a></li>
+        <li><a href="#apply">How to apply to SCF</a></li>
+        <li><a href="#tips">What makes a strong SCF application</a></li>
+        <li><a href="#ecosystem">SCF and the wider Stellar DeFi ecosystem</a></li>
+        <li><a href="#whalehub">Where WhaleHub fits</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="what-is">What is the Stellar Community Fund?</h2>
+      <p class="answer">The Stellar Community Fund is a grant program run by the Stellar Development Foundation (SDF) to fund people building on Stellar and its Soroban smart-contract platform. It distributes awards in XLM through open, funded submission rounds, and it leans on community input and voting — not just an internal committee — to help decide which projects get supported.</p>
+      <p>Think of SCF as the ecosystem's on-ramp for capital. If you have an idea for an app, a piece of infrastructure, or a DeFi protocol on Stellar, SCF is the most direct way to get funded to build it. The Foundation seeds the fund, but the review process draws heavily on the community: verified members read submissions, ask questions, and vote, so allocation reflects what the ecosystem actually wants to see built.</p>
+      <p>That community angle is what distinguishes SCF from a traditional top-down grant. Over its history the program has funneled tens of millions of XLM to hundreds of submissions and supported hundreds of early-stage teams through its bootcamp-style programs. The exact structure has evolved across successive versions of SCF, but the core idea has stayed constant: fund useful work on Stellar, and let the community help steer where the money goes.</p>
+
+      <div class="callout">
+        <div class="k">SCF in one glance</div>
+        <ul>
+          <li><strong>Run by</strong> the Stellar Development Foundation (SDF).</li>
+          <li><strong>Paid in</strong> XLM, with USD values referenced at the time of payment.</li>
+          <li><strong>Decided by</strong> funded submission rounds plus community discussion and voting.</li>
+          <li><strong>For</strong> builders on Stellar and Soroban — apps, infra, tooling, and DeFi.</li>
+          <li><strong>Not</strong> an investment, an airdrop, or a token sale — it's a grant for work delivered.</li>
+        </ul>
+      </div>
+
+      <h2 id="how">How SCF funding works</h2>
+      <p class="answer">SCF runs on a rhythm of submission rounds. Builders signal interest, eligible projects are invited into an open round, the community discusses and votes on submissions, and awards are paid out in XLM — often across milestones for larger grants. The process is deliberately transparent so the ecosystem can see what's being funded and why.</p>
+
+      <h3>Submission rounds</h3>
+      <p>SCF operates in rounds rather than accepting continuous ad-hoc grants. You first submit an interest form describing what you're building; those inquiries are reviewed on a rolling basis. If your project meets the requirements, you're invited to submit to an open round and given that round's deadline. Rounds give every applicant the same window and the same audience, which keeps the process fair and legible.</p>
+
+      <h3>Community review &amp; voting</h3>
+      <p>Once a round is live, verified community members engage with submissions — reading the proposal, asking questions, and ultimately voting. Stellar has experimented with structured governance for this, including a neural-quorum-style voting model designed to weight community input thoughtfully rather than as a raw popularity contest. The vote isn't the only input, but it's a genuine signal that shapes final funding decisions. Referrals from trusted ecosystem actors — alumni, ambassadors, accelerators — can also strengthen a submission's trust profile.</p>
+
+      <h3>Award tracks</h3>
+      <p>SCF isn't one monolithic grant; it's a set of tracks aimed at different stages. Earlier-stage programs — such as the Kickstart bootcamp — help teams turn an idea into a working proof of concept, while the main Build track funds validated projects pushing toward a mainnet launch. There are also lighter-weight micro-funding routes for very early, focused work. Choosing the right track for your stage is half the battle.</p>
+
+      <h3>Payout in XLM</h3>
+      <p>Awards are denominated and paid in XLM. Because the fund thinks in dollar terms but pays in lumens, the USD value is referenced against a market settlement price at the time of payment. For larger Build awards, funds are typically released across milestones or tranches rather than all upfront — you deliver a chunk of work, hit the milestone, and unlock the next portion. That structure keeps incentives aligned on shipping.</p>
+
+      <h2 id="who">What SCF funds</h2>
+      <p class="answer">SCF funds a broad range of work on Stellar and Soroban: core infrastructure, consumer and business applications, developer tooling and SDKs, and DeFi protocols. The common thread is that the project adds durable value to the ecosystem — something other builders or users can rely on — rather than a one-off marketing play or a token launch.</p>
+      <p>In practice, submissions tend to fall into a few buckets. Knowing which one you're in helps you frame the proposal against the right expectations:</p>
+      <ul>
+        <li><strong>Infrastructure</strong> — nodes, indexers, bridges, oracles, and the plumbing that other apps depend on. High-leverage, because one good piece of infra unlocks many downstream projects.</li>
+        <li><strong>Applications</strong> — wallets, payment apps, remittance tools, and consumer products that bring real users onto Stellar.</li>
+        <li><strong>Developer tooling</strong> — SDKs, libraries, testing frameworks, and documentation that lower the barrier to building on <a href="soroban-smart-contracts.html">Soroban smart contracts</a>.</li>
+        <li><strong>DeFi on Soroban</strong> — AMMs, lending markets, yield protocols, and the composable money-legos that make an on-chain economy work. This is where much of the recent ecosystem energy has gone.</li>
+      </ul>
+      <p>What SCF generally isn't for: pure token sales, speculative launches with no product, or projects that could just as easily live on another chain with no Stellar-specific benefit. The strongest submissions make a clear case for <em>why Stellar</em> — cheap fees, fast settlement, native assets, and a built-in DEX are all reasons a project belongs here.</p>
+
+      <h2 id="apply">How to apply to SCF</h2>
+      <p class="answer">Applying to SCF is a staged process: express interest, get validated, submit to an open round, engage the community, and — if awarded — deliver against milestones. You don't jump straight to a big cheque; you move through gates that build trust with the ecosystem before funds are released. Here's the typical path.</p>
+      <pre><code>1.  Signal interest  →  Submit the interest form on the SCF site
+                        describing what you're building and which track fits.
+2.  Get validated    →  Rolling review checks basic eligibility and fit.
+                        Referrals from ecosystem actors can speed this up.
+3.  Enter a round    →  Eligible projects are invited into an open,
+                        funded round and given the submission deadline.
+4.  Submit fully     →  Publish your proposal: problem, solution, team,
+                        milestones, budget, and why Stellar/Soroban.
+5.  Community phase  →  Verified members review, ask questions, and vote.
+                        Answer questions promptly; show traction.
+6.  Award & deliver  →  If funded, receive XLM across milestones as you
+                        ship — each tranche unlocks on delivered work.</code></pre>
+      <p>A few practical notes. Start early — the interest step is low-commitment, and getting into the review pipeline before a round opens gives you time to sharpen the proposal. Be specific about milestones and budget; vague asks are hard for the community to evaluate. And treat the community phase as a real conversation, not a formality: responsive teams that engage openly consistently read better than ones that post a proposal and go quiet.</p>
+
+      <div class="cta-band">
+        <div>
+          <div class="t">Earning on Stellar, minus the guesswork</div>
+          <div class="s">WhaleHub stakes AQUA, aggregates ICE voting power, and auto-compounds Aquarius rewards — while you stay in control of your assets.</div>
+        </div>
+        <a href="https://app.whalehub.io/" class="btn btn-primary">Launch app</a>
+      </div>
+
+      <h2 id="tips">What makes a strong SCF application</h2>
+      <p class="answer">Strong SCF applications share a pattern: real traction, a crisp problem statement, open-source code, and concrete milestones. Weak ones tend to be vague, closed, and long on promises but short on evidence. Because the community votes, clarity and credibility matter as much as ambition — reviewers reward teams that make it easy to say yes.</p>
+      <p>The table below contrasts the two ends of the spectrum across the criteria reviewers weigh most heavily:</p>
+
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Criterion</th><th>Strong application</th><th>Weak application</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Traction</strong></td><td>Working demo, testnet deployment, or real users to point at</td><td>Idea only; "we'll build it once funded"</td></tr>
+          <tr><td><strong>Clarity</strong></td><td>Tight problem, specific solution, obvious "why Stellar"</td><td>Buzzword soup; unclear what actually ships</td></tr>
+          <tr><td><strong>Open-source</strong></td><td>Public repo, permissive licence, reusable by others</td><td>Closed code with no ecosystem benefit</td></tr>
+          <tr><td><strong>Milestones</strong></td><td>Concrete, dated, measurable deliverables tied to tranches</td><td>One giant lump ask with no checkpoints</td></tr>
+          <tr><td><strong>Team</strong></td><td>Named builders with relevant track record and referrals</td><td>Anonymous, no history, no ecosystem ties</td></tr>
+          <tr><td><strong>Engagement</strong></td><td>Answers community questions fast and openly</td><td>Posts and disappears during the vote</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>None of this is a guarantee — SCF is competitive and rounds are oversubscribed — but stacking these signals dramatically improves your odds. The through-line is trust: the more a reviewer can verify for themselves, the less they have to take on faith.</p>
+
+      <h2 id="ecosystem">SCF and the wider Stellar DeFi ecosystem</h2>
+      <p class="answer">SCF doesn't fund projects in a vacuum — it feeds a growing DeFi ecosystem on Stellar. Grants seed the AMMs, tokens, and yield strategies that then compose with one another. Understanding that landscape helps you see where a new project fits and why "why Stellar" is such a common question in every SCF round.</p>
+      <p>If you're mapping the terrain, three pieces are worth reading alongside this one. Our <a href="stellar-defi-guide.html">Stellar DeFi guide</a> lays out the whole stack — assets, the built-in DEX, AMMs, and the Soroban contract layer — in plain English. <a href="aquarius-amm-explained.html">Aquarius, the AMM explained</a> covers the liquidity and incentive layer that a lot of Stellar DeFi activity revolves around, including its rewards and voting mechanics. And <a href="what-is-aqua-token.html">what is the AQUA token</a> explains the governance and reward asset that ties much of that system together.</p>
+      <p>The reason this matters for SCF is composability. A well-funded infrastructure or DeFi grant rarely stands alone — it plugs into existing markets, tokens, and voting systems, and it becomes a building block for the next wave of projects. That's the flywheel SCF is trying to spin: fund useful primitives, watch them combine, and grow the whole ecosystem in the process.</p>
+
+      <h2 id="whalehub">Where WhaleHub fits</h2>
+      <p class="answer">WhaleHub is a yield-optimization protocol built on Stellar — a "Convex for Stellar." It participates in the Stellar and Soroban ecosystem that SCF exists to grow, building the kind of DeFi infrastructure the fund is designed to support. WhaleHub focuses on making Stellar yield simpler and more efficient for everyday users.</p>
+      <p>Here's the shape of what WhaleHub does. You stake <a href="what-is-aqua-token.html">AQUA</a> and receive <a href="what-is-blub-token.html">BLUB</a> as a liquid receipt for your position. Behind the scenes, the protocol aggregates ICE voting power across stakers to direct Aquarius rewards efficiently, then auto-compounds those rewards so you don't have to manage claims and re-stakes by hand. It's the same "pool your weight, optimise the yield" idea that made vote-aggregation protocols popular elsewhere — adapted to Stellar's AQUA and Aquarius system.</p>
+      <p>One accuracy note worth being explicit about: BLUB's value <strong>floats</strong> with the underlying position and market — it is not a stablecoin, not pegged, and not redeemable at a fixed rate. And to be clear about SCF specifically, WhaleHub builds on Stellar and engages with the community and SCF ecosystem like other builders in the space; nothing here should be read as a claim to any particular award or grant amount. The point is simpler: SCF grows the ecosystem WhaleHub lives in, and a healthier Stellar DeFi stack is good for everyone building on it.</p>
+      <hr />
+      <p>SCF's big idea is easy to hold onto: the Stellar Development Foundation funds builders in XLM, through open rounds, with the community helping decide. If you remember the flow — signal interest, get validated, enter a round, engage, deliver against milestones — and you lead with traction and clarity, you understand how Stellar grants actually work.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is the Stellar Community Fund?</summary><p>The Stellar Community Fund (SCF) is a grant program run by the Stellar Development Foundation that funds people building on Stellar and Soroban. It distributes awards in XLM through funded submission rounds, using community input and voting to help decide which projects receive support.</p></details>
+      <details><summary>How much can SCF award?</summary><p>Award sizes depend on the track. Smaller programs such as Kickstart have supported early proofs of concept with awards on the order of a few thousand dollars in XLM, while the main Build track has funded validated projects with larger milestone-based amounts. Exact figures change between rounds, so always confirm current numbers on the official SCF site.</p></details>
+      <details><summary>Who can apply to SCF?</summary><p>Individuals, teams, and companies building on Stellar or Soroban can apply — infrastructure, apps, developer tooling, and DeFi protocols are all in scope. You typically signal interest through a form, and eligible projects are invited into an open, funded submission round for review and community voting.</p></details>
+      <details><summary>How long does SCF take?</summary><p>Interest submissions are reviewed on a rolling basis, then eligible projects join a scheduled round with community discussion and voting that generally runs over several weeks. Larger Build awards are paid across milestones, so funds arrive over time as work is delivered rather than all at once.</p></details>
+      <details><summary>Is SCF the same as a Stellar grant?</summary><p>Yes — SCF is the main grant channel run by the Stellar Development Foundation, so people often use "Stellar grant" and "SCF award" interchangeably. The Foundation also runs other support programs, but SCF is the community-driven route most builders mean when they talk about getting a Stellar grant.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — and the ecosystem around it — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="stellar-defi-guide.html"><img src="../assets/blog/stellar-defi-guide.png" alt="" /><span>What Is Stellar DeFi?</span></a>
+        <a href="what-is-aqua-token.html"><img src="../assets/blog/what-is-aqua-token.png" alt="" /><span>What Is the AQUA Token?</span></a>
+        <a href="aquarius-amm-explained.html"><img src="../assets/blog/aquarius-amm-explained.png" alt="" /><span>Aquarius AMM Explained</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Build or earn on Stellar</h2>
+      <p>SCF grows the ecosystem WhaleHub lives in. Put Stellar's AQUA ecosystem to work — stake, get BLUB 1:1, and auto-compound Aquarius rewards.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not legal, tax, or financial advice. Grant programs including SCF evolve, and eligibility, award sizes, tracks, and timelines change between rounds — always confirm current details on official Stellar Development Foundation and SCF channels. Nothing here is an endorsement or a claim of any specific award. DeFi involves risk, including the potential loss of capital. Do your own research and consult a qualified professional before making decisions.</p>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../index.html#how">How it works</a>
+        <a href="../index.html#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./index.html">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about.html">About</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

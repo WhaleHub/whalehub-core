@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KYC vs KYB: Identity Verification in Crypto &amp; DeFi | WhaleHub</title>
+<meta name="description" content="KYC verifies a person; KYB verifies a business and its beneficial owners. A plain-English guide to how identity verification and AML checks work on crypto platforms." />
+<link rel="canonical" href="https://whalehub.io/blog/kyc-kyb-explained.html" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="kyc vs kyb, what is kyb, kyc kyb, know your business, identity verification crypto, aml kyc" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/kyc-kyb-explained.html" />
+<meta property="og:title" content="KYC vs KYB: Identity Verification in Crypto &amp; DeFi" />
+<meta property="og:description" content="KYC verifies a person; KYB verifies a business and its beneficial owners. How identity verification and AML checks work on crypto exchanges and in DeFi." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/kyc-kyb-explained.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-07-17" />
+<meta property="article:modified_time" content="2026-07-17" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="KYC vs KYB: Identity Verification in Crypto &amp; DeFi" />
+<meta name="twitter:description" content="KYC verifies a person; KYB verifies a business and its beneficial owners. How AML checks work on crypto platforms." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/kyc-kyb-explained.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/kyc-kyb-explained.html#article",
+      "headline": "KYC vs KYB: Identity Verification in Crypto & DeFi",
+      "description": "KYC verifies an individual's identity; KYB verifies a business entity and its ultimate beneficial owners. A plain-English guide to how identity verification and AML checks work on crypto exchanges and in DeFi.",
+      "image": "https://whalehub.io/assets/blog/kyc-kyb-explained.png",
+      "datePublished": "2026-07-17",
+      "dateModified": "2026-07-17",
+      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "WhaleHub",
+        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+      },
+      "mainEntityOfPage": "https://whalehub.io/blog/kyc-kyb-explained.html"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
+        { "@type": "ListItem", "position": 2, "name": "KYC vs KYB", "item": "https://whalehub.io/blog/kyc-kyb-explained.html" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "What is the difference between KYC and KYB?", "acceptedAnswer": { "@type": "Answer", "text": "KYC (Know Your Customer) verifies an individual person — their identity, using an ID document and often a selfie. KYB (Know Your Business) verifies a company: its legal registration, status, and the real humans who ultimately own or control it. KYB usually includes running KYC on those owners, so it is the broader of the two." } },
+        { "@type": "Question", "name": "What is a UBO?", "acceptedAnswer": { "@type": "Answer", "text": "A UBO, or ultimate beneficial owner, is the real person who ultimately owns or controls a company — even through layers of holding companies or nominees. Many rules flag anyone holding roughly 25% or more, though the exact threshold varies by jurisdiction. Identifying UBOs is the core extra step that makes KYB harder than KYC." } },
+        { "@type": "Question", "name": "Do DeFi platforms require KYC?", "acceptedAnswer": { "@type": "Answer", "text": "It depends on who operates them. Centralised exchanges and fiat on-ramps almost always require KYC. A genuinely decentralised protocol with no operator collecting funds typically has no one positioned to run identity checks. Many teams sit in between, and requirements are evolving, so treat any given platform on its own terms." } },
+        { "@type": "Question", "name": "What is the FATF Travel Rule?", "acceptedAnswer": { "@type": "Answer", "text": "The FATF Travel Rule (Recommendation 16, extended to virtual assets in 2019) requires virtual-asset service providers to share verified sender and recipient information for transfers above a threshold — often around 1,000 USD or EUR. It mirrors a long-standing rule for bank wires. Exact thresholds and timing vary by jurisdiction." } },
+        { "@type": "Question", "name": "Is KYB harder than KYC?", "acceptedAnswer": { "@type": "Answer", "text": "Generally yes. KYC checks one person against an ID document. KYB must confirm a company's registration and legal status, map its ownership structure, identify the ultimate beneficial owners, and then run KYC on each of them. More documents, more data sources, and more manual review make KYB slower and more involved." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../index.html"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../index.html#how">How it works</a>
+      <a href="../index.html#why">Why WhaleHub</a>
+      <a href="./index.html" class="active">Blog</a>
+      <a href="../about.html">About</a>
+      <a href="../faq.html">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./index.html">Blog</a> &nbsp;/&nbsp; Compliance</div>
+      <span class="tag blue">Compliance</span>
+      <h1>KYC vs KYB: Identity Verification in Crypto &amp; DeFi</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: July 2026</span>
+        <span class="dot-sep"></span>
+        <span>8 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/kyc-kyb-explained.png" alt="KYC vs KYB — identity verification in crypto and DeFi, WhaleHub guide cover" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">Every regulated crypto platform needs to know who it is dealing with. <strong>KYC</strong> ("Know Your Customer") verifies an individual person. <strong>KYB</strong> ("Know Your Business") verifies a company and the real humans behind it — its ultimate beneficial owners. Both sit inside a broader anti-money-laundering (AML) programme, alongside sanctions screening and ongoing monitoring. This is a plain-English explainer of how the two differ and why crypto exchanges and DeFi front-ends use them. It is educational, not legal advice.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#what-is-kyc">What is KYC?</a></li>
+        <li><a href="#what-is-kyb">What is KYB?</a></li>
+        <li><a href="#differences">KYC vs KYB: the key differences</a></li>
+        <li><a href="#why">Why crypto and DeFi platforms use them</a></li>
+        <li><a href="#how">How verification works, step by step</a></li>
+        <li><a href="#defi">KYC, KYB &amp; the decentralization question</a></li>
+        <li><a href="#platforms">Choosing a verification provider</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="what-is-kyc">What is KYC?</h2>
+      <p class="answer">KYC — Know Your Customer — is the process of verifying that an individual is who they claim to be. A platform collects a person's name, date of birth, and address, checks a government ID document, and often a live selfie, then screens the person against sanctions and watchlists. It is the front door of any AML programme.</p>
+      <p>KYC exists so that financial services can attach a real, verified identity to an account before money starts moving. In crypto, that usually means uploading a passport or driving licence, taking a "liveness" selfie so the platform can match your face to the document, and confirming an address with a utility bill or bank statement. Behind the scenes the platform also checks that you are not on a sanctions list or flagged as a politically exposed person (PEP).</p>
+      <p>Importantly, KYC is not a one-time gate. A good programme keeps watching after onboarding — re-verifying when something changes and monitoring transactions for patterns that do not fit the customer it thought it knew. That continuous element is what turns a single ID check into genuine anti-money-laundering coverage.</p>
+
+      <h2 id="what-is-kyb">What is KYB?</h2>
+      <p class="answer">KYB — Know Your Business — verifies a company rather than a person. It confirms that the business legally exists, is in good standing, and is not sanctioned, then maps its ownership to identify the ultimate beneficial owners (UBOs) — the real people who control it. KYB typically runs KYC on each of those individuals too.</p>
+      <p>When a platform onboards a business — say a company that wants a corporate exchange account — a single ID check is not enough. The platform needs to know the legal entity is real (pulling company-registry records), that it is active and not dissolved, and critically, <em>who ultimately stands behind it</em>. Companies can be owned by other companies, trusts, or nominees, so KYB works down through that structure until it reaches flesh-and-blood people.</p>
+      <p>Those people are the <strong>ultimate beneficial owners</strong>. Many frameworks treat anyone holding roughly 25% or more of a company as a UBO worth identifying, although the exact threshold and definition vary by jurisdiction. Once the UBOs are identified, each of them is put through KYC. In other words, KYB wraps around KYC — it is the entity-level check that contains individual-level checks inside it.</p>
+
+      <h2 id="differences">KYC vs KYB: the key differences</h2>
+      <p class="answer">The core difference is the subject: KYC verifies a person, KYB verifies a business and the people who own it. KYB is broader — it adds company-registry checks and the crucial extra step of identifying ultimate beneficial owners. Both feed the same goal: a compliant, sanctions-clean AML programme.</p>
+      <p>Here is how the two line up across the dimensions that matter most:</p>
+
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Dimension</th><th>KYC (Know Your Customer)</th><th>KYB (Know Your Business)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Who it verifies</strong></td><td>An individual person</td><td>A company or legal entity — plus the people behind it</td></tr>
+          <tr><td><strong>What's checked</strong></td><td>Identity document, selfie/liveness, address, sanctions &amp; PEP status</td><td>Legal registration, company status, ownership structure, sanctions</td></tr>
+          <tr><td><strong>Data sources</strong></td><td>ID documents, biometrics, credit/identity databases, watchlists</td><td>Company registries, filings, UBO registers, plus KYC on each owner</td></tr>
+          <tr><td><strong>When it's used</strong></td><td>Retail sign-ups, on-ramps, individual exchange accounts</td><td>Corporate accounts, partners, merchants, institutional onboarding</td></tr>
+          <tr><td><strong>Extra step (UBO)</strong></td><td>Not applicable — the customer is the end person</td><td>Must identify ultimate beneficial owners and run KYC on them</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p>A useful mental model: KYB is KYC with an ownership map bolted on top. You still end up verifying real people at the bottom — you just have to work through the corporate structure to find them first.</p>
+
+      <h2 id="why">Why crypto and DeFi platforms use them</h2>
+      <p class="answer">Crypto exchanges and other virtual-asset service providers (VASPs) use KYC and KYB to meet anti-money-laundering and counter-terrorist-financing (AML/CFT) obligations. That means screening customers against sanctions and PEP lists, monitoring activity for suspicious patterns, and — under the FATF Travel Rule — sharing sender and recipient details on transfers above a threshold.</p>
+      <p>The underlying logic is the same one that has governed banks for decades: if you let anonymous actors move value, you make it easy to launder proceeds of crime, evade sanctions, or finance terrorism. Regulators therefore expect any business that touches customer funds to know who those customers are. For crypto, several pieces stack together:</p>
+      <ul>
+        <li><strong>AML/CFT programmes.</strong> KYC and KYB are the identity foundation. On top sits transaction monitoring, record-keeping, and reporting of suspicious activity to the authorities.</li>
+        <li><strong>Sanctions &amp; PEP screening.</strong> Customers are checked against sanctions lists and flagged if they are politically exposed persons — people whose position carries higher corruption risk — for enhanced scrutiny.</li>
+        <li><strong>The FATF Travel Rule.</strong> An international standard (Recommendation 16, extended to virtual assets in 2019) that asks VASPs to pass verified originator and beneficiary information alongside qualifying transfers, mirroring the rule for bank wires.</li>
+        <li><strong>VASP obligations.</strong> Exchanges, custodians, and many on-ramps are increasingly licensed or registered and carry duties much like traditional financial institutions.</li>
+      </ul>
+      <p>Exact rules, thresholds, and even the definition of who counts as a VASP differ from country to country — and they keep changing. Treat the list above as the shape of the obligations, not a checklist for any single jurisdiction.</p>
+
+      <div class="cta-band">
+        <div>
+          <div class="t">Earning on Stellar, minus the guesswork</div>
+          <div class="s">WhaleHub stakes AQUA, aggregates ICE voting power, and auto-compounds Aquarius rewards — while you stay in control of your assets.</div>
+        </div>
+        <a href="https://app.whalehub.io/" class="btn btn-primary">Launch app</a>
+      </div>
+
+      <h2 id="how">How verification works, step by step</h2>
+      <p class="answer">Under the hood, both KYC and KYB follow a similar pipeline: collect information, verify it against a document or registry, screen the subject against sanctions and PEP lists, assign a risk score, then monitor on an ongoing basis. The difference is what gets collected and where the verification data comes from.</p>
+      <p>A typical onboarding flow looks like this:</p>
+      <pre><code>1. COLLECT     Gather data — ID + selfie (KYC), or company
+               details + ownership info (KYB)
+2. VERIFY      Check the document/biometrics, or confirm the
+               entity against a company registry
+3. SCREEN      Run the subject against sanctions & PEP lists
+4. RISK SCORE  Assign a risk rating; escalate to enhanced
+               due diligence where risk is higher
+5. MONITOR     Keep watching transactions and re-verify when
+               circumstances change (ongoing monitoring)</code></pre>
+      <p>For KYC, step 2 is largely automated — document authentication and face-matching happen in seconds. For KYB, step 1 and 2 are heavier: the provider pulls registry filings, maps the ownership tree, and then loops each identified UBO back through the KYC flow. Higher-risk cases in either path trigger "enhanced due diligence," which means more documents and human review. And step 5 never really ends — ongoing monitoring is what keeps a verified identity meaningful over time.</p>
+
+      <div class="callout">
+        <div class="k">Who this affects</div>
+        <ul>
+          <li><strong>Retail crypto users</strong> — you complete KYC when signing up to a centralised exchange or fiat on-ramp.</li>
+          <li><strong>Businesses &amp; institutions</strong> — corporate accounts, market makers, and partners go through KYB, including UBO checks.</li>
+          <li><strong>Exchanges, custodians &amp; on-ramps (VASPs)</strong> — they run the programmes and carry the regulatory duty.</li>
+          <li><strong>Builders</strong> — if your product takes custody or handles fiat, verification obligations can reach you regardless of where you are based.</li>
+        </ul>
+      </div>
+
+      <h2 id="defi">KYC, KYB &amp; the decentralization question</h2>
+      <p class="answer">Identity verification assumes there is an intermediary to perform it. Centralised exchanges and custodians clearly qualify. Genuinely decentralised protocols — code with no operator collecting funds — have no one positioned to run KYC, which is why obligations tend to land on the intermediaries around DeFi rather than the smart contracts themselves.</p>
+      <p>This mirrors the nuance we cover in our <a href="mica-stablecoins-defi.html">MiCA explainer</a>: regulation generally targets identifiable issuers and service providers, not autonomous code. A useful test regulators apply is "who operates it?" — a slick app run by a company with a token treasury looks very different from a truly permissionless contract that nobody controls. Most teams sit somewhere on that spectrum, and where a given protocol lands shapes whether verification obligations attach.</p>
+      <p>The picture is also still moving. Standards bodies and lawmakers are actively studying how — or whether — to apply identity rules to decentralised finance, so today's answer is a snapshot rather than a settled position. If you want the surrounding context, our <a href="stablecoins-on-stellar.html">Stablecoins on Stellar</a> piece covers how regulated, fiat-backed tokens flow through this same environment, and the <a href="stellar-defi-guide.html">Stellar DeFi guide</a> maps the wider stack.</p>
+      <p>Where does WhaleHub fit? WhaleHub is a non-custodial yield optimiser, not an exchange and not a KYC/KYB vendor — it does not itself perform identity verification. You connect a wallet, stake AQUA, and receive <a href="what-is-blub-token.html">BLUB</a> as a liquid receipt whose value floats with the market; the protocol aggregates ICE voting power and auto-compounds Aquarius rewards while you keep control of your assets. The wallets, on-ramps, and exchanges you use to acquire assets in the first place are the parts of the journey where KYC typically applies.</p>
+
+      <h2 id="platforms">Choosing a verification provider</h2>
+      <p class="answer">If you run a platform that needs KYC or KYB, the provider you pick shapes both compliance and user experience. Look for broad document and country coverage, reliable biometric and liveness checks, sanctions and PEP screening, UBO discovery for business onboarding, ongoing monitoring, and Travel Rule support — balanced against onboarding drop-off and cost.</p>
+      <p>The market is crowded, and the right choice depends on who you onboard. A retail-only app leans on fast, high-conversion KYC; a platform serving companies needs deep KYB with automated UBO mapping across many registries. Practical things to weigh:</p>
+      <ul>
+        <li><strong>Coverage.</strong> Which countries, document types, and languages are supported where your users actually are.</li>
+        <li><strong>Accuracy vs friction.</strong> Strong fraud detection that still lets genuine users through — abandonment is a real cost.</li>
+        <li><strong>Screening depth.</strong> Sanctions, PEP, and adverse-media checks, plus ongoing re-screening rather than a one-off pass.</li>
+        <li><strong>KYB &amp; UBO.</strong> Registry connections and the ability to resolve layered ownership automatically.</li>
+        <li><strong>Travel Rule &amp; monitoring.</strong> Support for VASP-to-VASP data sharing and continuous transaction monitoring.</li>
+      </ul>
+      <p>For a hands-on comparison, see <a href="best-compliance-platforms.html">our roundup of the best KYC/KYB platforms</a>, which lines up leading vendors against these criteria. And if you are curious how programmable tokens underpin many of these on-chain flows, <a href="soroban-smart-contracts.html">Soroban smart contracts</a> explains the mechanics.</p>
+      <hr />
+      <p>The short version: KYC answers "is this person real?" and KYB answers "is this business real, and who is really behind it?" Both are AML tools, both increasingly apply to the crypto intermediaries you pass through, and both are evolving. Remember UBOs, the collect-verify-screen-score-monitor pipeline, and the "who operates it?" test, and you have the shape of identity verification in crypto.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is the difference between KYC and KYB?</summary><p>KYC (Know Your Customer) verifies an individual person — their identity, using an ID document and often a selfie. KYB (Know Your Business) verifies a company: its legal registration, status, and the real humans who ultimately own or control it. KYB usually includes running KYC on those owners, so it is the broader of the two.</p></details>
+      <details><summary>What is a UBO?</summary><p>A UBO, or ultimate beneficial owner, is the real person who ultimately owns or controls a company — even through layers of holding companies or nominees. Many rules flag anyone holding roughly 25% or more, though the exact threshold varies by jurisdiction. Identifying UBOs is the core extra step that makes KYB harder than KYC.</p></details>
+      <details><summary>Do DeFi platforms require KYC?</summary><p>It depends on who operates them. Centralised exchanges and fiat on-ramps almost always require KYC. A genuinely decentralised protocol with no operator collecting funds typically has no one positioned to run identity checks. Many teams sit in between, and requirements are evolving, so treat any given platform on its own terms.</p></details>
+      <details><summary>What is the FATF Travel Rule?</summary><p>The FATF Travel Rule (Recommendation 16, extended to virtual assets in 2019) requires virtual-asset service providers to share verified sender and recipient information for transfers above a threshold — often around 1,000 USD or EUR. It mirrors a long-standing rule for bank wires. Exact thresholds and timing vary by jurisdiction.</p></details>
+      <details><summary>Is KYB harder than KYC?</summary><p>Generally yes. KYC checks one person against an ID document. KYB must confirm a company's registration and legal status, map its ownership structure, identify the ultimate beneficial owners, and then run KYC on each of them. More documents, more data sources, and more manual review make KYB slower and more involved.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — and the compliance landscape around it — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="best-compliance-platforms.html"><img src="../assets/blog/best-compliance-platforms.png" alt="" /><span>Best KYC/KYB Compliance Platforms</span></a>
+        <a href="mica-stablecoins-defi.html"><img src="../assets/blog/mica-stablecoins-defi.png" alt="" /><span>MiCA Explained</span></a>
+        <a href="stablecoins-on-stellar.html"><img src="../assets/blog/stablecoins-on-stellar.png" alt="" /><span>Stablecoins on Stellar</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Earn on a compliance-ready network</h2>
+      <p>Stellar was built for regulated digital money. Put its AQUA ecosystem to work with WhaleHub — stake, get BLUB 1:1, and auto-compound.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not legal, tax, or financial advice. AML, KYC, and KYB requirements evolve and vary by jurisdiction; nothing here should be relied on for compliance decisions. WhaleHub is a non-custodial protocol and does not perform identity verification. DeFi involves risk, including the potential loss of capital. Do your own research and consult a qualified professional before making decisions.</p>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../index.html#how">How it works</a>
+        <a href="../index.html#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./index.html">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about.html">About</a>
+        <a href="../faq.html">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>
