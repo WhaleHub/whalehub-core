@@ -874,7 +874,24 @@ export class SorobanService {
 
       if (simulation.result?.retval) {
         const balance = scValToNative(simulation.result.retval);
-        const balanceStr = (Number(balance) / 10000000).toFixed(7);
+        // The Stellar Asset Contract returns i64::MAX (9223372036854775807) as the
+        // balance of the asset ISSUER — BLUB's issuer is the project/manager wallet,
+        // which holds no real trustline balance of its own asset. Any value near or
+        // above the entire BLUB supply (~44M) is this "unlimited issuer" sentinel
+        // (or state corruption), never a spendable balance — surface 0 instead of a
+        // bogus ~922B BLUB / multi-hundred-million-dollar figure.
+        const raw =
+          typeof balance === "bigint"
+            ? balance
+            : BigInt(Math.trunc(Number(balance) || 0));
+        const SANE_MAX_STROOPS = BigInt("10000000000000000"); // 1e16 stroops = 1B BLUB (supply ≈ 44M)
+        if (raw > SANE_MAX_STROOPS) {
+          console.warn(
+            "⚠️ [SorobanService] BLUB balance sentinel (issuer/unlimited) detected; treating as 0"
+          );
+          return "0";
+        }
+        const balanceStr = (Number(raw) / 10000000).toFixed(7);
         return balanceStr;
       }
 

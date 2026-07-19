@@ -112,8 +112,16 @@ function Yield() {
     }
   }, [user?.userRecords?.account?.claimableRecords]);
 
-  // Use Soroban BLUB balance instead of Horizon API balance
-  const blubBalance = sorobanBlubBalance;
+  // Use Soroban BLUB balance instead of Horizon API balance.
+  // Defense-in-depth: the BLUB SAC returns i64::MAX (~922B) as the ISSUER's
+  // "unlimited" balance (BLUB issuer = project/manager wallet). Cap any value far
+  // above the real BLUB supply (~44M) to 0 so the issuer/manager wallet never shows
+  // a bogus ~922B BLUB / $339M balance. queryBlubBalance already guards this; this
+  // also protects the Horizon path and every consumer of blubBalance below.
+  const blubBalance = (() => {
+    const n = parseFloat(sorobanBlubBalance || "0");
+    return Number.isFinite(n) && n <= 1_000_000_000 ? sorobanBlubBalance : "0";
+  })();
 
   // Calculate accountClaimableRecords with defensive programming
   const accountClaimableRecords = useMemo(() => {
