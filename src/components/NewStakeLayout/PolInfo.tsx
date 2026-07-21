@@ -251,8 +251,30 @@ function PolInfo({ onDialogOpen }: PolInfoProps) {
             </div>
           </div>
 
-          {/* Protocol Stats — Total Distributed & Total Staked */}
+          {/* Protocol Stats — Total ICE Locked, Total Distributed & Total Staked */}
           <div className="mt-4 space-y-3">
+            <div className="flex items-center bg-[#1A1E2E] px-4 py-3 rounded-[12px] justify-between gap-3">
+              <div className="text-sm font-normal text-white flex items-center space-x-1 shrink-0">
+                <span>Total ICE Locked</span>
+                <InformationCircleIcon
+                  className="h-[14px] w-[14px] text-[#6B7280] cursor-pointer"
+                  onClick={() =>
+                    onDialogOpen(
+                      "Total ICE voting power held by the protocol from locking AQUA on Aquarius. ICE is non-transferable and is used to direct AQUA emissions and bribes toward WhaleHub's pools — the core of the yield strategy.",
+                      "Total ICE Locked"
+                    )
+                  }
+                />
+              </div>
+              <div className="min-w-0 text-right">
+                {loading ? <span>...</span> : (
+                  <div className="text-sm sm:text-base font-normal text-[#7CC5FF] break-words">
+                    {(stats?.iceBoost?.myIce ?? 0).toLocaleString("en-US", { maximumFractionDigits: 0 })} ICE
+                  </div>
+                )}
+              </div>
+            </div>
+
             <div className="flex items-center bg-[#1A1E2E] px-4 py-3 rounded-[12px] justify-between gap-3">
               <div className="text-sm font-normal text-white flex items-center space-x-1 shrink-0">
                 <span>Total Distributed</span>
