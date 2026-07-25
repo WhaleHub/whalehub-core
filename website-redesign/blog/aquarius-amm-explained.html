@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Aquarius AMM Explained: Stellar's Liquidity Layer | WhaleHub</title>
 <meta name="description" content="Aquarius is Stellar's liquidity-incentive layer on top of native constant-product AMM pools. Learn how x*y=k works, how AQUA emissions and ICE voting direct rewards, and how LPs earn." />
-<link rel="canonical" href="https://whalehub.io/blog/aquarius-amm-explained.html" />
+<link rel="canonical" href="https://whalehub.io/blog/aquarius-amm-explained" />
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 <meta name="author" content="WhaleHub Research" />
 <meta name="keywords" content="aquarius amm, stellar amm, aquarius stellar, stellar liquidity pools, aqua token, ice voting" />
 
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="WhaleHub" />
-<meta property="og:url" content="https://whalehub.io/blog/aquarius-amm-explained.html" />
+<meta property="og:url" content="https://whalehub.io/blog/aquarius-amm-explained" />
 <meta property="og:title" content="Aquarius AMM Explained: Stellar's Liquidity Layer" />
 <meta property="og:description" content="How Aquarius adds a liquidity-incentive layer on top of Stellar's native AMM pools — constant-product pricing, AQUA emissions, ICE voting, and how LPs earn." />
 <meta property="og:image" content="https://whalehub.io/assets/blog/aquarius-amm-explained.png" />
@@ -39,7 +39,7 @@
   "@graph": [
     {
       "@type": "Article",
-      "@id": "https://whalehub.io/blog/aquarius-amm-explained.html#article",
+      "@id": "https://whalehub.io/blog/aquarius-amm-explained#article",
       "headline": "Aquarius AMM Explained: Stellar's Liquidity Layer",
       "description": "How Aquarius adds a liquidity-incentive layer on top of Stellar's native constant-product AMM pools — x*y=k pricing, AQUA emissions, ICE voting, and how LPs earn fees plus rewards.",
       "image": "https://whalehub.io/assets/blog/aquarius-amm-explained.png",
@@ -51,13 +51,13 @@
         "name": "WhaleHub",
         "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/aquarius-amm-explained.html"
+      "mainEntityOfPage": "https://whalehub.io/blog/aquarius-amm-explained"
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Aquarius AMM Explained", "item": "https://whalehub.io/blog/aquarius-amm-explained.html" }
+        { "@type": "ListItem", "position": 2, "name": "Aquarius AMM Explained", "item": "https://whalehub.io/blog/aquarius-amm-explained" }
       ]
     },
     {
@@ -135,7 +135,7 @@
       <h2 id="what-is">What is the Aquarius AMM?</h2>
       <p class="answer">Aquarius is Stellar's liquidity-incentive protocol. It runs on top of Stellar's native constant-product AMM pools and adds AQUA emissions on top of trading fees. Holders lock AQUA for ICE voting power and vote to direct those emissions toward specific pools, so the most-voted markets earn the most rewards.</p>
       <p>It helps to separate two things people lump together. Stellar itself has <strong>native AMM pools</strong> at the protocol layer — a pool is a base-network object, not a smart contract someone deployed. Anyone can open a two-asset pool and it will price swaps automatically. That is the "AMM" part.</p>
-      <p>Aquarius, launched in 2021, is the <strong>incentive layer</strong> that sits above those pools. It issues the AQUA token, runs an emissions schedule, and lets the community decide which pools those emissions flow to. So when people say "the Aquarius AMM," they usually mean native Stellar pools <em>plus</em> the AQUA rewards Aquarius routes to them. For the token side of the story, see <a href="what-is-aqua-token.html">What Is the AQUA Token?</a> and the broader map in our <a href="stellar-defi-guide.html">Stellar DeFi guide</a>.</p>
+      <p>Aquarius, launched in 2021, is the <strong>incentive layer</strong> that sits above those pools. It issues the AQUA token, runs an emissions schedule, and lets the community decide which pools those emissions flow to. So when people say "the Aquarius AMM," they usually mean native Stellar pools <em>plus</em> the AQUA rewards Aquarius routes to them. For the token side of the story, see <a href="what-is-aqua-token">What Is the AQUA Token?</a> and the broader map in our <a href="stellar-defi-guide">Stellar DeFi guide</a>.</p>
 
       <h2 id="amm-basics">How a constant-product AMM works</h2>
       <p class="answer">A constant-product AMM prices trades with the formula <code>x*y=k</code>, where x and y are the two pool reserves and k stays constant. Buying one asset removes it from the pool and adds the other, moving the price along a curve. The bigger a trade is relative to the pool, the more the price slips.</p>
@@ -157,7 +157,7 @@
         <li><strong>Emissions follow the votes.</strong> Aquarius distributes AQUA to pools in proportion to the votes they receive.</li>
         <li><strong>Bribes sweeten the deal.</strong> Projects that want liquidity in their pool can offer "bribes" — extra rewards paid to voters who back it.</li>
       </ol>
-      <p>The result is a market for liquidity: emissions and bribes shift every epoch toward whoever the voters favour. We break the voting and bribe economics down in <a href="ice-voting-bribes-aquarius.html">ICE Voting &amp; Bribes on Aquarius</a>, and the general pattern of earning rewards for supplying liquidity in <a href="what-is-liquidity-mining.html">What Is Liquidity Mining?</a>.</p>
+      <p>The result is a market for liquidity: emissions and bribes shift every epoch toward whoever the voters favour. We break the voting and bribe economics down in <a href="ice-voting-bribes-aquarius">ICE Voting &amp; Bribes on Aquarius</a>, and the general pattern of earning rewards for supplying liquidity in <a href="what-is-liquidity-mining">What Is Liquidity Mining?</a>.</p>
 
       <h2 id="earn">How liquidity providers actually earn</h2>
       <p class="answer">Liquidity providers earn two ways on Aquarius: a share of the swap fees every trade pays into the pool, and AQUA emissions directed to that pool by ICE voters. Your share is proportional to how much of the pool you supply. The trade-off is impermanent loss if the two assets diverge in price.</p>
@@ -167,7 +167,7 @@
         <li><strong>AQUA emissions.</strong> If ICE voters have directed emissions to your pool, you collect a proportional slice of that AQUA on top of the fees.</li>
       </ul>
       <h3>The catch: impermanent loss</h3>
-      <p>Providing liquidity is not risk-free. Because arbitrage constantly rebalances a constant-product pool, when the two assets diverge in price you end up holding more of the one that fell and less of the one that rose — worse than if you had simply held both in your wallet. That gap is <strong>impermanent loss</strong>. Fees and AQUA emissions can offset it, and sometimes more than cover it, but not always. It is the single most important concept to understand before you LP; we cover it in depth in <a href="what-is-liquidity-mining.html">What Is Liquidity Mining?</a>. For the live numbers, always check the current APY on <a href="https://app.whalehub.io/">the app</a> rather than assuming a fixed rate.</p>
+      <p>Providing liquidity is not risk-free. Because arbitrage constantly rebalances a constant-product pool, when the two assets diverge in price you end up holding more of the one that fell and less of the one that rose — worse than if you had simply held both in your wallet. That gap is <strong>impermanent loss</strong>. Fees and AQUA emissions can offset it, and sometimes more than cover it, but not always. It is the single most important concept to understand before you LP; we cover it in depth in <a href="what-is-liquidity-mining">What Is Liquidity Mining?</a>. For the live numbers, always check the current APY on <a href="https://app.whalehub.io/">the app</a> rather than assuming a fixed rate.</p>
 
       <h2 id="compare">Aquarius vs the SDEX order book</h2>
       <p>Stellar gives you two ways to trade and provide liquidity: the built-in order book (SDEX) and Aquarius AMM pools. They solve the same problem differently.</p>
@@ -225,8 +225,8 @@ You withdraw
       <h2 id="whalehub">Where WhaleHub fits</h2>
       <p class="answer">WhaleHub aggregates ICE voting power from all its stakers and votes it toward high-yielding Aquarius markets each epoch. It claims the AQUA rewards and bribes those votes earn, then auto-compounds them for depositors — so users capture Aquarius incentives without managing votes or claims themselves.</p>
       <p>The friction in earning on Aquarius is not the AMM — it is the incentive layer. To capture the best emissions you have to lock AQUA for ICE, track which market is hottest each epoch, vote every cycle, then claim and re-invest the rewards. A small holder's ICE barely moves a vote, and the claim-and-restake grind eats into any gain.</p>
-      <p>WhaleHub, often described as "Convex for Stellar," solves both problems by pooling. It aggregates ICE from every staker into whale-tier voting weight, points it at the highest-yielding markets, and lets the backend claim rewards roughly every 30 minutes, swap them to <a href="what-is-blub-token.html">BLUB</a>, and distribute them proportionally. Rewards also feed back into more ICE and protocol-owned liquidity, so the voting power compounds over time.</p>
-      <p>When you stake AQUA, WhaleHub mints BLUB to your staking balance one-for-one as a liquid receipt — a floating derivative of your staked position whose value is set by the market, not redeemable for AQUA. From there the votes, claims, and compounding happen for you. If you want the step-by-step, start with <a href="how-to-stake-aqua.html">How to Stake AQUA</a>.</p>
+      <p>WhaleHub, often described as "Convex for Stellar," solves both problems by pooling. It aggregates ICE from every staker into whale-tier voting weight, points it at the highest-yielding markets, and lets the backend claim rewards roughly every 30 minutes, swap them to <a href="what-is-blub-token">BLUB</a>, and distribute them proportionally. Rewards also feed back into more ICE and protocol-owned liquidity, so the voting power compounds over time.</p>
+      <p>When you stake AQUA, WhaleHub mints BLUB to your staking balance one-for-one as a liquid receipt — a floating derivative of your staked position whose value is set by the market, not redeemable for AQUA. From there the votes, claims, and compounding happen for you. If you want the step-by-step, start with <a href="how-to-stake-aqua">How to Stake AQUA</a>.</p>
       <hr />
       <p>Aquarius is best understood in two layers: a native constant-product AMM that turns two-asset pools into an always-on market, and an incentive system that pays AQUA to whichever pools the community votes for. Provide liquidity and you earn fees plus emissions — minus impermanent loss. Do it through an optimizer and the voting and compounding stop being your job.</p>
     </div>
@@ -253,9 +253,9 @@ You withdraw
     <section class="related">
       <h2>Read more</h2>
       <div class="related-grid">
-        <a href="what-is-aqua-token.html"><img src="../assets/blog/what-is-aqua-token.png" alt="" /><span>What Is the AQUA Token?</span></a>
-        <a href="what-is-liquidity-mining.html"><img src="../assets/blog/what-is-liquidity-mining.png" alt="" /><span>What Is Liquidity Mining?</span></a>
-        <a href="ice-voting-bribes-aquarius.html"><img src="../assets/blog/ice-voting-bribes-aquarius.png" alt="" /><span>ICE Voting &amp; Bribes on Aquarius</span></a>
+        <a href="what-is-aqua-token"><img src="../assets/blog/what-is-aqua-token.png" alt="" /><span>What Is the AQUA Token?</span></a>
+        <a href="what-is-liquidity-mining"><img src="../assets/blog/what-is-liquidity-mining.png" alt="" /><span>What Is Liquidity Mining?</span></a>
+        <a href="ice-voting-bribes-aquarius"><img src="../assets/blog/ice-voting-bribes-aquarius.png" alt="" /><span>ICE Voting &amp; Bribes on Aquarius</span></a>
       </div>
     </section>
 

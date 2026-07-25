@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Aquarius Concentrated Liquidity Pools Explained | WhaleHub</title>
 <meta name="description" content="Concentrated liquidity (CLMM) pools let LPs focus capital in a price range for higher efficiency. How they differ from Aquarius constant-product and stableswap pools." />
-<link rel="canonical" href="https://whalehub.io/blog/aquarius-concentrated-liquidity.html" />
+<link rel="canonical" href="https://whalehub.io/blog/aquarius-concentrated-liquidity" />
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 <meta name="author" content="WhaleHub Research" />
 <meta name="keywords" content="aquarius concentrated liquidity, clmm stellar, concentrated liquidity pools, aquarius pool types, capital efficient amm, stellar amm" />
 
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="WhaleHub" />
-<meta property="og:url" content="https://whalehub.io/blog/aquarius-concentrated-liquidity.html" />
+<meta property="og:url" content="https://whalehub.io/blog/aquarius-concentrated-liquidity" />
 <meta property="og:title" content="Aquarius Concentrated Liquidity Pools Explained" />
 <meta property="og:description" content="Concentrated liquidity (CLMM) pools concentrate capital in a price range for higher efficiency — how they differ from Aquarius constant-product and stableswap pools." />
 <meta property="og:image" content="https://whalehub.io/assets/blog/aquarius-concentrated-liquidity.png" />
@@ -39,7 +39,7 @@
   "@graph": [
     {
       "@type": "Article",
-      "@id": "https://whalehub.io/blog/aquarius-concentrated-liquidity.html#article",
+      "@id": "https://whalehub.io/blog/aquarius-concentrated-liquidity#article",
       "headline": "Aquarius Concentrated Liquidity Pools Explained",
       "description": "Concentrated liquidity (CLMM) pools let liquidity providers focus capital in a price range for higher capital efficiency — how they differ from Aquarius constant-product and stableswap pools, and how AQUA emissions and ICE voting fit in.",
       "image": "https://whalehub.io/assets/blog/aquarius-concentrated-liquidity.png",
@@ -51,13 +51,13 @@
         "name": "WhaleHub",
         "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/aquarius-concentrated-liquidity.html"
+      "mainEntityOfPage": "https://whalehub.io/blog/aquarius-concentrated-liquidity"
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Aquarius Concentrated Liquidity Pools Explained", "item": "https://whalehub.io/blog/aquarius-concentrated-liquidity.html" }
+        { "@type": "ListItem", "position": 2, "name": "Aquarius Concentrated Liquidity Pools Explained", "item": "https://whalehub.io/blog/aquarius-concentrated-liquidity" }
       ]
     },
     {
@@ -114,7 +114,7 @@
       <img src="../assets/blog/aquarius-concentrated-liquidity.png" alt="Aquarius Concentrated Liquidity Pools Explained — WhaleHub guide cover" width="1200" height="630" />
     </figure>
 
-    <p class="lead">Concentrated liquidity is the idea that reshaped AMMs: instead of spreading capital across every possible price, a liquidity provider focuses it into a chosen range where trading actually happens. Within that band each dollar works much harder. This guide explains what concentrated liquidity (CLMM) pools are, how they differ from the constant-product and stableswap pools <a href="aquarius-amm-explained.html">Aquarius</a> runs on Stellar, and where the trade-offs hide. If you are new to Aquarius, start with our foundational piece, <a href="aquarius-amm-explained.html">Aquarius AMM Explained</a>, then come back here for the capital-efficiency angle.</p>
+    <p class="lead">Concentrated liquidity is the idea that reshaped AMMs: instead of spreading capital across every possible price, a liquidity provider focuses it into a chosen range where trading actually happens. Within that band each dollar works much harder. This guide explains what concentrated liquidity (CLMM) pools are, how they differ from the constant-product and stableswap pools <a href="aquarius-amm-explained">Aquarius</a> runs on Stellar, and where the trade-offs hide. If you are new to Aquarius, start with our foundational piece, <a href="aquarius-amm-explained">Aquarius AMM Explained</a>, then come back here for the capital-efficiency angle.</p>
 
     <div class="toc">
       <div class="k">On this page</div>
@@ -163,12 +163,12 @@
       <p>Under the hood, a concentrated pool divides the price line into discrete steps often called <strong>ticks</strong>. A range is simply a start tick and an end tick, and liquidity is registered against the ticks it spans. As price moves from one tick to the next, the pool sums up all the liquidity active at that point and charges the swap fee against it, distributing the fee to every position covering that tick. Like Aquarius's existing pools, fee tiers can differ by pool — a busier or more volatile pair may carry a higher fee to compensate providers for the risk they take.</p>
 
       <h3>Going out of range / impermanent loss</h3>
-      <p>Here is the catch. When the market price drifts to the edge of your band, arbitrageurs steadily swap against your position until, at the boundary, you hold <em>only</em> the weaker of the two assets. Cross that edge and your position goes <strong>out of range</strong>: it stops trading, stops earning fees, and simply waits — fully converted — until price comes back or you move the range. Concentration magnifies <a href="what-is-liquidity-mining.html">impermanent loss</a> precisely because it forces that full conversion within a small price move. The tighter the band, the sharper the effect.</p>
+      <p>Here is the catch. When the market price drifts to the edge of your band, arbitrageurs steadily swap against your position until, at the boundary, you hold <em>only</em> the weaker of the two assets. Cross that edge and your position goes <strong>out of range</strong>: it stops trading, stops earning fees, and simply waits — fully converted — until price comes back or you move the range. Concentration magnifies <a href="what-is-liquidity-mining">impermanent loss</a> precisely because it forces that full conversion within a small price move. The tighter the band, the sharper the effect.</p>
 
       <h2 id="rewards">Concentrated pools, AQUA emissions &amp; ICE</h2>
       <p class="answer">On Aquarius, fees are only half the story — pools also earn AQUA emissions. Holders lock AQUA into ICE, a non-transferable voting weight, and vote each epoch to steer emissions toward specific pools. Whatever pool design a market uses, the reward gauge that decides its AQUA is set by those ICE votes and bribes.</p>
       <p>This is the layer that makes Aquarius more than a set of pools. Trading fees reward you for supplying liquidity, but the extra yield — the part that turns a modest fee stream into a competitive APY — comes from <strong>AQUA emissions</strong> routed through reward gauges. Each pool has a gauge; the more ICE votes a gauge attracts, the more AQUA flows to that pool's providers. So the question "which pool should I supply?" is really two questions: which pool design fits the pair, and which gauge is being voted the most emissions this epoch.</p>
-      <p>Concentrated liquidity interacts with this in a subtle way. Because a concentrated position can present far deeper liquidity per dollar, emissions directed to a capital-efficient pool are spread over a market that trades more tightly — potentially a better use of the same AQUA. But emissions are only earned while your liquidity is <em>active</em> and in range, so an out-of-range concentrated position can miss both fees and its slice of the gauge. We break down the vote-and-bribe economics in <a href="ice-voting-bribes-aquarius.html">ICE Voting &amp; Bribes on Aquarius</a>, and the general pattern of earning tokens for supplying liquidity in <a href="what-is-liquidity-mining.html">What Is Liquidity Mining?</a>.</p>
+      <p>Concentrated liquidity interacts with this in a subtle way. Because a concentrated position can present far deeper liquidity per dollar, emissions directed to a capital-efficient pool are spread over a market that trades more tightly — potentially a better use of the same AQUA. But emissions are only earned while your liquidity is <em>active</em> and in range, so an out-of-range concentrated position can miss both fees and its slice of the gauge. We break down the vote-and-bribe economics in <a href="ice-voting-bribes-aquarius">ICE Voting &amp; Bribes on Aquarius</a>, and the general pattern of earning tokens for supplying liquidity in <a href="what-is-liquidity-mining">What Is Liquidity Mining?</a>.</p>
 
       <div class="cta-band">
         <div>
@@ -186,12 +186,12 @@
         <li><strong>Out-of-range dead time.</strong> A position parked outside its band earns nothing — no fees, no emissions — while your capital stays locked in one asset. Volatile pairs can spend a lot of time out of range.</li>
         <li><strong>The cost of re-balancing.</strong> Moving a range to follow price means realising losses and paying transaction costs. Do it too often and fees eat the edge; do it too rarely and you sit idle. There is no set-and-forget setting for a tight range.</li>
       </ul>
-      <p>None of this makes concentrated liquidity a bad tool — it makes it an <em>active</em> one. For providers who monitor markets and re-set ranges deliberately, the capital efficiency is real. For everyone else, the management burden is exactly the friction that pushes people toward a managed, hands-off approach. If yield farming is new to you, our broader primer on <a href="stellar-yield-farming.html">Stellar yield farming</a> puts these trade-offs in context.</p>
+      <p>None of this makes concentrated liquidity a bad tool — it makes it an <em>active</em> one. For providers who monitor markets and re-set ranges deliberately, the capital efficiency is real. For everyone else, the management burden is exactly the friction that pushes people toward a managed, hands-off approach. If yield farming is new to you, our broader primer on <a href="stellar-yield-farming">Stellar yield farming</a> puts these trade-offs in context.</p>
 
       <h2 id="whalehub">How WhaleHub simplifies this</h2>
       <p class="answer">WhaleHub turns the whole Aquarius reward stack into one deposit. It aggregates ICE voting power across all stakers, votes it toward high-yielding markets each epoch, then claims and auto-compounds the AQUA rewards — so you get boosted, hands-off exposure without choosing ranges, tracking gauges, or re-staking every cycle.</p>
       <p>Whether a pool uses a constant-product curve or a concentrated range, the friction in earning on Aquarius is the same: you have to lock AQUA for ICE, work out which gauge is hottest each epoch, vote every cycle, then claim and re-invest. A small holder's ICE barely moves a vote, and the claim-and-restake grind eats into any gain. Concentrated liquidity adds a further chore on top — sizing and re-setting a range.</p>
-      <p>WhaleHub, often described as "Convex for Stellar," removes those chores by pooling. You <a href="how-to-stake-aqua.html">stake AQUA</a> and receive <a href="what-is-aqua-token.html">AQUA</a>-backed exposure through BLUB, a liquid receipt minted to your staking balance one-for-one. BLUB's value <strong>floats</strong> with the market — it is not pegged to AQUA and is not redeemable for it. Behind the scenes, WhaleHub aggregates every staker's ICE into whale-tier voting weight, points it at the best-yielding markets, and lets the backend claim rewards frequently and <a href="auto-compounding-explained.html">auto-compound</a> them. The voting power compounds over time, so your stake keeps working while you do nothing.</p>
+      <p>WhaleHub, often described as "Convex for Stellar," removes those chores by pooling. You <a href="how-to-stake-aqua">stake AQUA</a> and receive <a href="what-is-aqua-token">AQUA</a>-backed exposure through BLUB, a liquid receipt minted to your staking balance one-for-one. BLUB's value <strong>floats</strong> with the market — it is not pegged to AQUA and is not redeemable for it. Behind the scenes, WhaleHub aggregates every staker's ICE into whale-tier voting weight, points it at the best-yielding markets, and lets the backend claim rewards frequently and <a href="auto-compounding-explained">auto-compound</a> them. The voting power compounds over time, so your stake keeps working while you do nothing.</p>
       <hr />
       <p>Concentrated liquidity is the sharpest tool in the AMM kit: focus capital into a range and each dollar earns far more — as long as you manage the band and wear the amplified impermanent loss. Aquarius today runs constant-product and stableswap pools, with AQUA emissions steered by ICE votes, and the concentrated model is where efficient AMM design keeps heading. Provide liquidity yourself and the range, votes, and compounding are your job. Do it through an optimizer, and they stop being your job at all.</p>
     </div>
@@ -217,9 +217,9 @@
     <section class="related">
       <h2>Read more</h2>
       <div class="related-grid">
-        <a href="aquarius-amm-explained.html"><img src="../assets/blog/aquarius-amm-explained.png" alt="" /><span>Aquarius AMM Explained</span></a>
-        <a href="what-is-liquidity-mining.html"><img src="../assets/blog/what-is-liquidity-mining.png" alt="" /><span>What Is Liquidity Mining?</span></a>
-        <a href="ice-voting-bribes-aquarius.html"><img src="../assets/blog/ice-voting-bribes-aquarius.png" alt="" /><span>ICE Voting &amp; Bribes on Aquarius</span></a>
+        <a href="aquarius-amm-explained"><img src="../assets/blog/aquarius-amm-explained.png" alt="" /><span>Aquarius AMM Explained</span></a>
+        <a href="what-is-liquidity-mining"><img src="../assets/blog/what-is-liquidity-mining.png" alt="" /><span>What Is Liquidity Mining?</span></a>
+        <a href="ice-voting-bribes-aquarius"><img src="../assets/blog/ice-voting-bribes-aquarius.png" alt="" /><span>ICE Voting &amp; Bribes on Aquarius</span></a>
       </div>
     </section>
 

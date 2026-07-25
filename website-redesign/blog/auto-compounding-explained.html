@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Auto-Compounding Crypto: How It Boosts Yield | WhaleHub</title>
 <meta name="description" content="Auto-compounding automatically reinvests crypto rewards so you earn yield on yield. Here's how it turns APR into a higher APY, why frequency matters, and why Stellar makes it viable." />
-<link rel="canonical" href="https://whalehub.io/blog/auto-compounding-explained.html" />
+<link rel="canonical" href="https://whalehub.io/blog/auto-compounding-explained" />
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 <meta name="author" content="WhaleHub Research" />
 <meta name="keywords" content="auto compounding crypto, auto compound, compound interest crypto, apy vs apr, auto compounding vault, stellar defi" />
 
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="WhaleHub" />
-<meta property="og:url" content="https://whalehub.io/blog/auto-compounding-explained.html" />
+<meta property="og:url" content="https://whalehub.io/blog/auto-compounding-explained" />
 <meta property="og:title" content="Auto-Compounding Crypto: How It Boosts Yield" />
 <meta property="og:description" content="How auto-compounding reinvests rewards to earn yield on yield, the APR vs APY distinction, and why Stellar's sub-cent fees make compounding ~48 times a day viable." />
 <meta property="og:image" content="https://whalehub.io/assets/blog/auto-compounding-explained.png" />
@@ -39,7 +39,7 @@
   "@graph": [
     {
       "@type": "Article",
-      "@id": "https://whalehub.io/blog/auto-compounding-explained.html#article",
+      "@id": "https://whalehub.io/blog/auto-compounding-explained#article",
       "headline": "Auto-Compounding Crypto: How It Boosts Yield",
       "description": "Auto-compounding automatically reinvests crypto rewards so you earn yield on yield. Here's how it turns APR into a higher APY, why compounding frequency matters, and why Stellar makes it viable.",
       "image": "https://whalehub.io/assets/blog/auto-compounding-explained.png",
@@ -51,13 +51,13 @@
         "name": "WhaleHub",
         "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/auto-compounding-explained.html"
+      "mainEntityOfPage": "https://whalehub.io/blog/auto-compounding-explained"
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Auto-Compounding Crypto", "item": "https://whalehub.io/blog/auto-compounding-explained.html" }
+        { "@type": "ListItem", "position": 2, "name": "Auto-Compounding Crypto", "item": "https://whalehub.io/blog/auto-compounding-explained" }
       ]
     },
     {
@@ -133,7 +133,7 @@
       <h2 id="what-is">What is auto-compounding in crypto?</h2>
       <p class="answer">Auto-compounding is when a protocol automatically harvests your staking or liquidity rewards and reinvests them into the same position, so future rewards are calculated on a larger balance. You earn yield on your yield without manually claiming and re-depositing, and the compounding runs on a fixed schedule in the background.</p>
       <p>Left to their own devices, most people don't reinvest efficiently. Rewards accrue, you forget to claim, and even when you do, you pay a fee, swap, and re-deposit by hand — often only every few weeks. Every idle day is yield you could have been earning on those rewards but weren't.</p>
-      <p>Auto-compounding removes that friction. A vault or contract does the claim-swap-redeposit loop for you, on a clock, so your principal grows continuously. This is standard in mature DeFi — auto-compounding vaults were one of the features that made yield farming approachable — and it's exactly what happens inside <a href="stellar-yield-farming.html">Stellar yield-farming</a> vaults.</p>
+      <p>Auto-compounding removes that friction. A vault or contract does the claim-swap-redeposit loop for you, on a clock, so your principal grows continuously. This is standard in mature DeFi — auto-compounding vaults were one of the features that made yield farming approachable — and it's exactly what happens inside <a href="stellar-yield-farming">Stellar yield-farming</a> vaults.</p>
 
       <h2 id="apr-vs-apy">APR vs APY: what's the difference?</h2>
       <p class="answer">APR is the simple annual rate with no reinvestment. APY is the effective rate once rewards are compounded back into the balance. Compounding is exactly what turns an APR into a higher APY: the more often you reinvest, the larger the gap, up to a continuous-compounding ceiling.</p>
@@ -194,7 +194,7 @@
       <h2 id="stellar">Why Stellar makes ~48×/day compounding viable</h2>
       <p class="answer">Stellar's base transaction fee is 0.00001 XLM — a fraction of a cent — and it finalizes in about five seconds. At that cost, reinvesting rewards every 30 minutes is essentially free relative to the rewards being compounded, so high-frequency auto-compounding becomes practical instead of fee-prohibitive.</p>
       <p>This is where Stellar's design pays off directly. The same loop that is ruinously expensive elsewhere — claim, swap, re-deposit, repeat — costs rounding-error fees here, and it clears in about five seconds with deterministic finality. There's no waiting on probabilistic confirmations and no gas auction to win.</p>
-      <p>That's what makes an auto-compounding vault genuinely worthwhile on Stellar rather than a fee sink. Rewards get folded back into your position dozens of times a day, so you sit near the continuous-compounding end of the table above instead of the monthly rung. It's the same economic edge that lets the broader <a href="stellar-yield-farming.html">Stellar DeFi</a> stack run active strategies passively — and it's built on the AQUA and Aquarius incentive layer you can <a href="how-to-stake-aqua.html">stake into directly</a>.</p>
+      <p>That's what makes an auto-compounding vault genuinely worthwhile on Stellar rather than a fee sink. Rewards get folded back into your position dozens of times a day, so you sit near the continuous-compounding end of the table above instead of the monthly rung. It's the same economic edge that lets the broader <a href="stellar-yield-farming">Stellar DeFi</a> stack run active strategies passively — and it's built on the AQUA and Aquarius incentive layer you can <a href="how-to-stake-aqua">stake into directly</a>.</p>
 
       <h2 id="how-whalehub">How WhaleHub auto-compounds your rewards</h2>
       <p class="answer">WhaleHub's liquidity vaults deposit your token pair into an auto-compounding AMM pool and re-invest the rewards for you roughly 48 times a day, about every 30 minutes. The backend claims accrued rewards, swaps them as needed, and re-deposits — so your position grows continuously without any manual claiming.</p>
@@ -206,7 +206,7 @@
         <li><strong>Swap and re-deposit.</strong> Rewards are converted as needed and added straight back into the position — growing the balance the next harvest is calculated on.</li>
         <li><strong>Repeat ~48×/day.</strong> The loop runs continuously, so you sit near the high-frequency end of the APY curve with no manual effort.</li>
       </ol>
-      <p>The same philosophy runs through the staking side of the protocol: WhaleHub aggregates ICE voting power from all stakers, votes AQUA emissions to the highest-yielding markets, and reinvests rewards to grow protocol-owned liquidity. When you stake AQUA you receive <a href="what-is-blub-token.html">BLUB</a> — minted 1:1 as a liquid derivative of your staked AQUA — and earn a proportional share of everything the pool harvests. You can read how that token works in <a href="what-is-blub-token.html">What Is the BLUB Token?</a></p>
+      <p>The same philosophy runs through the staking side of the protocol: WhaleHub aggregates ICE voting power from all stakers, votes AQUA emissions to the highest-yielding markets, and reinvests rewards to grow protocol-owned liquidity. When you stake AQUA you receive <a href="what-is-blub-token">BLUB</a> — minted 1:1 as a liquid derivative of your staked AQUA — and earn a proportional share of everything the pool harvests. You can read how that token works in <a href="what-is-blub-token">What Is the BLUB Token?</a></p>
       <hr />
       <p>Auto-compounding is one of the least glamorous and most powerful ideas in yield: reinvest automatically, earn on your earnings, and let time do the heavy lifting. The math is settled — frequency raises APY — the only real constraint is fees. On Stellar that constraint mostly disappears, which is why compounding every 30 minutes is ordinary here rather than a luxury.</p>
     </div>
@@ -232,9 +232,9 @@
     <section class="related">
       <h2>Read more</h2>
       <div class="related-grid">
-        <a href="stellar-yield-farming.html"><img src="../assets/blog/stellar-yield-farming.png" alt="" /><span>Yield Farming on Stellar</span></a>
-        <a href="how-to-stake-aqua.html"><img src="../assets/blog/how-to-stake-aqua.png" alt="" /><span>How to Stake AQUA &amp; Earn</span></a>
-        <a href="what-is-blub-token.html"><img src="../assets/blog/what-is-blub-token.png" alt="" /><span>What Is the BLUB Token?</span></a>
+        <a href="stellar-yield-farming"><img src="../assets/blog/stellar-yield-farming.png" alt="" /><span>Yield Farming on Stellar</span></a>
+        <a href="how-to-stake-aqua"><img src="../assets/blog/how-to-stake-aqua.png" alt="" /><span>How to Stake AQUA &amp; Earn</span></a>
+        <a href="what-is-blub-token"><img src="../assets/blog/what-is-blub-token.png" alt="" /><span>What Is the BLUB Token?</span></a>
       </div>
     </section>
 

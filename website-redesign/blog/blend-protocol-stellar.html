@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>What Is Blend? Stellar's DeFi Lending Protocol | WhaleHub</title>
 <meta name="description" content="Blend is Stellar's DeFi lending protocol, built on Soroban. A plain-English guide to its isolated lending pools, borrowing, collateral, backstop module, and reactive interest rates." />
-<link rel="canonical" href="https://whalehub.io/blog/blend-protocol-stellar.html" />
+<link rel="canonical" href="https://whalehub.io/blog/blend-protocol-stellar" />
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 <meta name="author" content="WhaleHub Research" />
 <meta name="keywords" content="blend protocol, blend stellar, stellar lending, defi lending stellar, blend capital, soroban lending" />
 
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="WhaleHub" />
-<meta property="og:url" content="https://whalehub.io/blog/blend-protocol-stellar.html" />
+<meta property="og:url" content="https://whalehub.io/blog/blend-protocol-stellar" />
 <meta property="og:title" content="What Is Blend? Stellar's DeFi Lending Protocol" />
 <meta property="og:description" content="A plain-English guide to Blend — Stellar's Soroban-based lending protocol. Isolated pools, borrowing, the backstop module, and reactive interest rates explained." />
 <meta property="og:image" content="https://whalehub.io/assets/blog/blend-protocol-stellar.png" />
@@ -39,7 +39,7 @@
   "@graph": [
     {
       "@type": "Article",
-      "@id": "https://whalehub.io/blog/blend-protocol-stellar.html#article",
+      "@id": "https://whalehub.io/blog/blend-protocol-stellar#article",
       "headline": "What Is Blend? Stellar's DeFi Lending Protocol",
       "description": "A plain-English guide to Blend, Stellar's Soroban-based DeFi lending protocol: isolated lending pools, borrowing and collateral, the backstop module, and reactive interest rates.",
       "image": "https://whalehub.io/assets/blog/blend-protocol-stellar.png",
@@ -51,13 +51,13 @@
         "name": "WhaleHub",
         "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/blend-protocol-stellar.html"
+      "mainEntityOfPage": "https://whalehub.io/blog/blend-protocol-stellar"
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "What Is Blend?", "item": "https://whalehub.io/blog/blend-protocol-stellar.html" }
+        { "@type": "ListItem", "position": 2, "name": "What Is Blend?", "item": "https://whalehub.io/blog/blend-protocol-stellar" }
       ]
     },
     {
@@ -135,7 +135,7 @@
       <p class="answer">Blend is a decentralised lending protocol on Stellar, built as a set of immutable Soroban smart contracts by Script3. It lets anyone create permissionless, isolated lending pools where users supply assets to earn interest and borrow against collateral, with each pool protected by its own backstop insurance fund.</p>
       <p>Every mature DeFi ecosystem needs a money market — a place to lend idle assets for yield and to borrow against what you already hold. On Ethereum that role is played by protocols like Aave and Compound. On Stellar, Blend fills the same slot, but with a design tuned for the network's speed, low fees, and Soroban smart contracts.</p>
       <p>The team behind Blend, Script3, describes it as a "universal liquidity protocol primitive." The word <em>primitive</em> matters: Blend isn't trying to be a single, curated market. It's a base layer that other builders assemble on top of. Anyone can spin up a lending pool, choose which assets it holds, and set its risk parameters — no gatekeeper, no governance vote required to launch.</p>
-      <p>If you're new to the wider ecosystem, our <a href="stellar-defi-guide.html">Stellar DeFi guide</a> maps how lending, AMMs, and yield fit together. Blend is the borrowing-and-lending piece of that picture.</p>
+      <p>If you're new to the wider ecosystem, our <a href="stellar-defi-guide">Stellar DeFi guide</a> maps how lending, AMMs, and yield fit together. Blend is the borrowing-and-lending piece of that picture.</p>
 
       <div class="callout">
         <div class="k">Blend in one breath</div>
@@ -165,8 +165,8 @@
 
       <h2 id="soroban">Why Blend runs on Soroban</h2>
       <p class="answer">Blend is written for Soroban, Stellar's Rust-based smart-contract platform. Soroban lets Blend express real lending logic — pools, collateral factors, auctions, backstops — as on-chain programs, while inheriting Stellar's fast, low-cost settlement. Blend's contracts are also immutable, meaning the core logic can't be quietly changed after deployment.</p>
-      <p>Stellar's classic ledger was brilliant at moving assets but couldn't run arbitrary programmable logic. <a href="soroban-smart-contracts.html">Soroban</a> changed that. It brought a Rust-based, WebAssembly smart-contract engine to Stellar, so protocols like Blend can encode conditional, stateful rules — "only lend if collateral covers the loan," "auction this collateral if the borrower falls underwater" — directly on-chain.</p>
-      <p>Two Soroban properties matter especially for lending. First, <strong>immutability</strong>: Blend deploys its core contracts so they can't be upgraded out from under users, which removes a whole class of "the team changed the rules" risk. Second, <strong>composability</strong>: because everything is on-chain and open, other Stellar protocols — wallets, AMMs, aggregators — can plug into Blend without permission. A pool on Blend can quote in the same USDC that flows through <a href="aquarius-amm-explained.html">Aquarius AMM</a> pools, letting liquidity move fluidly across the ecosystem.</p>
+      <p>Stellar's classic ledger was brilliant at moving assets but couldn't run arbitrary programmable logic. <a href="soroban-smart-contracts">Soroban</a> changed that. It brought a Rust-based, WebAssembly smart-contract engine to Stellar, so protocols like Blend can encode conditional, stateful rules — "only lend if collateral covers the loan," "auction this collateral if the borrower falls underwater" — directly on-chain.</p>
+      <p>Two Soroban properties matter especially for lending. First, <strong>immutability</strong>: Blend deploys its core contracts so they can't be upgraded out from under users, which removes a whole class of "the team changed the rules" risk. Second, <strong>composability</strong>: because everything is on-chain and open, other Stellar protocols — wallets, AMMs, aggregators — can plug into Blend without permission. A pool on Blend can quote in the same USDC that flows through <a href="aquarius-amm-explained">Aquarius AMM</a> pools, letting liquidity move fluidly across the ecosystem.</p>
 
       <h2 id="vs-others">Blend vs other lending models</h2>
       <p class="answer">Most lending protocols pick one of three shapes: isolated pools, one large shared pool, or an order book that matches lenders and borrowers directly. Blend takes the isolated-pool route, so each market contains its own risk. The trade-off is that liquidity is spread across many pools instead of pooled into one deep market.</p>
@@ -197,7 +197,7 @@
         <a href="https://app.whalehub.io/" class="btn btn-primary">Launch app</a>
       </div>
 
-      <p>This is exactly the territory WhaleHub is exploring. WhaleHub is a yield optimiser on Stellar, and we're researching <strong>leveraged LP strategies</strong> that could draw on Blend-style flash liquidity to amplify farming returns. To be clear: that work is <em>in development</em>. It is not live, not audited, and not a launched product — nothing here should be read as a promise of a specific integration or return. If you want the broader landscape first, our guides on <a href="stellar-yield-farming.html">Stellar yield farming</a> and <a href="best-yield-aggregators.html">the best yield aggregators</a> set the context for where leverage fits.</p>
+      <p>This is exactly the territory WhaleHub is exploring. WhaleHub is a yield optimiser on Stellar, and we're researching <strong>leveraged LP strategies</strong> that could draw on Blend-style flash liquidity to amplify farming returns. To be clear: that work is <em>in development</em>. It is not live, not audited, and not a launched product — nothing here should be read as a promise of a specific integration or return. If you want the broader landscape first, our guides on <a href="stellar-yield-farming">Stellar yield farming</a> and <a href="best-yield-aggregators">the best yield aggregators</a> set the context for where leverage fits.</p>
 
       <h2 id="risks">Risks to understand</h2>
       <p class="answer">Blend's isolated design contains risk, but it doesn't remove it. The main hazards are liquidation if your collateral falls, bad debt if a position can't be covered, oracle failure if a price feed is wrong, and smart-contract risk if code has a flaw. Understanding each one is the price of admission to any lending protocol.</p>
@@ -211,8 +211,8 @@
 
       <h2 id="getting-started">Getting started on Stellar DeFi</h2>
       <p class="answer">To use Stellar DeFi you need a Soroban-ready wallet, a little XLM for fees, and an asset like USDC to put to work. From there you can lend on a protocol like Blend, provide liquidity on an AMM, or let an optimiser compound rewards for you. Start small, read each protocol's docs, and understand the risks before committing size.</p>
-      <p>A sensible on-ramp looks like this. First, set up a wallet that supports Soroban and fund it with a small amount of XLM to cover transaction fees. Then acquire a working asset — USDC is the common denominator across most Stellar DeFi. Our <a href="stellar-defi-guide.html">Stellar DeFi guide</a> walks the whole stack from wallets to protocols, and <a href="stellar-yield-farming.html">our yield-farming explainer</a> covers how liquidity provision actually earns.</p>
-      <p>Where does WhaleHub fit into all this? WhaleHub isn't a lending protocol — it's a yield-optimization layer, sometimes described as "Convex for Stellar." You stake <a href="what-is-aqua-token.html">AQUA</a> and receive BLUB, a liquid receipt token whose value floats with the market; the protocol aggregates ICE voting power on Aquarius and auto-compounds the rewards. It's a hands-off way to earn on the AQUA ecosystem, and it sits alongside — not in place of — money markets like Blend.</p>
+      <p>A sensible on-ramp looks like this. First, set up a wallet that supports Soroban and fund it with a small amount of XLM to cover transaction fees. Then acquire a working asset — USDC is the common denominator across most Stellar DeFi. Our <a href="stellar-defi-guide">Stellar DeFi guide</a> walks the whole stack from wallets to protocols, and <a href="stellar-yield-farming">our yield-farming explainer</a> covers how liquidity provision actually earns.</p>
+      <p>Where does WhaleHub fit into all this? WhaleHub isn't a lending protocol — it's a yield-optimization layer, sometimes described as "Convex for Stellar." You stake <a href="what-is-aqua-token">AQUA</a> and receive BLUB, a liquid receipt token whose value floats with the market; the protocol aggregates ICE voting power on Aquarius and auto-compounds the rewards. It's a hands-off way to earn on the AQUA ecosystem, and it sits alongside — not in place of — money markets like Blend.</p>
       <hr />
       <p>Blend's headline idea is simple: build the lending layer out of small, isolated, self-insuring pools instead of one giant market, and let rates and pool creation run permissionlessly. The detail is where the craft lives — bTokens and dTokens, collateral and liability factors, backstop auctions, reactive rates. If you remember "isolated pools, own backstop, reactive rates," you have the shape of Stellar's money market.</p>
     </div>
@@ -238,9 +238,9 @@
     <section class="related">
       <h2>Read more</h2>
       <div class="related-grid">
-        <a href="stellar-defi-guide.html"><img src="../assets/blog/stellar-defi-guide.png" alt="" /><span>What Is Stellar DeFi?</span></a>
-        <a href="stellar-yield-farming.html"><img src="../assets/blog/stellar-yield-farming.png" alt="" /><span>Stellar Yield Farming</span></a>
-        <a href="soroban-smart-contracts.html"><img src="../assets/blog/soroban-smart-contracts.png" alt="" /><span>Soroban Smart Contracts</span></a>
+        <a href="stellar-defi-guide"><img src="../assets/blog/stellar-defi-guide.png" alt="" /><span>What Is Stellar DeFi?</span></a>
+        <a href="stellar-yield-farming"><img src="../assets/blog/stellar-yield-farming.png" alt="" /><span>Stellar Yield Farming</span></a>
+        <a href="soroban-smart-contracts"><img src="../assets/blog/soroban-smart-contracts.png" alt="" /><span>Soroban Smart Contracts</span></a>
       </div>
     </section>
 

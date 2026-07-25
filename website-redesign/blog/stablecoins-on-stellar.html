@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Stablecoins on Stellar: USDC, EURC, sUSD &amp; PYUSD | WhaleHub</title>
 <meta name="description" content="A plain-English guide to stablecoins on Stellar: Circle's native USDC and EURC, PayPal's PYUSD, dollar coins like sUSD, how trustlines work, and how they power DeFi yield." />
-<link rel="canonical" href="https://whalehub.io/blog/stablecoins-on-stellar.html" />
+<link rel="canonical" href="https://whalehub.io/blog/stablecoins-on-stellar" />
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 <meta name="author" content="WhaleHub Research" />
 <meta name="keywords" content="stellar stablecoins, usdc stellar, eurc stellar, pyusd stellar, stablecoins on stellar" />
 
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="WhaleHub" />
-<meta property="og:url" content="https://whalehub.io/blog/stablecoins-on-stellar.html" />
+<meta property="og:url" content="https://whalehub.io/blog/stablecoins-on-stellar" />
 <meta property="og:title" content="Stablecoins on Stellar: USDC, EURC, sUSD &amp; PYUSD" />
 <meta property="og:description" content="How stablecoins work on Stellar: native USDC and EURC from Circle, PayPal's PYUSD, trustlines, fast cheap transfers, and how they power DeFi yield." />
 <meta property="og:image" content="https://whalehub.io/assets/blog/stablecoins-on-stellar.png" />
@@ -39,7 +39,7 @@
   "@graph": [
     {
       "@type": "Article",
-      "@id": "https://whalehub.io/blog/stablecoins-on-stellar.html#article",
+      "@id": "https://whalehub.io/blog/stablecoins-on-stellar#article",
       "headline": "Stablecoins on Stellar: USDC, EURC, sUSD & PYUSD",
       "description": "A plain-English guide to stablecoins on Stellar: Circle's native USDC and EURC, PayPal's PYUSD, dollar coins like sUSD, how trustlines work, and how they power DeFi yield.",
       "image": "https://whalehub.io/assets/blog/stablecoins-on-stellar.png",
@@ -51,13 +51,13 @@
         "name": "WhaleHub",
         "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/stablecoins-on-stellar.html"
+      "mainEntityOfPage": "https://whalehub.io/blog/stablecoins-on-stellar"
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Stablecoins on Stellar", "item": "https://whalehub.io/blog/stablecoins-on-stellar.html" }
+        { "@type": "ListItem", "position": 2, "name": "Stablecoins on Stellar", "item": "https://whalehub.io/blog/stablecoins-on-stellar" }
       ]
     },
     {
@@ -133,7 +133,7 @@
       <h2 id="what-are">What are stablecoins on Stellar?</h2>
       <p class="answer">Stablecoins on Stellar are tokens designed to hold a steady value — usually one US dollar or one euro — that live as native Stellar assets. Most are fiat-backed: an issuer holds cash and short-term government debt in reserve and issues one token per unit held. On Stellar they settle in roughly five seconds for well under a cent, making them ideal for payments and DeFi.</p>
       <p>A stablecoin tries to do one thing well: stay worth what it says it is worth. The dominant model is <strong>fiat-backed</strong> — for every token in circulation, the issuer keeps a matching unit of cash or an equivalent asset (typically short-duration US Treasuries) in reserve, and publishes attestations of those holdings. Redeem a token and the issuer removes it from supply.</p>
-      <p>Stellar has carried stablecoins since its early days because the network was designed around moving value, not just recording it. The result is a small but serious set of regulated, fiat-backed coins that plug directly into Stellar's payments rails and its <a href="stellar-defi-guide.html">DeFi ecosystem</a>.</p>
+      <p>Stellar has carried stablecoins since its early days because the network was designed around moving value, not just recording it. The result is a small but serious set of regulated, fiat-backed coins that plug directly into Stellar's payments rails and its <a href="stellar-defi-guide">DeFi ecosystem</a>.</p>
 
       <h2 id="why-stellar">Why Stellar is strong for stablecoins</h2>
       <p class="answer">Stellar is payments-first: transactions finalize in about five seconds through the Stellar Consensus Protocol, the base fee is 0.00001 XLM (a fraction of a cent), and path payments can route one asset to another in a single operation. For stablecoins — which are used to move money, not to speculate — those properties matter more than raw programmability.</p>
@@ -155,7 +155,7 @@
       <p><strong>PYUSD</strong> is PayPal's US-dollar stablecoin, and it is available on Stellar in addition to its original networks. It is fully backed by dollar deposits, US Treasuries, and cash equivalents, and is regulated by the New York State Department of Financial Services. On Stellar, PYUSD inherits the same ~5-second, sub-cent settlement as every other asset.</p>
 
       <h3>sUSD and other dollar coins</h3>
-      <p><strong>sUSD</strong> is a dollar-denominated stablecoin that circulates on Stellar and appears in Aquarius <a href="aquarius-amm-explained.html">stable pools</a> such as sUSD/USDC. Because it trades against USDC at close to a 1:1 rate, it is a common building block for low-divergence liquidity provision. Always confirm an asset's issuing account in a Stellar explorer before trusting any lesser-known coin.</p>
+      <p><strong>sUSD</strong> is a dollar-denominated stablecoin that circulates on Stellar and appears in Aquarius <a href="aquarius-amm-explained">stable pools</a> such as sUSD/USDC. Because it trades against USDC at close to a 1:1 rate, it is a common building block for low-divergence liquidity provision. Always confirm an asset's issuing account in a Stellar explorer before trusting any lesser-known coin.</p>
 
       <div class="tbl-wrap">
       <table>
@@ -192,10 +192,10 @@
 
       <h2 id="defi">How stablecoins power DeFi &amp; yield on Stellar</h2>
       <p class="answer">Stablecoins are the backbone of Stellar DeFi. They form the safest liquidity-provision pairs — stable-to-stable pools like sUSD/USDC on Aquarius show little price divergence, so providers collect trading fees and AQUA emissions with reduced impermanent loss. Yield optimizers such as WhaleHub can auto-compound those positions many times per day.</p>
-      <p>On <a href="aquarius-amm-explained.html">Aquarius</a>, Stellar's main liquidity-incentive AMM, a "stable pool" pairs two assets that should trade near parity — for example one dollar coin against another. Because the two sides barely diverge in price, liquidity providers face far less <a href="what-is-liquidity-mining.html">impermanent loss</a> than they would in a volatile pair, while still earning a share of swap fees and AQUA rewards directed to the pool by ICE voters.</p>
+      <p>On <a href="aquarius-amm-explained">Aquarius</a>, Stellar's main liquidity-incentive AMM, a "stable pool" pairs two assets that should trade near parity — for example one dollar coin against another. Because the two sides barely diverge in price, liquidity providers face far less <a href="what-is-liquidity-mining">impermanent loss</a> than they would in a volatile pair, while still earning a share of swap fees and AQUA rewards directed to the pool by ICE voters.</p>
       <p>The catch is that harvesting those rewards and reinvesting them by hand is tedious and, on most chains, expensive. Stellar's sub-cent fees remove the cost problem, and a yield optimizer removes the effort. WhaleHub's <strong>liquidity vaults</strong> let you deposit a token pair once; the backend then re-deposits accumulated rewards roughly 48 times a day so your position compounds automatically. Stablecoin pairs are a natural fit because their low volatility keeps the compounding steady.</p>
-      <p>WhaleHub's other track — staking AQUA for <a href="what-is-blub-token.html">BLUB</a> rewards — sits alongside the vaults. BLUB is a floating, market-priced token minted when you stake AQUA; it is not a stablecoin and its value is set by the market, not pegged. Stablecoins are what keep the yield side of the equation denominated in something steady. For the broader picture, see our guide to <a href="stellar-yield-farming.html">yield farming on Stellar</a>.</p>
-      <p>Regulation is also shaping which stablecoins thrive. Frameworks like the EU's MiCA regime set reserve and disclosure rules that favor exactly the kind of fully-backed, attested coins Stellar hosts — we cover that in <a href="mica-stablecoins-defi.html">MiCA, stablecoins &amp; DeFi</a>.</p>
+      <p>WhaleHub's other track — staking AQUA for <a href="what-is-blub-token">BLUB</a> rewards — sits alongside the vaults. BLUB is a floating, market-priced token minted when you stake AQUA; it is not a stablecoin and its value is set by the market, not pegged. Stablecoins are what keep the yield side of the equation denominated in something steady. For the broader picture, see our guide to <a href="stellar-yield-farming">yield farming on Stellar</a>.</p>
+      <p>Regulation is also shaping which stablecoins thrive. Frameworks like the EU's MiCA regime set reserve and disclosure rules that favor exactly the kind of fully-backed, attested coins Stellar hosts — we cover that in <a href="mica-stablecoins-defi">MiCA, stablecoins &amp; DeFi</a>.</p>
 
       <h2 id="risks">Risks to understand</h2>
       <p>Stablecoins reduce price volatility, but they are not risk-free. Before holding or LPing with them, weigh these:</p>
@@ -232,9 +232,9 @@
     <section class="related">
       <h2>Read more</h2>
       <div class="related-grid">
-        <a href="mica-stablecoins-defi.html"><img src="../assets/blog/mica-stablecoins-defi.png" alt="" /><span>MiCA, Stablecoins &amp; DeFi</span></a>
-        <a href="stellar-defi-guide.html"><img src="../assets/blog/stellar-defi-guide.png" alt="" /><span>What Is Stellar DeFi?</span></a>
-        <a href="what-is-liquidity-mining.html"><img src="../assets/blog/what-is-liquidity-mining.png" alt="" /><span>What Is Liquidity Mining?</span></a>
+        <a href="mica-stablecoins-defi"><img src="../assets/blog/mica-stablecoins-defi.png" alt="" /><span>MiCA, Stablecoins &amp; DeFi</span></a>
+        <a href="stellar-defi-guide"><img src="../assets/blog/stellar-defi-guide.png" alt="" /><span>What Is Stellar DeFi?</span></a>
+        <a href="what-is-liquidity-mining"><img src="../assets/blog/what-is-liquidity-mining.png" alt="" /><span>What Is Liquidity Mining?</span></a>
       </div>
     </section>
 

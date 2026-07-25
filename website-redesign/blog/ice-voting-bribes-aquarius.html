@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ICE Voting &amp; Bribes on Aquarius, Explained | WhaleHub</title>
 <meta name="description" content="How ICE works on Aquarius: lock AQUA for non-transferable voting power, direct AQUA emissions to pools, and earn bribes. Stellar's Curve/Convex vote market, explained." />
-<link rel="canonical" href="https://whalehub.io/blog/ice-voting-bribes-aquarius.html" />
+<link rel="canonical" href="https://whalehub.io/blog/ice-voting-bribes-aquarius" />
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
 <meta name="author" content="WhaleHub Research" />
 <meta name="keywords" content="ice locking, aquarius bribes, vote incentives, ice stellar, aqua ice" />
 
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="WhaleHub" />
-<meta property="og:url" content="https://whalehub.io/blog/ice-voting-bribes-aquarius.html" />
+<meta property="og:url" content="https://whalehub.io/blog/ice-voting-bribes-aquarius" />
 <meta property="og:title" content="ICE Voting &amp; Bribes on Aquarius, Explained" />
 <meta property="og:description" content="Lock AQUA to get ICE, direct AQUA emissions to pools, and earn bribes. How Aquarius vote incentives create Stellar's Curve/Convex dynamic — and how WhaleHub aggregates ICE." />
 <meta property="og:image" content="https://whalehub.io/assets/blog/ice-voting-bribes-aquarius.png" />
@@ -39,7 +39,7 @@
   "@graph": [
     {
       "@type": "Article",
-      "@id": "https://whalehub.io/blog/ice-voting-bribes-aquarius.html#article",
+      "@id": "https://whalehub.io/blog/ice-voting-bribes-aquarius#article",
       "headline": "ICE Voting & Bribes on Aquarius, Explained",
       "description": "How ICE works on Aquarius: lock AQUA for non-transferable voting power, direct AQUA emissions to pools, and earn bribes. Stellar's Curve/Convex vote market, explained.",
       "image": "https://whalehub.io/assets/blog/ice-voting-bribes-aquarius.png",
@@ -51,13 +51,13 @@
         "name": "WhaleHub",
         "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/ice-voting-bribes-aquarius.html"
+      "mainEntityOfPage": "https://whalehub.io/blog/ice-voting-bribes-aquarius"
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "ICE Voting & Bribes on Aquarius", "item": "https://whalehub.io/blog/ice-voting-bribes-aquarius.html" }
+        { "@type": "ListItem", "position": 2, "name": "ICE Voting & Bribes on Aquarius", "item": "https://whalehub.io/blog/ice-voting-bribes-aquarius" }
       ]
     },
     {
@@ -134,13 +134,13 @@
     <div class="prose">
       <h2 id="what-is-ice">What is ICE?</h2>
       <p class="answer">ICE is the voting power you receive when you lock AQUA inside the Aquarius protocol. Unlike AQUA, it is non-transferable — you cannot trade or send it — and it decays as your lock nears expiry. You spend ICE by voting AQUA emissions toward specific liquidity pools, which is how Aquarius decides where rewards flow.</p>
-      <p>AQUA is the token of <a href="aquarius-amm-explained.html">Aquarius</a>, the liquidity-incentive layer that launched on Stellar in 2021. Holding AQUA on its own earns nothing. To participate in governance you lock it, and in return the protocol mints ICE to your account.</p>
-      <p>Two properties make ICE behave differently from an ordinary token. First, it is bound to your wallet — it can't be moved, so voting power can't be bought outright on a market. Second, longer locks generally grant more ICE, which rewards commitment over quick in-and-out positions. That combination is what turns AQUA from a passive holding into an active lever over Stellar's liquidity incentives. For the wider picture, see <a href="what-is-aqua-token.html">What Is the AQUA Token?</a></p>
+      <p>AQUA is the token of <a href="aquarius-amm-explained">Aquarius</a>, the liquidity-incentive layer that launched on Stellar in 2021. Holding AQUA on its own earns nothing. To participate in governance you lock it, and in return the protocol mints ICE to your account.</p>
+      <p>Two properties make ICE behave differently from an ordinary token. First, it is bound to your wallet — it can't be moved, so voting power can't be bought outright on a market. Second, longer locks generally grant more ICE, which rewards commitment over quick in-and-out positions. That combination is what turns AQUA from a passive holding into an active lever over Stellar's liquidity incentives. For the wider picture, see <a href="what-is-aqua-token">What Is the AQUA Token?</a></p>
 
       <h2 id="how-votes-direct">How ICE votes direct emissions</h2>
       <p class="answer">Aquarius emits AQUA rewards to liquidity pools each epoch, and ICE holders vote on how those emissions are split. Pools that attract the most ICE votes earn the largest share of AQUA rewards. So voting is not symbolic — it literally moves real yield toward the pools you back, which is why votes are worth competing for.</p>
       <p>Think of it as a recurring budget allocation. There is a pool of AQUA emissions to hand out, and ICE is the ballot that decides the split. If a pool wins a large fraction of the vote, liquidity providers in that pool collect a large fraction of the emissions on top of their trading fees.</p>
-      <p>Because the vote resets each cycle, the "best" pool to back can shift from epoch to epoch. Keeping up means tracking where votes and bribes are concentrating, then re-voting — work most individual holders won't do consistently. We walk through the underlying pool mechanics in <a href="aquarius-amm-explained.html">Aquarius AMM Explained</a>.</p>
+      <p>Because the vote resets each cycle, the "best" pool to back can shift from epoch to epoch. Keeping up means tracking where votes and bribes are concentrating, then re-voting — work most individual holders won't do consistently. We walk through the underlying pool mechanics in <a href="aquarius-amm-explained">Aquarius AMM Explained</a>.</p>
 
       <h2 id="bribes">The Aquarius bribe market</h2>
       <p class="answer">A bribe is a reward a project deposits to attract ICE votes to its pool. Voters who back that pool collect a share of the bribe in addition to AQUA emissions. It's an open, permissionless incentive market: a project that wants deep liquidity pays voters directly instead of, or alongside, running its own rewards program.</p>
@@ -150,7 +150,7 @@
       <h2 id="curve-wars">Why it's the Curve/Convex wars on Stellar</h2>
       <p class="answer">On Ethereum, Curve let locked-token voters direct emissions, so projects competed by bribing voters for liquidity — the "Curve wars." Convex then aggregated that locked voting power so small holders could share whale-tier influence. Aquarius recreates the same vote-and-bribe market on Stellar, and WhaleHub plays the aggregator role Convex played.</p>
       <p>The parallel is close because the incentive structure is the same. A protocol emits rewards; a locked, non-transferable token controls where those rewards go; and an open bribe market forms because directing emissions is valuable. Whoever controls the most voting power controls the most yield — so the natural next step is an aggregator that pools everyone's votes.</p>
-      <p>That is precisely where WhaleHub sits. It is often described as "Convex for Stellar": instead of thousands of small holders each locking, voting, and claiming alone, WhaleHub concentrates their ICE into one block and does the work once, at scale. If you're new to the broader ecosystem, our <a href="stellar-defi-guide.html">Stellar DeFi guide</a> maps how these pieces fit together.</p>
+      <p>That is precisely where WhaleHub sits. It is often described as "Convex for Stellar": instead of thousands of small holders each locking, voting, and claiming alone, WhaleHub concentrates their ICE into one block and does the work once, at scale. If you're new to the broader ecosystem, our <a href="stellar-defi-guide">Stellar DeFi guide</a> maps how these pieces fit together.</p>
 
       <h2 id="ice-vs-aqua">ICE vs raw AQUA</h2>
       <p>The distinction between simply holding AQUA and locking it for ICE is where most of the value decisions live:</p>
@@ -190,7 +190,7 @@
 
       <h2 id="whalehub">How WhaleHub aggregates ICE</h2>
       <p class="answer">WhaleHub aggregates ICE voting power from every staker into a single large block, votes it toward the highest-yielding Aquarius market, and harvests the AQUA emissions plus any bribes. The backend claims rewards roughly every 30 minutes, distributes them to stakers as BLUB, and reinvests a portion into more ICE and protocol-owned liquidity.</p>
-      <p>When you stake AQUA with WhaleHub, 90% stays in the staking contract, queued for ICE governance locking, and 10% goes toward liquidity-pool deposits. For every 1 AQUA you lock, 1.0 <a href="what-is-blub-token.html">BLUB</a> is minted to your staking balance as a liquid receipt — BLUB is a floating, market-priced token, minted 1&nbsp;:&nbsp;1 on stake but not redeemable for AQUA.</p>
+      <p>When you stake AQUA with WhaleHub, 90% stays in the staking contract, queued for ICE governance locking, and 10% goes toward liquidity-pool deposits. For every 1 AQUA you lock, 1.0 <a href="what-is-blub-token">BLUB</a> is minted to your staking balance as a liquid receipt — BLUB is a floating, market-priced token, minted 1&nbsp;:&nbsp;1 on stake but not redeemable for AQUA.</p>
       <p>The payoff is scale. A lone holder with a modest AQUA balance barely moves a vote and burns time claiming across markets each epoch. Thousands of holders pooled together wield voting weight no single account could, and the tedious part — voting, harvesting, reinvesting — runs automatically in the background. You get a proportional slice of everything the block earns without touching a ballot.</p>
 
       <h2 id="flywheel">The flywheel, step by step</h2>
@@ -212,7 +212,7 @@
 
 6. REINVEST  A portion buys more ICE and grows protocol-owned
              liquidity (POL) → step 2 gets stronger next epoch</code></pre>
-      <p>Each turn of the loop makes the next one bigger: more reinvested ICE means a heavier vote, a heavier vote captures more emissions and bribes, and more protocol-owned liquidity deepens the markets WhaleHub earns in. Stakers claim their accumulated BLUB rewards, with a 7-day cooldown between claims. To see how the compounding cadence works elsewhere in the protocol, read <a href="auto-compounding-explained.html">Auto-Compounding Explained</a>.</p>
+      <p>Each turn of the loop makes the next one bigger: more reinvested ICE means a heavier vote, a heavier vote captures more emissions and bribes, and more protocol-owned liquidity deepens the markets WhaleHub earns in. Stakers claim their accumulated BLUB rewards, with a 7-day cooldown between claims. To see how the compounding cadence works elsewhere in the protocol, read <a href="auto-compounding-explained">Auto-Compounding Explained</a>.</p>
       <hr />
       <p>ICE turns AQUA from an idle holding into a lever over Stellar's liquidity incentives, and the bribe market puts a real price on that lever. The mechanics are powerful but genuinely tedious to run solo — which is exactly the gap an aggregator fills. Understand ICE, understand bribes, and the rest of the Aquarius economy starts to make sense.</p>
     </div>
@@ -239,9 +239,9 @@
     <section class="related">
       <h2>Read more</h2>
       <div class="related-grid">
-        <a href="what-is-aqua-token.html"><img src="../assets/blog/what-is-aqua-token.png" alt="" /><span>What Is the AQUA Token?</span></a>
-        <a href="aquarius-amm-explained.html"><img src="../assets/blog/aquarius-amm-explained.png" alt="" /><span>Aquarius AMM Explained</span></a>
-        <a href="stellar-defi-guide.html"><img src="../assets/blog/stellar-defi-guide.png" alt="" /><span>What Is Stellar DeFi?</span></a>
+        <a href="what-is-aqua-token"><img src="../assets/blog/what-is-aqua-token.png" alt="" /><span>What Is the AQUA Token?</span></a>
+        <a href="aquarius-amm-explained"><img src="../assets/blog/aquarius-amm-explained.png" alt="" /><span>Aquarius AMM Explained</span></a>
+        <a href="stellar-defi-guide"><img src="../assets/blog/stellar-defi-guide.png" alt="" /><span>What Is Stellar DeFi?</span></a>
       </div>
     </section>
 
