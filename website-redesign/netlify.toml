@@ -3,6 +3,19 @@
 # `netlify deploy --prod --dir=website-redesign` — so this file is read from the
 # deployed root (website-redesign/). No build step; static files only.
 
+# Legacy blog URLs from the previous site version lived under /blog-posts/ and are
+# still indexed by Google (but now 404). 301 them to the new /blog/ so their crawl
+# equity + any inbound links carry over. Map the one known article to its closest
+# topical match; catch-all the rest to the blog index.
+[[redirects]]
+  from = "/blog-posts/unlocking-yield-in-the-crypto-space-a-guide-to-maximizing-returns"
+  to = "/blog/stellar-yield-farming"
+  status = 301
+[[redirects]]
+  from = "/blog-posts/*"
+  to = "/blog/"
+  status = 301
+
 # Long-cache immutable assets (logos, 3D coins, blog covers).
 [[headers]]
   for = "/assets/*"
