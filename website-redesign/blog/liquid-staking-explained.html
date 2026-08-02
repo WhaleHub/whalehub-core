@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>What Is Liquid Staking? Tokens, Risks &amp; How It Works | WhaleHub</title>
+<meta name="description" content="Liquid staking lets you stake an asset and still hold a tradable receipt token. A plain-English guide to how liquid staking tokens work, what they're good for, the real risks, and how the idea maps onto Stellar." />
+<link rel="canonical" href="https://whalehub.io/blog/liquid-staking-explained" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="liquid staking, what is liquid staking, liquid staking tokens, LST, liquid staking derivatives, staking receipt token" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/liquid-staking-explained" />
+<meta property="og:title" content="What Is Liquid Staking? Tokens, Risks &amp; How It Works" />
+<meta property="og:description" content="Stake an asset, keep a tradable receipt. How liquid staking tokens work, what they unlock, the real risks, and how the idea maps onto Stellar." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/liquid-staking-explained.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-08-02" />
+<meta property="article:modified_time" content="2026-08-02" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="What Is Liquid Staking? Tokens, Risks &amp; How It Works" />
+<meta name="twitter:description" content="Stake an asset, keep a tradable receipt. How liquid staking tokens work, the risks, and how the idea maps onto Stellar." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/liquid-staking-explained.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/liquid-staking-explained#article",
+      "headline": "What Is Liquid Staking? Tokens, Risks & How It Works",
+      "description": "Liquid staking lets you stake an asset and still hold a tradable receipt token that represents the position. A plain-English guide to how liquid staking tokens work, what they unlock, the real risks, and how the idea maps onto Stellar.",
+      "image": "https://whalehub.io/assets/blog/liquid-staking-explained.png",
+      "datePublished": "2026-08-02",
+      "dateModified": "2026-08-02",
+      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "WhaleHub",
+        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+      },
+      "mainEntityOfPage": "https://whalehub.io/blog/liquid-staking-explained"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
+        { "@type": "ListItem", "position": 2, "name": "What Is Liquid Staking?", "item": "https://whalehub.io/blog/liquid-staking-explained" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "What is liquid staking?", "acceptedAnswer": { "@type": "Answer", "text": "Liquid staking is a way to stake an asset while still holding something tradable that represents the position. Instead of your capital being locked and inert, a protocol stakes on your behalf and issues you a receipt token you can hold, transfer, or use elsewhere in DeFi while the underlying stake keeps earning." } },
+        { "@type": "Question", "name": "What is a liquid staking token?", "acceptedAnswer": { "@type": "Answer", "text": "A liquid staking token, or LST, is the receipt a liquid staking protocol issues when you deposit. It is a normal transferable token whose value derives from the staked position behind it. Some LSTs accrue value by slowly rising against the underlying asset, while others rebase so that your token balance grows over time." } },
+        { "@type": "Question", "name": "What are the risks of liquid staking?", "acceptedAnswer": { "@type": "Answer", "text": "The main risks are smart-contract failure in the staking protocol, market risk on the receipt token, which can trade below the value of the assets behind it during stress, exit-queue and liquidity risk when many people want out at once, penalties or slashing on the underlying stake where the network imposes them, and concentration risk when one protocol controls a large share of a network's stake." } },
+        { "@type": "Question", "name": "Is liquid staking better than regular staking?", "acceptedAnswer": { "@type": "Answer", "text": "It is a different trade, not a strictly better one. Liquid staking gives you flexibility and composability that locked staking cannot, but it adds a layer of smart-contract risk and introduces a receipt token whose market price can move independently of the assets behind it. Locked staking is simpler and has fewer moving parts." } },
+        { "@type": "Question", "name": "Can you stake XLM on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "Not in the proof-of-stake sense. Stellar reaches consensus through the Stellar Consensus Protocol rather than by staking, so there is no native protocol reward for locking up XLM. Yield on Stellar comes from application-layer activity instead — providing liquidity on AMMs, lending, and staking ecosystem tokens such as AQUA for Aquarius rewards." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; Fundamentals</div>
+      <span class="tag">Fundamentals</span>
+      <h1>What Is Liquid Staking? Tokens, Risks &amp; How It Works</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: August 2026</span>
+        <span class="dot-sep"></span>
+        <span>9 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/liquid-staking-explained.png" alt="What is liquid staking — tokens, risks and how it works, WhaleHub guide cover" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">Staking has always come with a catch: to earn, you had to lock your capital away and give up the ability to do anything else with it. <strong>Liquid staking</strong> is the answer to that trade-off. You stake, you keep earning, and you also receive a transferable receipt token that represents the position — so your capital is working in two places at once. This guide explains how that works, what the receipt tokens actually are, where the risks hide, and how the idea translates to Stellar.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#what-is">What is liquid staking?</a></li>
+        <li><a href="#how">How it works, step by step</a></li>
+        <li><a href="#lst">Liquid staking tokens explained</a></li>
+        <li><a href="#why">What it actually unlocks</a></li>
+        <li><a href="#risks">The risks nobody puts on the landing page</a></li>
+        <li><a href="#stellar">Liquid staking on Stellar</a></li>
+        <li><a href="#choose">How to evaluate a liquid staking protocol</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="what-is">What is liquid staking?</h2>
+      <p class="answer">Liquid staking is a way to stake an asset while still holding something tradable that represents the position. Instead of your capital being locked and inert, a protocol stakes on your behalf and issues you a receipt token you can hold, transfer, or use elsewhere in DeFi while the underlying stake keeps earning.</p>
+      <p>The problem it solves is old and simple. Staking is fundamentally a commitment: you agree to tie up capital in exchange for rewards, and the network — or the protocol — needs that commitment to be real. Historically the only way to make it real was to make the capital unmovable. Lock it, and you can't sell it, can't post it as collateral, can't respond to anything happening in the market.</p>
+      <p>Liquid staking splits the position in two. The <em>stake itself</em> stays committed and keeps doing its job. The <em>claim on that stake</em> becomes a token in your wallet. Those are different things, and once you separate them, the capital can be committed and mobile simultaneously.</p>
+      <p>That insight — represent an illiquid position with a liquid token — turned out to be one of the most productive ideas in DeFi, and it now underpins a large share of the assets staked across major networks.</p>
+
+      <div class="callout">
+        <div class="k">Liquid staking in one breath</div>
+        <ul>
+          <li><strong>What it is</strong> — staking that returns a tradable receipt instead of locking you out.</li>
+          <li><strong>What you get</strong> — a liquid staking token (LST) representing your position.</li>
+          <li><strong>Why it matters</strong> — the same capital can earn staking rewards and be used elsewhere.</li>
+          <li><strong>What it costs</strong> — an extra smart-contract layer, and a receipt whose market price can move.</li>
+        </ul>
+      </div>
+
+      <h2 id="how">How it works, step by step</h2>
+      <p class="answer">You deposit an asset into a liquid staking protocol. The protocol stakes those assets according to its strategy, issues you a receipt token representing your share of the pool, and accrues rewards into that pool over time. When you want out, you either redeem through the protocol or simply sell the receipt token on the open market.</p>
+      <p>Four steps, in order:</p>
+
+      <h3>1 — Deposit</h3>
+      <p>You send the underlying asset to the protocol's contract. From this point the protocol, not you, manages the staking mechanics — choosing validators, handling delegation, claiming rewards, dealing with whatever operational complexity the network imposes.</p>
+
+      <h3>2 — Receipt issued</h3>
+      <p>The contract mints you a receipt token. The amount you receive depends on the pool's current exchange rate: as rewards accumulate in the pool, each receipt token represents progressively more of the underlying asset, so later depositors receive proportionally fewer tokens for the same deposit.</p>
+
+      <h3>3 — Rewards accrue</h3>
+      <p>The protocol collects staking rewards and adds them to the pool. Crucially, <em>you do nothing</em>. Your token balance may stay constant while its backing grows, or the protocol may rebase your balance upward — the two designs are covered in the next section.</p>
+
+      <h3>4 — Exit</h3>
+      <p>Two doors out. Redeem through the protocol, which unstakes the underlying and may involve a waiting period the network requires; or sell the receipt token to someone else on a secondary market, which is instant but executes at whatever price the market offers. That second door is the entire point of the word "liquid."</p>
+
+      <h2 id="lst">Liquid staking tokens explained</h2>
+      <p class="answer">A liquid staking token, or LST, is the receipt a protocol issues on deposit. It is a normal transferable token whose value derives from the staked position behind it. Some LSTs accrue value by rising against the underlying asset over time; others rebase, so your balance grows while each token stays roughly constant in value.</p>
+      <p>Two designs dominate, and the difference matters for how you read your balance:</p>
+
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Design</th><th>What changes</th><th>What it looks like</th><th>Trade-off</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Value-accruing</strong></td><td>Price per token</td><td>Balance stays at 100 tokens; each is worth more of the underlying over time</td><td>Cleaner for DeFi integrations and accounting</td></tr>
+          <tr><td><strong>Rebasing</strong></td><td>Token balance</td><td>Balance grows from 100 to 105; each token tracks the underlying</td><td>Intuitive to read, but breaks some DeFi contracts</td></tr>
+          <tr><td><strong>Floating receipt</strong></td><td>Market price</td><td>The token trades freely; its price reflects supply, demand, and the position behind it</td><td>Maximum flexibility, no fixed redemption relationship</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <p>A critical point that trips up newcomers: <strong>an LST's market price is set by the market, not by decree.</strong> Whatever relationship a protocol describes between the receipt and the underlying, the price at which you can actually sell the receipt is whatever a buyer will pay for it at that moment. During calm periods that price usually tracks the underlying position closely. During stress — a rush for the exits, an exit queue backing up, bad news about the protocol — it can trade at a meaningful discount.</p>
+      <p>That gap isn't a malfunction. It's the market pricing in the time and uncertainty of getting back to the underlying asset, and it's a real cost borne by anyone who needs to exit right now rather than wait.</p>
+
+      <h2 id="why">What it actually unlocks</h2>
+      <p class="answer">Liquid staking makes staked capital composable. The receipt token can be used as collateral, supplied to liquidity pools, traded for immediate exit, or deposited into other yield strategies — so a single pool of capital can earn staking rewards and participate in the rest of DeFi at the same time.</p>
+      <p>The concrete benefits, roughly in order of how much people actually use them:</p>
+      <ul>
+        <li><strong>Instant exit.</strong> Networks with long unbonding periods make locked staking a genuine commitment. An LST lets you leave immediately by selling, at the cost of accepting the market's price.</li>
+        <li><strong>Collateral.</strong> Lending protocols can accept LSTs, letting you borrow against a staked position without unstaking it. Our guide to <a href="blend-protocol-stellar">Blend, Stellar's lending protocol</a>, covers how collateral works in that context.</li>
+        <li><strong>Stacked yield.</strong> Supply the LST to a liquidity pool and you earn trading fees on top of the staking rewards already accruing underneath.</li>
+        <li><strong>No minimums, no operations.</strong> Some networks require large minimum stakes or running infrastructure. Pooled liquid staking removes both barriers.</li>
+        <li><strong>Divisibility.</strong> A staked position is lumpy; a token is not. You can sell a third of your exposure without touching the rest.</li>
+      </ul>
+      <p>This composability is also where the systemic risk lives, which is the natural next topic.</p>
+
+      <h2 id="risks">The risks nobody puts on the landing page</h2>
+      <p class="answer">The main risks are smart-contract failure in the staking protocol, market risk on the receipt token, exit-queue and liquidity risk when many holders leave at once, penalties on the underlying stake where the network imposes them, and concentration risk when a single protocol controls a large share of a network's stake.</p>
+      <p>Each deserves a sentence of its own:</p>
+      <ul>
+        <li><strong>Smart-contract risk.</strong> You are adding a layer of code between yourself and your assets. Audits reduce this risk; they do not eliminate it. This is the price of admission and it is not negotiable.</li>
+        <li><strong>Market risk on the receipt.</strong> As covered above, the receipt token trades at whatever the market pays. If you need to exit during a panic, you may realise materially less than the underlying position is nominally worth.</li>
+        <li><strong>Liquidity and exit queues.</strong> The "instant exit" only holds while there's depth on the other side of the trade. Thin secondary liquidity plus a crowded protocol redemption queue is the scenario that turns a paper discount into a realised one.</li>
+        <li><strong>Penalties on the underlying.</strong> On networks that slash misbehaving validators, those penalties flow through to everyone in the pool. You've delegated validator selection to the protocol, so you've inherited its judgement.</li>
+        <li><strong>Concentration risk.</strong> When one liquid staking protocol accumulates a large fraction of a network's total stake, that becomes a governance and security concern for the network as a whole — and an uncomfortable single point of failure for everyone holding its token.</li>
+        <li><strong>Leverage loops.</strong> Because LSTs are good collateral, it's easy to borrow against one, buy more, and repeat. This amplifies returns and amplifies liquidation risk just as efficiently.</li>
+      </ul>
+
+      <div class="cta-band">
+        <div>
+          <div class="t">Staked AQUA that stays liquid</div>
+          <div class="s">WhaleHub stakes AQUA, aggregates ICE voting power, and auto-compounds Aquarius rewards — while you hold BLUB, a freely tradable receipt token.</div>
+        </div>
+        <a href="https://app.whalehub.io/" class="btn btn-primary">Launch app</a>
+      </div>
+
+      <h2 id="stellar">Liquid staking on Stellar</h2>
+      <p class="answer">Stellar has no native proof-of-stake rewards, because it reaches consensus through the Stellar Consensus Protocol rather than by staking. Yield on Stellar therefore comes from the application layer — liquidity provision, lending, and staking ecosystem tokens such as AQUA — and the liquid staking pattern is applied to those positions instead.</p>
+      <p>This surprises people arriving from Ethereum or Solana, so it's worth stating plainly: <strong>you cannot "stake XLM" for protocol rewards the way you can stake ETH or SOL.</strong> Stellar's validators don't put up capital and don't get paid inflation for participating; the network's security model simply doesn't work that way. Anyone advertising native XLM staking yield is describing something else — usually a lending product or a liquidity position — and it's worth knowing which.</p>
+      <p>What Stellar does have is a rich application layer. <a href="aquarius-amm-explained">Aquarius</a> runs the AMM and directs AQUA emissions to liquidity pools chosen by ICE voters. <a href="blend-protocol-stellar">Blend</a> provides money markets. <a href="soroban-smart-contracts">Soroban</a> makes all of it programmable. The yield is real; it just originates from activity rather than from inflation.</p>
+      <p>Into that context, WhaleHub applies the liquid staking pattern to AQUA. You stake <a href="what-is-aqua-token">AQUA</a> with the protocol and receive <a href="what-is-blub-token">BLUB</a>, a liquid receipt token. The protocol aggregates the resulting ICE voting power across all stakers — which is what makes a small position count for something — and auto-compounds the Aquarius rewards it earns.</p>
+      <p>Two honest clarifications about BLUB, in the spirit of the risks section above. First, <strong>BLUB is a floating token, not a pegged one.</strong> Its price is set by the market, and it is not a promise of redemption at a fixed rate against AQUA. Second, the rewards it represents are variable: Aquarius emissions depend on ICE votes and on which pools are whitelisted for rewards at any given time, so yields move and can fall. Neither of those makes the design worse than alternatives — but both are things you should understand before participating rather than after.</p>
+
+      <h2 id="choose">How to evaluate a liquid staking protocol</h2>
+      <p class="answer">Check who controls the contracts and whether they can be upgraded, how deep the secondary liquidity for the receipt token is, what the redemption path and waiting period actually look like, how fees are charged, and what the receipt token's price history shows during past stress.</p>
+      <p>A short checklist that generalises across networks:</p>
+      <ul>
+        <li><strong>Contract control.</strong> Immutable, multisig-governed, or upgradeable by one key? This single answer tells you most of what you need to know about trust assumptions.</li>
+        <li><strong>Secondary depth.</strong> How much of the receipt token can actually be sold before the price moves significantly? "Liquid" is a claim to be verified, not assumed.</li>
+        <li><strong>The redemption path.</strong> Can you redeem directly? How long does it take? Is there a queue, and what happened to that queue the last time markets fell?</li>
+        <li><strong>Fee structure.</strong> A performance fee on rewards is standard. Look for whether fees are charged on principal, and whether they can be changed unilaterally.</li>
+        <li><strong>Behaviour under stress.</strong> Look at the receipt token's price during the worst week it has seen. That's your realistic estimate of exit cost in a bad scenario — not the current price.</li>
+      </ul>
+      <hr />
+      <p>Liquid staking is a genuinely elegant idea: separate the commitment from the claim, and capital that used to sit idle becomes productive twice over. The cost is an extra layer of code and a receipt token that answers to the market rather than to a formula. Understand both halves of that trade, verify the liquidity claim rather than taking it on faith, and it becomes a tool you can use deliberately instead of a black box you hope works.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is liquid staking?</summary><p>Liquid staking is a way to stake an asset while still holding something tradable that represents the position. Instead of your capital being locked and inert, a protocol stakes on your behalf and issues you a receipt token you can hold, transfer, or use elsewhere in DeFi while the underlying stake keeps earning.</p></details>
+      <details><summary>What is a liquid staking token?</summary><p>A liquid staking token, or LST, is the receipt a liquid staking protocol issues when you deposit. It is a normal transferable token whose value derives from the staked position behind it. Some LSTs accrue value by slowly rising against the underlying asset, while others rebase so that your token balance grows over time.</p></details>
+      <details><summary>What are the risks of liquid staking?</summary><p>The main risks are smart-contract failure in the staking protocol, market risk on the receipt token, which can trade below the value of the assets behind it during stress, exit-queue and liquidity risk when many people want out at once, penalties or slashing on the underlying stake where the network imposes them, and concentration risk when one protocol controls a large share of a network's stake.</p></details>
+      <details><summary>Is liquid staking better than regular staking?</summary><p>It is a different trade, not a strictly better one. Liquid staking gives you flexibility and composability that locked staking cannot, but it adds a layer of smart-contract risk and introduces a receipt token whose market price can move independently of the assets behind it. Locked staking is simpler and has fewer moving parts.</p></details>
+      <details><summary>Can you stake XLM on Stellar?</summary><p>Not in the proof-of-stake sense. Stellar reaches consensus through the Stellar Consensus Protocol rather than by staking, so there is no native protocol reward for locking up XLM. Yield on Stellar comes from application-layer activity instead — providing liquidity on AMMs, lending, and staking ecosystem tokens such as AQUA for Aquarius rewards.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — protocols, tokens, and strategies — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="what-is-blub-token"><img src="../assets/blog/what-is-blub-token.png" alt="" /><span>What Is BLUB?</span></a>
+        <a href="how-to-stake-aqua"><img src="../assets/blog/how-to-stake-aqua.png" alt="" /><span>How to Stake AQUA</span></a>
+        <a href="best-yield-aggregators"><img src="../assets/blog/best-yield-aggregators.png" alt="" /><span>Best Yield Aggregators</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Put the pattern to work on Stellar</h2>
+      <p>Stake AQUA, receive BLUB as your liquid receipt token, and let WhaleHub aggregate ICE and auto-compound Aquarius rewards.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not financial or investment advice. Descriptions of third-party protocols reflect our understanding at the time of writing and may change. BLUB is a floating-value token whose price is set by the market; it is not a pegged instrument and carries no promise of redemption at any fixed rate. Rewards described here are variable and can fall to zero. DeFi involves significant risk, including smart-contract failure and the potential total loss of capital. Do your own research and consult a qualified professional before making decisions.</p>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

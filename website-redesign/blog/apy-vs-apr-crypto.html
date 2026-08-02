@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>APY vs APR in Crypto: What's the Difference? | WhaleHub</title>
+<meta name="description" content="APR is the simple yearly rate; APY includes compounding. A plain-English guide to APY vs APR in crypto — the conversion formula, worked numbers, and the traps in quoted DeFi yields." />
+<link rel="canonical" href="https://whalehub.io/blog/apy-vs-apr-crypto" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="apy vs apr, apr vs apy crypto, what is apy in crypto, apy meaning, compound interest crypto, defi apy" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/apy-vs-apr-crypto" />
+<meta property="og:title" content="APY vs APR in Crypto: What's the Difference?" />
+<meta property="og:description" content="APR is the simple yearly rate; APY includes compounding. The formula, worked numbers, and the traps hidden in quoted DeFi yields." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/apy-vs-apr-crypto.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-08-02" />
+<meta property="article:modified_time" content="2026-08-02" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="APY vs APR in Crypto: What's the Difference?" />
+<meta name="twitter:description" content="APR is simple interest; APY includes compounding. The formula, worked numbers, and the traps in quoted DeFi yields." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/apy-vs-apr-crypto.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/apy-vs-apr-crypto#article",
+      "headline": "APY vs APR in Crypto: What's the Difference?",
+      "description": "APR is the simple annual rate; APY is the rate you actually earn once compounding is counted. A plain-English guide with the conversion formula, worked numbers, and the traps hidden in quoted DeFi yields.",
+      "image": "https://whalehub.io/assets/blog/apy-vs-apr-crypto.png",
+      "datePublished": "2026-08-02",
+      "dateModified": "2026-08-02",
+      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "WhaleHub",
+        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+      },
+      "mainEntityOfPage": "https://whalehub.io/blog/apy-vs-apr-crypto"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
+        { "@type": "ListItem", "position": 2, "name": "APY vs APR in Crypto", "item": "https://whalehub.io/blog/apy-vs-apr-crypto" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "What is the difference between APY and APR?", "acceptedAnswer": { "@type": "Answer", "text": "APR is the simple annual rate with no compounding assumed — you earn the same amount each period on your original deposit. APY is the effective annual rate once earnings are reinvested and start earning too. For the same underlying rate, APY is always equal to or higher than APR, and the gap widens the more often compounding happens." } },
+        { "@type": "Question", "name": "Is a higher APY always better?", "acceptedAnswer": { "@type": "Answer", "text": "Not necessarily. A higher APY may simply reflect more frequent compounding of the same underlying rate, or it may reflect higher risk, a rate that resets constantly, or rewards paid in a volatile token whose price can fall faster than the yield accrues. Always ask what the yield is paid in, how variable it is, and what risk you are taking to earn it." } },
+        { "@type": "Question", "name": "How do you convert APR to APY?", "acceptedAnswer": { "@type": "Answer", "text": "Use APY = (1 + APR/n)^n − 1, where n is the number of compounding periods per year. For example, 20% APR compounded daily is (1 + 0.20/365)^365 − 1 ≈ 22.13% APY. If nothing is reinvested, n = 1 and APY equals APR." } },
+        { "@type": "Question", "name": "Why do DeFi protocols quote such high APYs?", "acceptedAnswer": { "@type": "Answer", "text": "Quoted DeFi APYs are usually projections: they take a recent short window of rewards and extrapolate it across a year, often assuming continuous reinvestment and a constant token price. Emissions schedules change, pool sizes change, and reward-token prices move, so a headline APY is a snapshot of current conditions rather than a promise about the next twelve months." } },
+        { "@type": "Question", "name": "Does auto-compounding change my APY?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Auto-compounding harvests rewards and reinvests them for you on a regular schedule, which converts a simple APR into a higher effective APY without you paying fees to claim and re-stake manually. The benefit grows with how often it runs and how large the underlying rate is." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; Fundamentals</div>
+      <span class="tag">Fundamentals</span>
+      <h1>APY vs APR in Crypto: What's the Difference?</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: August 2026</span>
+        <span class="dot-sep"></span>
+        <span>9 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/apy-vs-apr-crypto.png" alt="APY vs APR in crypto explained — WhaleHub guide cover" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">Two numbers describe the same yield and they almost never match. <strong>APR</strong> is the simple annual rate. <strong>APY</strong> is what you actually end up with once your earnings start earning. The difference is compounding — and in crypto, where rates are high and compounding is frequent, that difference gets large fast. This guide explains both, gives you the conversion formula, and walks through the traps hidden in quoted DeFi yields.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#short">The short answer</a></li>
+        <li><a href="#apr">What APR actually means</a></li>
+        <li><a href="#apy">What APY actually means</a></li>
+        <li><a href="#formula">The formula: converting APR to APY</a></li>
+        <li><a href="#worked">Worked example with real numbers</a></li>
+        <li><a href="#crypto">Why crypto yields are quoted differently</a></li>
+        <li><a href="#traps">Five traps in quoted APYs</a></li>
+        <li><a href="#compounding">Who does the compounding?</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="short">The short answer</h2>
+      <p class="answer">APR is the simple annual rate with no compounding assumed — you earn the same amount each period on your original deposit. APY is the effective annual rate once earnings are reinvested and start earning too. For the same underlying rate, APY is always equal to or higher than APR, and the gap widens the more often compounding happens.</p>
+      <p>If you remember one sentence, make it this one: <strong>APR describes the rate; APY describes the outcome.</strong> A protocol advertising "20% APR" and one advertising "22.13% APY" may be paying you the exact same thing — one is quoting the raw rate, the other is quoting that rate after a year of daily reinvestment.</p>
+      <p>This matters because the two numbers are not interchangeable, and comparing an APR from one platform against an APY from another is comparing a distance in miles against one in kilometres. The number is bigger; the journey is the same.</p>
+
+      <div class="callout">
+        <div class="k">APY vs APR at a glance</div>
+        <ul>
+          <li><strong>APR</strong> — Annual Percentage Rate. Simple interest. No reinvestment assumed.</li>
+          <li><strong>APY</strong> — Annual Percentage Yield. Compound interest. Reinvestment assumed.</li>
+          <li><strong>Relationship</strong> — APY ≥ APR, always. They are equal only when nothing compounds.</li>
+          <li><strong>What drives the gap</strong> — how often compounding happens, and how high the base rate is.</li>
+        </ul>
+      </div>
+
+      <h2 id="apr">What APR actually means</h2>
+      <p class="answer">APR, or Annual Percentage Rate, is the raw annual rate applied to your principal without assuming you reinvest anything. Deposit 1,000 units at 20% APR and, if you withdraw your earnings as they arrive, you finish the year with 200 units of profit — no more, no less.</p>
+      <p>APR is a <em>linear</em> measure. It answers the question "what rate is being applied?" and stops there. If a pool pays out rewards continuously and you sweep those rewards into your wallet and never touch them again, APR is an accurate description of what you earned.</p>
+      <p>In traditional finance, APR is the standard for quoting the cost of borrowing — mortgages, credit cards, car loans — partly because regulators require the figure to include certain fees, making loans comparable. In crypto, APR usually means something simpler: the emissions rate or interest rate before any reinvestment.</p>
+      <p>The important consequence: <strong>APR ignores what you do with your earnings.</strong> That's a feature when you're spending the yield and a limitation when you're reinvesting it.</p>
+
+      <h2 id="apy">What APY actually means</h2>
+      <p class="answer">APY, or Annual Percentage Yield, is the effective rate you earn over a year once earnings are reinvested and begin earning on their own. It bakes compounding into a single number, which makes it a fair basis for comparing two opportunities that compound at different frequencies.</p>
+      <p>Compounding is the whole story here. Suppose you earn 20% APR paid daily. On day one you earn interest on your original deposit. If you leave that interest in place, on day two you earn interest on your deposit <em>plus</em> day one's earnings. Repeat 365 times and the balance grows faster than a straight line — the curve bends upward.</p>
+      <p>APY captures that bend. It's the honest answer to "if I deposit this and touch nothing for a year, what percentage more will I have?" That's why it's the more useful number for anyone actually holding a position rather than harvesting income.</p>
+      <p>One nuance worth internalising: APY is only meaningful <em>if the compounding actually happens</em>. A protocol can quote an APY that assumes daily reinvestment, but if you have to manually claim and re-stake every day — paying transaction fees each time — your realised yield will fall short of the quote. This is exactly the gap that <a href="auto-compounding-explained">auto-compounding</a> exists to close.</p>
+
+      <h2 id="formula">The formula: converting APR to APY</h2>
+      <p class="answer">Convert with APY = (1 + APR/n)^n − 1, where n is the number of compounding periods per year. Daily compounding uses n = 365, monthly uses n = 12, and no compounding at all uses n = 1, in which case APY equals APR exactly.</p>
+      <p>Written out, the conversion is:</p>
+      <div class="callout">
+        <div class="k">The conversion</div>
+        <ul>
+          <li><strong>APR → APY:</strong> APY = (1 + APR ÷ n)<sup>n</sup> − 1</li>
+          <li><strong>APY → APR:</strong> APR = n × [(1 + APY)<sup>1/n</sup> − 1]</li>
+          <li><strong>n</strong> = compounding periods per year (365 daily, 52 weekly, 12 monthly, 4 quarterly, 1 none)</li>
+        </ul>
+      </div>
+      <p>Two properties fall out of that formula and are worth knowing by feel rather than by calculation.</p>
+      <p>First, <strong>the gap grows with the rate.</strong> At 2% APR, daily compounding gets you to about 2.02% APY — a rounding error. At 100% APR, daily compounding gets you to roughly 171% APY. Compounding barely matters on small rates and matters enormously on large ones, which is precisely why the distinction is so much more consequential in DeFi than in a savings account.</p>
+      <p>Second, <strong>the gap has a ceiling.</strong> Push n toward infinity and the formula converges on continuous compounding, e<sup>APR</sup> − 1. For a 20% APR that limit is 22.14% APY. Daily compounding already reaches 22.13%, so moving from daily to hourly to per-second buys you almost nothing. Anyone advertising a meaningfully higher APY than the continuous limit for a given APR is doing something other than compounding.</p>
+
+      <h2 id="worked">Worked example with real numbers</h2>
+      <p class="answer">At a 20% APR, a 10,000-unit deposit grows to 12,000 with no compounding, 12,193.91 with monthly compounding, and 12,213.36 with daily compounding. That is the difference between a 20.00% APY and a 22.13% APY on an identical underlying rate.</p>
+      <p>Here is the same 20% APR viewed through five compounding frequencies, on a 10,000-unit deposit held for one year:</p>
+
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Compounding</th><th>Periods (n)</th><th>Effective APY</th><th>Balance after 1 year</th></tr></thead>
+        <tbody>
+          <tr><td>None (simple)</td><td>1</td><td>20.00%</td><td>12,000.00</td></tr>
+          <tr><td>Quarterly</td><td>4</td><td>21.55%</td><td>12,155.06</td></tr>
+          <tr><td>Monthly</td><td>12</td><td>21.94%</td><td>12,193.91</td></tr>
+          <tr><td>Daily</td><td>365</td><td>22.13%</td><td>12,213.36</td></tr>
+          <tr><td>Continuous (limit)</td><td>∞</td><td>22.14%</td><td>12,214.03</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <p>Read the table as two separate lessons. The jump from <em>no compounding</em> to <em>monthly</em> is worth 194 units — real money, about 1.9% of the deposit. The jump from <em>monthly</em> to <em>continuous</em> is worth 20 units. Getting compounding to happen at all is where nearly all the value is; optimising its frequency past a point is chasing crumbs.</p>
+      <p>That is a useful lens on DeFi strategies. A vault that compounds daily instead of monthly is capturing that last 20 units, and if it charges more than that in fees to do so, you're worse off. A vault that compounds at all instead of leaving rewards idle is capturing the 194.</p>
+
+      <h2 id="crypto">Why crypto yields are quoted differently</h2>
+      <p class="answer">Crypto yields are usually projections rather than commitments. A quoted APY typically annualises a recent window of rewards, assumes continuous reinvestment, and holds the reward-token price constant. All three assumptions can break, which is why the figure you see on a dashboard is a snapshot of current conditions, not a forecast.</p>
+      <p>In a bank, an advertised APY is a contractual rate — it changes when the bank decides to change it, and you'll be told. In DeFi, the yield is an <em>emergent</em> property of a system. It falls out of how many tokens are being emitted, how many people are sharing them, what those tokens are worth, and how much trading volume the pool sees. None of those inputs is fixed.</p>
+      <p>Three mechanics in particular make crypto quoting unusual:</p>
+      <ul>
+        <li><strong>Yields are diluted by deposits.</strong> If a pool emits a fixed number of reward tokens per day, doubling the capital in the pool roughly halves everyone's rate. Quoted APYs frequently drop the moment they attract attention.</li>
+        <li><strong>Rewards are often paid in a different asset.</strong> You deposit one token and receive another as a reward. Your realised return depends on the reward token's price when you sell it, not when the APY was calculated.</li>
+        <li><strong>The measurement window is short.</strong> Many dashboards annualise a 24-hour or 7-day window. A quiet day and a busy day can produce very different headline numbers for the same pool.</li>
+      </ul>
+      <p>None of that makes quoted yields useless — it makes them a starting point for questions rather than an ending point. If you're new to how these rewards are generated in the first place, our guides to <a href="what-is-liquidity-mining">liquidity mining</a> and <a href="stellar-yield-farming">yield farming on Stellar</a> cover the underlying mechanics.</p>
+
+      <h2 id="traps">Five traps in quoted APYs</h2>
+      <p class="answer">The common traps are comparing an APR against an APY, treating a projected rate as a guaranteed one, ignoring the reward token's price risk, ignoring fees and gas that eat the compounding benefit, and overlooking impermanent loss in liquidity-pool positions.</p>
+      <p>Each of these has cost real people real money. In rough order of how often they bite:</p>
+      <ul>
+        <li><strong>Unit mismatch.</strong> Platform A quotes 20% APR, platform B quotes 21% APY. B looks better and is actually worse — A compounds to 22.13%. Always convert both to the same unit before comparing.</li>
+        <li><strong>Projection treated as promise.</strong> A 40% APY badge means "at this instant, extrapolated." If emissions taper or the pool doubles in size next week, the number moves. Look at the rate's history, not just today's value.</li>
+        <li><strong>Reward-token price risk.</strong> A 60% APY paid in a token that falls 50% over the year is a losing position. Denominate the return in something you care about — the asset you deposited, or dollars — not in the reward token.</li>
+        <li><strong>Fees and gas.</strong> Compounding requires transactions. On an expensive chain, manually compounding a small position daily can cost more than the compounding earns. This is why low-fee networks and pooled auto-compounders change the arithmetic so much.</li>
+        <li><strong>Impermanent loss.</strong> If the yield comes from providing liquidity to a pool of two assets, the quoted APY usually describes only the rewards — not the divergence loss you take if the two assets move apart in price. Our <a href="impermanent-loss-explained">impermanent loss explainer</a> works through the actual numbers.</li>
+      </ul>
+
+      <div class="cta-band">
+        <div>
+          <div class="t">Compounding, handled for you</div>
+          <div class="s">WhaleHub stakes AQUA, aggregates ICE voting power, and auto-compounds Aquarius rewards on a schedule — so the APY you're quoted is the APY the position is actually working toward.</div>
+        </div>
+        <a href="https://app.whalehub.io/" class="btn btn-primary">Launch app</a>
+      </div>
+
+      <h2 id="compounding">Who does the compounding?</h2>
+      <p class="answer">Compounding only helps if someone actually performs it. You can do it manually by claiming rewards and re-staking them, which costs time and transaction fees, or you can use a protocol that harvests and reinvests automatically for everyone in the pool, spreading the cost across all participants.</p>
+      <p>Manual compounding is straightforward but has an awkward economics problem: the optimal frequency depends on your position size. If claiming costs a fixed fee, a large position can profitably compound daily while a small position can only justify it monthly or quarterly — so smaller depositors systematically earn a lower effective APY on the same nominal rate.</p>
+      <p>Pooled auto-compounding fixes that asymmetry. One transaction harvests and reinvests on behalf of everyone in the vault, so the per-user cost of compounding falls as the vault grows, and a small depositor gets the same compounding frequency as a large one. This is the core idea behind <a href="best-yield-aggregators">yield aggregators</a>, and it's why they exist as a product category at all.</p>
+      <p>Where does WhaleHub fit? WhaleHub is a yield-optimization protocol on Stellar — sometimes described as "Convex for Stellar." You stake <a href="what-is-aqua-token">AQUA</a> and receive BLUB, a liquid receipt token whose value floats with the market, while the protocol aggregates ICE voting power on Aquarius and auto-compounds the resulting rewards. The point of that design, in the language of this article, is to turn a rate you'd have to chase manually into an effective yield that accrues without you doing anything.</p>
+      <hr />
+      <p>APR and APY aren't rival metrics — they're the same rate described before and after compounding. Learn the conversion, insist on comparing like with like, and treat any headline yield as a claim to be interrogated rather than a number to be trusted. In a market where rates are quoted in percentages that would be absurd in traditional finance, the discipline of asking "compounded how often, paid in what, and for how long?" is most of what separates a considered position from a hopeful one.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is the difference between APY and APR?</summary><p>APR is the simple annual rate with no compounding assumed — you earn the same amount each period on your original deposit. APY is the effective annual rate once earnings are reinvested and start earning too. For the same underlying rate, APY is always equal to or higher than APR, and the gap widens the more often compounding happens.</p></details>
+      <details><summary>Is a higher APY always better?</summary><p>Not necessarily. A higher APY may simply reflect more frequent compounding of the same underlying rate, or it may reflect higher risk, a rate that resets constantly, or rewards paid in a volatile token whose price can fall faster than the yield accrues. Always ask what the yield is paid in, how variable it is, and what risk you are taking to earn it.</p></details>
+      <details><summary>How do you convert APR to APY?</summary><p>Use APY = (1 + APR/n)^n − 1, where n is the number of compounding periods per year. For example, 20% APR compounded daily is (1 + 0.20/365)^365 − 1 ≈ 22.13% APY. If nothing is reinvested, n = 1 and APY equals APR.</p></details>
+      <details><summary>Why do DeFi protocols quote such high APYs?</summary><p>Quoted DeFi APYs are usually projections: they take a recent short window of rewards and extrapolate it across a year, often assuming continuous reinvestment and a constant token price. Emissions schedules change, pool sizes change, and reward-token prices move, so a headline APY is a snapshot of current conditions rather than a promise about the next twelve months.</p></details>
+      <details><summary>Does auto-compounding change my APY?</summary><p>Yes. Auto-compounding harvests rewards and reinvests them for you on a regular schedule, which converts a simple APR into a higher effective APY without you paying fees to claim and re-stake manually. The benefit grows with how often it runs and how large the underlying rate is.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — protocols, tokens, and strategies — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="auto-compounding-explained"><img src="../assets/blog/auto-compounding-explained.png" alt="" /><span>Auto-Compounding Explained</span></a>
+        <a href="impermanent-loss-explained"><img src="../assets/blog/impermanent-loss-explained.png" alt="" /><span>Impermanent Loss Explained</span></a>
+        <a href="best-yield-aggregators"><img src="../assets/blog/best-yield-aggregators.png" alt="" /><span>Best Yield Aggregators</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Let the compounding run itself</h2>
+      <p>Stake AQUA, receive BLUB as your liquid receipt, and let WhaleHub auto-compound Aquarius rewards — hands-off, on Stellar.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not financial, investment, or tax advice. All figures are illustrative examples used to demonstrate arithmetic, not offers, forecasts, or representations of any rate available on WhaleHub or elsewhere. Yields in DeFi are variable and can fall to zero. DeFi involves significant risk, including the potential total loss of capital. Do your own research and consult a qualified professional before making decisions.</p>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

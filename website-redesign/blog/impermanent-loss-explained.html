@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Impermanent Loss Explained (With Real Numbers) | WhaleHub</title>
+<meta name="description" content="Impermanent loss is the gap between providing liquidity and simply holding. A plain-English guide with the formula, a full worked example, the standard loss table, and how fees offset it." />
+<link rel="canonical" href="https://whalehub.io/blog/impermanent-loss-explained" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="impermanent loss, what is impermanent loss, impermanent loss calculator, impermanent loss formula, divergence loss, liquidity pool risk" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/impermanent-loss-explained" />
+<meta property="og:title" content="Impermanent Loss Explained (With Real Numbers)" />
+<meta property="og:description" content="The formula, a full worked example, the standard loss table, and how trading fees offset it. Impermanent loss in plain English." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/impermanent-loss-explained.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-08-02" />
+<meta property="article:modified_time" content="2026-08-02" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="Impermanent Loss Explained (With Real Numbers)" />
+<meta name="twitter:description" content="The formula, a worked example, the standard loss table, and how trading fees offset it." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/impermanent-loss-explained.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/impermanent-loss-explained#article",
+      "headline": "Impermanent Loss Explained (With Real Numbers)",
+      "description": "Impermanent loss is the gap between providing liquidity to an AMM pool and simply holding the two assets. This guide covers the formula, a full worked example, the standard loss table, and how trading fees offset it.",
+      "image": "https://whalehub.io/assets/blog/impermanent-loss-explained.png",
+      "datePublished": "2026-08-02",
+      "dateModified": "2026-08-02",
+      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "WhaleHub",
+        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+      },
+      "mainEntityOfPage": "https://whalehub.io/blog/impermanent-loss-explained"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
+        { "@type": "ListItem", "position": 2, "name": "Impermanent Loss Explained", "item": "https://whalehub.io/blog/impermanent-loss-explained" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "What is impermanent loss?", "acceptedAnswer": { "@type": "Answer", "text": "Impermanent loss is the difference in value between providing two assets to a liquidity pool and simply holding those same two assets in your wallet. It appears when the two assets change price relative to each other, because the pool automatically rebalances by selling the asset that rose and buying the one that fell." } },
+        { "@type": "Question", "name": "Why is it called impermanent?", "acceptedAnswer": { "@type": "Answer", "text": "Because the loss only exists on paper while the price divergence lasts. If the two assets return to their original price ratio, the gap disappears entirely. The moment you withdraw from the pool, however, whatever loss exists at that instant becomes permanent and realised." } },
+        { "@type": "Question", "name": "How do you calculate impermanent loss?", "acceptedAnswer": { "@type": "Answer", "text": "For a standard 50/50 constant-product pool, impermanent loss = 2 × √p ÷ (1 + p) − 1, where p is the ratio of the new price to the original price of one asset against the other. A 2× price move gives roughly 5.7% loss, a 4× move gives 20%, and a 10× move gives about 42.5%." } },
+        { "@type": "Question", "name": "Can trading fees offset impermanent loss?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Liquidity providers earn a share of every swap that passes through the pool, plus any incentive rewards the protocol pays. If those earnings over your holding period exceed the divergence loss at the moment you withdraw, your position outperforms simply holding. High-volume pools and low-volatility pairs are where this happens most reliably." } },
+        { "@type": "Question", "name": "How can you reduce impermanent loss?", "acceptedAnswer": { "@type": "Answer", "text": "Provide liquidity to pairs whose prices track each other closely, such as two dollar stablecoins or a token and its own staked derivative, since prices that move together produce almost no divergence. Prefer pools with high trading volume relative to their size, be aware that concentrated liquidity amplifies both fees and losses, and size positions so that a large adverse move is survivable." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; Fundamentals</div>
+      <span class="tag">Fundamentals</span>
+      <h1>Impermanent Loss Explained (With Real Numbers)</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: August 2026</span>
+        <span class="dot-sep"></span>
+        <span>10 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/impermanent-loss-explained.png" alt="Impermanent loss explained with real numbers — WhaleHub guide cover" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">Impermanent loss is the most misunderstood number in DeFi. It isn't a fee, it isn't a hack, and it isn't really a "loss" in the ordinary sense — it's an <strong>opportunity cost</strong>: the gap between what your liquidity position is worth and what those same two assets would have been worth if you'd just held them. This guide gives you the formula, the standard loss table, a full worked example in dollars, and an honest account of when fees make the trade worth it.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#what-is">What is impermanent loss?</a></li>
+        <li><a href="#why">Why it happens: the rebalancing problem</a></li>
+        <li><a href="#formula">The formula and the loss table</a></li>
+        <li><a href="#worked">A full worked example</a></li>
+        <li><a href="#fees">When fees outweigh the loss</a></li>
+        <li><a href="#reduce">Five ways to reduce it</a></li>
+        <li><a href="#concentrated">Concentrated liquidity amplifies it</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="what-is">What is impermanent loss?</h2>
+      <p class="answer">Impermanent loss is the difference in value between providing two assets to a liquidity pool and simply holding those same two assets in your wallet. It appears when the two assets change price relative to each other, because the pool automatically rebalances by selling the asset that rose and buying the one that fell.</p>
+      <p>Notice what the definition does <em>not</em> say. It doesn't say you lose money — you can finish with more dollars than you started with and still have suffered impermanent loss, because the comparison is against holding, not against zero. It also doesn't say anything was taken from you. Nobody stole anything; the pool did exactly what it was designed to do.</p>
+      <p>The word "impermanent" is doing real work. While your capital sits in the pool and prices are diverged, the gap is unrealised — it exists only as a comparison to a path you didn't take. If the two assets drift back to their original ratio, the gap closes to zero on its own. <strong>The instant you withdraw, though, whatever gap exists at that moment becomes permanent.</strong> Some people prefer the term <em>divergence loss</em> for exactly this reason: it names the cause rather than promising the loss will go away.</p>
+
+      <div class="callout">
+        <div class="k">Impermanent loss in one breath</div>
+        <ul>
+          <li><strong>What it is</strong> — the shortfall of an LP position versus holding the same two assets.</li>
+          <li><strong>What causes it</strong> — the two assets' prices moving apart from each other.</li>
+          <li><strong>What cancels it</strong> — prices converging back, or fees and rewards exceeding the gap.</li>
+          <li><strong>When it becomes real</strong> — the moment you withdraw your liquidity.</li>
+        </ul>
+      </div>
+
+      <h2 id="why">Why it happens: the rebalancing problem</h2>
+      <p class="answer">A constant-product AMM keeps the product of its two reserves fixed, which forces it to hold less of whichever asset is rising and more of whichever is falling. Arbitrage traders enforce this rebalancing, and the pool is effectively selling winners and buying losers on your behalf.</p>
+      <p>A standard <a href="aquarius-amm-explained">automated market maker</a> pool holds two assets and obeys a simple rule: <code>x × y = k</code>. The quantity of asset X multiplied by the quantity of asset Y stays constant as people trade. Price is just the ratio between the two reserves.</p>
+      <p>Now suppose the market price of one asset doubles somewhere else. The pool doesn't know that — it only knows its own ratio. So its price is briefly wrong, and an arbitrage trader steps in to buy the now-underpriced asset from the pool until the pool's ratio matches the market. That trade is profitable for the arbitrageur, and the profit comes out of the pool's value.</p>
+      <p>Zoom out and the pattern is stark. <strong>The pool systematically sells the asset that is going up and buys the asset that is going down.</strong> That is the opposite of what a directional investor wants, and it's the mechanical source of impermanent loss. You are, in effect, being paid trading fees to provide a continuous rebalancing service to the market.</p>
+      <p>One important consequence: impermanent loss is <em>symmetric</em>. It does not matter which asset moves or in which direction — only how far the two prices diverge. An asset halving produces exactly the same loss percentage as it doubling.</p>
+
+      <h2 id="formula">The formula and the loss table</h2>
+      <p class="answer">For a standard 50/50 constant-product pool, impermanent loss = 2 × √p ÷ (1 + p) − 1, where p is the ratio of the new price to the original price of one asset against the other. A 2× price move produces roughly 5.7% loss, a 4× move produces 20%, and a 10× move produces about 42.5%.</p>
+      <p>The formula is short enough to memorise:</p>
+
+      <div class="callout">
+        <div class="k">The formula</div>
+        <ul>
+          <li><strong>IL</strong> = 2√p ÷ (1 + p) − 1</li>
+          <li><strong>p</strong> = new price ratio ÷ original price ratio</li>
+          <li>The result is negative — that's the percentage you trail a simple hold by.</li>
+          <li>p = 1 means no divergence, and the formula returns exactly 0.</li>
+        </ul>
+      </div>
+
+      <p>Because the formula depends only on p, the same table applies to every 50/50 constant-product pool on every chain. This is the reference table worth committing to memory:</p>
+
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Price change</th><th>Ratio (p)</th><th>Impermanent loss</th><th>Feels like</th></tr></thead>
+        <tbody>
+          <tr><td>+25% / −20%</td><td>1.25×</td><td>0.62%</td><td>Negligible</td></tr>
+          <tr><td>+50% / −33%</td><td>1.5×</td><td>2.02%</td><td>Noticeable</td></tr>
+          <tr><td>2× / −50%</td><td>2×</td><td>5.72%</td><td>Fees can still cover it</td></tr>
+          <tr><td>3× / −67%</td><td>3×</td><td>13.40%</td><td>Needs a high-fee pool</td></tr>
+          <tr><td>4× / −75%</td><td>4×</td><td>20.00%</td><td>Painful</td></tr>
+          <tr><td>5× / −80%</td><td>5×</td><td>25.46%</td><td>Rarely recoverable</td></tr>
+          <tr><td>10× / −90%</td><td>10×</td><td>42.50%</td><td>You should have held</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <p>Two things stand out. First, the curve is <strong>gentle at the start and brutal at the tail</strong> — small moves cost almost nothing, which is why stable pairs are so forgiving. Second, note the symmetry column: "2× or −50%" produce identical loss, confirming that direction is irrelevant.</p>
+
+      <h2 id="worked">A full worked example</h2>
+      <p class="answer">Deposit $5,000 of XLM and $5,000 of USDC into a 50/50 pool at $0.40 per XLM. If XLM doubles to $0.80, the position is worth $14,142 while simply holding would have been worth $15,000 — a shortfall of $858, or 5.72%, exactly as the formula predicts.</p>
+      <p>Let's do it step by step so nothing is hidden.</p>
+
+      <h3>Step 1 — The deposit</h3>
+      <p>XLM is at $0.40. You deposit 12,500 XLM ($5,000) and 5,000 USDC ($5,000), for a $10,000 position. The pool's constant is <code>k = 12,500 × 5,000 = 62,500,000</code>.</p>
+
+      <h3>Step 2 — The price moves</h3>
+      <p>XLM doubles to $0.80. Arbitrageurs trade against the pool until its internal ratio matches. Solving <code>x × y = k</code> with a price of 0.80 gives new reserves of <strong>8,838.83 XLM</strong> and <strong>7,071.07 USDC</strong>. The pool sold roughly 3,661 XLM into the rally on your behalf.</p>
+
+      <h3>Step 3 — Compare the two outcomes</h3>
+
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th></th><th>Held in wallet</th><th>Held in the pool</th></tr></thead>
+        <tbody>
+          <tr><td>XLM</td><td>12,500 × $0.80 = $10,000</td><td>8,838.83 × $0.80 = $7,071.07</td></tr>
+          <tr><td>USDC</td><td>$5,000</td><td>$7,071.07</td></tr>
+          <tr><td><strong>Total value</strong></td><td><strong>$15,000.00</strong></td><td><strong>$14,142.14</strong></td></tr>
+          <tr><td>Difference</td><td>—</td><td>−$857.86 (−5.72%)</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <p>Here is the part people miss: <strong>the LP position still made money.</strong> It went from $10,000 to $14,142 — a 41% gain. The "loss" is that holding would have returned 50%. If you'd been paid more than $858 in trading fees and rewards over that period, providing liquidity was the better decision outright.</p>
+      <p>And if XLM later fell back to $0.40, the pool would rebalance again and the entire $858 gap would vanish. That is the "impermanent" part, made concrete.</p>
+
+      <h2 id="fees">When fees outweigh the loss</h2>
+      <p class="answer">Liquidity providers earn a share of every swap that passes through the pool, plus any incentive rewards the protocol pays. If those earnings over your holding period exceed the divergence loss at the moment you withdraw, your position beats holding. High-volume pools and low-volatility pairs are where this happens most reliably.</p>
+      <p>Impermanent loss is only one side of the ledger. The other side has two entries:</p>
+      <ul>
+        <li><strong>Swap fees.</strong> Every trade routed through the pool pays a fee that accrues to liquidity providers pro rata. The relevant metric is not the fee rate alone but <em>volume relative to pool size</em> — a pool doing daily volume equal to its own TVL at a 0.30% fee is earning its providers roughly 0.30% per day before any rewards.</li>
+        <li><strong>Incentive rewards.</strong> Many protocols emit a reward token to liquidity providers on top of swap fees. On Stellar, Aquarius directs AQUA emissions to pools chosen by ICE voters — the mechanism our <a href="ice-voting-bribes-aquarius">ICE voting guide</a> covers in detail.</li>
+      </ul>
+      <p>So the real question is never "will I suffer impermanent loss?" — you will, if the prices diverge at all. The question is <strong>"will fees plus rewards, compounded over my holding period, exceed the divergence at the moment I exit?"</strong> That reframing turns a scary-sounding risk into an ordinary expected-value calculation.</p>
+      <p>Note the interaction with compounding: rewards that are harvested and reinvested grow faster than rewards left idle, so the fee side of the ledger benefits materially from <a href="auto-compounding-explained">auto-compounding</a>. Impermanent loss, meanwhile, does not compound — it's a function of the price ratio alone. Time is therefore on the fee side of the equation, which is why patient liquidity in a busy pool tends to win.</p>
+
+      <div class="cta-band">
+        <div>
+          <div class="t">Earn without picking pools yourself</div>
+          <div class="s">WhaleHub stakes AQUA, aggregates ICE voting power, and auto-compounds Aquarius rewards — a single-asset position, so there's no two-token pool to diverge.</div>
+        </div>
+        <a href="https://app.whalehub.io/" class="btn btn-primary">Launch app</a>
+      </div>
+
+      <h2 id="reduce">Five ways to reduce it</h2>
+      <p class="answer">Choose correlated pairs whose prices track each other, favour pools with high volume relative to their size, understand that concentrated ranges amplify the effect, consider single-asset strategies that avoid pairs entirely, and size positions so a large adverse move is survivable.</p>
+      <p>In rough order of effectiveness:</p>
+      <ul>
+        <li><strong>Pair correlated assets.</strong> Two dollar stablecoins, or a token and its own staked derivative, barely diverge — so p stays close to 1 and the loss stays close to zero. This is why stableswap-style pools exist and why they can run on thin fees.</li>
+        <li><strong>Chase volume, not TVL.</strong> A large pool with no trading pays almost nothing. Compare a pool's daily volume against its total liquidity; that ratio, times the fee, is your real fee yield.</li>
+        <li><strong>Respect the tail.</strong> The loss table is nearly flat up to 1.5× and steep past 3×. If you think an asset might 5×, holding it is probably the better expression of that view than pooling it.</li>
+        <li><strong>Consider single-asset strategies.</strong> Staking, lending, and single-sided vaults have no second asset to diverge against, so impermanent loss simply doesn't apply. You trade it for other risks — smart-contract risk, and rates that can fall.</li>
+        <li><strong>Size for the drawdown.</strong> Assume a 3× divergence and check whether the resulting 13.4% shortfall is survivable for that position. If it isn't, the position is too big.</li>
+      </ul>
+
+      <h2 id="concentrated">Concentrated liquidity amplifies it</h2>
+      <p class="answer">Concentrated liquidity lets you supply capital within a chosen price band rather than across the whole curve, which multiplies both the fees you earn and the impermanent loss you take. If price exits your band, the position ends up entirely in the weaker asset and stops earning fees altogether.</p>
+      <p>The trade is easy to state and hard to manage. By concentrating your capital into a narrow range, you provide far deeper liquidity at the prices that actually trade — so you capture a much larger share of fees per dollar deposited. The same concentration means a given price move rebalances a far larger fraction of your position, so the divergence loss scales up too.</p>
+      <p>Worse, the loss becomes less "impermanent." Once price leaves your range, you hold 100% of whichever asset performed worse and earn nothing until price returns or you rebalance. The gentle self-healing property of a full-range position is gone.</p>
+      <p>This isn't an argument against concentrated liquidity — it's an argument that it's an active strategy rather than a passive one. Our guide to <a href="aquarius-concentrated-liquidity">Aquarius concentrated liquidity pools</a> walks through how ranges, capital efficiency, and rewards interact on Stellar specifically.</p>
+      <p>Where does WhaleHub sit in all this? WhaleHub is a yield-optimization protocol on Stellar rather than a liquidity pool. You stake <a href="what-is-aqua-token">AQUA</a> and receive BLUB, a liquid receipt token whose value floats with the market, while the protocol aggregates ICE voting power on Aquarius and auto-compounds the resulting rewards. Because staking AQUA is a single-asset action, that particular position has no second asset to diverge against — though as with any DeFi protocol, other risks including smart-contract risk and variable rewards still apply.</p>
+      <hr />
+      <p>Impermanent loss deserves neither the panic nor the dismissal it usually gets. It's a well-defined, precisely calculable opportunity cost that you can look up in a table before you deposit. Learn the shape of the curve — flat near the middle, vicious at the tails — check whether the pool's fee income plausibly covers the divergence you expect, and you've done most of the analysis that matters.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is impermanent loss?</summary><p>Impermanent loss is the difference in value between providing two assets to a liquidity pool and simply holding those same two assets in your wallet. It appears when the two assets change price relative to each other, because the pool automatically rebalances by selling the asset that rose and buying the one that fell.</p></details>
+      <details><summary>Why is it called impermanent?</summary><p>Because the loss only exists on paper while the price divergence lasts. If the two assets return to their original price ratio, the gap disappears entirely. The moment you withdraw from the pool, however, whatever loss exists at that instant becomes permanent and realised.</p></details>
+      <details><summary>How do you calculate impermanent loss?</summary><p>For a standard 50/50 constant-product pool, impermanent loss = 2 × √p ÷ (1 + p) − 1, where p is the ratio of the new price to the original price of one asset against the other. A 2× price move gives roughly 5.7% loss, a 4× move gives 20%, and a 10× move gives about 42.5%.</p></details>
+      <details><summary>Can trading fees offset impermanent loss?</summary><p>Yes. Liquidity providers earn a share of every swap that passes through the pool, plus any incentive rewards the protocol pays. If those earnings over your holding period exceed the divergence loss at the moment you withdraw, your position outperforms simply holding. High-volume pools and low-volatility pairs are where this happens most reliably.</p></details>
+      <details><summary>How can you reduce impermanent loss?</summary><p>Provide liquidity to pairs whose prices track each other closely, such as two dollar stablecoins or a token and its own staked derivative, since prices that move together produce almost no divergence. Prefer pools with high trading volume relative to their size, be aware that concentrated liquidity amplifies both fees and losses, and size positions so that a large adverse move is survivable.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — protocols, tokens, and strategies — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="what-is-liquidity-mining"><img src="../assets/blog/what-is-liquidity-mining.png" alt="" /><span>What Is Liquidity Mining?</span></a>
+        <a href="aquarius-concentrated-liquidity"><img src="../assets/blog/aquarius-concentrated-liquidity.png" alt="" /><span>Concentrated Liquidity Pools</span></a>
+        <a href="apy-vs-apr-crypto"><img src="../assets/blog/apy-vs-apr-crypto.png" alt="" /><span>APY vs APR in Crypto</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>A single-asset way to earn on Stellar</h2>
+      <p>Stake AQUA, receive BLUB as your liquid receipt, and let WhaleHub aggregate ICE and auto-compound Aquarius rewards.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not financial or investment advice. All prices, deposits, and returns used above are illustrative examples chosen to demonstrate arithmetic — they are not forecasts, offers, or representations of any actual rate or asset price. Avoiding impermanent loss does not mean avoiding risk: DeFi involves significant risk, including smart-contract failure and the potential total loss of capital. Do your own research and consult a qualified professional before making decisions.</p>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

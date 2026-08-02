@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stablecoin Yield: Where It Actually Comes From | WhaleHub</title>
+<meta name="description" content="Every stablecoin yield is someone else's cost. A plain-English breakdown of the real sources — lending, market making, incentives, treasury bills, basis trades — and how to tell sustainable yield from a countdown timer." />
+<link rel="canonical" href="https://whalehub.io/blog/stablecoin-yield" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="stablecoin yield, usdc yield, earn yield on stablecoins, stablecoin interest, defi stablecoin yield, sustainable yield" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/stablecoin-yield" />
+<meta property="og:title" content="Stablecoin Yield: Where It Actually Comes From" />
+<meta property="og:description" content="Every yield is someone else's cost. The real sources of stablecoin yield — and how to tell sustainable from a countdown timer." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/stablecoin-yield.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-08-02" />
+<meta property="article:modified_time" content="2026-08-02" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="Stablecoin Yield: Where It Actually Comes From" />
+<meta name="twitter:description" content="Every yield is someone else's cost. The real sources of stablecoin yield, and how to spot the unsustainable ones." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/stablecoin-yield.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/stablecoin-yield#article",
+      "headline": "Stablecoin Yield: Where It Actually Comes From",
+      "description": "A plain-English breakdown of the real sources of stablecoin yield — lending, market making, protocol incentives, treasury bills, and basis trades — plus how to tell sustainable yield from a countdown timer.",
+      "image": "https://whalehub.io/assets/blog/stablecoin-yield.png",
+      "datePublished": "2026-08-02",
+      "dateModified": "2026-08-02",
+      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "WhaleHub",
+        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+      },
+      "mainEntityOfPage": "https://whalehub.io/blog/stablecoin-yield"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
+        { "@type": "ListItem", "position": 2, "name": "Stablecoin Yield", "item": "https://whalehub.io/blog/stablecoin-yield" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "Where does stablecoin yield come from?", "acceptedAnswer": { "@type": "Answer", "text": "From someone paying to use your capital. The main sources are borrowers paying interest on lending protocols, traders paying fees to swap against liquidity you supplied, protocols emitting their own tokens to attract deposits, interest earned on real-world assets such as short-term government debt, and funding payments from hedged derivatives positions. If a yield cannot be traced to one of these, that is a warning sign." } },
+        { "@type": "Question", "name": "Is stablecoin yield safe?", "acceptedAnswer": { "@type": "Answer", "text": "No yield is risk-free, and a stable price does not mean a stable position. You are exposed to the stablecoin issuer's solvency and redemption process, to smart-contract failure in whatever protocol holds your funds, to the borrower or counterparty on the other side, and to the yield itself falling or ending. Stablecoins remove price volatility, not risk." } },
+        { "@type": "Question", "name": "How can you tell if a stablecoin yield is sustainable?", "acceptedAnswer": { "@type": "Answer", "text": "Ask who is paying and why they would keep paying. Yield funded by borrowers, traders, or interest on real assets can persist as long as that demand persists. Yield funded by a protocol printing its own token is a marketing budget with an end date, and it usually falls sharply as more capital arrives to share it. Compare the rate to short-term government debt: a large gap is compensation for a risk you should be able to name." } },
+        { "@type": "Question", "name": "Why do stablecoin yields drop after you deposit?", "acceptedAnswer": { "@type": "Answer", "text": "Most DeFi yields are shared among everyone in the pool. If rewards are a fixed amount per day, doubling the capital in the pool roughly halves each depositor's rate. High advertised yields attract capital, and that capital dilutes the yield — so the rate you see before depositing is frequently higher than the rate you end up earning." } },
+        { "@type": "Question", "name": "Can you earn yield on stablecoins on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Stellar supports stablecoins including Circle's native USDC and EURC, and its DeFi layer offers the usual routes: supplying to lending pools on protocols such as Blend, and providing liquidity to AMM pools on Aquarius, which can also earn AQUA emissions. As anywhere else, the rates are variable and carry smart-contract and counterparty risk." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; Fundamentals</div>
+      <span class="tag">Fundamentals</span>
+      <h1>Stablecoin Yield: Where It Actually Comes From</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: August 2026</span>
+        <span class="dot-sep"></span>
+        <span>10 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/stablecoin-yield.png" alt="Where stablecoin yield actually comes from — WhaleHub guide cover" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">A dollar-denominated token paying double-digit returns is either doing something clever or doing something unsustainable, and the difference is knowable in advance. <strong>Every yield is someone else's cost.</strong> Trace who is paying and why, and a confusing menu of rates resolves into a small number of well-understood mechanisms — each with its own risk and its own shelf life. This guide walks through all of them.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#principle">The one principle that explains everything</a></li>
+        <li><a href="#sources">The five real sources of yield</a></li>
+        <li><a href="#sustainable">Sustainable vs. countdown-timer yield</a></li>
+        <li><a href="#risks">What "stable" doesn't protect you from</a></li>
+        <li><a href="#dilution">Why the rate drops after you deposit</a></li>
+        <li><a href="#stellar">Stablecoin yield on Stellar</a></li>
+        <li><a href="#checklist">A five-question checklist</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="principle">The one principle that explains everything</h2>
+      <p class="answer">Yield is always someone paying for the use of your capital. If you can name who pays, what they get in return, and why they would keep paying, you understand the yield. If you cannot, you do not have an investment thesis — you have a hope.</p>
+      <p>This sounds obvious and yet it is the single most useful filter in DeFi. Money does not appear from a smart contract. When a protocol offers you 8% on a dollar-denominated deposit, that 8% is coming out of somebody's pocket — a borrower, a trader, a token treasury, a government bond issuer, or a derivatives counterparty. There is no sixth option.</p>
+      <p>So the first question is never "how much?" It is <strong>"who pays, and why?"</strong> The size of the number tells you almost nothing on its own. The identity of the payer tells you nearly everything: how durable the yield is, what could stop it, and what risk you're being compensated for.</p>
+
+      <div class="callout">
+        <div class="k">The filter</div>
+        <ul>
+          <li><strong>Who is paying?</strong> Borrower, trader, protocol treasury, bond issuer, or derivatives counterparty.</li>
+          <li><strong>What do they get?</strong> Leverage, liquidity, attention, capital, or a hedge.</li>
+          <li><strong>Why keep paying?</strong> If the answer is "to bootstrap growth," there's an end date.</li>
+          <li><strong>What breaks it?</strong> Every source has a specific failure mode. Name it before depositing.</li>
+        </ul>
+      </div>
+
+      <h2 id="sources">The five real sources of yield</h2>
+      <p class="answer">Stablecoin yield comes from borrowers paying lending interest, traders paying swap fees, protocols emitting their own tokens as incentives, interest earned on real-world assets such as short-term government debt, and funding payments from hedged derivatives positions. Nearly every product in the market is one of these five, or a package of several.</p>
+
+      <h3>1 — Lending interest</h3>
+      <p>You supply stablecoins to a money market; borrowers post collateral and pay interest to take them out. This is the most legible source in DeFi: the payer is a leveraged trader or someone who needs liquidity without selling their holdings, and the rate moves with how badly they want it. <a href="blend-protocol-stellar">Blend</a> fills this role on Stellar. <strong>Failure mode:</strong> bad debt if collateral falls faster than liquidations can clear it, plus oracle and contract risk.</p>
+
+      <h3>2 — Market-making fees</h3>
+      <p>You supply stablecoins to an AMM pool and earn a cut of every swap routed through it. The payer is any trader who wants to exchange one asset for another right now. Stable-to-stable pools are especially attractive here because two assets that both track a dollar barely diverge, so <a href="impermanent-loss-explained">impermanent loss</a> stays negligible while fees still accrue. <strong>Failure mode:</strong> one of the "stable" assets stops being stable, at which point the pool ends up holding the broken one.</p>
+
+      <h3>3 — Protocol incentives</h3>
+      <p>A protocol emits its own token to whoever deposits, in order to bootstrap liquidity. The payer is the protocol's treasury, and what it buys is growth and attention. This is the source behind most eye-catching headline rates. It is not illegitimate — paying for early liquidity is a rational strategy — but it is <em>marketing spend</em>, and marketing spend has a budget. <strong>Failure mode:</strong> emissions taper, the reward token falls, or both at once.</p>
+
+      <h3>4 — Real-world asset interest</h3>
+      <p>The stablecoin issuer or a tokenised-fund protocol holds short-term government debt or similar instruments and passes some of the interest through. The payer is, ultimately, a government paying on its bonds. This is the most boring source and the most durable one — it tracks prevailing short-term rates and doesn't depend on crypto activity at all. <strong>Failure mode:</strong> counterparty and custody risk on the off-chain assets, plus regulatory exposure, since a yield-bearing dollar instrument attracts scrutiny in most jurisdictions.</p>
+
+      <h3>5 — Basis and funding</h3>
+      <p>A strategy holds a spot asset and shorts its perpetual future, collecting the funding payments that longs pay shorts when the market is bullish. The payer is a leveraged long trader. This can produce strong returns for extended periods. <strong>Failure mode:</strong> funding can turn negative, exchange or custody failure can break the hedge, and the strategy needs active management — a "delta-neutral" position is only neutral while someone is maintaining it.</p>
+
+      <h2 id="sustainable">Sustainable vs. countdown-timer yield</h2>
+      <p class="answer">Yield paid by borrowers, traders, or bond issuers can persist as long as that demand persists. Yield paid by a protocol printing its own token is a budget with an end date, and it typically falls sharply as more capital arrives to share it. The practical test is whether the payer receives something they actually need.</p>
+      <p>Sorting the five sources by durability produces a clear picture:</p>
+
+      <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Source</th><th>Who pays</th><th>Durability</th><th>Main risk</th></tr></thead>
+        <tbody>
+          <tr><td>Real-world asset interest</td><td>Bond issuers</td><td>High — tracks prevailing rates</td><td>Custody, counterparty, regulation</td></tr>
+          <tr><td>Lending interest</td><td>Borrowers</td><td>High while leverage demand exists</td><td>Bad debt, oracle failure, contracts</td></tr>
+          <tr><td>Market-making fees</td><td>Traders</td><td>Moderate — tracks trading volume</td><td>A "stable" asset breaking; contracts</td></tr>
+          <tr><td>Basis / funding</td><td>Leveraged longs</td><td>Moderate — cyclical, can invert</td><td>Negative funding, venue failure</td></tr>
+          <tr><td>Protocol incentives</td><td>A token treasury</td><td>Low — by design temporary</td><td>Emissions ending, token price falling</td></tr>
+        </tbody>
+      </table>
+      </div>
+
+      <p>A useful sanity check: compare any stablecoin yield to the return on short-term government debt. That's roughly the risk-free rate in dollars. Whatever sits above it is <strong>compensation for a specific risk you are taking</strong>, and you should be able to say what that risk is in one sentence. A few points above is a plausible premium for smart-contract and counterparty exposure. A rate several times higher is telling you something loud, and it is worth hearing it before rather than after.</p>
+
+      <h2 id="risks">What "stable" doesn't protect you from</h2>
+      <p class="answer">A stable price removes volatility, not risk. You remain exposed to the issuer's solvency and redemption process, to smart-contract failure in whatever protocol holds the funds, to the borrower or counterparty on the other side of the yield, to liquidity drying up when you want out, and to the rate simply ending.</p>
+      <p>The psychological trap is real: a position denominated in dollars <em>feels</em> safe in a way an equivalent position in a volatile token does not, even when the actual risk of loss is similar. Stack the risks explicitly:</p>
+      <ul>
+        <li><strong>Issuer risk.</strong> A fiat-backed stablecoin is a claim on a company. Its value depends on that company holding real reserves and honouring redemptions. Different issuers publish very different levels of attestation — this is worth checking rather than assuming.</li>
+        <li><strong>Contract risk.</strong> Your funds sit in code. Audits reduce the chance of a flaw; they don't eliminate it. Every additional protocol in a strategy adds another independent chance of failure.</li>
+        <li><strong>Counterparty risk.</strong> Someone is on the other side of the yield. If they can't pay — an underwater borrower, a failed venue, a broken hedge — you find out only when it matters.</li>
+        <li><strong>Liquidity risk.</strong> Being able to withdraw depends on the pool having funds available. High utilisation in a lending market means withdrawals can queue exactly when everyone wants out.</li>
+        <li><strong>Rate risk.</strong> Nearly all DeFi rates are variable. The yield that justified the position can be a fraction of itself next month.</li>
+        <li><strong>Regulatory risk.</strong> Yield-bearing dollar products attract regulatory attention. Rules on stablecoins continue to develop across major jurisdictions — our overview of <a href="mica-stablecoins-defi">MiCA and stablecoins</a> covers the European picture.</li>
+      </ul>
+
+      <h2 id="dilution">Why the rate drops after you deposit</h2>
+      <p class="answer">Most DeFi yields are shared among everyone in the pool. If rewards are a fixed amount per day, doubling the pool's capital roughly halves each depositor's rate. High advertised yields attract capital, and that capital dilutes the yield — so the rate you see before depositing is frequently higher than the rate you end up earning.</p>
+      <p>This is not deception; it's arithmetic that dashboards rarely spell out. A pool distributing a fixed daily emission divides it among all deposits. Your share is your fraction of the pool. When a headline rate goes viral, capital floods in and everyone's fraction shrinks.</p>
+      <p>Two habits follow. First, <strong>look at the rate's history, not its current value</strong> — a yield that has been steady for months is telling you something a yield that spiked yesterday is not. Second, understand which quoted number you're reading: an APR and an APY describe the same underlying rate very differently, and comparing one against the other is a common and expensive error. Our guide to <a href="apy-vs-apr-crypto">APY vs APR</a> covers the conversion.</p>
+
+      <div class="cta-band">
+        <div>
+          <div class="t">Yield on Stellar, compounded automatically</div>
+          <div class="s">WhaleHub stakes AQUA, aggregates ICE voting power, and auto-compounds Aquarius rewards — one position, no manual harvesting.</div>
+        </div>
+        <a href="https://app.whalehub.io/" class="btn btn-primary">Launch app</a>
+      </div>
+
+      <h2 id="stellar">Stablecoin yield on Stellar</h2>
+      <p class="answer">Stellar supports major stablecoins including Circle's native USDC and EURC, and its DeFi layer offers the standard routes to yield: supplying to lending pools on protocols such as Blend, and providing liquidity to AMM pools on Aquarius, which can also earn AQUA emissions. Rates are variable and carry the usual smart-contract and counterparty risks.</p>
+      <p>Stellar has two structural advantages worth naming for this particular use case. <strong>Transaction fees are extremely low</strong>, which matters enormously for stablecoin strategies — when your expected return is measured in single-digit percentages, the cost of moving, claiming, and compounding is a meaningful fraction of it. On expensive chains, small stablecoin positions are simply uneconomical to manage actively. And <strong>native issuance</strong> means assets like USDC exist as first-class Stellar assets rather than as bridged wrappers, which removes an entire category of bridge risk.</p>
+      <p>The available routes map onto the sources above:</p>
+      <ul>
+        <li><strong>Lending</strong> — supply stablecoins to a money market and earn borrower interest. See our <a href="blend-protocol-stellar">Blend guide</a> for how isolated pools and backstops work.</li>
+        <li><strong>Liquidity provision</strong> — supply to <a href="aquarius-amm-explained">Aquarius</a> pools and earn swap fees, plus AQUA emissions where a pool is receiving them. Stable-to-stable pairs minimise divergence.</li>
+        <li><strong>Which stablecoins</strong> — our guide to <a href="stablecoins-on-stellar">stablecoins on Stellar</a> covers USDC, EURC, PYUSD, and how trustlines work for each.</li>
+      </ul>
+      <p>One honest note about AQUA emissions specifically: which pools receive them is decided by ICE voting and by whether a pool is whitelisted for rewards at a given time, both of which change. A pool earning emissions today may not be earning them next month. Our <a href="ice-voting-bribes-aquarius">ICE voting guide</a> explains that mechanism, and it's the reason emission-driven rates belong firmly in the "temporary" row of the durability table above.</p>
+      <p>WhaleHub itself isn't a stablecoin product — it's a yield optimiser for the AQUA ecosystem, where you stake <a href="what-is-aqua-token">AQUA</a> and receive BLUB, a liquid receipt token whose value floats with the market. We mention it here only for completeness about where it sits: it optimises an incentive-driven yield, which by the framework above means variable rewards, not a bond-like rate.</p>
+
+      <h2 id="checklist">A five-question checklist</h2>
+      <p class="answer">Before depositing, establish who pays the yield, what the rate looks like over months rather than today, how many protocols your funds pass through, what the exit path is under stress, and how the rate compares to short-term government debt.</p>
+      <ul>
+        <li><strong>Who pays, and why would they continue?</strong> If the honest answer is "a token treasury bootstrapping growth," size the position for a rate that ends.</li>
+        <li><strong>What does the rate look like over six months?</strong> Today's number is the least informative data point available.</li>
+        <li><strong>How many contracts deep is this?</strong> A vault that deposits into a protocol that deposits into another multiplies your failure points. Count them.</li>
+        <li><strong>How do I get out on a bad day?</strong> Not on a calm day — a bad one, when utilisation is high and everyone else is leaving too.</li>
+        <li><strong>What's the spread over the risk-free rate?</strong> Name the risk that spread is paying you for. If you can't, that's the finding.</li>
+      </ul>
+      <hr />
+      <p>Stablecoin yield isn't magic and it isn't a scam — it's a set of five well-understood mechanisms with different payers, different durability, and different ways of breaking. The work is tracing any given rate back to its source. Do that consistently and you'll pass on the yields that are quietly counting down, and hold the ones that are being paid by someone with a durable reason to pay.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>Where does stablecoin yield come from?</summary><p>From someone paying to use your capital. The main sources are borrowers paying interest on lending protocols, traders paying fees to swap against liquidity you supplied, protocols emitting their own tokens to attract deposits, interest earned on real-world assets such as short-term government debt, and funding payments from hedged derivatives positions. If a yield cannot be traced to one of these, that is a warning sign.</p></details>
+      <details><summary>Is stablecoin yield safe?</summary><p>No yield is risk-free, and a stable price does not mean a stable position. You are exposed to the stablecoin issuer's solvency and redemption process, to smart-contract failure in whatever protocol holds your funds, to the borrower or counterparty on the other side, and to the yield itself falling or ending. Stablecoins remove price volatility, not risk.</p></details>
+      <details><summary>How can you tell if a stablecoin yield is sustainable?</summary><p>Ask who is paying and why they would keep paying. Yield funded by borrowers, traders, or interest on real assets can persist as long as that demand persists. Yield funded by a protocol printing its own token is a marketing budget with an end date, and it usually falls sharply as more capital arrives to share it. Compare the rate to short-term government debt: a large gap is compensation for a risk you should be able to name.</p></details>
+      <details><summary>Why do stablecoin yields drop after you deposit?</summary><p>Most DeFi yields are shared among everyone in the pool. If rewards are a fixed amount per day, doubling the capital in the pool roughly halves each depositor's rate. High advertised yields attract capital, and that capital dilutes the yield — so the rate you see before depositing is frequently higher than the rate you end up earning.</p></details>
+      <details><summary>Can you earn yield on stablecoins on Stellar?</summary><p>Yes. Stellar supports stablecoins including Circle's native USDC and EURC, and its DeFi layer offers the usual routes: supplying to lending pools on protocols such as Blend, and providing liquidity to AMM pools on Aquarius, which can also earn AQUA emissions. As anywhere else, the rates are variable and carry smart-contract and counterparty risk.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — protocols, tokens, and strategies — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="stablecoins-on-stellar"><img src="../assets/blog/stablecoins-on-stellar.png" alt="" /><span>Stablecoins on Stellar</span></a>
+        <a href="blend-protocol-stellar"><img src="../assets/blog/blend-protocol-stellar.png" alt="" /><span>What Is Blend?</span></a>
+        <a href="apy-vs-apr-crypto"><img src="../assets/blog/apy-vs-apr-crypto.png" alt="" /><span>APY vs APR in Crypto</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Know where your yield comes from</h2>
+      <p>WhaleHub optimises Aquarius rewards on Stellar — stake AQUA, receive BLUB, and let the protocol compound for you.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not financial, investment, or tax advice. It describes categories of yield mechanism generically and is not a recommendation of any specific product, protocol, issuer, or rate. Third-party protocols mentioned are not operated by WhaleHub. All DeFi rates are variable and can fall to zero, and DeFi involves significant risk including smart-contract failure, counterparty default, and the potential total loss of capital — including in dollar-denominated positions. Do your own research and consult a qualified professional before making decisions.</p>
+  </div>
+</article>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>
