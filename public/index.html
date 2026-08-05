@@ -109,8 +109,15 @@
       }
     </script>
 
-    <!-- Cookiebot Consent Manager -->
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="f7cf79ad-5f55-4380-8621-f9ce77189d9e" data-blockingmode="auto" type="text/javascript"></script>
+    <!-- Cookiebot Consent Manager.
+         blockingmode MUST stay "manual". In "auto" mode Cookiebot rewrites every
+         script tag it can't classify to type="text/plain" before the browser
+         fetches it — including CRA's own /static/js/main.[hash].js bundle. That
+         left app.whalehub.io a black screen until the visitor answered the banner
+         (and, because the "/" -> "/stake/aqua" redirect lives in React Router,
+         stranded them on "/" with nothing rendered). Every script that genuinely
+         needs gating is tagged manually below with data-cookieconsent. -->
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="f7cf79ad-5f55-4380-8621-f9ce77189d9e" data-blockingmode="manual" type="text/javascript"></script>
 
     <!-- Google Analytics GA4 — blocked by Cookiebot until consent -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-P3DY3CMDL4" type="text/plain" data-cookieconsent="statistics"></script>

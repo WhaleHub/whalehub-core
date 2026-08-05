@@ -1,2 +1,5 @@
+# SPA rewrite: every path serves index.html so React Router can handle it.
+# Netlify matches top-down, first match wins — any rule added below this line is
+# dead. (A "/stake/aqua -> / 301" rule sat here unreachable, and backwards, from
+# Dec 2024 until 2026-08-05.)
 /*    /index.html   200
-/stake/aqua  /  301
