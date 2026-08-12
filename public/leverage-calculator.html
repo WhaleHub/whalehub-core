@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="/favicon.ico">
+<!-- Internal modelling tool for the Blend leveraged-LP proposal. Unlisted: no inbound
+     links, excluded from sitemap.xml, noindex. NOT access-controlled - anyone with the
+     URL can read it. Source of record: docs/planning/assets/leverage-calculator.html -->
+</head>
+<body>
+<title>WhaleHub &mdash; Leveraged LP Calculator</title>
+<style>
+  :root{
+    --teal:#00cc99; --teal-b:#1fe0a8; --teal-d:#007f66;
+    --blue:#2d7fc0; --amber:#e0a02c; --red:#e05a4f;
+    --ground:#0a0d14; --panel:#11141f; --panel2:#161a28; --panel3:#1c2130;
+    --rule:#232a3c; --rule-s:#1a1f2e;
+    --ink:#eef1f6; --ink2:#a7b1c2; --ink3:#6d788e;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:light){
+    :root{--ground:#f7f9fb;--panel:#fff;--panel2:#f1f5f9;--panel3:#e8eef4;
+      --rule:#d5dde7;--rule-s:#e6ecf2;--ink:#0e1420;--ink2:#48546a;--ink3:#78849a;
+      --teal:#008064;--teal-b:#009a78;--teal-d:#006650;--blue:#1f6fbf;--amber:#8a5c00;--red:#b23528;}
+  }
+  :root[data-theme="dark"]{--ground:#0a0d14;--panel:#11141f;--panel2:#161a28;--panel3:#1c2130;
+    --rule:#232a3c;--rule-s:#1a1f2e;--ink:#eef1f6;--ink2:#a7b1c2;--ink3:#6d788e;
+    --teal:#00cc99;--teal-b:#1fe0a8;--teal-d:#007f66;--blue:#2d7fc0;--amber:#e0a02c;--red:#e05a4f;}
+  :root[data-theme="light"]{--ground:#f7f9fb;--panel:#fff;--panel2:#f1f5f9;--panel3:#e8eef4;
+    --rule:#d5dde7;--rule-s:#e6ecf2;--ink:#0e1420;--ink2:#48546a;--ink3:#78849a;
+    --teal:#008064;--teal-b:#009a78;--teal-d:#006650;--blue:#1f6fbf;--amber:#8a5c00;--red:#b23528;}
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+    font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:26px 18px 60px}
+  header.top{border-bottom:1px solid var(--rule);padding-bottom:16px;margin-bottom:20px}
+  .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--teal);margin:0 0 7px}
+  h1{font-size:clamp(1.35rem,3vw,1.85rem);margin:0 0 6px;font-weight:730;letter-spacing:-.02em}
+  .sub{color:var(--ink2);margin:0;font-size:14.5px;max-width:74ch}
+
+  .grid{display:grid;grid-template-columns:322px minmax(0,1fr);gap:20px;align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+
+  .card{background:var(--panel);border:1px solid var(--rule);border-radius:7px;padding:15px 16px}
+  .card+.card{margin-top:14px}
+  .card h2{font-size:11px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink3);margin:0 0 13px;font-weight:500}
+
+  label.f{display:block;margin-bottom:13px}
+  label.f .lab{display:flex;justify-content:space-between;align-items:baseline;
+    font-size:12.5px;color:var(--ink2);margin-bottom:5px}
+  label.f .val{font-family:var(--mono);color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  select,input[type=number]{width:100%;background:var(--panel2);color:var(--ink);
+    border:1px solid var(--rule);border-radius:5px;padding:8px 9px;font-family:var(--sans);font-size:13.5px}
+  input[type=number]{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  select:focus-visible,input:focus-visible,button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+  input[type=range]{width:100%;accent-color:var(--teal);margin:2px 0 0}
+  .seg{display:flex;gap:0;border:1px solid var(--rule);border-radius:5px;overflow:hidden}
+  .seg button{flex:1;background:var(--panel2);color:var(--ink2);border:0;padding:7px 4px;
+    font-family:var(--mono);font-size:11.5px;cursor:pointer}
+  .seg button[aria-pressed=true]{background:var(--teal-d);color:#fff}
+  .hint{font-size:11.5px;color:var(--ink3);line-height:1.45;margin:4px 0 0}
+
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:11px;margin-bottom:14px}
+  .tile{background:var(--panel);border:1px solid var(--rule);border-radius:7px;padding:13px 14px;
+    position:relative;overflow:hidden}
+  .tile:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--rule)}
+  .tile.good:before{background:var(--teal)} .tile.warn:before{background:var(--amber)}
+  .tile.bad:before{background:var(--red)}
+  .tile .cap{font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;
+    color:var(--ink3);margin:0 0 6px}
+  .tile .big{font-family:var(--mono);font-size:1.62rem;font-weight:650;line-height:1;margin:0;
+    letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+  .tile .note{font-size:11.5px;color:var(--ink3);margin:5px 0 0;line-height:1.4}
+  .good .big{color:var(--teal)} .warn .big{color:var(--amber)} .bad .big{color:var(--red)}
+
+  .verdict{border-radius:7px;padding:12px 15px;margin-bottom:14px;font-size:14px;
+    border:1px solid var(--rule);background:var(--panel)}
+  .verdict.good{border-left:3px solid var(--teal)}
+  .verdict.warn{border-left:3px solid var(--amber)}
+  .verdict.bad{border-left:3px solid var(--red)}
+  .verdict b{font-weight:680}
+
+  figure{margin:0 0 14px;background:var(--panel);border:1px solid var(--rule);
+    border-radius:7px;padding:13px 14px}
+  figure h3{font-size:11px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink3);margin:0 0 10px;font-weight:500}
+  figure svg{width:100%;height:auto;display:block}
+  figcaption{font-size:11.5px;color:var(--ink3);margin-top:8px;line-height:1.45}
+
+  .scroll{overflow-x:auto;background:var(--panel);border:1px solid var(--rule);border-radius:7px}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:600px}
+  th,td{padding:8px 11px;text-align:left;border-bottom:1px solid var(--rule-s)}
+  th{font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--ink3);font-weight:500;background:var(--panel2);white-space:nowrap;cursor:pointer;user-select:none}
+  tr:last-child td{border-bottom:none}
+  td.n,th.n{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+  td.lab{font-weight:600}
+  tbody tr:hover{background:var(--panel2)}
+  tbody tr.sel{background:var(--panel3)}
+  .pos{color:var(--teal)}.neg{color:var(--red)}.cau{color:var(--amber)}
+  .pill{font-family:var(--mono);font-size:9.5px;padding:2px 6px;border-radius:3px;
+    border:1px solid var(--rule);color:var(--ink3);white-space:nowrap}
+  .pill.on{border-color:var(--teal-d);color:var(--teal)}
+
+  footer{margin-top:22px;border-top:1px solid var(--rule);padding-top:16px;
+    font-size:11.5px;color:var(--ink3);line-height:1.65}
+  footer b{color:var(--ink2);font-weight:600}
+  footer p{max-width:88ch}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow">WhaleHub &middot; Leveraged LP farming on Blend v2</p>
+    <h1>Leverage calculator</h1>
+    <p class="sub">Live Aquarius pool yields and Blend borrow rates as of <b>12 Aug 2026</b>. Change the
+      pair, the borrowed asset and the leverage to see whether a position actually beats simply providing
+      liquidity &mdash; including the dilution our own deposits cause.</p>
+  </header>
+
+  <div class="grid">
+    <!-- --- controls --- -->
+    <div>
+      <div class="card">
+        <h2>Position</h2>
+        <label class="f">
+          <span class="lab"><span>Aquarius pool</span></span>
+          <select id="pool"></select>
+          <p class="hint" id="poolHint"></p>
+        </label>
+        <label class="f">
+          <span class="lab"><span>Borrow asset (Blend)</span></span>
+          <select id="borrow"></select>
+          <p class="hint" id="borrowHint"></p>
+        </label>
+        <label class="f">
+          <span class="lab"><span>Your equity</span><span class="val" id="eqV"></span></span>
+          <input type="number" id="eq" min="1000" step="5000" value="100000">
+        </label>
+        <label class="f">
+          <span class="lab"><span>Leverage</span><span class="val" id="levV"></span></span>
+          <input type="range" id="lev" min="1" max="4" step="0.05" value="1.55">
+          <p class="hint" id="levHint"></p>
+        </label>
+      </div>
+
+      <div class="card">
+        <h2>Assumptions</h2>
+        <label class="f">
+          <span class="lab"><span>AQUA reward boost</span></span>
+          <div class="seg" role="group">
+            <button id="bOff" aria-pressed="true">Unboosted</button>
+            <button id="bOn" aria-pressed="false">Boosted (ICE)</button>
+          </div>
+          <p class="hint">Boosted needs ICE voting power committed to the gauge. Unboosted is what a
+            new depositor earns on day one.</p>
+        </label>
+        <label class="f">
+          <span class="lab"><span>Blend collateral factor</span><span class="val" id="cfV"></span></span>
+          <input type="range" id="cf" min="0.4" max="0.9" step="0.01" value="0.60">
+          <p class="hint">0.50&#8211;0.60 is what we proposed to Script3 for a first-of-kind LP collateral
+            class. The testnet pool used 0.90.</p>
+        </label>
+        <label class="f">
+          <span class="lab"><span>Account for self-dilution</span></span>
+          <div class="seg" role="group">
+            <button id="dOn" aria-pressed="true">Yes</button>
+            <button id="dOff" aria-pressed="false">No</button>
+          </div>
+          <p class="hint">Our deposits raise pool TVL, so fixed emissions and volume spread thinner.
+            Ignoring this is how leveraged-farming projections get overstated.</p>
+        </label>
+      </div>
+    </div>
+
+    <!-- --- results --- -->
+    <div>
+      <div class="tiles" id="tiles"></div>
+      <div class="verdict" id="verdict"></div>
+
+      <figure>
+        <h3>Net APY across leverage</h3>
+        <div id="c1"></div>
+        <figcaption id="cap1"></figcaption>
+      </figure>
+
+      <figure>
+        <h3>Capacity &mdash; how much equity the pool can absorb</h3>
+        <div id="c2"></div>
+        <figcaption id="cap2"></figcaption>
+      </figure>
+
+      <figure style="padding-bottom:6px">
+        <h3>All gauge-enabled pairs at your current settings</h3>
+        <div class="scroll">
+          <table id="tbl">
+            <thead><tr>
+              <th data-k="name">Pair</th><th data-k="type">Type</th>
+              <th class="n" data-k="tvl">TVL</th><th class="n" data-k="vol">Vol 24h</th>
+              <th class="n" data-k="apy">LP APY</th><th class="n" data-k="net">Net @ lev</th>
+              <th class="n" data-k="edge">Edge</th><th class="n" data-k="cap">Capacity</th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <figcaption>Click a row to load that pair. Click a header to sort. <b>Edge</b> is net APY minus
+          the undiluted LP APY &mdash; the actual reason a user would take on leverage and liquidation risk.
+          <b>Capacity</b> is the largest equity at which the edge is still positive.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <footer>
+    <p><b>Data provenance.</b> Aquarius pool TVL, 24h volume and APY read from
+      <code>amm-api.aqua.network/pools/</code> on 12 Aug 2026 (values are 1e7-scaled in the API and
+      converted here). Boosted APR figures and the volatile/stable rows are read from the Aquarius UI
+      the same day. Blend borrow APY, emissions and liability factors are read from the Blend pool UI
+      (market size $189.96M) on 12 Aug 2026. Prices: XLM $0.161989, AQUA $0.00032645 (CoinGecko).</p>
+    <p><b>Method.</b> net APY = LP&nbsp;APY &times; L &#8722; net&nbsp;borrow&nbsp;APR &times; (L&#8722;1). Max leverage =
+      1/(1 &#8722; collateral&nbsp;factor / liability&nbsp;factor), the Blend liquidation boundary; the slider
+      is capped at 92% of it. Dilution assumes emissions and trading volume are fixed, so APY scales by
+      TVL/(TVL + new exposure) &mdash; a first-order approximation, not a pool simulation.</p>
+    <p><b>Not investment advice.</b> Outputs are arithmetic consequences of the inputs shown, not
+      forecasts. Blend borrow rates are utilisation-driven and move without notice; a rate above the LP
+      APY makes a leveraged position lose money. Leveraged LP positions can be liquidated and can lose
+      more than an unleveraged position.</p>
+  </footer>
+</div>
+
+<script>
+// --- live data, 12 Aug 2026 ---
+// API = amm-api.aqua.network/pools/ (1e7-scaled, converted); UI = Aquarius web app.
+const POOLS = [
+  {name:"XLM/USDC",       type:"concentrated", tvl:1256444, vol:617774, apy:10.77, fee:6.23, rew:4.54, boost:17.49, src:"API+UI"},
+  {name:"XLM/USDC",       type:"volatile",     tvl:3200000, vol:161780, apy:0.94,  fee:0.94, rew:0.00, boost:1.06,  src:"UI"},
+  {name:"XLM/SolvBTC",    type:"volatile",     tvl:6590000, vol:80660,  apy:0.96,  fee:0.96, rew:0.00, boost:2.15,  src:"UI"},
+  {name:"xSolvBTC/SolvBTC",type:"stable",      tvl:10730000,vol:23690,  apy:4.43,  fee:4.43, rew:0.00, boost:11.01, src:"UI"},
+  {name:"XLM/yXLM",       type:"concentrated", tvl:387827,  vol:4821,   apy:5.68,  fee:0.05, rew:5.63, boost:14.12, src:"API+UI"},
+  {name:"PYUSD/USDC",     type:"concentrated", tvl:286268,  vol:56,     apy:11.00, fee:0.01, rew:10.99,boost:null,  src:"API"},
+  {name:"XLM/AQUA",       type:"concentrated", tvl:218722,  vol:18855,  apy:24.71, fee:6.28, rew:18.43,boost:52.36, src:"API+UI"},
+  {name:"USDC/sUSD",      type:"concentrated", tvl:197888,  vol:3261,   apy:28.18, fee:0.64, rew:27.53,boost:69.48, src:"API+UI"},
+  {name:"AQUA/USDC",      type:"concentrated", tvl:90436,   vol:10733,  apy:42.12, fee:7.67, rew:34.45,boost:93.80, src:"API+UI"},
+  {name:"sUSD/EURC",      type:"concentrated", tvl:73487,   vol:1201,   apy:6.78,  fee:1.36, rew:5.42, boost:null,  src:"API"},
+  {name:"USDC/EURC",      type:"concentrated", tvl:27506,   vol:211,    apy:24.33, fee:0.89, rew:23.44,boost:null,  src:"API"},
+];
+// Blend: borrow APY, emissions offset, liability factor, USD available to borrow.
+const BORROW = [
+  {sym:"XLM",  apy:0.10,  emis:0.00, lf:1.3333, avail:536.60e6*0.161989},
+  {sym:"USDC", apy:11.08, emis:0.29, lf:1.0526, avail:9.18e6},
+  {sym:"EURC", apy:8.35,  emis:5.70, lf:1.0526, avail:449.83e3},
+];
+
+const $=id=>document.getElementById(id);
+const S={pool:0,borrow:0,eq:100000,lev:1.55,cf:0.60,boost:false,dilute:true,sort:"tvl",dir:-1};
+
+const fmtUSD=v=>v>=1e6?"$"+(v/1e6).toFixed(2)+"M":v>=1e3?"$"+(v/1e3).toFixed(0)+"K":"$"+v.toFixed(0);
+const pct=v=>v.toFixed(2)+"%";
+
+const netBorrow = b => Math.max(0, b.apy - b.emis);
+const maxLev = (cf,lf) => { const ltv=cf/lf; return ltv>=1?99:1/(1-ltv); };
+const lpApy = p => (S.boost && p.boost!=null) ? p.boost : p.apy;
+
+function calc(p,b,lev,eq,dilute){
+  const base=lpApy(p), exposure=eq*lev, debt=exposure-eq;
+  const dil = dilute ? base*p.tvl/(p.tvl+exposure) : base;
+  const nb  = netBorrow(b);
+  const net = dil*lev - nb*(lev-1);
+  return {base, dil, nb, net, exposure, debt, edge:net-base,
+          breakeven: lev>1 ? dil*lev/(lev-1) : Infinity};
+}
+// largest equity where edge stays positive
+function capacity(p,b,lev){
+  const base=lpApy(p), nb=netBorrow(b);
+  if(lev<=1) return 0;
+  let lo=0, hi=5e7;
+  const edgeAt=e=>{const d=base*p.tvl/(p.tvl+e*lev); return d*lev-nb*(lev-1)-base;};
+  if(edgeAt(1000)<=0) return 0;
+  for(let i=0;i<70;i++){const m=(lo+hi)/2; edgeAt(m)>0?lo=m:hi=m;}
+  return lo;
+}
+
+// --- charts ---
+const NS="http://www.w3.org/2000/svg";
+function svg(w,h){const s=document.createElementNS(NS,"svg");
+  s.setAttribute("viewBox",`0 0 ${w} ${h}`);s.setAttribute("role","img");return s;}
+function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+function txt(x,y,str,o={}){const t=el("text",{x,y,"font-size":o.fs||10.5,fill:o.fill||"var(--ink3)",
+  "font-family":o.mono===false?"var(--sans)":"var(--mono)","text-anchor":o.anchor||"start"});
+  if(o.weight)t.setAttribute("font-weight",o.weight);
+  if(o.rotate)t.setAttribute("transform",o.rotate);
+  t.textContent=str;return t;}
+
+function chartLeverage(){
+  const host=$("c1"); host.innerHTML="";
+  const p=POOLS[S.pool], b=BORROW[S.borrow];
+  const W=700,H=272,ml=52,mr=118,mt=14,mb=38,pw=W-ml-mr,ph=H-mt-mb;
+  const ML=maxLev(S.cf,b.lf), XMAX=Math.min(4,Math.max(2.2,ML*1.15));
+  const pts=[]; let ymin=0,ymax=0;
+  for(let i=0;i<=200;i++){const L=1+i*(XMAX-1)/200;
+    const r=calc(p,b,L,S.eq,S.dilute); pts.push([L,r.net]);
+    ymin=Math.min(ymin,r.net); ymax=Math.max(ymax,r.net);}
+  const base=lpApy(p); ymax=Math.max(ymax,base)*1.12; ymin=Math.min(ymin,0)*1.12-1;
+  const X=v=>ml+(v-1)/(XMAX-1)*pw, Y=v=>mt+(ymax-v)/(ymax-ymin)*ph;
+  const s=svg(W,H);
+  // grid
+  const step=ymax-ymin>60?20:ymax-ymin>25?10:5;
+  for(let g=Math.ceil(ymin/step)*step;g<=ymax;g+=step){
+    s.appendChild(el("line",{x1:ml,y1:Y(g),x2:ml+pw,y2:Y(g),
+      stroke:g===0?"var(--ink3)":"var(--rule)","stroke-width":g===0?1.1:0.7}));
+    s.appendChild(txt(ml-8,Y(g)+3.5,g+"%",{anchor:"end"}));}
+  for(let g=1;g<=XMAX+0.001;g+=0.5){
+    s.appendChild(el("line",{x1:X(g),y1:mt,x2:X(g),y2:mt+ph,stroke:"var(--rule)","stroke-width":0.7}));
+    s.appendChild(txt(X(g),mt+ph+16,g.toFixed(1)+"x",{anchor:"middle"}));}
+  // unleveraged reference
+  s.appendChild(el("line",{x1:ml,y1:Y(base),x2:ml+pw,y2:Y(base),stroke:"var(--blue)",
+    "stroke-width":1.3,"stroke-dasharray":"4 3"}));
+  s.appendChild(txt(ml+pw+8,Y(base)+3.5,"unleveraged "+pct(base),{fill:"var(--blue)",fs:10}));
+  // beyond-max shading
+  if(ML<XMAX){
+    s.appendChild(el("rect",{x:X(ML),y:mt,width:Math.max(0,ml+pw-X(ML)),height:ph,
+      fill:"var(--red)",opacity:0.08}));
+    s.appendChild(el("line",{x1:X(ML),y1:mt,x2:X(ML),y2:mt+ph,stroke:"var(--red)",
+      "stroke-width":1.4,"stroke-dasharray":"5 3"}));
+    s.appendChild(txt(X(ML)-6,mt+12,"liquidation boundary "+ML.toFixed(2)+"x",
+      {fill:"var(--red)",fs:10,anchor:"end"}));}
+  // curve
+  s.appendChild(el("polyline",{points:pts.map(([L,n])=>`${X(L).toFixed(1)},${Y(n).toFixed(1)}`).join(" "),
+    fill:"none",stroke:"var(--teal)","stroke-width":2.4}));
+  // current marker
+  const cur=calc(p,b,S.lev,S.eq,S.dilute);
+  s.appendChild(el("circle",{cx:X(S.lev),cy:Y(cur.net),r:5,fill:"var(--ground)",
+    stroke:"var(--teal)","stroke-width":2.5}));
+  s.appendChild(txt(ml+pw+8,Y(cur.net)+3.5,"you "+pct(cur.net),
+    {fill:"var(--teal)",fs:10,weight:600}));
+  s.appendChild(txt(ml+pw/2,H-5,"leverage",{anchor:"middle",fill:"var(--ink2)",mono:false}));
+  host.appendChild(s);
+  $("cap1").innerHTML = `Curve is net APY on your equity after borrow costs`+
+    (S.dilute?` and after the dilution your own deposit causes`:``)+
+    `. It crosses the dashed line at the leverage where leverage stops being worth it \u2014 `+
+    `beyond the red boundary the position cannot be opened solvently.`;
+}
+
+function chartCapacity(){
+  const host=$("c2"); host.innerHTML="";
+  const p=POOLS[S.pool], b=BORROW[S.borrow];
+  const W=700,H=228,ml=52,mr=118,mt=14,mb=38,pw=W-ml-mr,ph=H-mt-mb;
+  const cap=capacity(p,b,S.lev);
+  const XMAX=Math.max(S.eq*1.6, cap*2.2, 50000);
+  const base=lpApy(p);
+  const pts=[]; let ymin=base,ymax=base;
+  for(let i=0;i<=200;i++){const e=i*XMAX/200;
+    const r=calc(p,b,S.lev,e,true); pts.push([e,r.net]);
+    ymin=Math.min(ymin,r.net); ymax=Math.max(ymax,r.net);}
+  ymax*=1.1; ymin=Math.min(ymin,0)-1;
+  const X=v=>ml+v/XMAX*pw, Y=v=>mt+(ymax-v)/(ymax-ymin)*ph;
+  const s=svg(W,H);
+  const step=ymax-ymin>60?20:ymax-ymin>25?10:5;
+  for(let g=Math.ceil(ymin/step)*step;g<=ymax;g+=step){
+    s.appendChild(el("line",{x1:ml,y1:Y(g),x2:ml+pw,y2:Y(g),
+      stroke:g===0?"var(--ink3)":"var(--rule)","stroke-width":g===0?1.1:0.7}));
+    s.appendChild(txt(ml-8,Y(g)+3.5,g+"%",{anchor:"end"}));}
+  for(let i=0;i<=4;i++){const v=i*XMAX/4;
+    s.appendChild(el("line",{x1:X(v),y1:mt,x2:X(v),y2:mt+ph,stroke:"var(--rule)","stroke-width":0.7}));
+    s.appendChild(txt(X(v),mt+ph+16,fmtUSD(v),{anchor:"middle"}));}
+  s.appendChild(el("line",{x1:ml,y1:Y(base),x2:ml+pw,y2:Y(base),stroke:"var(--blue)",
+    "stroke-width":1.3,"stroke-dasharray":"4 3"}));
+  s.appendChild(txt(ml+pw+8,Y(base)+3.5,"just LP "+pct(base),{fill:"var(--blue)",fs:10}));
+  s.appendChild(el("polyline",{points:pts.map(([e,n])=>`${X(e).toFixed(1)},${Y(n).toFixed(1)}`).join(" "),
+    fill:"none",stroke:"var(--amber)","stroke-width":2.4}));
+  if(cap>0&&cap<XMAX){
+    s.appendChild(el("line",{x1:X(cap),y1:mt,x2:X(cap),y2:mt+ph,stroke:"var(--amber)",
+      "stroke-width":1.4,"stroke-dasharray":"5 3"}));
+    s.appendChild(txt(X(cap)+6,mt+12,"capacity "+fmtUSD(cap),{fill:"var(--amber)",fs:10,weight:600}));}
+  s.appendChild(el("circle",{cx:X(S.eq),cy:Y(calc(p,b,S.lev,S.eq,true).net),r:5,
+    fill:"var(--ground)",stroke:"var(--amber)","stroke-width":2.5}));
+  s.appendChild(txt(ml+pw/2,H-5,"total equity deposited into the strategy",
+    {anchor:"middle",fill:"var(--ink2)",mono:false}));
+  host.appendChild(s);
+  $("cap2").innerHTML = `As deposits grow, fixed AQUA emissions and trading fees spread across more TVL, `+
+    `so the yield being levered falls. Where the amber curve meets the dashed line the strategy stops `+
+    `beating plain liquidity provision \u2014 that is the real size limit for `+
+    `<b>${p.name} ${p.type}</b> (pool TVL ${fmtUSD(p.tvl)}).`;
+}
+
+function renderTiles(){
+  const p=POOLS[S.pool], b=BORROW[S.borrow];
+  const r=calc(p,b,S.lev,S.eq,S.dilute), ML=maxLev(S.cf,b.lf);
+  const cap=capacity(p,b,S.lev);
+  const cls=v=>v>2?"good":v>0?"warn":"bad";
+  const enough=r.debt<=b.avail;
+  $("tiles").innerHTML=`
+    <div class="tile ${cls(r.edge)}"><p class="cap">Net APY on equity</p>
+      <p class="big">${pct(r.net)}</p>
+      <p class="note">${S.dilute?"after dilution \u00b7 ":""}${fmtUSD(r.exposure)} exposure</p></div>
+    <div class="tile ${cls(r.edge)}"><p class="cap">Edge vs just LPing</p>
+      <p class="big">${r.edge>=0?"+":""}${r.edge.toFixed(2)}pp</p>
+      <p class="note">plain LP earns ${pct(r.base)}</p></div>
+    <div class="tile ${S.lev<=ML*0.92?"good":"bad"}"><p class="cap">Max leverage</p>
+      <p class="big">${ML.toFixed(2)}x</p>
+      <p class="note">CF ${S.cf.toFixed(2)} \u00f7 LF ${b.lf.toFixed(4)}</p></div>
+    <div class="tile ${r.nb < r.dil?"good":"bad"}"><p class="cap">Net borrow cost</p>
+      <p class="big">${pct(r.nb)}</p>
+      <p class="note">${b.sym} \u00b7 ${b.emis>0?`${b.apy}% less ${b.emis}% emissions`:`no emissions`}</p></div>
+    <div class="tile ${cap>=S.eq?"good":"warn"}"><p class="cap">Strategy capacity</p>
+      <p class="big">${cap>0?fmtUSD(cap):"\u2014"}</p>
+      <p class="note">equity before the edge dies</p></div>
+    <div class="tile ${enough?"good":"bad"}"><p class="cap">Debt vs available</p>
+      <p class="big">${(r.debt/b.avail*100).toFixed(1)}%</p>
+      <p class="note">${fmtUSD(r.debt)} of ${fmtUSD(b.avail)} ${b.sym}</p></div>`;
+
+  const v=$("verdict"); const parts=[];
+  let k = r.edge>2 ? "good" : r.edge>0 ? "warn" : "bad";
+  if(r.nb >= r.dil){
+    parts.push(`<b>Borrowing ${b.sym} costs ${pct(r.nb)} against an LP yield of ${pct(r.dil)}.</b> `+
+      `Above the yield, leverage subtracts return \u2014 every extra turn loses money. Switch the borrow asset or the pair.`);
+    k="bad";
+  } else if(r.edge<=0){
+    parts.push(`<b>Leverage is not paying here.</b> Net ${pct(r.net)} against ${pct(r.base)} for simply `+
+      `providing liquidity, so the user takes liquidation risk for no gain \u2014 mostly because `+
+      `${fmtUSD(S.eq*S.lev)} of new exposure dilutes a ${fmtUSD(p.tvl)} pool.`);
+  } else {
+    parts.push(`<b>Works: ${pct(r.net)} vs ${pct(r.base)} unleveraged, +${r.edge.toFixed(2)}pp.</b> `+
+      `Borrowing ${b.sym} at ${pct(r.nb)} against a ${pct(r.dil)} yield.`);
+  }
+  if(S.lev>ML*0.92) parts.push(`<span class="neg">Leverage ${S.lev.toFixed(2)}x exceeds the safe band `+
+    `(92% of the ${ML.toFixed(2)}x boundary) \u2014 this position opens too close to liquidation.</span>`);
+  if(!enough) parts.push(`<span class="neg">Only ${fmtUSD(b.avail)} of ${b.sym} is available to borrow; `+
+    `this needs ${fmtUSD(r.debt)}.</span>`);
+  if(cap>0 && S.eq>cap) parts.push(`<span class="cau">Past capacity: beyond ${fmtUSD(cap)} of equity the `+
+    `strategy no longer beats plain LPing in this pool.</span>`);
+  if(b.sym==="XLM" && p.name.includes("XLM")) parts.push(`<span class="cau">Borrowing XLM against an `+
+    `XLM-containing LP partly hedges XLM exposure, but an XLM rally grows the debt while the pool `+
+    `rebalances out of XLM.</span>`);
+  if(b.sym==="XLM") parts.push(`<span class="cau">The ${b.apy}% XLM rate reflects very low utilisation `+
+    `and will rise as borrowing scales.</span>`);
+  if(S.boost) parts.push(`<span class="cau">Boosted APR requires ICE voting power committed to this gauge.</span>`);
+  v.className="verdict "+k; v.innerHTML=parts.join(" ");
+}
+
+function renderTable(){
+  const b=BORROW[S.borrow];
+  const rows=POOLS.map((p,i)=>{
+    const r=calc(p,b,S.lev,S.eq,S.dilute);
+    return {i,name:p.name,type:p.type,tvl:p.tvl,vol:p.vol,apy:lpApy(p),
+            net:r.net,edge:r.edge,cap:capacity(p,b,S.lev),boost:p.boost};
+  });
+  const k=S.sort;
+  rows.sort((a,c)=> typeof a[k]==="string" ? a[k].localeCompare(c[k])*S.dir : (a[k]-c[k])*S.dir);
+  $("tbl").querySelector("tbody").innerHTML=rows.map(r=>`
+    <tr data-i="${r.i}" class="${r.i===S.pool?"sel":""}">
+      <td class="lab">${r.name}${S.boost&&r.boost==null?' <span class="pill">no boost data</span>':''}</td>
+      <td><span class="pill ${r.type==="concentrated"?"on":""}">${r.type}</span></td>
+      <td class="n">${fmtUSD(r.tvl)}</td><td class="n">${fmtUSD(r.vol)}</td>
+      <td class="n">${pct(r.apy)}</td>
+      <td class="n ${r.net>r.apy?"pos":"neg"}">${pct(r.net)}</td>
+      <td class="n ${r.edge>0?"pos":"neg"}">${r.edge>=0?"+":""}${r.edge.toFixed(2)}pp</td>
+      <td class="n">${r.cap>0?fmtUSD(r.cap):"\u2014"}</td></tr>`).join("");
+  $("tbl").querySelectorAll("tbody tr").forEach(tr=>tr.onclick=()=>{
+    S.pool=+tr.dataset.i; $("pool").value=S.pool; render();});
+}
+
+function render(){
+  const p=POOLS[S.pool], b=BORROW[S.borrow], ML=maxLev(S.cf,b.lf);
+  $("lev").max=Math.min(4,ML*0.92).toFixed(2);
+  if(S.lev>+$("lev").max){S.lev=+$("lev").max;$("lev").value=S.lev;}
+  $("eqV").textContent=fmtUSD(S.eq);
+  $("levV").textContent=S.lev.toFixed(2)+"x";
+  $("cfV").textContent=S.cf.toFixed(2);
+  $("levHint").textContent=`Slider caps at ${(+$("lev").max).toFixed(2)}x \u2014 92% of the ${ML.toFixed(2)}x liquidation boundary for ${b.sym}.`;
+  $("poolHint").innerHTML=`TVL ${fmtUSD(p.tvl)} \u00b7 24h volume ${fmtUSD(p.vol)} \u00b7 fees ${pct(p.fee)} + rewards ${pct(p.rew)}`+
+    (p.boost!=null?` \u00b7 boosted ${pct(p.boost)}`:` \u00b7 no boosted figure available`);
+  $("borrowHint").innerHTML=`Borrow APY ${pct(b.apy)}${b.emis>0?` less ${pct(b.emis)} emissions = <b>${pct(netBorrow(b))}</b> net`:` net`} \u00b7 liability factor ${(b.lf*100).toFixed(2)}% \u00b7 ${fmtUSD(b.avail)} available`;
+  renderTiles(); chartLeverage(); chartCapacity(); renderTable();
+}
+
+// --- wiring ---
+$("pool").innerHTML=POOLS.map((p,i)=>`<option value="${i}">${p.name} \u2014 ${p.type} (${fmtUSD(p.tvl)})</option>`).join("");
+$("borrow").innerHTML=BORROW.map((b,i)=>`<option value="${i}">${b.sym} \u2014 ${pct(netBorrow(b))} net</option>`).join("");
+$("pool").onchange=e=>{S.pool=+e.target.value;render();};
+$("borrow").onchange=e=>{S.borrow=+e.target.value;render();};
+$("eq").oninput=e=>{S.eq=Math.max(1000,+e.target.value||1000);render();};
+$("lev").oninput=e=>{S.lev=+e.target.value;render();};
+$("cf").oninput=e=>{S.cf=+e.target.value;render();};
+$("bOn").onclick=()=>{S.boost=true;$("bOn").ariaPressed="true";$("bOff").ariaPressed="false";render();};
+$("bOff").onclick=()=>{S.boost=false;$("bOn").ariaPressed="false";$("bOff").ariaPressed="true";render();};
+$("dOn").onclick=()=>{S.dilute=true;$("dOn").ariaPressed="true";$("dOff").ariaPressed="false";render();};
+$("dOff").onclick=()=>{S.dilute=false;$("dOn").ariaPressed="false";$("dOff").ariaPressed="true";render();};
+$("tbl").querySelectorAll("th").forEach(th=>th.onclick=()=>{
+  const k=th.dataset.k; S.dir = (S.sort===k)? -S.dir : -1; S.sort=k; renderTable();});
+render();
+</script>
+
+</body>
+</html>
