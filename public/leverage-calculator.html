@@ -244,10 +244,13 @@
       <code>amm-api.aqua.network/pools/</code> on 12 Aug 2026 (values are 1e7-scaled in the API and
       converted here). Boosted APR figures and the volatile/stable rows are read from the Aquarius UI
       the same day. Blend borrow APY, emissions and liability factors are read from the Blend pool UI
-      (market size $189.96M) on 12 Aug 2026. Prices: XLM $0.161989, AQUA $0.00032645 (CoinGecko).</p>
+      (market size $189.96M) on 12 Aug 2026, and independently reconstructed from the pool contract
+      <code>CAJJZSGMMM3PD7N33TAPHGBUGTB43OC73HVIK2L2G6BNGGGYOSSYBXBD</code> via
+      <code>get_reserve</code> - which reproduces the UI's 536.60M available and 0.10% rate exactly. Prices: XLM $0.161989, AQUA $0.00032645 (CoinGecko).</p>
     <p><b>Method.</b> net APY = LP&nbsp;APY &times; L &#8722; net&nbsp;borrow&nbsp;APR &times; (L&#8722;1). Max leverage =
       1/(1 &#8722; collateral&nbsp;factor / liability&nbsp;factor), the Blend liquidation boundary; the slider
-      is capped at 92% of it. Dilution assumes emissions and trading volume are fixed, so APY scales by
+      is capped at 92% of it. Borrow-rate projection uses Blend's three-slope reactive model
+      (rate = curve(utilisation) x ir_mod) at the current modifier. Dilution assumes emissions and trading volume are fixed, so APY scales by
       TVL/(TVL + new exposure) &mdash; a first-order approximation, not a pool simulation.</p>
     <p><b>Not investment advice.</b> Outputs are arithmetic consequences of the inputs shown, not
       forecasts. Blend borrow rates are utilisation-driven and move without notice; a rate above the LP
@@ -274,10 +277,21 @@ const POOLS = [
 ];
 // Blend: borrow APY, emissions offset, liability factor, USD available to borrow.
 const BORROW = [
-  {sym:"XLM",  apy:0.10,  emis:0.00, lf:1.3333, avail:536.60e6*0.161989},
-  {sym:"USDC", apy:11.08, emis:0.29, lf:1.0526, avail:9.18e6},
+  {sym:"XLM",  apy:0.10,  emis:0.00, lf:1.3333, avail:536.60e6*0.161989,
+   px:0.161989, sup:768590530.73, bor:1411861.10, ut:0.40, rb:0.01, r1:0.03, mod:0.10},
+  {sym:"USDC", apy:11.08, emis:0.29, lf:1.0526, avail:9.18e6,
+   px:1.0, sup:64814498.52, bor:49076920.82, ut:0.80, rb:0.03, r1:0.0378, mod:1.5478},
   {sym:"EURC", apy:8.35,  emis:5.70, lf:1.0526, avail:449.83e3},
 ];
+// Blend's reactive three-slope model. Projects the borrow rate after our own debt is
+// added, at the current ir_mod: the modifier only drifts once utilisation approaches
+// target, so at our size the quoted rate barely moves.
+function projRate(b, debtUsd){
+  if(b.sup==null) return null;
+  const units=debtUsd/b.px, u=(b.bor+units)/b.sup;
+  const curve = u<=b.ut ? (u/b.ut)*b.r1+b.rb : ((u-b.ut)/(0.95-b.ut))*0.30+b.r1+b.rb;
+  return {util:u, rate:curve*b.mod*100, atTarget:curve*100};
+}
 
 const $=id=>document.getElementById(id);
 const S={pool:0,borrow:0,eq:100000,lev:1.55,cf:0.60,boost:false,dilute:true,sort:"tvl",dir:-1};
@@ -473,8 +487,17 @@ function renderTiles(){
   if(b.sym==="XLM" && p.name.includes("XLM")) parts.push(`<span class="cau">Borrowing XLM against an `+
     `XLM-containing LP partly hedges XLM exposure, but an XLM rally grows the debt while the pool `+
     `rebalances out of XLM.</span>`);
-  if(b.sym==="XLM") parts.push(`<span class="cau">The ${b.apy}% XLM rate reflects very low utilisation `+
-    `and will rise as borrowing scales.</span>`);
+  const pr=projRate(b,r.debt);
+  if(pr && b.sym==="XLM") parts.push(`<span class="cau">Why XLM is this cheap: only ${(b.bor/1e6).toFixed(2)}M of `+
+    `${(b.sup/1e6).toFixed(0)}M supplied XLM is borrowed (${(b.bor/b.sup*100).toFixed(2)}% utilisation against a `+
+    `${(b.ut*100).toFixed(0)}% target), so Blend's reactive modifier has decayed to its ${b.mod.toFixed(2)}x floor. `+
+    `Your ${fmtUSD(r.debt)} of debt takes utilisation to ${(pr.util*100).toFixed(2)}% and the rate to `+
+    `<b>${pr.rate.toFixed(3)}%</b> - it would take roughly `+
+    `${fmtUSD((b.ut*b.sup-b.bor)*b.px)} of borrowing to reach target, where the modifier starts recovering `+
+    `toward ${pr.atTarget.toFixed(2)}%.</span>`);
+  if(pr && b.sym==="USDC") parts.push(`<span class="cau">USDC is the mirror image: ${(b.bor/b.sup*100).toFixed(1)}% `+
+    `utilisation against an ${(b.ut*100).toFixed(0)}% target, so the modifier has ratcheted up to ${b.mod.toFixed(2)}x. `+
+    `Borrow demand on Stellar is for dollars, not XLM.</span>`);
   if(S.boost) parts.push(`<span class="cau">Boosted APR requires ICE voting power committed to this gauge.</span>`);
   v.className="verdict "+k; v.innerHTML=parts.join(" ");
 }
