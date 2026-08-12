@@ -22,9 +22,11 @@
     --teal:#008064;--teal-b:#009a78;--teal-d:#006650;--blue:#1f6fbf;--amber:#8a5c00;--red:#b23528;}
 
   *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
     font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
   .wrap{max-width:1180px;margin:0 auto;padding:26px 18px 60px}
+  @media (max-width:560px){.wrap{padding:16px 12px 44px}}
   header.top{border-bottom:1px solid var(--rule);padding-bottom:16px;margin-bottom:20px}
   .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;
     color:var(--teal);margin:0 0 7px}
@@ -33,6 +35,7 @@
 
   .grid{display:grid;grid-template-columns:322px minmax(0,1fr);gap:20px;align-items:start}
   @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  .summary{margin-bottom:18px}
 
   .card{background:var(--panel);border:1px solid var(--rule);border-radius:7px;padding:15px 16px}
   .card+.card{margin-top:14px}
@@ -44,17 +47,26 @@
     font-size:12.5px;color:var(--ink2);margin-bottom:5px}
   label.f .val{font-family:var(--mono);color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
   select,input[type=number]{width:100%;background:var(--panel2);color:var(--ink);
-    border:1px solid var(--rule);border-radius:5px;padding:8px 9px;font-family:var(--sans);font-size:13.5px}
+    border:1px solid var(--rule);border-radius:5px;padding:9px 10px;font-family:var(--sans);
+    font-size:16px;min-height:44px}
   input[type=number]{font-family:var(--mono);font-variant-numeric:tabular-nums}
   select:focus-visible,input:focus-visible,button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
-  input[type=range]{width:100%;accent-color:var(--teal);margin:2px 0 0}
+  input[type=range]{width:100%;accent-color:var(--teal);margin:6px 0 2px;height:30px}
+  input[type=range]::-webkit-slider-thumb{width:26px;height:26px}
   .seg{display:flex;gap:0;border:1px solid var(--rule);border-radius:5px;overflow:hidden}
-  .seg button{flex:1;background:var(--panel2);color:var(--ink2);border:0;padding:7px 4px;
-    font-family:var(--mono);font-size:11.5px;cursor:pointer}
+  .seg button{flex:1;background:var(--panel2);color:var(--ink2);border:0;padding:11px 4px;
+    font-family:var(--mono);font-size:12.5px;cursor:pointer;min-height:44px}
   .seg button[aria-pressed=true]{background:var(--teal-d);color:#fff}
   .hint{font-size:11.5px;color:var(--ink3);line-height:1.45;margin:4px 0 0}
 
   .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:11px;margin-bottom:14px}
+  @media (max-width:560px){
+    .tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .tile{padding:10px 11px}
+    .tile .big{font-size:1.28rem}
+    .tile .cap{font-size:9px}
+    .tile .note{font-size:10.5px}
+  }
   .tile{background:var(--panel);border:1px solid var(--rule);border-radius:7px;padding:13px 14px;
     position:relative;overflow:hidden}
   .tile:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--rule)}
@@ -83,6 +95,14 @@
 
   .scroll{overflow-x:auto;background:var(--panel);border:1px solid var(--rule);border-radius:7px}
   table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:600px}
+  @media (max-width:560px){
+    table{min-width:0;font-size:12px}
+    th,td{padding:7px 7px}
+    th:nth-child(2),td:nth-child(2),th:nth-child(4),td:nth-child(4){display:none}
+    h1{font-size:1.32rem}
+    figure{padding:10px 10px}
+    .verdict{font-size:13.5px;padding:11px 12px}
+  }
   th,td{padding:8px 11px;text-align:left;border-bottom:1px solid var(--rule-s)}
   th{font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;
     color:var(--ink3);font-weight:500;background:var(--panel2);white-space:nowrap;cursor:pointer;user-select:none}
@@ -111,6 +131,11 @@
       pair, the borrowed asset and the leverage to see whether a position actually beats simply providing
       liquidity &mdash; including the dilution our own deposits cause.</p>
   </header>
+
+  <div class="summary">
+    <div class="tiles" id="tiles"></div>
+    <div class="verdict" id="verdict"></div>
+  </div>
 
   <div class="grid">
     <!-- --- controls --- -->
@@ -169,9 +194,6 @@
 
     <!-- --- results --- -->
     <div>
-      <div class="tiles" id="tiles"></div>
-      <div class="verdict" id="verdict"></div>
-
       <figure>
         <h3>Net APY across leverage</h3>
         <div id="c1"></div>
@@ -287,7 +309,11 @@ function txt(x,y,str,o={}){const t=el("text",{x,y,"font-size":o.fs||10.5,fill:o.
 function chartLeverage(){
   const host=$("c1"); host.innerHTML="";
   const p=POOLS[S.pool], b=BORROW[S.borrow];
-  const W=700,H=272,ml=52,mr=118,mt=14,mb=38,pw=W-ml-mr,ph=H-mt-mb;
+  // Size the viewBox to the container so 1 SVG unit == 1 CSS pixel; otherwise a
+  // fixed 700-wide box scales to ~0.5 on a phone and axis labels land at ~5px.
+  const W=Math.max(280,Math.round(host.clientWidth||700)), narrow=W<520;
+  const H=narrow?240:272, ml=narrow?38:52, mr=narrow?12:118, mt=narrow?26:14,
+        mb=narrow?34:38, pw=W-ml-mr, ph=H-mt-mb;
   const ML=maxLev(S.cf,b.lf), XMAX=Math.min(4,Math.max(2.2,ML*1.15));
   const pts=[]; let ymin=0,ymax=0;
   for(let i=0;i<=200;i++){const L=1+i*(XMAX-1)/200;
@@ -302,21 +328,23 @@ function chartLeverage(){
     s.appendChild(el("line",{x1:ml,y1:Y(g),x2:ml+pw,y2:Y(g),
       stroke:g===0?"var(--ink3)":"var(--rule)","stroke-width":g===0?1.1:0.7}));
     s.appendChild(txt(ml-8,Y(g)+3.5,g+"%",{anchor:"end"}));}
-  for(let g=1;g<=XMAX+0.001;g+=0.5){
+  for(let g=1;g<=XMAX+0.001;g+=(narrow?1:0.5)){
     s.appendChild(el("line",{x1:X(g),y1:mt,x2:X(g),y2:mt+ph,stroke:"var(--rule)","stroke-width":0.7}));
     s.appendChild(txt(X(g),mt+ph+16,g.toFixed(1)+"x",{anchor:"middle"}));}
   // unleveraged reference
   s.appendChild(el("line",{x1:ml,y1:Y(base),x2:ml+pw,y2:Y(base),stroke:"var(--blue)",
     "stroke-width":1.3,"stroke-dasharray":"4 3"}));
-  s.appendChild(txt(ml+pw+8,Y(base)+3.5,"unleveraged "+pct(base),{fill:"var(--blue)",fs:10}));
+  if(narrow) s.appendChild(txt(ml,mt-13,"unleveraged "+pct(base),{fill:"var(--blue)",fs:10.5}));
+  else s.appendChild(txt(ml+pw+8,Y(base)+3.5,"unleveraged "+pct(base),{fill:"var(--blue)",fs:10}));
   // beyond-max shading
   if(ML<XMAX){
     s.appendChild(el("rect",{x:X(ML),y:mt,width:Math.max(0,ml+pw-X(ML)),height:ph,
       fill:"var(--red)",opacity:0.08}));
     s.appendChild(el("line",{x1:X(ML),y1:mt,x2:X(ML),y2:mt+ph,stroke:"var(--red)",
       "stroke-width":1.4,"stroke-dasharray":"5 3"}));
-    s.appendChild(txt(X(ML)-6,mt+12,"liquidation boundary "+ML.toFixed(2)+"x",
-      {fill:"var(--red)",fs:10,anchor:"end"}));}
+    s.appendChild(txt(narrow?X(ML)-4:X(ML)-6, narrow?mt+11:mt+12,
+      (narrow?"max ":"liquidation boundary ")+ML.toFixed(2)+"x",
+      {fill:"var(--red)",fs:narrow?10:10,anchor:"end"}));}
   // curve
   s.appendChild(el("polyline",{points:pts.map(([L,n])=>`${X(L).toFixed(1)},${Y(n).toFixed(1)}`).join(" "),
     fill:"none",stroke:"var(--teal)","stroke-width":2.4}));
@@ -324,9 +352,11 @@ function chartLeverage(){
   const cur=calc(p,b,S.lev,S.eq,S.dilute);
   s.appendChild(el("circle",{cx:X(S.lev),cy:Y(cur.net),r:5,fill:"var(--ground)",
     stroke:"var(--teal)","stroke-width":2.5}));
-  s.appendChild(txt(ml+pw+8,Y(cur.net)+3.5,"you "+pct(cur.net),
+  if(narrow) s.appendChild(txt(ml+pw,mt-13,"you "+pct(cur.net),
+    {fill:"var(--teal)",fs:10.5,weight:600,anchor:"end"}));
+  else s.appendChild(txt(ml+pw+8,Y(cur.net)+3.5,"you "+pct(cur.net),
     {fill:"var(--teal)",fs:10,weight:600}));
-  s.appendChild(txt(ml+pw/2,H-5,"leverage",{anchor:"middle",fill:"var(--ink2)",mono:false}));
+  s.appendChild(txt(ml+pw/2,H-4,"leverage",{anchor:"middle",fill:"var(--ink2)",mono:false,fs:10.5}));
   host.appendChild(s);
   $("cap1").innerHTML = `Curve is net APY on your equity after borrow costs`+
     (S.dilute?` and after the dilution your own deposit causes`:``)+
@@ -337,7 +367,9 @@ function chartLeverage(){
 function chartCapacity(){
   const host=$("c2"); host.innerHTML="";
   const p=POOLS[S.pool], b=BORROW[S.borrow];
-  const W=700,H=228,ml=52,mr=118,mt=14,mb=38,pw=W-ml-mr,ph=H-mt-mb;
+  const W=Math.max(280,Math.round(host.clientWidth||700)), narrow=W<520;
+  const H=narrow?210:228, ml=narrow?38:52, mr=narrow?12:118, mt=narrow?26:14,
+        mb=narrow?34:38, pw=W-ml-mr, ph=H-mt-mb;
   const cap=capacity(p,b,S.lev);
   const XMAX=Math.max(S.eq*1.6, cap*2.2, 50000);
   const base=lpApy(p);
@@ -353,22 +385,25 @@ function chartCapacity(){
     s.appendChild(el("line",{x1:ml,y1:Y(g),x2:ml+pw,y2:Y(g),
       stroke:g===0?"var(--ink3)":"var(--rule)","stroke-width":g===0?1.1:0.7}));
     s.appendChild(txt(ml-8,Y(g)+3.5,g+"%",{anchor:"end"}));}
-  for(let i=0;i<=4;i++){const v=i*XMAX/4;
+  for(let i=0;i<=(narrow?2:4);i++){const v=i*XMAX/(narrow?2:4);
     s.appendChild(el("line",{x1:X(v),y1:mt,x2:X(v),y2:mt+ph,stroke:"var(--rule)","stroke-width":0.7}));
     s.appendChild(txt(X(v),mt+ph+16,fmtUSD(v),{anchor:"middle"}));}
   s.appendChild(el("line",{x1:ml,y1:Y(base),x2:ml+pw,y2:Y(base),stroke:"var(--blue)",
     "stroke-width":1.3,"stroke-dasharray":"4 3"}));
-  s.appendChild(txt(ml+pw+8,Y(base)+3.5,"just LP "+pct(base),{fill:"var(--blue)",fs:10}));
+  if(narrow) s.appendChild(txt(ml,mt-13,"just LP "+pct(base),{fill:"var(--blue)",fs:10.5}));
+  else s.appendChild(txt(ml+pw+8,Y(base)+3.5,"just LP "+pct(base),{fill:"var(--blue)",fs:10}));
   s.appendChild(el("polyline",{points:pts.map(([e,n])=>`${X(e).toFixed(1)},${Y(n).toFixed(1)}`).join(" "),
     fill:"none",stroke:"var(--amber)","stroke-width":2.4}));
   if(cap>0&&cap<XMAX){
     s.appendChild(el("line",{x1:X(cap),y1:mt,x2:X(cap),y2:mt+ph,stroke:"var(--amber)",
       "stroke-width":1.4,"stroke-dasharray":"5 3"}));
-    s.appendChild(txt(X(cap)+6,mt+12,"capacity "+fmtUSD(cap),{fill:"var(--amber)",fs:10,weight:600}));}
+    const capLeft = X(cap) > ml+pw*0.62;
+    s.appendChild(txt(capLeft?X(cap)-6:X(cap)+6, mt+11, "capacity "+fmtUSD(cap),
+      {fill:"var(--amber)",fs:10,weight:600,anchor:capLeft?"end":"start"}));}
   s.appendChild(el("circle",{cx:X(S.eq),cy:Y(calc(p,b,S.lev,S.eq,true).net),r:5,
     fill:"var(--ground)",stroke:"var(--amber)","stroke-width":2.5}));
-  s.appendChild(txt(ml+pw/2,H-5,"total equity deposited into the strategy",
-    {anchor:"middle",fill:"var(--ink2)",mono:false}));
+  s.appendChild(txt(ml+pw/2,H-4,narrow?"total equity deposited":"total equity deposited into the strategy",
+    {anchor:"middle",fill:"var(--ink2)",mono:false,fs:10.5}));
   host.appendChild(s);
   $("cap2").innerHTML = `As deposits grow, fixed AQUA emissions and trading fees spread across more TVL, `+
     `so the yield being levered falls. Where the amber curve meets the dashed line the strategy stops `+
@@ -482,4 +517,9 @@ $("dOff").onclick=()=>{S.dilute=false;$("dOn").ariaPressed="false";$("dOff").ari
 $("tbl").querySelectorAll("th").forEach(th=>th.onclick=()=>{
   const k=th.dataset.k; S.dir = (S.sort===k)? -S.dir : -1; S.sort=k; renderTable();});
 render();
+
+// Charts are sized from their container, so they must be rebuilt when it changes.
+let rt; const onResize=()=>{clearTimeout(rt);rt=setTimeout(()=>{chartLeverage();chartCapacity();},120);};
+addEventListener("resize",onResize);
+addEventListener("orientationchange",onResize);
 </script>
