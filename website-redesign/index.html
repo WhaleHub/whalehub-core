@@ -363,9 +363,19 @@
   .v2-bar b{color:var(--teal-300);font-weight:600}
   .v2-bar a{color:var(--teal-400);font-weight:600;white-space:nowrap}
   .v2-bar a:hover{color:var(--teal-300)}
+  /* temporary announcement bar (50M AQUA grant) */
+  .promo-bar{position:relative;z-index:41;display:flex;align-items:center;justify-content:center;gap:10px;
+    text-align:center;font-size:13.5px;padding:9px 46px;color:#06241c;font-weight:500;
+    background:linear-gradient(90deg,var(--teal-500),var(--blue-700))}
+  .promo-bar b{font-weight:800;color:#fff}
+  .promo-x{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:0;color:#06241c;font-size:19px;line-height:1;cursor:pointer;opacity:.75}
+  .promo-x:hover{opacity:1}
 </style>
 </head>
 <body class="wh-root">
+
+<div class="promo-bar" id="promoBar"><span>WhaleHub secured a <b>50,000,000 AQUA DAO grant</b>. 45M to ICE, 5M to liquidity.</span><button class="promo-x" aria-label="Dismiss">×</button></div>
+<script>(function(){var b=document.getElementById('promoBar');if(!b)return;if(localStorage.getItem('wh-promo-50m')==='1'){b.style.display='none';return;}b.querySelector('.promo-x').addEventListener('click',function(){b.style.display='none';try{localStorage.setItem('wh-promo-50m','1');}catch(e){}});})();</script>
 
 <div class="v2-bar">You're viewing <b>WhaleHub v2 (Bribe Harvesting)</b>, the current model. <a href="./v1.html">View v1 (currently paused) →</a></div>
 
