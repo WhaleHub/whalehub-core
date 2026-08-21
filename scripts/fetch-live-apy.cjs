@@ -22,6 +22,14 @@ const API =
 const WINDOW_DAYS = process.env.STAKING_APY_WINDOW_DAYS || '7';
 // Must match FALLBACK_APY in src/hooks/useStakingApy.ts.
 const FALLBACK_APY = '17.88';
+// TEMP (2026-08-21) — mirrors the same-named guard in src/hooks/useStakingApy.ts.
+// The Aug 17-20 distributions failed on the contract's 100,000 BLUB add_rewards
+// cap, so the indexer window holds a single small catch-up event that annualises
+// to ~2%. While that is the only event, publish the last real distribution
+// (22,618.03 BLUB on 2026-08-21T00:01Z over 57,621,942 staked = 14.33%).
+// Expires on its own; delete both copies once a normal day is indexed.
+const TEMP_APY = '14.33';
+const TEMP_APY_UNTIL = Date.parse('2026-08-23T00:00:00Z');
 const OUT = path.join(__dirname, '..', 'website-redesign', 'apy.json');
 
 (async () => {
@@ -33,14 +41,25 @@ const OUT = path.join(__dirname, '..', 'website-redesign', 'apy.json');
   // Reproduce the dApp's exact logic: use the indexer value only when the window
   // actually has events, otherwise show the fallback (never "--", never 0).
   const hasEvents = data && data.apy && data.apy !== '--' && Number(data.eventCount) > 0;
-  const raw = hasEvents ? data.apy : FALLBACK_APY;
+  const thinWindow =
+    hasEvents && Number(data.eventCount) <= 1 && Date.now() < TEMP_APY_UNTIL;
+
+  let raw = FALLBACK_APY;
+  let source = 'fallback';
+  if (thinWindow) {
+    raw = TEMP_APY;
+    source = 'last real distribution';
+  } else if (hasEvents) {
+    raw = data.apy;
+    source = 'staking-apy indexer';
+  }
   const apy = parseFloat(raw);
   if (isNaN(apy)) throw new Error(`unparseable apy: ${raw}`);
 
   const payload = {
     apy: apy.toFixed(2),
     updated: new Date().toISOString(),
-    source: hasEvents ? 'staking-apy indexer' : 'fallback',
+    source,
   };
   fs.writeFileSync(OUT, JSON.stringify(payload, null, 2) + '\n');
   console.log('live APY ->', payload);
