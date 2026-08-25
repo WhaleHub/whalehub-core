@@ -148,25 +148,53 @@
       #CybotCookiebotDialog input:checked + .CybotCookiebotDialogBodyLevelButtonSlider { background: #00CC99 !important; }
       #CybotCookiebotDialogPoweredByText a { color: #6B7280 !important; }
       #CybotCookiebotDialogBodyEdgeMoreDetailsLink { color: #00CC99 !important; }
-      /* Show the consent dialog anchored to the bottom instead of centered */
-      #CybotCookiebotDialog {
-        top: auto !important;
-        bottom: 24px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        margin: 0 !important;
+      /* --- Consent notice: a bottom bar, never a blocking modal ------------
+         Cookiebot ships the dialog centred behind a full-screen underlay, so it
+         covers the app and no button works until the visitor answers it. The
+         underlay is removed and the dialog is pinned to the bottom edge as a
+         slim bar, so the app stays usable and consent stays a choice rather
+         than a toll gate. The Deny / Allow selection buttons are untouched. */
+      #CybotCookiebotDialogBodyUnderlay,
+      #CybotCookiebotDialogBodyUnderlayWrapper {
+        display: none !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
       }
-      @media (max-width: 600px) {
-        #CybotCookiebotDialog {
-          bottom: 0 !important;
-          left: 0 !important;
-          transform: none !important;
-          width: 100% !important;
-          max-width: 100% !important;
-          border-radius: 0 !important;
-        }
+      #CybotCookiebotDialog {
+        position: fixed !important;
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        /* Never fullscreen: cap the height and scroll inside the bar instead. */
+        max-height: 42vh !important;
+        overflow-y: auto !important;
+        border-radius: 0 !important;
+        border-left: 0 !important;
+        border-right: 0 !important;
+        border-bottom: 0 !important;
+        box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.45) !important;
+      }
+      /* The details pane is the one part that legitimately needs room. */
+      #CybotCookiebotDialogDetailBody {
+        max-height: 32vh !important;
+        overflow-y: auto !important;
       }
     </style>
+
+    <!-- Cookiebot's overlay mode locks page scrolling while the dialog is up.
+         Scoped to the banner's own event so the app's modals keep their own
+         scroll handling. -->
+    <script>
+      window.addEventListener('CookiebotOnDialogDisplay', function () {
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+      });
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
