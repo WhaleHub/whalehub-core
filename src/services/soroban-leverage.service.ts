@@ -130,6 +130,26 @@ export class SorobanLeverageService {
     return account;
   }
 
+  /** Read-only contract call against an arbitrary contract id. */
+  private async readCallOn<T>(contractId: string, method: string, ...args: any[]): Promise<T> {
+    const account = await this.getDummyAccount();
+    const contract = new Contract(contractId);
+    const tx = new TransactionBuilder(account, {
+      fee: "100000",
+      networkPassphrase: this.networkPassphrase,
+    })
+      .addOperation(contract.call(method, ...args))
+      .setTimeout(60)
+      .build();
+
+    const sim = await this.withRetry(() => this.server.simulateTransaction(tx));
+    if (rpc.Api.isSimulationError(sim)) {
+      throw new Error(`Simulation failed (${method}): ${sim.error}`);
+    }
+    const retval = (sim as rpc.Api.SimulateTransactionSuccessResponse).result?.retval;
+    return scValToNative(retval as any) as T;
+  }
+
   /** Read-only contract call: simulate and decode the return value. */
   private async readCall<T>(method: string, ...args: any[]): Promise<T> {
     if (!this.vaultId) throw new Error("Leverage vault not configured");
@@ -296,12 +316,65 @@ export class SorobanLeverageService {
     }
   }
 
+  /**
+   * Quote the zap the vault performs inside the flash loan, against LIVE AMM reserves.
+   *
+   * This mirrors the on-chain arithmetic exactly — integer division included — so the
+   * `min_lp_out` we send is a floor the contract can actually meet:
+   *   1. `half = borrow / 2` is swapped borrow→pair   (constant product, 0.3% fee)
+   *   2. the remaining borrow + the pair received are deposited
+   *   3. shares minted = min(amt0·total/res0', amt1·total/res1')  — post-swap reserves
+   *
+   * Getting this wrong is not cosmetic: the old placeholder assumed `lpOut ≈ borrow`,
+   * roughly double the truth, so `min_shares` could never be satisfied and every open
+   * reverted with SlippageExceeded.
+   */
+  async getZapQuote(
+    ammId: string,
+    borrowAmountHuman: string,
+    borrowIdx = 0
+  ): Promise<{ pairOut: number; lpOut: number } | null> {
+    try {
+      const ZERO = BigInt(0);
+      const borrow = BigInt(Math.round(parseFloat(borrowAmountHuman || "0") * SCALAR_7));
+      if (borrow <= ZERO) return null;
+
+      const [reserves, totalShares] = await Promise.all([
+        this.readCallOn<any[]>(ammId, "get_reserves"),
+        this.readCallOn<any>(ammId, "get_total_shares"),
+      ]);
+      const pairIdx = borrowIdx === 0 ? 1 : 0;
+      const resIn = BigInt(reserves[borrowIdx]);
+      const resOut = BigInt(reserves[pairIdx]);
+      const total = BigInt(totalShares);
+      if (resIn <= ZERO || resOut <= ZERO || total <= ZERO) return null;
+
+      // 1. swap half, 0.3% fee (997/1000), constant product
+      const half = borrow / BigInt(2);
+      const inWithFee = (half * BigInt(997)) / BigInt(1000);
+      const pairOut = (resOut * inWithFee) / (resIn + inWithFee);
+
+      // 2. deposit against POST-swap reserves
+      const newResIn = resIn + half;
+      const newResOut = resOut - pairOut;
+      const amtIn = borrow - half;
+      const s0 = (amtIn * total) / newResIn;
+      const s1 = (pairOut * total) / newResOut;
+      const lpOut = s0 < s1 ? s0 : s1;
+
+      return { pairOut: Number(pairOut) / SCALAR_7, lpOut: Number(lpOut) / SCALAR_7 };
+    } catch (e) {
+      console.error("[Leverage] getZapQuote failed:", e);
+      return null;
+    }
+  }
+
   // ------------------------------------------------------------------- writes
 
   /**
    * Open / add to a leveraged LP position.
-   * `minLpOut` / `minPairOut` should come from simulating the zap against current
-   * AMM reserves on the client (leveraged collateral + swap slippage floors).
+   * `minLpOut` / `minPairOut` should come from `getZapQuote` (live AMM reserves) with
+   * the user's slippage tolerance applied.
    */
   async openPosition(params: {
     userAddress: string;

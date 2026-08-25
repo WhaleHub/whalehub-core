@@ -167,20 +167,62 @@ export default function Leverage() {
     refresh();
   }, [refresh]);
 
-  // NOTE: a precise minLpOut/minPairOut must come from simulating the zap against
-  // live AMM reserves once the testnet AMM is deployed. Until then we derive a
-  // conservative floor from the user's slippage tolerance and the naive 50/50 split.
-  // This is intentionally pessimistic and flagged for replacement.
-  const estimateMins = useCallback(() => {
+  // Live zap quote, read from the AMM's actual reserves. The previous version guessed
+  // `minLpOut ≈ borrowAmount`, which is roughly DOUBLE what a 50/50 zap really mints —
+  // so `min_shares` could never be met and every open reverted. See getZapQuote.
+  const [quote, setQuote] = useState<{ pairOut: number; lpOut: number } | null>(null);
+  const [quoting, setQuoting] = useState(false);
+
+  useEffect(() => {
     const borrow = parseFloat(borrowAmount || "0");
+    if (!market?.amm || !(borrow > 0)) {
+      setQuote(null);
+      return;
+    }
+    let cancelled = false;
+    setQuoting(true);
+    const t = setTimeout(async () => {
+      const q = await sorobanLeverageService.getZapQuote(market.amm, borrowAmount);
+      if (!cancelled) {
+        setQuote(q);
+        setQuoting(false);
+      }
+    }, 350);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+      setQuoting(false);
+    };
+  }, [borrowAmount, market?.amm]);
+
+  const estimateMins = useCallback(() => {
     const slip = Math.max(0, parseFloat(slippagePct || "0")) / 100;
-    const half = borrow / 2;
-    // Placeholder: assumes ~1:1 value and applies slippage haircut. Replace with a
-    // real AMM quote (reserves-based) before mainnet.
-    const minPairOut = (half * (1 - slip)).toFixed(7);
-    const minLpOut = (borrow * (1 - slip)).toFixed(7);
-    return { minLpOut, minPairOut };
-  }, [borrowAmount, slippagePct]);
+    if (!quote) return null;
+    return {
+      minLpOut: Math.max(0, quote.lpOut * (1 - slip)).toFixed(7),
+      minPairOut: Math.max(0, quote.pairOut * (1 - slip)).toFixed(7),
+    };
+  }, [quote, slippagePct]);
+
+  // What the position looks like after this open: the user's own LP plus the LP the
+  // flash-borrowed asset zaps into, all supplied as collateral against the new debt.
+  const preview = useMemo(() => {
+    const coll = parseFloat(collateralLp || "0");
+    const borrow = parseFloat(borrowAmount || "0");
+    if (!quote || !(borrow > 0)) return null;
+    const newLp = coll + quote.lpOut;
+    const leverage = coll > 0 ? newLp / coll : null;
+    const capX = config ? config.maxLeverageBps / 10000 : null;
+    return {
+      lpFromZap: quote.lpOut,
+      pairFromSwap: quote.pairOut,
+      totalCollateral: newLp,
+      debt: borrow,
+      leverage,
+      capX,
+      exceedsCap: leverage != null && capX != null && leverage > capX,
+    };
+  }, [collateralLp, borrowAmount, quote, config]);
 
   const onOpen = async () => {
     if (!user?.userWalletAddress) return toast.warn("Please connect wallet.");
@@ -188,7 +230,14 @@ export default function Leverage() {
     if (market.status === "activating")
       return toast.info("This market isn't live yet — its Blend reserve is still unlocking.");
     if (!borrowAmount || parseFloat(borrowAmount) <= 0) return toast.warn("Enter a borrow amount.");
-    const { minLpOut, minPairOut } = estimateMins();
+    const mins = estimateMins();
+    if (!mins) return toast.warn("Still quoting the zap against live pool reserves — try again in a moment.");
+    if (preview?.exceedsCap) {
+      return toast.error(
+        `That's ${preview.leverage?.toFixed(2)}× — above the vault's ${preview.capX?.toFixed(2)}× cap. Lower the borrow amount or add collateral.`
+      );
+    }
+    const { minLpOut, minPairOut } = mins;
     sorobanLeverageService.setVault(market.vault);
     setBusy(true);
     try {
@@ -443,20 +492,89 @@ export default function Leverage() {
                 placeholder="1.0"
                 suffix="%"
               />
+              {/* What the single signature actually does, with live numbers. */}
+              {(quoting || preview) && (
+                <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+                  <p className="mb-2 text-[11px] uppercase tracking-wide text-white/40">
+                    What happens when you sign — one atomic transaction
+                  </p>
+                  {quoting && !preview ? (
+                    <p className="text-xs text-white/40">Quoting against live pool reserves…</p>
+                  ) : preview ? (
+                    <ol className="space-y-1.5 text-xs text-white/60">
+                      <li>
+                        <span className="text-white/35">1.</span> Blend flash-lends the vault{" "}
+                        <b className="text-white/80">{preview.debt.toFixed(4)}</b> {market?.borrowSymbol}
+                      </li>
+                      <li>
+                        <span className="text-white/35">2.</span> Half is swapped →{" "}
+                        <b className="text-white/80">{preview.pairFromSwap.toFixed(4)}</b> {market?.tokenA}
+                      </li>
+                      <li>
+                        <span className="text-white/35">3.</span> Both sides deposited →{" "}
+                        <b className="text-white/80">{preview.lpFromZap.toFixed(4)}</b> LP minted
+                      </li>
+                      <li>
+                        <span className="text-white/35">4.</span> Total{" "}
+                        <b className="text-white/80">{preview.totalCollateral.toFixed(4)}</b> LP supplied
+                        as collateral
+                      </li>
+                      <li>
+                        <span className="text-white/35">5.</span> Flash leg repaid — it becomes your{" "}
+                        <b className="text-white/80">{preview.debt.toFixed(4)}</b>{" "}
+                        {market?.borrowSymbol} debt
+                      </li>
+                      <li className="border-t border-white/10 pt-1.5 text-white/45">
+                        Health is checked <b className="text-white/70">once</b>, at the end — the
+                        position is never observably unhealthy.
+                      </li>
+                    </ol>
+                  ) : null}
+                  {preview?.leverage != null && (
+                    <div
+                      className={`mt-2 flex items-center justify-between rounded-lg px-2.5 py-1.5 text-xs ${
+                        preview.exceedsCap
+                          ? "bg-red-500/15 text-red-300"
+                          : "bg-[#37b06f]/10 text-[#7fdca9]"
+                      }`}
+                    >
+                      <span>Resulting leverage</span>
+                      <span className="font-mono font-semibold">
+                        {preview.leverage.toFixed(2)}×
+                        {preview.capX != null && (
+                          <span className="ml-1 font-normal opacity-70">
+                            / {preview.capX.toFixed(2)}× cap
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
               <button
                 onClick={onOpen}
-                disabled={busy || !user?.userWalletAddress || market?.status === "activating"}
+                disabled={
+                  busy ||
+                  !user?.userWalletAddress ||
+                  market?.status === "activating" ||
+                  quoting ||
+                  !!preview?.exceedsCap
+                }
                 className="w-full rounded-xl bg-[#37b06f] py-3 font-semibold text-black hover:brightness-110 disabled:opacity-50"
               >
                 {busy
                   ? "Working…"
                   : market?.status === "activating"
                   ? "Market activating (~7d)"
+                  : quoting
+                  ? "Quoting…"
+                  : preview?.exceedsCap
+                  ? "Above leverage cap"
                   : "Open leveraged position"}
               </button>
               <p className="text-[11px] leading-relaxed text-white/35">
-                Min-out floors are derived from your slippage tolerance. A precise
-                reserves-based quote is wired once the testnet AMM is live.
+                Min-out floors come from a live quote against the AMM's actual reserves
+                (constant product, 0.3% fee), minus your slippage tolerance.
               </p>
             </div>
           </Card>
