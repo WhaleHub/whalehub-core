@@ -1,0 +1,328 @@
+#!/usr/bin/env python3
+"""
+Assemble the Blend-team status brief (print-targeted) and render it to PDF via Chrome.
+
+Usage:  python3 build_blend_pdf.py [dest.pdf]
+
+Every figure in here was read from chain on 2026-08-27; see
+docs/planning/blend-team-message.md for the long-form version and the
+internal notes that are deliberately NOT in this document.
+"""
+import pathlib, subprocess, sys
+
+HERE = pathlib.Path(__file__).parent
+DEST = pathlib.Path(sys.argv[1]).expanduser() if len(sys.argv) > 1 else (
+    pathlib.Path.home() / "Downloads" / "WhaleHub_Blend_Testnet_Status.pdf"
+)
+
+# Same print stylesheet as the SCF proposal (build_pdf.py) so the two read as
+# one house. Kept inline rather than imported: build_pdf.py runs work at import.
+CSS = """
+@page { size: A4; margin: 12mm 13mm 11mm; }
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body {
+  margin:0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 9.1pt; line-height: 1.4; color:#12202b; background:#fff;
+}
+.page { page-break-after: always; }
+.page:last-child { page-break-after: auto; }
+h1 { font-size: 19pt; line-height:1.08; margin:0 0 5pt; letter-spacing:-.02em; font-weight:700; }
+h2 { font-size: 12pt; margin:0 0 4pt; letter-spacing:-.015em; font-weight:700; color:#12202b; }
+h3 { font-size: 9.6pt; margin:9pt 0 3pt; font-weight:700; }
+p  { margin:0 0 5.5pt; }
+ul { margin:0 0 5.5pt; padding-left:13pt; }
+li { margin-bottom:2.2pt; }
+strong { font-weight:700; }
+code { font-family: "SF Mono", Menlo, monospace; font-size:8.4pt; background:#f1f5f8;
+       padding:0.5pt 3pt; border-radius:2px; }
+.eyebrow { font-family:"SF Mono",Menlo,monospace; font-size:7.6pt; letter-spacing:.14em;
+           text-transform:uppercase; color:#0d7a63; margin:0 0 7pt; }
+.pagetag { font-family:"SF Mono",Menlo,monospace; font-size:7.2pt; letter-spacing:.13em;
+           text-transform:uppercase; color:#8c9aa8; margin:0 0 7pt;
+           padding-bottom:4pt; border-bottom:.6pt solid #dfe6ec; }
+.dek { color:#5a6b7c; font-size:9.8pt; margin:0 0 9pt; }
+.rule { border:0; border-top:.6pt solid #dfe6ec; margin:8pt 0; }
+table, figure, .note, .cards, .eq, .flow { break-inside: avoid; page-break-inside: avoid; }
+h2, h3 { break-after: avoid; page-break-after: avoid; }
+table { width:100%; border-collapse:collapse; font-size:8.1pt; margin:0 0 7pt; }
+th,td { text-align:left; padding:3.4pt 5pt; border-bottom:.5pt solid #e7edf2; vertical-align:top; }
+th { font-family:"SF Mono",Menlo,monospace; font-size:7.4pt; letter-spacing:.08em;
+     text-transform:uppercase; color:#5a6b7c; background:#f4f8fa; font-weight:400; }
+td.n,th.n { text-align:right; font-family:"SF Mono",Menlo,monospace; font-variant-numeric:tabular-nums; }
+td.lab { font-weight:600; }
+td.mono, .mono { font-family:"SF Mono",Menlo,monospace; font-size:7.4pt; word-break:break-all; }
+.pos{color:#0d7a63;} .neg{color:#b23528;} .cau{color:#a8700c;}
+tr.hi td { background:#f4f8fa; }
+.cards { display:flex; gap:6pt; margin:0 0 8pt; }
+.card { flex:1; border:.6pt solid #dfe6ec; border-radius:3px; padding:6pt 7pt; }
+.card .cap { font-family:"SF Mono",Menlo,monospace; font-size:7pt; letter-spacing:.09em;
+             text-transform:uppercase; color:#8c9aa8; margin:0 0 3pt; }
+.card .big { font-family:"SF Mono",Menlo,monospace; font-size:15pt; font-weight:600;
+             line-height:1; margin:0; letter-spacing:-.02em; }
+.card .sub { font-size:7.8pt; color:#5a6b7c; margin:3pt 0 0; line-height:1.35; }
+.card.go{border-color:#0d7a63;background:#f2faf7;} .card.go .big{color:#0d7a63;}
+.card.stop{border-color:#b23528;background:#fdf5f4;} .card.stop .big{color:#b23528;}
+.note { border-left:2pt solid #dfe6ec; padding:1pt 0 1pt 8pt; margin:0 0 7pt; font-size:8.6pt; color:#41505f; }
+.note.go{border-left-color:#0d7a63;} .note.flag{border-left-color:#a8700c;} .note.stop{border-left-color:#b23528;}
+.note b{color:#12202b;}
+.eq { font-family:"SF Mono",Menlo,monospace; font-size:8.6pt; background:#f4f8fa;
+      border:.6pt solid #dfe6ec; border-radius:3px; padding:6pt 8pt; margin:0 0 7pt; line-height:1.55; }
+.eq em{color:#0d7a63;font-style:normal;font-weight:600;}
+.flow { display:flex; align-items:stretch; gap:0; margin:7pt 0 3pt; }
+.step { flex:1; border:.6pt solid #dfe6ec; border-radius:3px; padding:6pt 5pt; text-align:center;
+        margin-right:9pt; position:relative; }
+.step:last-child{margin-right:0;}
+.step:after { content:"\\203A"; position:absolute; right:-7pt; top:50%; transform:translateY(-50%);
+              color:#8c9aa8; font-size:11pt; }
+.step:last-child:after{content:"";}
+.step.k { border-color:#0d7a63; background:#f2faf7; }
+.step .sn { font-family:"SF Mono",Menlo,monospace; font-size:6.8pt; color:#8c9aa8; display:block; }
+.step .st { font-size:8.2pt; font-weight:700; display:block; margin-top:1.5pt; }
+.step .sv { font-family:"SF Mono",Menlo,monospace; font-size:7.2pt; color:#5a6b7c; display:block; }
+.cover-meta { display:flex; gap:6pt; margin:9pt 0 0; }
+.cover-meta div { flex:1; border-top:1.4pt solid #12202b; padding-top:5pt; }
+.cover-meta .k { font-family:"SF Mono",Menlo,monospace; font-size:7pt; letter-spacing:.1em;
+                 text-transform:uppercase; color:#8c9aa8; }
+.cover-meta .v { font-size:10.5pt; font-weight:700; margin-top:2pt; }
+.tiny { font-size:7.6pt; color:#8c9aa8; line-height:1.5; }
+.tiny b{color:#5a6b7c;font-weight:600;}
+.txtbl th:nth-child(1),.txtbl td:nth-child(1){width:20%;}
+.txtbl th:nth-child(3),.txtbl td:nth-child(3){width:22%;}
+.txtbl td.mono{word-break:normal;white-space:nowrap;font-size:7pt;}
+.q { margin:0 0 6pt; }
+.q .qn { font-family:"SF Mono",Menlo,monospace; font-size:7.6pt; color:#0d7a63; letter-spacing:.08em; }
+.q .qt { font-weight:700; }
+"""
+
+
+def page(tag, body):
+    return f'<section class="page"><p class="pagetag">{tag}</p>{body}</section>'
+
+
+TAG = "WhaleHub &times; Blend v2 &middot; Testnet status &middot; 27 Aug 2026"
+
+# ── page 1 — what it is, and what is verified ────────────────────────────────
+p1 = page(
+    TAG,
+    """
+<p class="eyebrow">WhaleHub</p>
+<h1>Leveraged LP farming on Blend&nbsp;v2</h1>
+<p class="dek">A liquidity provider multiplies an Aquarius LP position in <strong>one signed
+transaction</strong>, using the raw LP share token as collateral on Blend. The integration is
+working end&#8209;to&#8209;end on testnet, liquidation included. This brief is our status and the
+questions we need answered to reach mainnet.</p>
+
+<div class="cover-meta">
+  <div><p class="k">Network</p><p class="v">Stellar testnet</p></div>
+  <div><p class="k">Status</p><p class="v">End-to-end verified</p></div>
+  <div><p class="k">Deployed by us</p><p class="v">Pool, oracle, AMM, backstop</p></div>
+  <div><p class="k">Asking for</p><p class="v">The mainnet path</p></div>
+</div>
+
+<hr class="rule">
+
+<h2>The mechanism</h2>
+<p>One <code>flash_loan</code> whose request stack does the whole job, with a single health check at
+the end &mdash; so the position is never observably unhealthy. Without it this is a
+<code>supply &rarr; borrow &rarr; zap &rarr; supply</code> loop that leaves the user liquidatable
+between passes.</p>
+
+<div class="flow">
+  <div class="step k"><span class="sn">01</span><span class="st">Flash-borrow</span><span class="sv">from the pool</span></div>
+  <div class="step"><span class="sn">02</span><span class="st">Zap</span><span class="sv">swap half &rarr; LP</span></div>
+  <div class="step"><span class="sn">03</span><span class="st">Supply</span><span class="sv">LP as collateral</span></div>
+  <div class="step"><span class="sn">04</span><span class="st">Borrow</span><span class="sv">against it</span></div>
+  <div class="step k"><span class="sn">05</span><span class="st">Health check</span><span class="sv">once, at the end</span></div>
+</div>
+
+<h3>How it is wired</h3>
+<ul>
+<li>The <strong>vault</strong> is the Blend <code>from</code> and owns one position; a
+<strong>separate zapper</strong> is the flash-loan receiver. That split is not cosmetic &mdash; with
+the vault as its own <code>exec_op</code> receiver, Soroban rejects the callback
+(<em>&ldquo;Contract re-entry is not allowed&rdquo;</em>) because the vault is still on the stack
+inside <code>open_position</code>. Worth flagging for anyone else composing <code>flash_loan</code>.</li>
+<li>Depositors hold <strong>shares of the vault&rsquo;s Blend position</strong>, derived on read from
+<code>pool.get_positions(vault)</code> rather than an internal ledger. Interest and liquidation
+socialise pro-rata with nothing to reconcile &mdash; an earlier internal-ledger design desynced the
+moment a liquidation touched the position.</li>
+<li><code>SupplyCollateral</code> pulls the LP by <code>transfer_from</code>, so the vault
+pre-approves the pool before the loan; the non-flash unwind needs
+<code>authorize_as_current_contract</code> on the <code>Repay</code> transfer, since an allowance
+does not cover the pool spending as <code>spender</code>.</li>
+</ul>
+
+<h2>Verified on testnet</h2>
+<p>We deployed the entire environment ourselves &mdash; Blend pool, oracle, an Aquarius-interface
+AMM, and a self-funded backstop &mdash; rather than asking for anything. Transactions on record:</p>
+
+<table class="txtbl">
+<tr><th>What</th><th>Result</th><th>Transaction &middot; date</th></tr>
+<tr><td class="lab">Atomic leveraged open</td><td>100 LP equity + 100 borrowed &rarr; 149 LP collateral / 100 debt (<b>1.495&times;</b>)</td><td class="mono">5e7a0e24&hellip;ecb2a48d<br>15 Aug</td></tr>
+<tr><td class="lab">Partial unwind</td><td>repay 100, withdraw 149.5 LP; shares burned pro-rata, other depositors untouched</td><td class="mono">a36dc9a1&hellip;83f16afb<br>15 Aug</td></tr>
+<tr><td class="lab">Third-party wallet, via the UI</td><td>10 LP + 10 borrowed &rarr; +149.25 LP / +99.99 debt</td><td class="mono">f98b24b9&hellip;6ad94f59<br>25 Aug</td></tr>
+<tr><td class="lab">Liquidation drill</td><td>price $2.00 &rarr; $0.30; 50% auction refused (<code>#1214</code>), 100% accepted; fill emitted correct terms then reverted <code>#1205</code> at block 0 &mdash; Dutch-auction protection as designed</td><td class="mono">28 Jun</td></tr>
+<tr class="hi"><td class="lab">Re-parameterised to a production c_factor</td><td>LP reserve c_factor 0.90 &rarr; <b>0.60</b></td><td class="mono">ef53d290&hellip;4d0cc0f<br>27 Aug</td></tr>
+<tr class="hi"><td class="lab">Open at 1.99&times; under that c_factor</td><td>100 LP + 200 borrowed &rarr; +198.5 LP / +200 debt</td><td class="mono">21659457&hellip;196c7fc4<br>27 Aug</td></tr>
+</table>
+""",
+)
+
+# ── page 2 — the parameter test, the finding, what is missing ────────────────
+p2 = page(
+    TAG,
+    """
+<h2>The parameter test</h2>
+<p>Testnet started at c_factor 0.90 to exercise the mechanism. We then lowered the LP c_factor to
+<strong>0.60</strong> &mdash; our mainnet intent &mdash; and re-ran the flow against it. With
+l_factor 0.95 on the borrowable, the liquidation boundary is:</p>
+
+<div class="eq">boundary = 1 / (1 &minus; c_factor &times; l_factor) = 1 / (1 &minus; 0.60 &times; 0.95) = <em>2.33&times;</em></div>
+
+<div class="cards">
+  <div class="card go"><p class="cap">Accepted</p><p class="big">1.99&times;</p>
+    <p class="sub">Real transaction. Pool position now 312.4&nbsp;LP against 260.0 debt &mdash;
+    ~$375 effective collateral vs ~$274 effective debt.</p></div>
+  <div class="card stop"><p class="cap">Refused by Blend</p><p class="big">2.49&times;</p>
+    <p class="sub"><code>#1205 InvalidHf</code> at the end-of-stack health check, correctly.</p></div>
+  <div class="card"><p class="cap">Same maths, mainnet</p><p class="big">1.82&times;</p>
+    <p class="sub">c_factor 0.60 against XLM&rsquo;s l_factor 0.75. Interface would cap at ~1.67&times;.</p></div>
+</div>
+
+<div class="note flag"><b>One finding, and it is ours.</b> The vault still carries
+<code>max_leverage_bps = 30000</code> (3.0&times;) from early testing, which sits <b>above</b> the
+Blend boundary. At 2.49&times; the vault happily built the request stack and <b>your health check was
+the only thing that stopped it</b>. Blend behaved exactly as it should &mdash; but a vault whose own
+cap sits above the boundary wastes user gas discovering the limit. Ours comes down to 92% of the
+boundary before mainnet, so the health check is the backstop rather than the primary control.</div>
+
+<p class="tiny"><b>Caveat we want on the record:</b> we have not tested at 1.82&times;. That needs the
+<em>borrowable&rsquo;s</em> l_factor at 0.75; ours is 0.95, which is what gives 2.33&times;. Same
+arithmetic, different input. Matching it means queueing another <code>set_reserve</code> and waiting
+another seven days.</p>
+
+<h3>Current reserve configuration</h3>
+<table>
+<tr><th>Reserve</th><th class="n">c_factor</th><th class="n">l_factor</th><th class="n">max_util</th><th>Role</th></tr>
+<tr><td class="lab">LP share token (index 0)</td><td class="n">0.60</td><td class="n">0.90</td><td class="n">0.95</td><td>Collateral</td></tr>
+<tr><td class="lab">TUSDC (index 1)</td><td class="n">0.95</td><td class="n">0.95</td><td class="n">0.95</td><td>Borrowable</td></tr>
+</table>
+
+<hr class="rule">
+
+<h2>What stands between here and mainnet</h2>
+<ul>
+<li><strong>Pool activation and backstop.</strong> We read the threshold as
+<code>bal_blnd&#8308; &times; bal_usdc &ge; 1e25</code>, which on Comet&rsquo;s 80/20 ratio resolves to
+a single point: <b>247,464 BLND + 2,667 USDC &asymp; $13.3K</b>. We can fund that. Whether we
+<em>should</em> stop there is question&nbsp;1.</li>
+<li><strong>The oracle.</strong> Testnet runs a mock we control. Mainnet needs the fair-LP adapter
+(invariant plus Reflector, never pool spot or TWAP) and your view on whether a custom per-pool
+oracle is acceptable &mdash; question&nbsp;3.</li>
+<li><strong>Reserve timelock.</strong> Adding or changing a reserve on a pool that has left Setup
+costs a week (<code>#1203 InitNotUnlocked</code>). We hit it twice and waited it out both times.</li>
+</ul>
+
+<h3>On our side of the line, not yours</h3>
+<ul>
+<li><strong>Per-user isolation.</strong> v1 socialises liquidation losses across vault depositors
+(the Aave model). Acceptable at launch size under an equity cap; not at scale.</li>
+<li><strong>Leverage cap</strong> down to 92% of the boundary, as above.</li>
+<li><strong>Self-closing unwind.</strong> v1 requires the user to bring the repay asset.</li>
+<li><strong>Third-party security audit</strong> of vault, zapper, oracle adapter and liquidator.</li>
+</ul>
+""",
+)
+
+# ── page 3 — questions + appendix ────────────────────────────────────────────
+p3 = page(
+    TAG,
+    """
+<h2>Questions</h2>
+
+<div class="q"><p class="qn">Q1</p><p><span class="qt">Mainnet pool activation &mdash; the main
+one.</span> We plan to deploy via PoolFactoryV2 with two reserves (Aquarius LP as collateral, XLM
+borrowable) and fund the backstop ourselves. Is clearing the threshold the whole story, or is there a
+reward-zone / whitelist step that needs your side? And &mdash; more to the point &mdash;
+<strong>$13.3K of first-loss capital against a market that could hold ~$450K of equity looks thin to
+us. What size would you actually want to see</strong> before this is a market you are comfortable
+existing? We would rather size it to your answer than to the minimum.</p></div>
+
+<div class="q"><p class="qn">Q2</p><p><span class="qt">LP share token as a collateral class.</span>
+As far as we know this would be the first AMM LP token used as Blend collateral. We have now run the
+flow at c_factor 0.60 end-to-end; 0.50 works equally well, it just lowers the boundary. Does
+0.50&ndash;0.60 look right to you, and is there anything else in the reserve config (max_util, supply
+cap, the IR curve) that should differ from a plain asset? We will take your number over ours.</p></div>
+
+<div class="q"><p class="qn">Q3</p><p><span class="qt">Oracle.</span> We intend to point the pool at
+our own adapter implementing the Blend oracle interface, pricing the LP from the pool invariant plus
+Reflector feeds &mdash; <code>LP = 2&middot;&radic;(K&middot;P&#8348;&middot;P&#8342;)/L</code> &mdash;
+with a deviation breaker that halts new borrowing on a stale or dislocated feed. Is a custom oracle
+per pool something you are comfortable with, and are there requirements we should meet (decimals,
+base asset, staleness semantics, <code>prices</code> vs <code>lastprice</code>)? Would you want that
+adapter in audit scope before you would consider the pool legitimate?</p></div>
+
+<div class="note"><b>A finding worth passing on.</b> When our oracle&rsquo;s price entries expired
+under Soroban state TTL, <b>every</b> entrypoint reverted with an untyped host trap
+(<code>VM call trapped: UnreachableCodeReached</code>) rather than
+<code>PoolError::InvalidPrice (#1210)</code>, and nothing in the trace named the oracle. A missing
+price and a bad price surface very differently; if <code>#1210</code> covered the missing case it
+would save integrators a great deal of time.</div>
+
+<div class="q"><p class="qn">Q4</p><p><span class="qt">Reserve timelock.</span> For mainnet, is the
+intended pattern to configure every reserve during Setup before activation? Is there any supported
+path to add one later without the week&rsquo;s wait, or is a fresh pool the answer?</p></div>
+
+<div class="q"><p class="qn">Q5</p><p><span class="qt">Liquidation and bad debt.</span> We are
+publishing an MIT-licensed reference liquidator that unwinds atomically (win auction &rarr; withdraw
+LP through Aquarius &rarr; swap one leg &rarr; repay), and running our own bot so auctions clear from
+day one. Given the collateral is an LP token rather than a listed asset: do you expect meaningful
+third-party liquidator interest, or should we assume we are the liquidator of last resort? We are
+willing, but would want an explicit ceiling rather than open-ended exposure. Any concern about
+concentration &mdash; early on, one vault position is effectively the whole market?</p></div>
+
+<div class="q"><p class="qn">Q6</p><p><span class="qt">Interface stability.</span> Are
+<code>flash_loan</code> and the <code>exec_op(caller, token, amount, fee)</code> receiver signature
+stable for the foreseeable future? We would rather know now than discover it at upgrade time.</p></div>
+
+<hr class="rule">
+
+<h3>Testnet addresses</h3>
+<table>
+<tr><th>Component</th><th>Address</th></tr>
+<tr><td class="lab">Leverage vault</td><td class="mono">CC2JF2VP3LVNHYI7URF3R376FCVFSAI4HNVZ2WPZZHBJDAJSWX2X2PFH</td></tr>
+<tr><td class="lab">Zapper (flash-loan receiver)</td><td class="mono">CCUDFI62LH2IMHGSRBLLF7SIKRPDQ3LZPA4TYFBFS5ENRYWZOHOKSHT2</td></tr>
+<tr><td class="lab">Blend v2 pool (ours)</td><td class="mono">CDSFGJOQ5RHIPK5522VVCNYNOQH4ECGRTPWZK6QBQV4XXA4IAE5BVTW4</td></tr>
+<tr><td class="lab">Oracle (mock, stands in for the adapter)</td><td class="mono">CCBQAAFHTGG6EUPB4SXBJNHAYVVEB746E4RNPOG55MV77NNYLJZRMIUK</td></tr>
+<tr><td class="lab">AMM / LP share token</td><td class="mono">CDOTVNSYEFF6TWAFSMO3AVSHYEMTMAWTR2E7GXUOOLOCSEC6UV6KJWGC</td></tr>
+<tr><td class="lab">TUSDC (borrowable)</td><td class="mono">CA2AYW5YFEI36LY5L7NTDN666KMR7SBCY4MLY6FA6UMAYBF3ZS7PR7WH</td></tr>
+<tr><td class="lab">TAQUA (pair leg)</td><td class="mono">CAMP6O2ZGMY65DDCJKC7RGZVSOWTFHQDHG6MHD2BRZXBUQBIYNQJMCUJ</td></tr>
+</table>
+
+<p class="tiny">Live interface, testnet-pinned: <b>app.whalehub.io/leverage</b> &nbsp;&middot;&nbsp;
+WhaleHub has run a mainnet product since February 2026 (AQUA staking with auto-compounding, staking
+contract <span class="mono">CC72BEVVKHQ57PB5FCKAZYRXCSR6DOQSTN46QR7RZMMM64YWNRPDS24S</span>).
+Happy to walk through any of this live and to share the repo &mdash; the contracts, the testnet
+runbook and the failure modes above are going out publicly regardless, so other teams do not repeat
+them.</p>
+""",
+)
+
+html = (
+    "<!doctype html><meta charset='utf-8'>"
+    "<title>WhaleHub x Blend v2 - testnet status</title>"
+    f"<style>{CSS}</style>{p1}{p2}{p3}"
+)
+
+src = HERE / "_blend_brief.html"
+src.write_text(html)
+
+CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+DEST.parent.mkdir(parents=True, exist_ok=True)
+subprocess.run(
+    [CHROME, "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
+     f"--print-to-pdf={DEST}", src.as_uri()],
+    check=True, capture_output=True, timeout=180,
+)
+print(f"wrote {DEST}  ({DEST.stat().st_size:,} bytes)")
