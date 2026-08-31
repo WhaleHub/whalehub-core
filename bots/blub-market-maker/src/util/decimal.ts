@@ -27,6 +27,12 @@ export function fromStroops(raw: bigint | number | string): number {
   return Number(asBig) / STROOP_SCALE;
 }
 
+/** Human number → stroop bigint (truncating), for u128 contract args. */
+export function toStroopsBigInt(value: number): bigint {
+  if (!Number.isFinite(value) || value < 0) throw new Error(`invalid amount: ${value}`);
+  return BigInt(Math.trunc(value * STROOP_SCALE));
+}
+
 /** basis points → fraction (e.g. 50 → 0.005). */
 export function bps(v: number): number {
   return v / 10_000;

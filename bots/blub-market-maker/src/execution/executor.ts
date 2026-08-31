@@ -4,6 +4,7 @@ import type { HorizonClient } from "../stellar/horizonClient.js";
 import type { Logger } from "../obs/logger.js";
 import type { Metrics } from "../obs/metrics.js";
 import type { OfferAction } from "../strategy/types.js";
+import { MAX_OPS_PER_TX } from "../constants.js";
 import { buildOfferOp } from "./offerOps.js";
 
 const CANCEL_FIRST: Record<OfferAction["type"], number> = { cancel: 0, update: 1, create: 2 };
@@ -43,16 +44,33 @@ export class Executor {
       return { applied: false };
     }
 
-    try {
-      await this.submitBatch(ordered);
-    } catch (e) {
-      const msg = (e as Error).message;
-      if (msg.includes("tx_bad_seq")) {
-        this.deps.log.warn("tx_bad_seq — reloading account and retrying once");
-        await this.submitBatch(ordered);
-      } else {
-        this.deps.metrics.submitErrors++;
-        throw e;
+    // Stellar caps a transaction at 100 operations. A crash can leave far more
+    // orphan offers than that (myOffers pages up to 200), and a single oversized
+    // batch would fail forever — leaving the bot unable to clean up after itself.
+    // Chunking keeps the cancel-first ordering across chunks.
+    const chunks: OfferAction[][] = [];
+    for (let i = 0; i < ordered.length; i += MAX_OPS_PER_TX) {
+      chunks.push(ordered.slice(i, i + MAX_OPS_PER_TX));
+    }
+    if (chunks.length > 1) {
+      this.deps.log.info(
+        { actions: ordered.length, chunks: chunks.length, maxOpsPerTx: MAX_OPS_PER_TX },
+        "batch exceeds the per-transaction operation cap — splitting",
+      );
+    }
+
+    for (const chunk of chunks) {
+      try {
+        await this.submitBatch(chunk);
+      } catch (e) {
+        const msg = (e as Error).message;
+        if (msg.includes("tx_bad_seq")) {
+          this.deps.log.warn("tx_bad_seq — reloading account and retrying once");
+          await this.submitBatch(chunk);
+        } else {
+          this.deps.metrics.submitErrors++;
+          throw e;
+        }
       }
     }
     this.tally(ordered);

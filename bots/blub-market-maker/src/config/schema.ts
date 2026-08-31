@@ -8,11 +8,31 @@ const num = (def: number) =>
     .transform((v) => (v === undefined || v === "" ? def : Number(v)))
     .pipe(z.number().finite());
 
+/**
+ * Parse a boolean env var FAIL-SAFE: anything we don't explicitly recognise falls
+ * back to the default rather than to `false`.
+ *
+ * This matters because `dryRun` defaults to true. The previous implementation was
+ * `v.toLowerCase() === "true"`, which silently turned `DRY_RUN=` (empty),
+ * `DRY_RUN=1` and `DRY_RUN=yes` into LIVE TRADING — a deploy template with an
+ * unset variable would have started placing real orders. Only an explicit,
+ * recognised false value flips a default-true flag off.
+ */
+const TRUEISH = new Set(["true", "1", "yes", "y", "on"]);
+const FALSEISH = new Set(["false", "0", "no", "n", "off"]);
+
 const bool = (def: boolean) =>
   z
     .string()
     .optional()
-    .transform((v) => (v === undefined ? def : v.toLowerCase() === "true"));
+    .transform((v) => {
+      if (v === undefined) return def;
+      const s = v.trim().toLowerCase();
+      if (s === "") return def;
+      if (TRUEISH.has(s)) return true;
+      if (FALSEISH.has(s)) return false;
+      return def; // unrecognised → default (safe)
+    });
 
 const str = (def: string) =>
   z

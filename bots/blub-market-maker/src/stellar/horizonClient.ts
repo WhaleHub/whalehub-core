@@ -1,5 +1,6 @@
 import { Horizon, type Transaction } from "@stellar/stellar-sdk";
 import { AQUA, BLUB, isAsset } from "./assets.js";
+import { ACCOUNT_BASE_SUBENTRIES, BASE_RESERVE_XLM } from "../constants.js";
 import type { Inventory, LiveOffer } from "../strategy/types.js";
 import { withRetry } from "../util/retry.js";
 import type { Logger } from "../obs/logger.js";
@@ -11,6 +12,15 @@ export interface OrderBookTop {
 }
 
 export type AccountResponse = Awaited<ReturnType<Horizon.Server["loadAccount"]>>;
+
+export interface ReserveInfo {
+  xlm: number;
+  subentries: number;
+  /** Minimum XLM the account must retain: (2 + subentries) * 0.5. */
+  requiredXlm: number;
+  /** XLM above the protocol minimum — what new subentries can be funded from. */
+  freeXlm: number;
+}
 
 function matchesPair(
   side: { asset_type: string; asset_code?: string; asset_issuer?: string },
@@ -49,6 +59,19 @@ export class HorizonClient {
       else if (isAsset(b, AQUA)) aqua = Number(b.balance);
     }
     return { blub, aqua, xlm };
+  }
+
+  /**
+   * XLM reserve position. Every resting offer is a subentry costing 0.5 XLM, so
+   * the bot must know its headroom before adding offers — otherwise offer
+   * creation fails with `op_low_reserve`, or fees eat into the minimum balance.
+   */
+  reserveInfo(account: AccountResponse): ReserveInfo {
+    let xlm = 0;
+    for (const b of account.balances) if (b.asset_type === "native") xlm = Number(b.balance);
+    const subentries = Number((account as unknown as { subentry_count?: number }).subentry_count ?? 0);
+    const requiredXlm = (ACCOUNT_BASE_SUBENTRIES + subentries) * BASE_RESERVE_XLM;
+    return { xlm, subentries, requiredXlm, freeXlm: xlm - requiredXlm };
   }
 
   trustlines(account: AccountResponse): { aqua: boolean; blub: boolean } {

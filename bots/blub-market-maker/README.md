@@ -3,7 +3,10 @@
 A standalone Node.js + TypeScript bot that posts tight two-sided **BLUB/AQUA** limit
 offers on the classic Stellar DEX (SDEX). Its job is to make the *displayed* BLUB price
 coherent (today the book is a canyon — best bid ~0.51 / best ask ~0.92 AQUA) and to earn
-the spread, quoting around a robust fair mid with the **1.00 peg as a hard ceiling**.
+the spread, quoting around a robust fair mid with a hard **1.00 AQUA ceiling** on asks.
+
+> BLUB is a floating asset. The 1.00 ceiling is a risk limit on our own quoting — it is not
+> a peg, and BLUB is not pegged or redeemable.
 
 > ⚠️ This is a **review/handoff** build. It ships with `DRY_RUN=true` — it computes and
 > logs the offers it *would* place but submits nothing. Victor: review, then flip to live.
@@ -12,12 +15,12 @@ the spread, quoting around a robust fair mid with the **1.00 peg as a hard ceili
 ## What it does (and doesn't)
 
 - **Does:** read the Aquarius StableSwap pool reserves (reference price), read the SDEX
-  order book, compute a fair sub-peg mid, build a ladder of bids/asks with inventory skew,
+  order book, compute a fair mid below the ceiling, build a ladder of bids/asks with inventory skew,
   and reconcile that against our live offers (create/update/cancel with churn suppression).
 - **Doesn't (v1):** trade against the Aquarius Soroban pool, do cross-venue arbitrage, or
-  restore the peg. A bot stabilizes the *shown* price and captures spread; it cannot
-  manufacture a peg (that needs real AQUA backing / less BLUB supply). The strategy layer
-  is behind a `Strategy` interface so an arbitrage module can be added later.
+  change what BLUB is worth. A bot stabilizes the *shown* price and captures spread; it
+  cannot manufacture value (that needs real AQUA backing / less BLUB supply). The strategy
+  layer is behind a `Strategy` interface so an arbitrage module can be added later.
 
 ## Quick start (dry-run — safe, no keys, no orders)
 
@@ -28,7 +31,7 @@ cp .env.example .env      # defaults are fine; DRY_RUN=true, no BOT_SECRET neede
 npm run dev               # watch the structured logs
 ```
 
-Each cycle logs the reference sources + freshness, the chosen **sub-peg** mid, the computed
+Each cycle logs the reference sources + freshness, the chosen mid, the computed
 bid/ask ladder (asks capped at 1.00), and the intended CREATE/UPDATE/CANCEL actions — with
 **nothing submitted**.
 
@@ -65,8 +68,13 @@ continuously; it is *not* a cron job.
 - **Circuit breaker:** if the reference price is stale/unavailable or out of a sane band, the
   bot cancels all offers and quotes nothing until a fresh in-band reference returns
   (re-arms after `BREAKER_REARM_CYCLES` healthy cycles).
-- **Peg ceiling:** asks are hard-capped at `PEG_CEILING` (1.00) — the bot never sells BLUB
-  above peg on our own book. The bid floats down with the market (floored at `PRICE_FLOOR`).
+- **Ask ceiling:** asks are hard-capped at `PEG_CEILING` (1.00 AQUA) — the bot never quotes
+  BLUB above that on our own book. The bid floats with the market (floored at `PRICE_FLOOR`).
+- **XLM reserve guard:** every resting offer is a 0.5 XLM subentry, so new offers are only
+  created while free XLM stays above `MIN_RESERVE_BUFFER_XLM`; past that the ladder is
+  trimmed from the outside in. Cancels and updates are never blocked.
+- **Fail-safe flags:** `DRY_RUN` only goes live on an explicit `false`/`0`/`no`/`off`.
+  Empty, unset, or unrecognised values keep it in dry run.
 - **Exposure caps & balance-aware sizing:** ladder sizes are bounded by `MAX_EXPOSURE_*` and,
   in live mode, by actual balances.
 

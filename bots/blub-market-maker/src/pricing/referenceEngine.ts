@@ -8,16 +8,22 @@ export interface ReferenceResult {
   mid: number | null; // AQUA per BLUB, after peg ceiling + sanity clamp
   reason?: string; // set when !ok (drives the circuit breaker)
   sources: {
+    poolQuote?: number;
     poolExec?: number;
     ammApi?: number;
     sdexMid?: number;
     divergenceBps?: number;
+    primarySource?: "poolQuote" | "poolMath" | "ammApi";
   };
 }
 
 export interface ReferenceInputs {
+  /** The pool's own `estimate_swap` quote — contract truth, preferred source. */
+  poolQuote: number | null;
   reserveBlub: number | null; // null if pool read failed/stale
   reserveAqua: number | null;
+  /** Live amplification/fee from `get_info`; falls back to constants when null. */
+  poolParams: { a: number; fee: number } | null;
   ammApiPrice: number | null; // AQUA per BLUB, or null
   sdexBestBid: number | null;
   sdexBestAsk: number | null;
@@ -33,28 +39,39 @@ export interface ReferenceInputs {
 export function deriveReferenceMid(cfg: BotConfig, input: ReferenceInputs): ReferenceResult {
   const sources: ReferenceResult["sources"] = {};
 
+  // Local StableSwap math, using live amplification/fee when we have them. The
+  // pool exposes `ramp_a`, so hardcoded constants can go stale — they are only a
+  // last resort here.
+  const amp = input.poolParams?.a ?? POOL_AMP;
+  const fee = input.poolParams?.fee ?? POOL_FEE;
+
   let poolExec: number | undefined;
   if (input.reserveBlub != null && input.reserveAqua != null && input.reserveBlub > 0 && input.reserveAqua > 0) {
-    poolExec = executableSellPrice(input.reserveBlub, input.reserveAqua, cfg.refQuoteSizeBlub, POOL_AMP, POOL_FEE);
+    poolExec = executableSellPrice(input.reserveBlub, input.reserveAqua, cfg.refQuoteSizeBlub, amp, fee);
     sources.poolExec = poolExec;
   }
 
+  const poolQuote = input.poolQuote != null && input.poolQuote > 0 ? input.poolQuote : undefined;
+  if (poolQuote != null) sources.poolQuote = poolQuote;
   if (input.ammApiPrice != null) sources.ammApi = input.ammApiPrice;
 
-  // Primary source: pool math; fall back to amm-api if the pool read is missing.
-  let primary = poolExec ?? input.ammApiPrice ?? undefined;
+  // Preference order: the pool's own quote (contract truth, no convention or fee
+  // assumptions of ours), then our local math, then the off-chain API.
+  let primary = poolQuote ?? poolExec ?? input.ammApiPrice ?? undefined;
+  sources.primarySource =
+    poolQuote != null ? "poolQuote" : poolExec != null ? "poolMath" : input.ammApiPrice != null ? "ammApi" : undefined;
   if (primary === undefined || !Number.isFinite(primary) || primary <= 0) {
     return { ok: false, mid: null, reason: "no primary reference (pool + amm-api both unavailable)", sources };
   }
 
   // Divergence check (informational unless both sources present and far apart).
-  if (poolExec != null && input.ammApiPrice != null) {
-    const div = relDiff(poolExec, input.ammApiPrice) * 10_000;
+  const onChain = poolQuote ?? poolExec;
+  if (onChain != null && input.ammApiPrice != null) {
+    const div = relDiff(onChain, input.ammApiPrice) * 10_000;
     sources.divergenceBps = div;
-    // Trust on-chain math; if amm-api is wildly different we keep pool but note it.
+    // Trust on-chain; if amm-api is wildly different we keep on-chain but note it.
     if (div > cfg.refDivergenceBps) {
-      // Prefer pool (trustless); no breaker — just recorded.
-      primary = poolExec;
+      primary = onChain;
     }
   }
 

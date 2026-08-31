@@ -20,18 +20,32 @@ run("smoke (live, read-only)", () => {
     const horizon = new HorizonClient(cfg.horizonUrl, log);
     const soroban = new SorobanClient(cfg.sorobanRpcUrl, cfg.network, log);
 
-    const [reserves, book] = await Promise.all([soroban.getPoolReserves(), horizon.orderBookTop()]);
+    const [reserves, poolParams, poolQuote, book] = await Promise.all([
+      soroban.getPoolReserves(),
+      soroban.getPoolParams(),
+      soroban.estimateSellPriceBlubToAqua(cfg.refQuoteSizeBlub),
+      horizon.orderBookTop(),
+    ]);
     expect(reserves).not.toBeNull();
+    // The pool's own quote must be readable, and our local math must agree with
+    // it closely — this is what proves the amplification convention is right.
+    expect(poolQuote).not.toBeNull();
+    expect(poolParams).not.toBeNull();
 
     const ref = deriveReferenceMid(cfg, {
+      poolQuote,
       reserveBlub: reserves?.reserveBlub ?? null,
       reserveAqua: reserves?.reserveAqua ?? null,
+      poolParams,
       ammApiPrice: null,
       sdexBestBid: book.bestBid,
       sdexBestAsk: book.bestAsk,
       sdexBidDepthBlub: book.bidDepthBlub,
     });
     expect(ref.ok).toBe(true);
+    // Local StableSwap math vs the contract's own quote, at live reserves.
+    const driftBps = Math.abs(ref.sources.poolExec! / poolQuote! - 1) * 10_000;
+    expect(driftBps).toBeLessThan(5);
     expect(ref.mid!).toBeGreaterThan(cfg.priceFloor);
     expect(ref.mid!).toBeLessThanOrEqual(cfg.pegCeiling);
 

@@ -36,6 +36,14 @@ export const DUMMY_ACCOUNT =
 // 7-decimal fixed point (Stellar stroops)
 export const STROOP_SCALE = 1e7;
 
+// Stellar protocol constants.
+/** Base reserve per account subentry (trustline, offer, …), in XLM. */
+export const BASE_RESERVE_XLM = 0.5;
+/** Account minimum is (2 + subentries) * BASE_RESERVE_XLM. */
+export const ACCOUNT_BASE_SUBENTRIES = 2;
+/** Stellar caps a transaction at 100 operations; stay under it with headroom. */
+export const MAX_OPS_PER_TX = 90;
+
 export function passphraseFor(network: string): string {
   const n = network.toLowerCase();
   return n === "public" || n === "mainnet" ? Networks.PUBLIC : Networks.TESTNET;

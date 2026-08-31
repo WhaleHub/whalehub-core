@@ -11,7 +11,7 @@ import { findPathQuoteBlubToAqua } from "../pricing/ammApiClient.js";
 import { deriveReferenceMid } from "../pricing/referenceEngine.js";
 import { buildCacheFromMatch, reconcile } from "../execution/reconciler.js";
 import { killSwitchActive } from "../risk/killSwitch.js";
-import { recordHealthy, tripBreaker, validateDesired } from "../risk/riskManager.js";
+import { capCreatesByReserve, recordHealthy, tripBreaker, validateDesired } from "../risk/riskManager.js";
 
 export interface EngineDeps {
   cfg: BotConfig;
@@ -37,17 +37,21 @@ export class Engine {
 
     if (killSwitchActive(cfg.killSwitchFile)) {
       log.warn("kill switch active — cancelling all offers, idling");
-      await this.applyDesired([]);
+      await this.applyDesired([], null);
       return;
     }
 
-    const [reserves, book, account] = await Promise.all([
+    const [reserves, poolParams, poolQuote, book, account] = await Promise.all([
       soroban.getPoolReserves(),
+      soroban.getPoolParams(),
+      soroban.estimateSellPriceBlubToAqua(cfg.refQuoteSizeBlub),
       horizon.orderBookTop(),
       pubkey ? horizon.loadAccount(pubkey).catch(() => null) : Promise.resolve(null),
     ]);
 
     const inventory = account ? horizon.inventoryOf(account) : { blub: 0, aqua: 0, xlm: 0 };
+    // XLM headroom above the protocol minimum — gates how many NEW offers we may add.
+    const freeXlm = account ? horizon.reserveInfo(account).freeXlm : null;
 
     if (!cfg.dryRun && account && !state.trustlinesChecked) {
       const tl = horizon.trustlines(account);
@@ -65,8 +69,10 @@ export class Engine {
       : null;
 
     const ref = deriveReferenceMid(cfg, {
+      poolQuote,
       reserveBlub: reserves?.reserveBlub ?? null,
       reserveAqua: reserves?.reserveAqua ?? null,
+      poolParams,
       ammApiPrice,
       sdexBestBid: book.bestBid,
       sdexBestAsk: book.bestAsk,
@@ -75,18 +81,18 @@ export class Engine {
 
     if (!ref.ok || ref.mid == null) {
       tripBreaker(state, metrics, log, ref.reason ?? "no reference");
-      await this.applyDesired([]);
+      await this.applyDesired([], freeXlm);
       return;
     }
     if (!recordHealthy(state, cfg, log)) {
-      await this.applyDesired([]); // still cooling down
+      await this.applyDesired([], freeXlm); // still cooling down
       return;
     }
 
     metrics.lastMid = ref.mid;
 
     const desired = validateDesired(mm.computeDesired({ mid: ref.mid, inventory }), cfg, log);
-    await this.applyDesired(desired);
+    await this.applyDesired(desired, freeXlm);
 
     log.info(
       {
@@ -94,6 +100,7 @@ export class Engine {
         sources: ref.sources,
         book: { bestBid: book.bestBid, bestAsk: book.bestAsk },
         inventory,
+        freeXlm,
         desiredCount: desired.length,
         metrics: metrics.snapshot(),
       },
@@ -102,10 +109,10 @@ export class Engine {
   }
 
   /** Reconcile the desired ladder against live offers and apply (or log) the diff. */
-  private async applyDesired(desired: DesiredOffer[]): Promise<void> {
-    const { horizon, executor, state, cfg, pubkey } = this.deps;
+  private async applyDesired(desired: DesiredOffer[], freeXlm: number | null): Promise<void> {
+    const { horizon, executor, state, cfg, log, pubkey } = this.deps;
     const live = pubkey ? await horizon.myOffers(pubkey).catch(() => []) : [];
-    const actions = reconcile(desired, live, state.cache, cfg);
+    const actions = capCreatesByReserve(reconcile(desired, live, state.cache, cfg), freeXlm, cfg, log);
     const { applied } = await executor.apply(actions);
     if (applied && pubkey) {
       const after = await horizon.myOffers(pubkey).catch(() => live);
@@ -135,7 +142,7 @@ export class Engine {
     if (this.timer) clearTimeout(this.timer);
     try {
       this.deps.log.info("shutting down — cancelling all offers");
-      await this.applyDesired([]);
+      await this.applyDesired([], null);
     } catch (e) {
       this.deps.log.error({ err: (e as Error).message }, "error during shutdown cancel");
     }
