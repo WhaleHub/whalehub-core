@@ -42,32 +42,119 @@
       "@id": "https://whalehub.io/blog/stablecoin-yield#article",
       "headline": "Stablecoin Yield: Where It Actually Comes From",
       "description": "A plain-English breakdown of the real sources of stablecoin yield — lending, market making, protocol incentives, treasury bills, and basis trades — plus how to tell sustainable yield from a countdown timer.",
-      "image": "https://whalehub.io/assets/blog/stablecoin-yield.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/stablecoin-yield.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-08-02",
-      "dateModified": "2026-08-02",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "dateModified": "2026-08-10",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/stablecoin-yield"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/stablecoin-yield"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/stablecoin-yield",
+      "wordCount": 2715
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Stablecoin Yield", "item": "https://whalehub.io/blog/stablecoin-yield" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Stablecoin Yield",
+          "item": "https://whalehub.io/blog/stablecoin-yield"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "Where does stablecoin yield come from?", "acceptedAnswer": { "@type": "Answer", "text": "From someone paying to use your capital. The main sources are borrowers paying interest on lending protocols, traders paying fees to swap against liquidity you supplied, protocols emitting their own tokens to attract deposits, interest earned on real-world assets such as short-term government debt, and funding payments from hedged derivatives positions. If a yield cannot be traced to one of these, that is a warning sign." } },
-        { "@type": "Question", "name": "Is stablecoin yield safe?", "acceptedAnswer": { "@type": "Answer", "text": "No yield is risk-free, and a stable price does not mean a stable position. You are exposed to the stablecoin issuer's solvency and redemption process, to smart-contract failure in whatever protocol holds your funds, to the borrower or counterparty on the other side, and to the yield itself falling or ending. Stablecoins remove price volatility, not risk." } },
-        { "@type": "Question", "name": "How can you tell if a stablecoin yield is sustainable?", "acceptedAnswer": { "@type": "Answer", "text": "Ask who is paying and why they would keep paying. Yield funded by borrowers, traders, or interest on real assets can persist as long as that demand persists. Yield funded by a protocol printing its own token is a marketing budget with an end date, and it usually falls sharply as more capital arrives to share it. Compare the rate to short-term government debt: a large gap is compensation for a risk you should be able to name." } },
-        { "@type": "Question", "name": "Why do stablecoin yields drop after you deposit?", "acceptedAnswer": { "@type": "Answer", "text": "Most DeFi yields are shared among everyone in the pool. If rewards are a fixed amount per day, doubling the capital in the pool roughly halves each depositor's rate. High advertised yields attract capital, and that capital dilutes the yield — so the rate you see before depositing is frequently higher than the rate you end up earning." } },
-        { "@type": "Question", "name": "Can you earn yield on stablecoins on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Stellar supports stablecoins including Circle's native USDC and EURC, and its DeFi layer offers the usual routes: supplying to lending pools on protocols such as Blend, and providing liquidity to AMM pools on Aquarius, which can also earn AQUA emissions. As anywhere else, the rates are variable and carry smart-contract and counterparty risk." } }
+        {
+          "@type": "Question",
+          "name": "Where does stablecoin yield come from?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "From someone paying to use your capital. The main sources are borrowers paying interest on lending protocols, traders paying fees to swap against liquidity you supplied, protocols emitting their own tokens to attract deposits, interest earned on real-world assets such as short-term government debt, and funding payments from hedged derivatives positions. If a yield cannot be traced to one of these, that is a warning sign."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is stablecoin yield safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No yield is risk-free, and a stable price does not mean a stable position. You are exposed to the stablecoin issuer's solvency and redemption process, to smart-contract failure in whatever protocol holds your funds, to the borrower or counterparty on the other side, and to the yield itself falling or ending. Stablecoins remove price volatility, not risk."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can you tell if a stablecoin yield is sustainable?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ask who is paying and why they would keep paying. Yield funded by borrowers, traders, or interest on real assets can persist as long as that demand persists. Yield funded by a protocol printing its own token is a marketing budget with an end date, and it usually falls sharply as more capital arrives to share it. Compare the rate to short-term government debt: a large gap is compensation for a risk you should be able to name."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do stablecoin yields drop after you deposit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most DeFi yields are shared among everyone in the pool. If rewards are a fixed amount per day, doubling the capital in the pool roughly halves each depositor's rate. High advertised yields attract capital, and that capital dilutes the yield — so the rate you see before depositing is frequently higher than the rate you end up earning."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What counts as a good stablecoin yield?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Judge it against the risk-free rate rather than against other DeFi offers. If short-term government paper pays around 4–5%, then a stablecoin yield in that range backed by T-bills is roughly the baseline, and anything meaningfully above it is being paid for taking on something extra — credit risk, smart-contract risk, a token incentive that can be cut, or leverage somewhere in the chain. As a rule of thumb: single digits usually trace to real borrower demand or bill income; 10–20% usually contains incentive emissions; sustained triple digits are almost always emissions priced in a token whose value can fall faster than the yield accrues. The useful question is never which number is highest but who is paying this, and why would they stop. This is general information, not investment advice — and past or quoted rates are not a forecast."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you earn yield on stablecoins on Stellar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Stellar supports stablecoins including Circle's native USDC and EURC, and its DeFi layer offers the usual routes: supplying to lending pools on protocols such as Blend, and providing liquidity to AMM pools on Aquarius, which can also earn AQUA emissions. As anywhere else, the rates are variable and carry smart-contract and counterparty risk."
+          }
+        }
       ]
     }
   ]
@@ -239,6 +326,7 @@
       <details><summary>Is stablecoin yield safe?</summary><p>No yield is risk-free, and a stable price does not mean a stable position. You are exposed to the stablecoin issuer's solvency and redemption process, to smart-contract failure in whatever protocol holds your funds, to the borrower or counterparty on the other side, and to the yield itself falling or ending. Stablecoins remove price volatility, not risk.</p></details>
       <details><summary>How can you tell if a stablecoin yield is sustainable?</summary><p>Ask who is paying and why they would keep paying. Yield funded by borrowers, traders, or interest on real assets can persist as long as that demand persists. Yield funded by a protocol printing its own token is a marketing budget with an end date, and it usually falls sharply as more capital arrives to share it. Compare the rate to short-term government debt: a large gap is compensation for a risk you should be able to name.</p></details>
       <details><summary>Why do stablecoin yields drop after you deposit?</summary><p>Most DeFi yields are shared among everyone in the pool. If rewards are a fixed amount per day, doubling the capital in the pool roughly halves each depositor's rate. High advertised yields attract capital, and that capital dilutes the yield — so the rate you see before depositing is frequently higher than the rate you end up earning.</p></details>
+      <details><summary>What counts as a good stablecoin yield?</summary><p>Judge it against the risk-free rate rather than against other DeFi offers. If short-term government paper pays around 4–5%, then a stablecoin yield in that range backed by T-bills is roughly the baseline, and anything meaningfully above it is being paid for taking on something extra — credit risk, smart-contract risk, a token incentive that can be cut, or leverage somewhere in the chain. As a rule of thumb: single digits usually trace to real borrower demand or bill income; 10–20% usually contains incentive emissions; sustained triple digits are almost always emissions priced in a token whose value can fall faster than the yield accrues. The useful question is never "which number is highest" but "who is paying this, and why would they stop". This is general information, not investment advice — and past or quoted rates are not a forecast.</p></details>
       <details><summary>Can you earn yield on stablecoins on Stellar?</summary><p>Yes. Stellar supports stablecoins including Circle's native USDC and EURC, and its DeFi layer offers the usual routes: supplying to lending pools on protocols such as Blend, and providing liquidity to AMM pools on Aquarius, which can also earn AQUA emissions. As anywhere else, the rates are variable and carry smart-contract and counterparty risk.</p></details>
     </section>
 

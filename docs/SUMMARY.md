@@ -22,6 +22,12 @@
 * [Auto-Compounding](vaults/auto-compounding.md)
 * [Withdrawing](vaults/withdrawing.md)
 
+## Leveraged Farming
+
+* [What Is Leveraged Farming](leverage/what-is-leveraged-farming.md)
+* [How Leverage Works](leverage/how-leverage-works.md)
+* [Oracle and Risk Controls](leverage/oracle-and-risk.md)
+
 ## Tokenomics
 
 * [BLUB Token](tokenomics/blub-token.md)

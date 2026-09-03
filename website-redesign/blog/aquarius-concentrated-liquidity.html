@@ -42,32 +42,111 @@
       "@id": "https://whalehub.io/blog/aquarius-concentrated-liquidity#article",
       "headline": "Aquarius Concentrated Liquidity Pools Explained",
       "description": "Concentrated liquidity (CLMM) pools let liquidity providers focus capital in a price range for higher capital efficiency — how they differ from Aquarius constant-product and stableswap pools, and how AQUA emissions and ICE voting fit in.",
-      "image": "https://whalehub.io/assets/blog/aquarius-concentrated-liquidity.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/aquarius-concentrated-liquidity.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-07-17",
       "dateModified": "2026-07-17",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/aquarius-concentrated-liquidity"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/aquarius-concentrated-liquidity"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/aquarius-concentrated-liquidity",
+      "wordCount": 2300
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Aquarius Concentrated Liquidity Pools Explained", "item": "https://whalehub.io/blog/aquarius-concentrated-liquidity" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Aquarius Concentrated Liquidity Pools Explained",
+          "item": "https://whalehub.io/blog/aquarius-concentrated-liquidity"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is concentrated liquidity?", "acceptedAnswer": { "@type": "Answer", "text": "Concentrated liquidity lets a liquidity provider place capital inside a chosen price range instead of spreading it across every possible price. Within that range the position behaves like a much deeper pool, so it earns more fees per dollar. The trade-off is that liquidity outside the range earns nothing until price returns." } },
-        { "@type": "Question", "name": "How is a concentrated pool different from a normal AMM pool?", "acceptedAnswer": { "@type": "Answer", "text": "A normal constant-product pool spreads your liquidity evenly from zero to infinity, so most of it sits idle far from the current price. A concentrated pool lets you focus that same capital into a narrow band around the trading price, where nearly all real volume happens, so each dollar earns far more fees when active." } },
-        { "@type": "Question", "name": "What is impermanent loss in concentrated pools?", "acceptedAnswer": { "@type": "Answer", "text": "Impermanent loss is the gap between holding two tokens in a pool and holding them in your wallet. Concentrating liquidity into a tight range amplifies it: when price moves through your band you are fully converted into the weaker asset, and if price exits the range you stop earning fees while still carrying that divergence." } },
-        { "@type": "Question", "name": "Does Aquarius have concentrated liquidity pools?", "acceptedAnswer": { "@type": "Answer", "text": "Aquarius runs on Stellar and offers volatile constant-product pools and stableswap pools today, with AQUA emissions directed to them by ICE voting. Concentrated liquidity is the capital-efficient AMM design that pool models are evolving toward across DeFi. Always check the Aquarius app for the pool types live right now." } },
-        { "@type": "Question", "name": "How does WhaleHub help with Aquarius liquidity?", "acceptedAnswer": { "@type": "Answer", "text": "WhaleHub aggregates ICE voting power from all its stakers and votes it toward high-yielding Aquarius markets each epoch, then claims the AQUA rewards and auto-compounds them. You stake AQUA, receive BLUB as a liquid receipt, and get boosted, hands-off exposure without managing ranges, votes, or claims yourself." } }
+        {
+          "@type": "Question",
+          "name": "What is concentrated liquidity?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Concentrated liquidity lets a liquidity provider place capital inside a chosen price range instead of spreading it across every possible price. Within that range the position behaves like a much deeper pool, so it earns more fees per dollar. The trade-off is that liquidity outside the range earns nothing until price returns."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is a concentrated pool different from a normal AMM pool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A normal constant-product pool spreads your liquidity evenly from zero to infinity, so most of it sits idle far from the current price. A concentrated pool lets you focus that same capital into a narrow band around the trading price, where nearly all real volume happens, so each dollar earns far more fees when active."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is impermanent loss in concentrated pools?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Impermanent loss is the gap between holding two tokens in a pool and holding them in your wallet. Concentrating liquidity into a tight range amplifies it: when price moves through your band you are fully converted into the weaker asset, and if price exits the range you stop earning fees while still carrying that divergence."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Aquarius have concentrated liquidity pools?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aquarius runs on Stellar and offers volatile constant-product pools and stableswap pools today, with AQUA emissions directed to them by ICE voting. Concentrated liquidity is the capital-efficient AMM design that pool models are evolving toward across DeFi. Always check the Aquarius app for the pool types live right now."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does WhaleHub help with Aquarius liquidity?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "WhaleHub aggregates ICE voting power from all its stakers and votes it toward high-yielding Aquarius markets each epoch, then claims the AQUA rewards and auto-compounds them. You stake AQUA, receive BLUB as a liquid receipt, and get boosted, hands-off exposure without managing ranges, votes, or claims yourself."
+          }
+        }
       ]
     }
   ]

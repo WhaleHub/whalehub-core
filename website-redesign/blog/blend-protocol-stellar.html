@@ -42,32 +42,111 @@
       "@id": "https://whalehub.io/blog/blend-protocol-stellar#article",
       "headline": "What Is Blend? Stellar's DeFi Lending Protocol",
       "description": "A plain-English guide to Blend, Stellar's Soroban-based DeFi lending protocol: isolated lending pools, borrowing and collateral, the backstop module, and reactive interest rates.",
-      "image": "https://whalehub.io/assets/blog/blend-protocol-stellar.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/blend-protocol-stellar.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-07-17",
       "dateModified": "2026-07-17",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/blend-protocol-stellar"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/blend-protocol-stellar"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/blend-protocol-stellar",
+      "wordCount": 2566
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "What Is Blend?", "item": "https://whalehub.io/blog/blend-protocol-stellar" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "What Is Blend?",
+          "item": "https://whalehub.io/blog/blend-protocol-stellar"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is Blend?", "acceptedAnswer": { "@type": "Answer", "text": "Blend is a decentralised lending protocol on Stellar, built as a set of immutable Soroban smart contracts by Script3. It lets anyone create permissionless, isolated lending pools where users supply assets to earn interest and borrow against collateral, with each pool protected by its own backstop insurance fund." } },
-        { "@type": "Question", "name": "Is Blend safe?", "acceptedAnswer": { "@type": "Answer", "text": "Blend is designed around isolated pools and a backstop first-loss fund, so trouble in one pool cannot spread to others. But no DeFi protocol is risk-free — smart-contract bugs, oracle failures, liquidations, and bad debt are all possible. Treat every pool on its own risk merits and never deposit more than you can afford to lose." } },
-        { "@type": "Question", "name": "What can you do with Blend on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "You can supply assets like USDC or XLM into a Blend pool to earn lending interest, or post collateral and borrow against it. Builders can spin up their own permissionless pools, and backstop depositors provide insurance capital in exchange for a share of borrower interest." } },
-        { "@type": "Question", "name": "How is Blend different from Aave?", "acceptedAnswer": { "@type": "Answer", "text": "Aave mostly uses large shared pools where many assets sit together, so one risky asset can affect the whole market. Blend uses isolated pools that each carry their own risk, oracle, and backstop fund, plus permissionless pool creation and reactive interest rates that self-correct toward a target utilisation." } },
-        { "@type": "Question", "name": "Does WhaleHub use Blend?", "acceptedAnswer": { "@type": "Answer", "text": "WhaleHub is a yield-optimization protocol on Stellar that stakes AQUA and auto-compounds Aquarius rewards. We are researching leveraged LP strategies that could draw on Blend-style flash liquidity, but that work is in development — it is not live, audited, or a launched product, and nothing here promises a specific integration." } }
+        {
+          "@type": "Question",
+          "name": "What is Blend?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Blend is a decentralised lending protocol on Stellar, built as a set of immutable Soroban smart contracts by Script3. It lets anyone create permissionless, isolated lending pools where users supply assets to earn interest and borrow against collateral, with each pool protected by its own backstop insurance fund."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Blend safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Blend is designed around isolated pools and a backstop first-loss fund, so trouble in one pool cannot spread to others. But no DeFi protocol is risk-free — smart-contract bugs, oracle failures, liquidations, and bad debt are all possible. Treat every pool on its own risk merits and never deposit more than you can afford to lose."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What can you do with Blend on Stellar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can supply assets like USDC or XLM into a Blend pool to earn lending interest, or post collateral and borrow against it. Builders can spin up their own permissionless pools, and backstop depositors provide insurance capital in exchange for a share of borrower interest."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is Blend different from Aave?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aave mostly uses large shared pools where many assets sit together, so one risky asset can affect the whole market. Blend uses isolated pools that each carry their own risk, oracle, and backstop fund, plus permissionless pool creation and reactive interest rates that self-correct toward a target utilisation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does WhaleHub use Blend?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "WhaleHub is a yield-optimization protocol on Stellar that stakes AQUA and auto-compounds Aquarius rewards. We are researching leveraged LP strategies that could draw on Blend-style flash liquidity, but that work is in development — it is not live, audited, or a launched product, and nothing here promises a specific integration."
+          }
+        }
       ]
     }
   ]
@@ -133,7 +212,7 @@
     <div class="prose">
       <h2 id="what-is">What is Blend?</h2>
       <p class="answer">Blend is a decentralised lending protocol on Stellar, built as a set of immutable Soroban smart contracts by Script3. It lets anyone create permissionless, isolated lending pools where users supply assets to earn interest and borrow against collateral, with each pool protected by its own backstop insurance fund.</p>
-      <p>Every mature DeFi ecosystem needs a money market — a place to lend idle assets for yield and to borrow against what you already hold. On Ethereum that role is played by protocols like Aave and Compound. On Stellar, Blend fills the same slot, but with a design tuned for the network's speed, low fees, and Soroban smart contracts.</p>
+      <p>Every mature DeFi ecosystem needs a money market — a place to lend idle assets for yield and to borrow against what you already hold. Lending is also one of the few places where <a href="stablecoin-yield">stablecoin yield</a> comes from a source you can actually point at: borrower interest. On Ethereum that role is played by protocols like Aave and Compound. On Stellar, Blend fills the same slot, but with a design tuned for the network's speed, low fees, and Soroban smart contracts.</p>
       <p>The team behind Blend, Script3, describes it as a "universal liquidity protocol primitive." The word <em>primitive</em> matters: Blend isn't trying to be a single, curated market. It's a base layer that other builders assemble on top of. Anyone can spin up a lending pool, choose which assets it holds, and set its risk parameters — no gatekeeper, no governance vote required to launch.</p>
       <p>If you're new to the wider ecosystem, our <a href="stellar-defi-guide">Stellar DeFi guide</a> maps how lending, AMMs, and yield fit together. Blend is the borrowing-and-lending piece of that picture.</p>
 
@@ -152,7 +231,7 @@
       <p>Four building blocks do most of the work. Here's each one in plain terms.</p>
 
       <h3>Lending pools</h3>
-      <p>A Blend pool is a self-contained market. When you supply an asset, you receive <strong>bTokens</strong> — a receipt that represents your slice of the pool and quietly grows in value as borrowers pay interest. Crucially, pools are <em>isolated</em> from one another. Your position in one pool is completely independent of every other pool, so unpaid loans, liquidations, or a broken price feed in one market can't bleed into the others. That containment is the single most important design choice in Blend.</p>
+      <p>A Blend pool is a self-contained market. When you supply an asset, you receive <strong>bTokens</strong> — a receipt that represents your slice of the pool and quietly grows in value as borrowers pay interest. That receipt-token pattern is the same one behind <a href="liquid-staking-explained">liquid staking</a>, and because the balance compounds rather than paying out, the rate you actually earn is an <a href="apy-vs-apr-crypto">APY rather than an APR</a>. Crucially, pools are <em>isolated</em> from one another. Your position in one pool is completely independent of every other pool, so unpaid loans, liquidations, or a broken price feed in one market can't bleed into the others. That containment is the single most important design choice in Blend.</p>
 
       <h3>Borrowing &amp; collateral</h3>
       <p>To borrow, you deposit collateral and take a loan against it, receiving <strong>dTokens</strong> that track what you owe. How much you can borrow depends on two dials the pool creator sets: a <em>collateral factor</em> that discounts the value of what you post, and a <em>liability factor</em> that inflates the value of what you owe. Together they set a conservative borrow limit. This dual-factor approach lets one pool be cautious with a volatile asset and generous with a stable one — flexibility a single shared market struggles to offer.</p>
@@ -241,6 +320,9 @@
         <a href="stellar-defi-guide"><img src="../assets/blog/stellar-defi-guide.png" alt="" /><span>What Is Stellar DeFi?</span></a>
         <a href="stellar-yield-farming"><img src="../assets/blog/stellar-yield-farming.png" alt="" /><span>Stellar Yield Farming</span></a>
         <a href="soroban-smart-contracts"><img src="../assets/blog/soroban-smart-contracts.png" alt="" /><span>Soroban Smart Contracts</span></a>
+        <a href="stablecoin-yield"><img src="../assets/blog/stablecoin-yield.png" alt="" /><span>Where Stablecoin Yield Comes From</span></a>
+        <a href="liquid-staking-explained"><img src="../assets/blog/liquid-staking-explained.png" alt="" /><span>What Is Liquid Staking?</span></a>
+        <a href="apy-vs-apr-crypto"><img src="../assets/blog/apy-vs-apr-crypto.png" alt="" /><span>APY vs APR in Crypto</span></a>
       </div>
     </section>
 

@@ -42,32 +42,111 @@
       "@id": "https://whalehub.io/blog/stellar-yield-farming#article",
       "headline": "Yield Farming on Stellar: How to Earn in 2026",
       "description": "A plain-English guide to Stellar yield farming: how it works, why near-zero fees make compounding practical, the main strategies compared, and how to earn passively.",
-      "image": "https://whalehub.io/assets/blog/stellar-yield-farming.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/stellar-yield-farming.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-07-04",
       "dateModified": "2026-07-04",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/stellar-yield-farming"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/stellar-yield-farming"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/stellar-yield-farming",
+      "wordCount": 1930
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Yield Farming on Stellar", "item": "https://whalehub.io/blog/stellar-yield-farming" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Yield Farming on Stellar",
+          "item": "https://whalehub.io/blog/stellar-yield-farming"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is yield farming on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "Yield farming on Stellar means putting crypto assets to work to earn a return — providing liquidity to Aquarius AMM pools, staking AQUA for rewards, or using an auto-compounding optimizer. Returns come from trading fees and AQUA emissions, and Stellar's fractions-of-a-cent fees let you reinvest them often." } },
-        { "@type": "Question", "name": "Can you earn passive income on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The most passive route is an auto-compounding optimizer like WhaleHub: you deposit once and the protocol votes with aggregated ICE, harvests rewards, and reinvests them for you. Direct liquidity provision and AQUA staking also earn, but need more hands-on management." } },
-        { "@type": "Question", "name": "Why is Stellar good for yield farming?", "acceptedAnswer": { "@type": "Answer", "text": "Stellar transactions finalize in about five seconds and cost a fraction of a cent. That means compounding a position dozens of times a day is not eaten by gas fees, unlike on chains where each reinvestment can cost dollars. Frequent compounding is what turns a raw yield into a meaningfully higher effective return." } },
-        { "@type": "Question", "name": "Is yield farming on Stellar safe?", "acceptedAnswer": { "@type": "Answer", "text": "It carries the usual DeFi risks: smart-contract bugs, impermanent loss in AMM pools, and market volatility in token prices. Stellar's low fees make it cheap to exit or rebalance, but they don't remove the underlying exposure. Use audited protocols and never deposit more than you can afford to lose." } },
-        { "@type": "Question", "name": "What is the difference between real yield and emissions?", "acceptedAnswer": { "@type": "Answer", "text": "Real yield comes from actual protocol activity — trading fees, voting bribes, and rewards tied to usage. Emissions-only yield is paid by printing new tokens, which dilutes holders and tends to collapse when incentives stop. On Stellar, farming that captures fees and bribes is more durable than chasing raw emission numbers." } }
+        {
+          "@type": "Question",
+          "name": "What is yield farming on Stellar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yield farming on Stellar means putting crypto assets to work to earn a return — providing liquidity to Aquarius AMM pools, staking AQUA for rewards, or using an auto-compounding optimizer. Returns come from trading fees and AQUA emissions, and Stellar's fractions-of-a-cent fees let you reinvest them often."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you earn passive income on Stellar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The most passive route is an auto-compounding optimizer like WhaleHub: you deposit once and the protocol votes with aggregated ICE, harvests rewards, and reinvests them for you. Direct liquidity provision and AQUA staking also earn, but need more hands-on management."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is Stellar good for yield farming?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Stellar transactions finalize in about five seconds and cost a fraction of a cent. That means compounding a position dozens of times a day is not eaten by gas fees, unlike on chains where each reinvestment can cost dollars. Frequent compounding is what turns a raw yield into a meaningfully higher effective return."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is yield farming on Stellar safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It carries the usual DeFi risks: smart-contract bugs, impermanent loss in AMM pools, and market volatility in token prices. Stellar's low fees make it cheap to exit or rebalance, but they don't remove the underlying exposure. Use audited protocols and never deposit more than you can afford to lose."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between real yield and emissions?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Real yield comes from actual protocol activity — trading fees, voting bribes, and rewards tied to usage. Emissions-only yield is paid by printing new tokens, which dilutes holders and tends to collapse when incentives stop. On Stellar, farming that captures fees and bribes is more durable than chasing raw emission numbers."
+          }
+        }
       ]
     }
   ]

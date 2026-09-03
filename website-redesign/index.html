@@ -364,7 +364,100 @@
   .v2-bar b{color:var(--teal-300);font-weight:600}
   .v2-bar a{color:var(--teal-400);font-weight:600;white-space:nowrap}
   .v2-bar a:hover{color:var(--teal-300)}
+
+  /* "Learn the basics" — homepage -> individual articles. Deliberate SEO structure:
+     the homepage is the only reliably-indexed page on the domain, so it is the one
+     place that can pass crawl signal straight to article URLs. Keep these as real
+     descriptive anchors (not "read more") and keep the section server-rendered. */
+  .reads{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .read-card{display:block;text-decoration:none;color:inherit;padding:22px 22px 20px}
+  .read-card h3{font-weight:600;font-size:1.12rem;line-height:1.35;margin-top:12px}
+  .read-card p{color:var(--text-muted);font-size:14px;margin-top:10px;line-height:1.6}
+  .read-card .go{display:inline-block;margin-top:14px;color:var(--teal-400);font-size:13.5px;font-weight:600}
+  .read-card:hover .go{color:var(--teal-300)}
+  .reads-all{margin-top:26px}
+  .reads-all a{color:var(--teal-400);font-weight:600}
+  .reads-all a:hover{color:var(--teal-300)}
+  @media (max-width:900px){.reads{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:620px){.reads{grid-template-columns:1fr}}
 </style>
+
+<!-- Site-level entity graph. Every blog Article references
+     https://whalehub.io/#organization as its author/publisher @id, so this is
+     where that node is actually defined — without it those references dangle.
+     Keep the @id values stable; they are the entity anchor for the whole site. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://whalehub.io/#organization",
+      "name": "WhaleHub",
+      "alternateName": "WhaleHub DeFi",
+      "url": "https://whalehub.io/",
+      "description": "WhaleHub is a yield-optimization protocol on Stellar. It stakes AQUA, aggregates ICE voting power, and auto-compounds Aquarius liquidity-mining rewards for stakers.",
+      "logo": {
+        "@type": "ImageObject",
+        "@id": "https://whalehub.io/#logo",
+        "url": "https://whalehub.io/assets/logo-full.webp",
+        "width": 512,
+        "height": 128,
+        "caption": "WhaleHub"
+      },
+      "image": {
+        "@id": "https://whalehub.io/#logo"
+      },
+      "sameAs": [
+        "https://x.com/whalehubdefi",
+        "https://github.com/WhaleHubDev",
+        "https://t.me/whalehubdefi",
+        "https://discord.gg/DmGKxgSdTP"
+      ],
+      "knowsAbout": [
+        "Stellar",
+        "Soroban",
+        "Aquarius AMM",
+        "AQUA token",
+        "Liquidity mining",
+        "Liquid staking",
+        "Yield optimization",
+        "Auto-compounding"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "contact@whalehub.io",
+        "url": "https://whalehub.io/contact"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://whalehub.io/#website",
+      "url": "https://whalehub.io/",
+      "name": "WhaleHub",
+      "description": "Stake AQUA to mint BLUB and earn boosted Aquarius liquidity-mining rewards on Stellar.",
+      "inLanguage": "en",
+      "publisher": {
+        "@id": "https://whalehub.io/#organization"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://whalehub.io/#webpage",
+      "url": "https://whalehub.io/",
+      "name": "WhaleHub — Stake AQUA, Earn Boosted BLUB Rewards on Stellar",
+      "isPartOf": {
+        "@id": "https://whalehub.io/#website"
+      },
+      "about": {
+        "@id": "https://whalehub.io/#organization"
+      },
+      "inLanguage": "en"
+    }
+  ]
+}
+</script>
 </head>
 <body class="wh-root">
 
@@ -609,6 +702,58 @@
 </section>
 
 <!-- WHALEY MOMENT -->
+<!-- LEARN / BLOG PULL-THROUGH -->
+<section class="block" id="learn" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="overline">Learn the basics</span>
+      <h2>Understand the yield before you chase it</h2>
+      <p>Plain-English explainers on how staking, compounding and AMM rewards actually work on Stellar.</p>
+    </div>
+    <div class="reads">
+      <a class="card read-card" href="./blog/apy-vs-apr-crypto" data-reveal>
+        <span class="tag">Fundamentals</span>
+        <h3>APY vs APR in Crypto: What's the Difference?</h3>
+        <p>APR is the simple yearly rate; APY includes compounding. The conversion formula, worked numbers, and the traps in quoted DeFi yields.</p>
+        <span class="go">Read the explainer &rarr;</span>
+      </a>
+      <a class="card read-card" href="./blog/how-to-stake-aqua" data-reveal>
+        <span class="tag">Guide</span>
+        <h3>How to Stake AQUA and Earn Rewards</h3>
+        <p>Step by step: connect a wallet, stake AQUA, mint BLUB 1:1, and claim rewards — plus how compounding works.</p>
+        <span class="go">Read the guide &rarr;</span>
+      </a>
+      <a class="card read-card" href="./blog/what-is-blub-token" data-reveal>
+        <span class="tag">Protocol</span>
+        <h3>What Is BLUB, WhaleHub's Liquid AQUA Token?</h3>
+        <p>BLUB is the reward token minted when you stake AQUA. How it's created, what it's used for, and how its value floats.</p>
+        <span class="go">Read the explainer &rarr;</span>
+      </a>
+      <a class="card read-card" href="./blog/liquid-staking-explained" data-reveal>
+        <span class="tag">Fundamentals</span>
+        <h3>What Is Liquid Staking?</h3>
+        <p>Stake an asset and still hold a tradable receipt token. How liquid staking tokens work and the risks they carry.</p>
+        <span class="go">Read the explainer &rarr;</span>
+      </a>
+      <a class="card read-card" href="./blog/stablecoin-yield" data-reveal>
+        <span class="tag">Fundamentals</span>
+        <h3>Stablecoin Yield: Where It Actually Comes From</h3>
+        <p>Every stablecoin yield is someone else's cost. The real sources — lending, market making, incentives, T-bills.</p>
+        <span class="go">Read the explainer &rarr;</span>
+      </a>
+      <a class="card read-card" href="./blog/best-stellar-wallets" data-reveal>
+        <span class="tag">Guide</span>
+        <h3>Best Stellar Wallets in 2026</h3>
+        <p>LOBSTR, Freighter, xBull and hardware options compared — plus trustlines, XLM reserves and memo mistakes.</p>
+        <span class="go">Read the guide &rarr;</span>
+      </a>
+    </div>
+    <div class="reads-all" data-reveal>
+      <a href="./blog/">Browse all articles &rarr;</a>
+    </div>
+  </div>
+</section>
+
 <section class="block" style="padding-top:0">
   <div class="wrap">
     <div class="whaley" data-reveal>

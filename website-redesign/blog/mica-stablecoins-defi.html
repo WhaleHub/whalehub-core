@@ -42,32 +42,111 @@
       "@id": "https://whalehub.io/blog/mica-stablecoins-defi#article",
       "headline": "MiCA Explained: EU Rules for Stablecoins & DeFi",
       "description": "A plain-English guide to MiCA, the EU's Markets in Crypto-Assets Regulation: stablecoin categories (EMTs and ARTs), issuer requirements, the 2024 timeline, and what it means for DeFi.",
-      "image": "https://whalehub.io/assets/blog/mica-stablecoins-defi.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/mica-stablecoins-defi.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-07-04",
       "dateModified": "2026-07-04",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/mica-stablecoins-defi"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/mica-stablecoins-defi"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/mica-stablecoins-defi",
+      "wordCount": 2056
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "MiCA Explained", "item": "https://whalehub.io/blog/mica-stablecoins-defi" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "MiCA Explained",
+          "item": "https://whalehub.io/blog/mica-stablecoins-defi"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is MiCA?", "acceptedAnswer": { "@type": "Answer", "text": "MiCA is the EU's Markets in Crypto-Assets Regulation, a single rulebook that governs the issuance, offering, and servicing of crypto-assets across all 27 member states. It creates licensing regimes for stablecoin issuers and crypto service providers, aiming to protect consumers and harmonise rules that were previously fragmented country by country." } },
-        { "@type": "Question", "name": "What is the difference between an EMT and an ART under MiCA?", "acceptedAnswer": { "@type": "Answer", "text": "An e-money token (EMT) references a single official currency, such as the euro or the US dollar — most fiat-backed stablecoins fall here. An asset-referenced token (ART) references any other value or basket: multiple currencies, a commodity like gold, or a mix. EMTs and ARTs face different issuer and reserve rules." } },
-        { "@type": "Question", "name": "When did MiCA's rules take effect?", "acceptedAnswer": { "@type": "Answer", "text": "MiCA entered into force in 2023. Its stablecoin rules for EMT and ART issuers began applying on 30 June 2024, and the rules for crypto-asset service providers (CASPs) began applying on 30 December 2024. A transitional period for existing service providers runs until 1 July 2026 in many member states." } },
-        { "@type": "Question", "name": "Is USDC MiCA-compliant?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Circle obtained an Electronic Money Institution licence in France and, from mid-2024, issues USDC and its euro stablecoin EURC in the EU as MiCA-compliant e-money tokens. EURC is a euro-referenced EMT designed around MiCA from the start. This is general information, not an endorsement." } },
-        { "@type": "Question", "name": "Does MiCA regulate DeFi?", "acceptedAnswer": { "@type": "Answer", "text": "MiCA largely targets identifiable issuers and service providers, not fully decentralised protocols. Services offered by an intermediary can fall in scope, while genuinely decentralised DeFi is mostly left for future review. The picture is evolving, so treat any DeFi position as subject to change and seek professional advice." } }
+        {
+          "@type": "Question",
+          "name": "What is MiCA?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "MiCA is the EU's Markets in Crypto-Assets Regulation, a single rulebook that governs the issuance, offering, and servicing of crypto-assets across all 27 member states. It creates licensing regimes for stablecoin issuers and crypto service providers, aiming to protect consumers and harmonise rules that were previously fragmented country by country."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between an EMT and an ART under MiCA?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An e-money token (EMT) references a single official currency, such as the euro or the US dollar — most fiat-backed stablecoins fall here. An asset-referenced token (ART) references any other value or basket: multiple currencies, a commodity like gold, or a mix. EMTs and ARTs face different issuer and reserve rules."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When did MiCA's rules take effect?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "MiCA entered into force in 2023. Its stablecoin rules for EMT and ART issuers began applying on 30 June 2024, and the rules for crypto-asset service providers (CASPs) began applying on 30 December 2024. A transitional period for existing service providers runs until 1 July 2026 in many member states."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is USDC MiCA-compliant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Circle obtained an Electronic Money Institution licence in France and, from mid-2024, issues USDC and its euro stablecoin EURC in the EU as MiCA-compliant e-money tokens. EURC is a euro-referenced EMT designed around MiCA from the start. This is general information, not an endorsement."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does MiCA regulate DeFi?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "MiCA largely targets identifiable issuers and service providers, not fully decentralised protocols. Services offered by an intermediary can fall in scope, while genuinely decentralised DeFi is mostly left for future review. The picture is evolving, so treat any DeFi position as subject to change and seek professional advice."
+          }
+        }
       ]
     }
   ]

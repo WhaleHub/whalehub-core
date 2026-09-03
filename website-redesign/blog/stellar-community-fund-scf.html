@@ -42,32 +42,111 @@
       "@id": "https://whalehub.io/blog/stellar-community-fund-scf#article",
       "headline": "Stellar Community Fund (SCF): How Stellar Grants Work",
       "description": "A plain-English guide to the Stellar Community Fund, Stellar's grant program that funds builders in XLM through funded submission rounds, community voting, and award tracks like Kickstart and Build.",
-      "image": "https://whalehub.io/assets/blog/stellar-community-fund-scf.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/stellar-community-fund-scf.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-07-17",
       "dateModified": "2026-07-17",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/stellar-community-fund-scf"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/stellar-community-fund-scf"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/stellar-community-fund-scf",
+      "wordCount": 2350
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Stellar Community Fund (SCF)", "item": "https://whalehub.io/blog/stellar-community-fund-scf" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Stellar Community Fund (SCF)",
+          "item": "https://whalehub.io/blog/stellar-community-fund-scf"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is the Stellar Community Fund?", "acceptedAnswer": { "@type": "Answer", "text": "The Stellar Community Fund (SCF) is a grant program run by the Stellar Development Foundation that funds people building on Stellar and Soroban. It distributes awards in XLM through funded submission rounds, using community input and voting to help decide which projects receive support." } },
-        { "@type": "Question", "name": "How much can SCF award?", "acceptedAnswer": { "@type": "Answer", "text": "Award sizes depend on the track. Smaller programs such as Kickstart have supported early proofs of concept with awards on the order of a few thousand dollars in XLM, while the main Build track has funded validated projects with larger milestone-based amounts. Exact figures change between rounds, so always confirm current numbers on the official SCF site." } },
-        { "@type": "Question", "name": "Who can apply to SCF?", "acceptedAnswer": { "@type": "Answer", "text": "Individuals, teams, and companies building on Stellar or Soroban can apply — infrastructure, apps, developer tooling, and DeFi protocols are all in scope. You typically signal interest through a form, and eligible projects are invited into an open, funded submission round for review and community voting." } },
-        { "@type": "Question", "name": "How long does SCF take?", "acceptedAnswer": { "@type": "Answer", "text": "Interest submissions are reviewed on a rolling basis, then eligible projects join a scheduled round with community discussion and voting that generally runs over several weeks. Larger Build awards are paid across milestones, so funds arrive over time as work is delivered rather than all at once." } },
-        { "@type": "Question", "name": "Is SCF the same as a Stellar grant?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — SCF is the main grant channel run by the Stellar Development Foundation, so people often use \"Stellar grant\" and \"SCF award\" interchangeably. The Foundation also runs other support programs, but SCF is the community-driven route most builders mean when they talk about getting a Stellar grant." } }
+        {
+          "@type": "Question",
+          "name": "What is the Stellar Community Fund?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Stellar Community Fund (SCF) is a grant program run by the Stellar Development Foundation that funds people building on Stellar and Soroban. It distributes awards in XLM through funded submission rounds, using community input and voting to help decide which projects receive support."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much can SCF award?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Award sizes depend on the track. Smaller programs such as Kickstart have supported early proofs of concept with awards on the order of a few thousand dollars in XLM, while the main Build track has funded validated projects with larger milestone-based amounts. Exact figures change between rounds, so always confirm current numbers on the official SCF site."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who can apply to SCF?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Individuals, teams, and companies building on Stellar or Soroban can apply — infrastructure, apps, developer tooling, and DeFi protocols are all in scope. You typically signal interest through a form, and eligible projects are invited into an open, funded submission round for review and community voting."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does SCF take?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Interest submissions are reviewed on a rolling basis, then eligible projects join a scheduled round with community discussion and voting that generally runs over several weeks. Larger Build awards are paid across milestones, so funds arrive over time as work is delivered rather than all at once."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is SCF the same as a Stellar grant?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — SCF is the main grant channel run by the Stellar Development Foundation, so people often use \"Stellar grant\" and \"SCF award\" interchangeably. The Foundation also runs other support programs, but SCF is the community-driven route most builders mean when they talk about getting a Stellar grant."
+          }
+        }
       ]
     }
   ]

@@ -42,32 +42,111 @@
       "@id": "https://whalehub.io/blog/kyc-kyb-explained#article",
       "headline": "KYC vs KYB: Identity Verification in Crypto & DeFi",
       "description": "KYC verifies an individual's identity; KYB verifies a business entity and its ultimate beneficial owners. A plain-English guide to how identity verification and AML checks work on crypto exchanges and in DeFi.",
-      "image": "https://whalehub.io/assets/blog/kyc-kyb-explained.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/kyc-kyb-explained.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-07-17",
       "dateModified": "2026-07-17",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/kyc-kyb-explained"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/kyc-kyb-explained"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/kyc-kyb-explained",
+      "wordCount": 2234
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "KYC vs KYB", "item": "https://whalehub.io/blog/kyc-kyb-explained" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "KYC vs KYB",
+          "item": "https://whalehub.io/blog/kyc-kyb-explained"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is the difference between KYC and KYB?", "acceptedAnswer": { "@type": "Answer", "text": "KYC (Know Your Customer) verifies an individual person — their identity, using an ID document and often a selfie. KYB (Know Your Business) verifies a company: its legal registration, status, and the real humans who ultimately own or control it. KYB usually includes running KYC on those owners, so it is the broader of the two." } },
-        { "@type": "Question", "name": "What is a UBO?", "acceptedAnswer": { "@type": "Answer", "text": "A UBO, or ultimate beneficial owner, is the real person who ultimately owns or controls a company — even through layers of holding companies or nominees. Many rules flag anyone holding roughly 25% or more, though the exact threshold varies by jurisdiction. Identifying UBOs is the core extra step that makes KYB harder than KYC." } },
-        { "@type": "Question", "name": "Do DeFi platforms require KYC?", "acceptedAnswer": { "@type": "Answer", "text": "It depends on who operates them. Centralised exchanges and fiat on-ramps almost always require KYC. A genuinely decentralised protocol with no operator collecting funds typically has no one positioned to run identity checks. Many teams sit in between, and requirements are evolving, so treat any given platform on its own terms." } },
-        { "@type": "Question", "name": "What is the FATF Travel Rule?", "acceptedAnswer": { "@type": "Answer", "text": "The FATF Travel Rule (Recommendation 16, extended to virtual assets in 2019) requires virtual-asset service providers to share verified sender and recipient information for transfers above a threshold — often around 1,000 USD or EUR. It mirrors a long-standing rule for bank wires. Exact thresholds and timing vary by jurisdiction." } },
-        { "@type": "Question", "name": "Is KYB harder than KYC?", "acceptedAnswer": { "@type": "Answer", "text": "Generally yes. KYC checks one person against an ID document. KYB must confirm a company's registration and legal status, map its ownership structure, identify the ultimate beneficial owners, and then run KYC on each of them. More documents, more data sources, and more manual review make KYB slower and more involved." } }
+        {
+          "@type": "Question",
+          "name": "What is the difference between KYC and KYB?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "KYC (Know Your Customer) verifies an individual person — their identity, using an ID document and often a selfie. KYB (Know Your Business) verifies a company: its legal registration, status, and the real humans who ultimately own or control it. KYB usually includes running KYC on those owners, so it is the broader of the two."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a UBO?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A UBO, or ultimate beneficial owner, is the real person who ultimately owns or controls a company — even through layers of holding companies or nominees. Many rules flag anyone holding roughly 25% or more, though the exact threshold varies by jurisdiction. Identifying UBOs is the core extra step that makes KYB harder than KYC."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do DeFi platforms require KYC?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It depends on who operates them. Centralised exchanges and fiat on-ramps almost always require KYC. A genuinely decentralised protocol with no operator collecting funds typically has no one positioned to run identity checks. Many teams sit in between, and requirements are evolving, so treat any given platform on its own terms."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the FATF Travel Rule?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The FATF Travel Rule (Recommendation 16, extended to virtual assets in 2019) requires virtual-asset service providers to share verified sender and recipient information for transfers above a threshold — often around 1,000 USD or EUR. It mirrors a long-standing rule for bank wires. Exact thresholds and timing vary by jurisdiction."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is KYB harder than KYC?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Generally yes. KYC checks one person against an ID document. KYB must confirm a company's registration and legal status, map its ownership structure, identify the ultimate beneficial owners, and then run KYC on each of them. More documents, more data sources, and more manual review make KYB slower and more involved."
+          }
+        }
       ]
     }
   ]

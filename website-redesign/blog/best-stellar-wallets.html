@@ -42,32 +42,111 @@
       "@id": "https://whalehub.io/blog/best-stellar-wallets#article",
       "headline": "Best Stellar Wallets in 2026: LOBSTR, Freighter & More",
       "description": "A practical guide to choosing a Stellar wallet, covering LOBSTR, Freighter, xBull, hardware options, what Soroban support means, and the Stellar-specific concepts every wallet user needs: trustlines, XLM reserves, and memos.",
-      "image": "https://whalehub.io/assets/blog/best-stellar-wallets.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/best-stellar-wallets.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-08-02",
       "dateModified": "2026-08-02",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/best-stellar-wallets"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/best-stellar-wallets"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/best-stellar-wallets",
+      "wordCount": 2434
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Best Stellar Wallets", "item": "https://whalehub.io/blog/best-stellar-wallets" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Best Stellar Wallets",
+          "item": "https://whalehub.io/blog/best-stellar-wallets"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is the best Stellar wallet?", "acceptedAnswer": { "@type": "Answer", "text": "It depends on what you are doing. LOBSTR is the most widely used option for everyday holding and sending on mobile and web. Freighter, maintained by the Stellar Development Foundation, is a browser extension built for interacting with Soroban applications. xBull is a flexible extension with multi-account support. For long-term storage of a large balance, a hardware wallet paired with one of these interfaces is the safer choice." } },
-        { "@type": "Question", "name": "What is a trustline on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "A trustline is an explicit opt-in that lets your account hold a specific non-native asset. Stellar will not let anyone send you an asset you have not established a trustline for, which prevents unsolicited token spam. Each trustline increases your account's minimum XLM balance requirement, and you can remove a trustline once the balance for that asset is zero." } },
-        { "@type": "Question", "name": "Why does my Stellar account need a minimum XLM balance?", "acceptedAnswer": { "@type": "Answer", "text": "Stellar requires every account to hold a small reserve in XLM to prevent ledger spam. A new account needs a base reserve to exist, and each additional item it stores — trustlines, offers, extra signers, and data entries — raises that requirement further. The reserved XLM is not spent, but it cannot be transferred out while those items exist." } },
-        { "@type": "Question", "name": "Do I need a Soroban-compatible wallet for Stellar DeFi?", "acceptedAnswer": { "@type": "Answer", "text": "Yes, for anything involving smart contracts. Classic Stellar operations like sending XLM or trading on the built-in order book work in almost any Stellar wallet, but Soroban smart-contract calls require a wallet that can build, simulate, and sign contract invocations. Check that a wallet advertises Soroban support before using it with a DeFi application." } },
-        { "@type": "Question", "name": "What happens if I forget the memo when sending XLM to an exchange?", "acceptedAnswer": { "@type": "Answer", "text": "Exchanges typically pool user deposits into one Stellar account and use the memo field to identify which customer a deposit belongs to. Sending without the required memo means the funds arrive at the exchange but cannot be automatically credited to you. The money is usually recoverable through the exchange's support process, but it can take time and some platforms charge a recovery fee." } }
+        {
+          "@type": "Question",
+          "name": "What is the best Stellar wallet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It depends on what you are doing. LOBSTR is the most widely used option for everyday holding and sending on mobile and web. Freighter, maintained by the Stellar Development Foundation, is a browser extension built for interacting with Soroban applications. xBull is a flexible extension with multi-account support. For long-term storage of a large balance, a hardware wallet paired with one of these interfaces is the safer choice."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a trustline on Stellar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A trustline is an explicit opt-in that lets your account hold a specific non-native asset. Stellar will not let anyone send you an asset you have not established a trustline for, which prevents unsolicited token spam. Each trustline increases your account's minimum XLM balance requirement, and you can remove a trustline once the balance for that asset is zero."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does my Stellar account need a minimum XLM balance?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Stellar requires every account to hold a small reserve in XLM to prevent ledger spam. A new account needs a base reserve to exist, and each additional item it stores — trustlines, offers, extra signers, and data entries — raises that requirement further. The reserved XLM is not spent, but it cannot be transferred out while those items exist."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need a Soroban-compatible wallet for Stellar DeFi?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, for anything involving smart contracts. Classic Stellar operations like sending XLM or trading on the built-in order book work in almost any Stellar wallet, but Soroban smart-contract calls require a wallet that can build, simulate, and sign contract invocations. Check that a wallet advertises Soroban support before using it with a DeFi application."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens if I forget the memo when sending XLM to an exchange?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Exchanges typically pool user deposits into one Stellar account and use the memo field to identify which customer a deposit belongs to. Sending without the required memo means the funds arrive at the exchange but cannot be automatically credited to you. The money is usually recoverable through the exchange's support process, but it can take time and some platforms charge a recovery fee."
+          }
+        }
       ]
     }
   ]

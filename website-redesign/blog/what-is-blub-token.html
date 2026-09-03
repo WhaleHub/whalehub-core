@@ -42,33 +42,119 @@
       "@id": "https://whalehub.io/blog/what-is-blub-token#article",
       "headline": "What Is BLUB? WhaleHub's Liquid AQUA Token",
       "description": "BLUB is WhaleHub's reward token and liquid staking receipt on Stellar — a Soroban SAC minted when you stake AQUA, with a market-determined price set by the BLUB-AQUA pool.",
-      "image": "https://whalehub.io/assets/blog/what-is-blub-token.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/what-is-blub-token.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-07-04",
       "dateModified": "2026-07-04",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/what-is-blub-token"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/what-is-blub-token"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/what-is-blub-token",
+      "wordCount": 1646
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "What Is BLUB?", "item": "https://whalehub.io/blog/what-is-blub-token" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "What Is BLUB?",
+          "item": "https://whalehub.io/blog/what-is-blub-token"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is the BLUB token?", "acceptedAnswer": { "@type": "Answer", "text": "BLUB is WhaleHub's reward token and liquid staking receipt on Stellar. It is a Soroban Stellar Asset Contract with 7 decimals, minted by the staking contract when you stake AQUA. You earn BLUB as rewards and can trade it against AQUA in the Aquarius BLUB-AQUA pool." } },
-        { "@type": "Question", "name": "How is BLUB created?", "acceptedAnswer": { "@type": "Answer", "text": "BLUB is minted by WhaleHub's staking contract when a user locks AQUA. For every 1 AQUA staked, 1.0 BLUB is minted to the user's staking balance and 0.1 BLUB is minted to the admin wallet to seed the BLUB-AQUA liquidity pool. The staking contract holds sole mint authority." } },
-        { "@type": "Question", "name": "How much is BLUB worth?", "acceptedAnswer": { "@type": "Answer", "text": "BLUB has a floating, market-determined price set by supply and demand in the Aquarius BLUB-AQUA pool. It is minted 1:1 when you stake AQUA, but its trading value moves with the pool reserves rather than tracking AQUA. Check the live price on the app or in the pool." } },
-        { "@type": "Question", "name": "What can I do with BLUB?", "acceptedAnswer": { "@type": "Answer", "text": "You can hold BLUB to accrue staking rewards, restake it to compound your position, trade it against AQUA in the Aquarius BLUB-AQUA pool, or provide liquidity to that pool to earn trading fees and emissions. BLUB is a standard transferable Stellar asset." } },
-        { "@type": "Question", "name": "Is BLUB the same as AQUA?", "acceptedAnswer": { "@type": "Answer", "text": "No. AQUA is the token of the Aquarius protocol and powers ICE governance. BLUB is WhaleHub's own token — a liquid derivative of staked AQUA that you earn as rewards. The two are paired in the Aquarius BLUB-AQUA pool, where BLUB's market price is discovered." } },
-        { "@type": "Question", "name": "What is BLUB's contract address on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "BLUB's Soroban contract is CBMFDIRY5OKI4JJURXC4SMEQPWB4UUADIADJK4NA6CYBNOYK4W4TMLLF and its issuer account is GDERSSCKJQPPXUQOZIOXGRVAGNLVPVZCJ2MAX7RCMVMWGRPVAEG7XGTK. It is a Stellar Asset Contract with 7 decimals whose mint authority is WhaleHub's staking contract." } }
+        {
+          "@type": "Question",
+          "name": "What is the BLUB token?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "BLUB is WhaleHub's reward token and liquid staking receipt on Stellar. It is a Soroban Stellar Asset Contract with 7 decimals, minted by the staking contract when you stake AQUA. You earn BLUB as rewards and can trade it against AQUA in the Aquarius BLUB-AQUA pool."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is BLUB created?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "BLUB is minted by WhaleHub's staking contract when a user locks AQUA. For every 1 AQUA staked, 1.0 BLUB is minted to the user's staking balance and 0.1 BLUB is minted to the admin wallet to seed the BLUB-AQUA liquidity pool. The staking contract holds sole mint authority."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much is BLUB worth?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "BLUB has a floating, market-determined price set by supply and demand in the Aquarius BLUB-AQUA pool. It is minted 1:1 when you stake AQUA, but its trading value moves with the pool reserves rather than tracking AQUA. Check the live price on the app or in the pool."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What can I do with BLUB?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can hold BLUB to accrue staking rewards, restake it to compound your position, trade it against AQUA in the Aquarius BLUB-AQUA pool, or provide liquidity to that pool to earn trading fees and emissions. BLUB is a standard transferable Stellar asset."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is BLUB the same as AQUA?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. AQUA is the token of the Aquarius protocol and powers ICE governance. BLUB is WhaleHub's own token — a liquid derivative of staked AQUA that you earn as rewards. The two are paired in the Aquarius BLUB-AQUA pool, where BLUB's market price is discovered."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is BLUB's contract address on Stellar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "BLUB's Soroban contract is CBMFDIRY5OKI4JJURXC4SMEQPWB4UUADIADJK4NA6CYBNOYK4W4TMLLF and its issuer account is GDERSSCKJQPPXUQOZIOXGRVAGNLVPVZCJ2MAX7RCMVMWGRPVAEG7XGTK. It is a Stellar Asset Contract with 7 decimals whose mint authority is WhaleHub's staking contract."
+          }
+        }
       ]
     }
   ]

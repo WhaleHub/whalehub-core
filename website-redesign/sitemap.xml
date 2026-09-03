@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://whalehub.io/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://whalehub.io/</loc><lastmod>2026-08-10</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://whalehub.io/about</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://whalehub.io/faq</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://whalehub.io/contact</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
@@ -10,7 +10,7 @@
   <url><loc>https://whalehub.io/blog/stellar-defi-guide</loc><lastmod>2026-07-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://whalehub.io/blog/what-is-aqua-token</loc><lastmod>2026-07-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://whalehub.io/blog/aquarius-amm-explained</loc><lastmod>2026-07-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whalehub.io/blog/how-to-stake-aqua</loc><lastmod>2026-07-04</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://whalehub.io/blog/how-to-stake-aqua</loc><lastmod>2026-08-06</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://whalehub.io/blog/what-is-liquidity-mining</loc><lastmod>2026-07-04</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://whalehub.io/blog/soroban-smart-contracts</loc><lastmod>2026-07-04</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://whalehub.io/blog/what-is-blub-token</loc><lastmod>2026-07-04</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -22,13 +22,13 @@
   <url><loc>https://whalehub.io/blog/stablecoins-on-stellar</loc><lastmod>2026-07-07</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://whalehub.io/blog/mica-stablecoins-defi</loc><lastmod>2026-07-07</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://whalehub.io/blog/mycobo-stellar</loc><lastmod>2026-07-07</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://whalehub.io/blog/blend-protocol-stellar</loc><lastmod>2026-07-17</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://whalehub.io/blog/blend-protocol-stellar</loc><lastmod>2026-08-06</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://whalehub.io/blog/aquarius-concentrated-liquidity</loc><lastmod>2026-07-17</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://whalehub.io/blog/stellar-community-fund-scf</loc><lastmod>2026-07-17</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://whalehub.io/blog/kyc-kyb-explained</loc><lastmod>2026-07-17</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://whalehub.io/blog/apy-vs-apr-crypto</loc><lastmod>2026-08-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://whalehub.io/blog/apy-vs-apr-crypto</loc><lastmod>2026-08-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://whalehub.io/blog/best-stellar-wallets</loc><lastmod>2026-08-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://whalehub.io/blog/impermanent-loss-explained</loc><lastmod>2026-08-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://whalehub.io/blog/impermanent-loss-explained</loc><lastmod>2026-08-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://whalehub.io/blog/liquid-staking-explained</loc><lastmod>2026-08-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://whalehub.io/blog/stablecoin-yield</loc><lastmod>2026-08-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://whalehub.io/blog/stablecoin-yield</loc><lastmod>2026-08-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

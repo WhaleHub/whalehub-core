@@ -42,32 +42,111 @@
       "@id": "https://whalehub.io/blog/mycobo-stellar#article",
       "headline": "Mycobo: Institutional Digital Assets on Stellar",
       "description": "A plain-English look at Mycobo — a regulated euro-stablecoin anchor on Stellar — why Stellar suits institutional issuance, and where it fits in the ecosystem.",
-      "image": "https://whalehub.io/assets/blog/mycobo-stellar.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/mycobo-stellar.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-07-04",
       "dateModified": "2026-07-04",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/mycobo-stellar"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/mycobo-stellar"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/mycobo-stellar",
+      "wordCount": 1709
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Mycobo: Institutional Digital Assets on Stellar", "item": "https://whalehub.io/blog/mycobo-stellar" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Mycobo: Institutional Digital Assets on Stellar",
+          "item": "https://whalehub.io/blog/mycobo-stellar"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is Mycobo?", "acceptedAnswer": { "@type": "Answer", "text": "Mycobo is a regulated financial-technology company that operates a euro anchor on Stellar. It issues a euro-backed stablecoin and provides compliant on- and off-ramps between euro bank accounts and the blockchain, letting users move between fiat and stablecoins over SEPA." } },
-        { "@type": "Question", "name": "Is Mycobo regulated?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Mycobo operates as an EU-regulated service and is registered with the Polish General Inspector of Financial Information (GIFI). Like any regulated ramp, it requires KYC identity verification before you can deposit or withdraw, in line with anti-money-laundering rules." } },
-        { "@type": "Question", "name": "Does Mycobo run on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Mycobo is a Stellar anchor and implements the Stellar Ecosystem Proposals that standardise deposits, withdrawals and authentication (such as SEP-10, SEP-12, SEP-24 and SEP-31). It also supports other networks, but Stellar is central to its euro-stablecoin rails." } },
-        { "@type": "Question", "name": "Why is Stellar suited to institutional tokenization?", "acceptedAnswer": { "@type": "Answer", "text": "Stellar issues assets natively, enforces access with trustlines and optional authorization flags, and settles in about five seconds for a fraction of a cent. Those compliance-friendly controls and predictable costs make it practical for regulated issuers to put fiat-backed and real-world assets on-chain." } },
-        { "@type": "Question", "name": "How is Mycobo different from WhaleHub?", "acceptedAnswer": { "@type": "Answer", "text": "Mycobo is a regulated fiat gateway: it converts euros to and from stablecoins on Stellar. WhaleHub is a DeFi yield optimizer that stakes AQUA and auto-compounds Aquarius rewards. They sit at opposite ends of the same ecosystem — one brings money on-chain, the other puts it to work." } }
+        {
+          "@type": "Question",
+          "name": "What is Mycobo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Mycobo is a regulated financial-technology company that operates a euro anchor on Stellar. It issues a euro-backed stablecoin and provides compliant on- and off-ramps between euro bank accounts and the blockchain, letting users move between fiat and stablecoins over SEPA."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Mycobo regulated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Mycobo operates as an EU-regulated service and is registered with the Polish General Inspector of Financial Information (GIFI). Like any regulated ramp, it requires KYC identity verification before you can deposit or withdraw, in line with anti-money-laundering rules."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Mycobo run on Stellar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Mycobo is a Stellar anchor and implements the Stellar Ecosystem Proposals that standardise deposits, withdrawals and authentication (such as SEP-10, SEP-12, SEP-24 and SEP-31). It also supports other networks, but Stellar is central to its euro-stablecoin rails."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is Stellar suited to institutional tokenization?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Stellar issues assets natively, enforces access with trustlines and optional authorization flags, and settles in about five seconds for a fraction of a cent. Those compliance-friendly controls and predictable costs make it practical for regulated issuers to put fiat-backed and real-world assets on-chain."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is Mycobo different from WhaleHub?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Mycobo is a regulated fiat gateway: it converts euros to and from stablecoins on Stellar. WhaleHub is a DeFi yield optimizer that stakes AQUA and auto-compounds Aquarius rewards. They sit at opposite ends of the same ecosystem — one brings money on-chain, the other puts it to work."
+          }
+        }
       ]
     }
   ]

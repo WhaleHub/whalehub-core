@@ -42,32 +42,111 @@
       "@id": "https://whalehub.io/blog/stablecoins-on-stellar#article",
       "headline": "Stablecoins on Stellar: USDC, EURC, sUSD & PYUSD",
       "description": "A plain-English guide to stablecoins on Stellar: Circle's native USDC and EURC, PayPal's PYUSD, dollar coins like sUSD, how trustlines work, and how they power DeFi yield.",
-      "image": "https://whalehub.io/assets/blog/stablecoins-on-stellar.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/stablecoins-on-stellar.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-07-04",
       "dateModified": "2026-07-04",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/stablecoins-on-stellar"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/stablecoins-on-stellar"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/stablecoins-on-stellar",
+      "wordCount": 1995
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Stablecoins on Stellar", "item": "https://whalehub.io/blog/stablecoins-on-stellar" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Stablecoins on Stellar",
+          "item": "https://whalehub.io/blog/stablecoins-on-stellar"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "Which stablecoins are available on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "Stellar hosts several fiat-backed stablecoins. The largest are Circle's USDC and EURC, both issued natively on Stellar. PayPal USD (PYUSD) is also live on Stellar. Other regulated coins include GYEN and ZUSD from GMO Trust and AUDD from Novatti, plus dollar coins such as sUSD used in Aquarius stable pools." } },
-        { "@type": "Question", "name": "Is USDC on Stellar native or bridged?", "acceptedAnswer": { "@type": "Answer", "text": "USDC on Stellar is native. Circle issues it directly as a Stellar asset under its own issuing account, so it is not a wrapped or bridged token from another chain. That means it works with Stellar trustlines, anchors, and path payments as a first-class asset." } },
-        { "@type": "Question", "name": "Is PYUSD available on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. PayPal USD (PYUSD) is available on the Stellar network, expanding it beyond its original chains. On Stellar it settles in about five seconds for a fraction of a cent, and it remains fully backed by dollar deposits, US Treasuries, and cash equivalents under NYDFS regulation." } },
-        { "@type": "Question", "name": "How do you hold a stablecoin on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "You add a trustline. On Stellar an account must explicitly opt in to an asset before it can hold it, which authorizes your account to receive that specific stablecoin from its issuer. Once the trustline exists, you can receive, send, swap, or provide liquidity with the coin in a Stellar wallet." } },
-        { "@type": "Question", "name": "Can you earn yield on stablecoins on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. You can provide stablecoins to Aquarius stable pools, such as a dollar-to-dollar pair, and earn trading fees plus AQUA emissions with low price divergence. Yield optimizers like WhaleHub can auto-compound liquidity-vault positions many times a day so you do not have to reinvest manually." } }
+        {
+          "@type": "Question",
+          "name": "Which stablecoins are available on Stellar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Stellar hosts several fiat-backed stablecoins. The largest are Circle's USDC and EURC, both issued natively on Stellar. PayPal USD (PYUSD) is also live on Stellar. Other regulated coins include GYEN and ZUSD from GMO Trust and AUDD from Novatti, plus dollar coins such as sUSD used in Aquarius stable pools."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is USDC on Stellar native or bridged?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "USDC on Stellar is native. Circle issues it directly as a Stellar asset under its own issuing account, so it is not a wrapped or bridged token from another chain. That means it works with Stellar trustlines, anchors, and path payments as a first-class asset."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is PYUSD available on Stellar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. PayPal USD (PYUSD) is available on the Stellar network, expanding it beyond its original chains. On Stellar it settles in about five seconds for a fraction of a cent, and it remains fully backed by dollar deposits, US Treasuries, and cash equivalents under NYDFS regulation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you hold a stablecoin on Stellar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You add a trustline. On Stellar an account must explicitly opt in to an asset before it can hold it, which authorizes your account to receive that specific stablecoin from its issuer. Once the trustline exists, you can receive, send, swap, or provide liquidity with the coin in a Stellar wallet."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you earn yield on stablecoins on Stellar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. You can provide stablecoins to Aquarius stable pools, such as a dollar-to-dollar pair, and earn trading fees plus AQUA emissions with low price divergence. Yield optimizers like WhaleHub can auto-compound liquidity-vault positions many times a day so you do not have to reinvest manually."
+          }
+        }
       ]
     }
   ]

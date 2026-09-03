@@ -42,32 +42,111 @@
       "@id": "https://whalehub.io/blog/auto-compounding-explained#article",
       "headline": "Auto-Compounding Crypto: How It Boosts Yield",
       "description": "Auto-compounding automatically reinvests crypto rewards so you earn yield on yield. Here's how it turns APR into a higher APY, why compounding frequency matters, and why Stellar makes it viable.",
-      "image": "https://whalehub.io/assets/blog/auto-compounding-explained.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/auto-compounding-explained.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-07-04",
       "dateModified": "2026-07-04",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/auto-compounding-explained"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/auto-compounding-explained"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/auto-compounding-explained",
+      "wordCount": 1822
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Auto-Compounding Crypto", "item": "https://whalehub.io/blog/auto-compounding-explained" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Auto-Compounding Crypto",
+          "item": "https://whalehub.io/blog/auto-compounding-explained"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is auto-compounding in crypto?", "acceptedAnswer": { "@type": "Answer", "text": "Auto-compounding is when a protocol automatically harvests your staking or liquidity rewards and reinvests them into the same position, so future rewards are calculated on a larger balance. You earn yield on your yield without manually claiming and re-depositing, and the compounding runs on a fixed schedule in the background." } },
-        { "@type": "Question", "name": "What is the difference between APR and APY?", "acceptedAnswer": { "@type": "Answer", "text": "APR is the simple annual rate with no reinvestment. APY is the effective rate once rewards are compounded back into the balance. Compounding is exactly what turns an APR into a higher APY: the more often you reinvest, the larger the gap, up to a continuous-compounding ceiling." } },
-        { "@type": "Question", "name": "Does compounding more often always mean more yield?", "acceptedAnswer": { "@type": "Answer", "text": "More frequent compounding always raises APY, but with diminishing returns. Moving from yearly to daily is a big jump; moving from daily to every 30 minutes adds very little at moderate rates. The real benefit of high frequency is smoother, hands-off growth and capturing gains sooner at higher APRs." } },
-        { "@type": "Question", "name": "Why is auto-compounding not viable on high-fee chains?", "acceptedAnswer": { "@type": "Answer", "text": "Each compound is an on-chain transaction. When gas costs dollars, claiming and reinvesting many times a day can cost more than the rewards being reinvested, so frequent compounding destroys value. It only makes sense where fees are a tiny fraction of the harvested reward." } },
-        { "@type": "Question", "name": "How often does WhaleHub compound?", "acceptedAnswer": { "@type": "Answer", "text": "WhaleHub's liquidity vaults re-deposit rewards roughly 48 times a day, about every 30 minutes. Stellar's base fee of 0.00001 XLM means each compound costs a fraction of a cent, so high-frequency reinvestment is economical rather than being eaten by fees." } }
+        {
+          "@type": "Question",
+          "name": "What is auto-compounding in crypto?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Auto-compounding is when a protocol automatically harvests your staking or liquidity rewards and reinvests them into the same position, so future rewards are calculated on a larger balance. You earn yield on your yield without manually claiming and re-depositing, and the compounding runs on a fixed schedule in the background."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between APR and APY?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "APR is the simple annual rate with no reinvestment. APY is the effective rate once rewards are compounded back into the balance. Compounding is exactly what turns an APR into a higher APY: the more often you reinvest, the larger the gap, up to a continuous-compounding ceiling."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does compounding more often always mean more yield?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "More frequent compounding always raises APY, but with diminishing returns. Moving from yearly to daily is a big jump; moving from daily to every 30 minutes adds very little at moderate rates. The real benefit of high frequency is smoother, hands-off growth and capturing gains sooner at higher APRs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is auto-compounding not viable on high-fee chains?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Each compound is an on-chain transaction. When gas costs dollars, claiming and reinvesting many times a day can cost more than the rewards being reinvested, so frequent compounding destroys value. It only makes sense where fees are a tiny fraction of the harvested reward."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How often does WhaleHub compound?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "WhaleHub's liquidity vaults re-deposit rewards roughly 48 times a day, about every 30 minutes. Stellar's base fee of 0.00001 XLM means each compound costs a fraction of a cent, so high-frequency reinvestment is economical rather than being eaten by fees."
+          }
+        }
       ]
     }
   ]

@@ -7,6 +7,7 @@ const Footer = () => {
           <a href="/faq">FAQ</a>
           <a href="/terms">Terms & Conditions</a>
           <a href="/privacy">Privacy Policy</a>
+          <a href="https://whalehub.io/blog/" target="_blank" rel="noopener noreferrer">Blog</a>
           <a href="https://whalehub-1.gitbook.io/whalehub" target="_blank" rel="noopener noreferrer">Docs</a>
           <button
             onClick={() => {

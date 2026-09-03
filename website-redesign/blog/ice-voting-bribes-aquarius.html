@@ -42,33 +42,119 @@
       "@id": "https://whalehub.io/blog/ice-voting-bribes-aquarius#article",
       "headline": "ICE Voting & Bribes on Aquarius, Explained",
       "description": "How ICE works on Aquarius: lock AQUA for non-transferable voting power, direct AQUA emissions to pools, and earn bribes. Stellar's Curve/Convex vote market, explained.",
-      "image": "https://whalehub.io/assets/blog/ice-voting-bribes-aquarius.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/ice-voting-bribes-aquarius.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-07-04",
       "dateModified": "2026-07-04",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/ice-voting-bribes-aquarius"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/ice-voting-bribes-aquarius"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/ice-voting-bribes-aquarius",
+      "wordCount": 1827
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "ICE Voting & Bribes on Aquarius", "item": "https://whalehub.io/blog/ice-voting-bribes-aquarius" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "ICE Voting & Bribes on Aquarius",
+          "item": "https://whalehub.io/blog/ice-voting-bribes-aquarius"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is ICE on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "ICE is the non-transferable voting power you receive when you lock AQUA in the Aquarius protocol. It can't be sold or sent to another wallet, and it decays as your lock approaches expiry. You use ICE to vote AQUA emissions toward specific liquidity pools." } },
-        { "@type": "Question", "name": "What are Aquarius bribes?", "acceptedAnswer": { "@type": "Answer", "text": "A bribe is a reward a project deposits to attract ICE votes to its liquidity pool. Voters who back that pool earn a share of the bribe on top of AQUA emissions. It's an open incentive market where projects pay for votes to bootstrap liquidity." } },
-        { "@type": "Question", "name": "How is ICE different from raw AQUA?", "acceptedAnswer": { "@type": "Answer", "text": "AQUA is a transferable token you can trade or hold. ICE is locked voting power minted when you lock AQUA — it is non-transferable, decays over time, and directs emissions. Holding AQUA earns nothing on its own; locking it for ICE lets you vote and collect bribes." } },
-        { "@type": "Question", "name": "Why is Aquarius voting compared to the Curve wars?", "acceptedAnswer": { "@type": "Answer", "text": "Like Curve on Ethereum, Aquarius lets locked-token voters direct emissions, so projects compete by bribing voters to win liquidity. WhaleHub plays the aggregator role Convex played on Curve — pooling ICE so small holders get whale-tier voting weight." } },
-        { "@type": "Question", "name": "How does WhaleHub use ICE?", "acceptedAnswer": { "@type": "Answer", "text": "WhaleHub aggregates ICE from all stakers into one large voting block, votes it toward the highest-yielding Aquarius market, and harvests the AQUA emissions plus bribes. The backend claims rewards about every 30 minutes, distributes them as BLUB, and reinvests into more ICE." } },
-        { "@type": "Question", "name": "Can I claim ICE rewards myself as a small holder?", "acceptedAnswer": { "@type": "Answer", "text": "You can, but a small AQUA holder has negligible voting weight and pays friction to lock, vote each epoch, and claim. Pooling with others through WhaleHub gives you a proportional share of whale-tier voting power and the bribes it earns, with no manual voting." } }
+        {
+          "@type": "Question",
+          "name": "What is ICE on Stellar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ICE is the non-transferable voting power you receive when you lock AQUA in the Aquarius protocol. It can't be sold or sent to another wallet, and it decays as your lock approaches expiry. You use ICE to vote AQUA emissions toward specific liquidity pools."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are Aquarius bribes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A bribe is a reward a project deposits to attract ICE votes to its liquidity pool. Voters who back that pool earn a share of the bribe on top of AQUA emissions. It's an open incentive market where projects pay for votes to bootstrap liquidity."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is ICE different from raw AQUA?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AQUA is a transferable token you can trade or hold. ICE is locked voting power minted when you lock AQUA — it is non-transferable, decays over time, and directs emissions. Holding AQUA earns nothing on its own; locking it for ICE lets you vote and collect bribes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is Aquarius voting compared to the Curve wars?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Like Curve on Ethereum, Aquarius lets locked-token voters direct emissions, so projects compete by bribing voters to win liquidity. WhaleHub plays the aggregator role Convex played on Curve — pooling ICE so small holders get whale-tier voting weight."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does WhaleHub use ICE?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "WhaleHub aggregates ICE from all stakers into one large voting block, votes it toward the highest-yielding Aquarius market, and harvests the AQUA emissions plus bribes. The backend claims rewards about every 30 minutes, distributes them as BLUB, and reinvests into more ICE."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I claim ICE rewards myself as a small holder?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can, but a small AQUA holder has negligible voting weight and pays friction to lock, vote each epoch, and claim. Pooling with others through WhaleHub gives you a proportional share of whale-tier voting power and the bribes it earns, with no manual voting."
+          }
+        }
       ]
     }
   ]

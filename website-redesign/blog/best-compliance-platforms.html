@@ -42,32 +42,111 @@
       "@id": "https://whalehub.io/blog/best-compliance-platforms#article",
       "headline": "Best KYC & KYB Compliance Platforms in 2026",
       "description": "A 2026 roundup of the top KYC, KYB, and AML compliance platforms for crypto and fintech: what to look for, plus how iDenfy, Sumsub, Onfido, Jumio, Veriff, and Persona compare.",
-      "image": "https://whalehub.io/assets/blog/best-compliance-platforms.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/best-compliance-platforms.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-07-17",
       "dateModified": "2026-07-17",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/best-compliance-platforms"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/best-compliance-platforms"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/best-compliance-platforms",
+      "wordCount": 2465
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Best Compliance Platforms", "item": "https://whalehub.io/blog/best-compliance-platforms" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Best Compliance Platforms",
+          "item": "https://whalehub.io/blog/best-compliance-platforms"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is a KYC/KYB compliance platform?", "acceptedAnswer": { "@type": "Answer", "text": "A KYC/KYB compliance platform is software that verifies the identity of individual customers (KYC) and business entities (KYB), then screens them against sanctions, PEP, and watchlist databases (AML). It automates onboarding checks and ongoing monitoring so regulated firms can meet their legal obligations." } },
-        { "@type": "Question", "name": "What is iDenfy?", "acceptedAnswer": { "@type": "Answer", "text": "iDenfy is a Lithuania-based identity verification and compliance platform founded in 2017. It offers document-and-selfie KYC, business verification (KYB) with UBO checks against company registries, and ongoing AML screening for sanctions, PEPs, and adverse media, billed on a pay-per-approved-verification model." } },
-        { "@type": "Question", "name": "Which compliance platform is best for crypto?", "acceptedAnswer": { "@type": "Answer", "text": "There is no single best platform; it depends on your markets, volumes, and integration needs. Crypto firms often shortlist vendors with strong AML screening, Travel Rule support, and broad document coverage, then run a pilot. This roundup is educational and not a paid ranking, so evaluate each against your own requirements." } },
-        { "@type": "Question", "name": "Do compliance platforms handle AML screening?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Most identity-verification platforms bundle AML screening that checks customers against sanctions lists, politically exposed person (PEP) databases, and adverse media, plus ongoing monitoring for changes. iDenfy, Sumsub, Jumio, Veriff, and others all offer sanctions and PEP screening alongside their KYC and KYB checks." } },
-        { "@type": "Question", "name": "How much do KYC platforms cost?", "acceptedAnswer": { "@type": "Answer", "text": "Pricing varies widely by provider, verification volume, the checks you enable, and your region, so there is no universal figure. Models range from pay-per-verification to monthly subscriptions and enterprise contracts. Some vendors, such as iDenfy, bill only for successful verifications. Always request a quote based on your expected volume." } }
+        {
+          "@type": "Question",
+          "name": "What is a KYC/KYB compliance platform?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A KYC/KYB compliance platform is software that verifies the identity of individual customers (KYC) and business entities (KYB), then screens them against sanctions, PEP, and watchlist databases (AML). It automates onboarding checks and ongoing monitoring so regulated firms can meet their legal obligations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is iDenfy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "iDenfy is a Lithuania-based identity verification and compliance platform founded in 2017. It offers document-and-selfie KYC, business verification (KYB) with UBO checks against company registries, and ongoing AML screening for sanctions, PEPs, and adverse media, billed on a pay-per-approved-verification model."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which compliance platform is best for crypto?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "There is no single best platform; it depends on your markets, volumes, and integration needs. Crypto firms often shortlist vendors with strong AML screening, Travel Rule support, and broad document coverage, then run a pilot. This roundup is educational and not a paid ranking, so evaluate each against your own requirements."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do compliance platforms handle AML screening?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Most identity-verification platforms bundle AML screening that checks customers against sanctions lists, politically exposed person (PEP) databases, and adverse media, plus ongoing monitoring for changes. iDenfy, Sumsub, Jumio, Veriff, and others all offer sanctions and PEP screening alongside their KYC and KYB checks."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much do KYC platforms cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pricing varies widely by provider, verification volume, the checks you enable, and your region, so there is no universal figure. Models range from pay-per-verification to monthly subscriptions and enterprise contracts. Some vendors, such as iDenfy, bill only for successful verifications. Always request a quote based on your expected volume."
+          }
+        }
       ]
     }
   ]

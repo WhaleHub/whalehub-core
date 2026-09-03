@@ -42,32 +42,111 @@
       "@id": "https://whalehub.io/blog/stellar-vs-multiversx-defi#article",
       "headline": "Stellar vs MultiversX: DeFi & Yield Compared",
       "description": "A plain-English comparison of Stellar and MultiversX for DeFi and yield: consensus, fees, finality, smart contracts, native DEXs, and where returns come from on each chain.",
-      "image": "https://whalehub.io/assets/blog/stellar-vs-multiversx-defi.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/stellar-vs-multiversx-defi.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-07-04",
       "dateModified": "2026-07-04",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/stellar-vs-multiversx-defi"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/stellar-vs-multiversx-defi"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/stellar-vs-multiversx-defi",
+      "wordCount": 1703
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Stellar vs MultiversX: DeFi & Yield Compared", "item": "https://whalehub.io/blog/stellar-vs-multiversx-defi" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Stellar vs MultiversX: DeFi & Yield Compared",
+          "item": "https://whalehub.io/blog/stellar-vs-multiversx-defi"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "Is Stellar or MultiversX better for DeFi?", "acceptedAnswer": { "@type": "Answer", "text": "Neither is strictly better — they optimize for different things. Stellar offers a native DEX and AMM, ~5-second finality, and sub-cent fees, making frequent compounding cheap. MultiversX uses adaptive state sharding and WASM smart contracts to target high throughput. The right chain depends on the assets and strategies you care about." } },
-        { "@type": "Question", "name": "What is the main DEX on MultiversX?", "acceptedAnswer": { "@type": "Answer", "text": "xExchange is the primary DEX on MultiversX. It is an automated market maker built by the core MultiversX team, with MEX as its native token. Other MultiversX DeFi protocols include AshSwap and yield aggregators such as JewelSwap that layer farming and lending on top." } },
-        { "@type": "Question", "name": "How do fees compare on Stellar vs MultiversX?", "acceptedAnswer": { "@type": "Answer", "text": "Both chains are low-fee by design. Stellar's base transaction fee is 0.00001 XLM, a fraction of a cent, with roughly 5-second finality. MultiversX also targets very low fees and about 6-second finality through its sharded architecture. For high-frequency strategies, both are far cheaper than congested chains." } },
-        { "@type": "Question", "name": "What smart-contract language does each chain use?", "acceptedAnswer": { "@type": "Answer", "text": "Both use Rust compiled to WebAssembly (Wasm). Stellar's smart-contract platform is Soroban, launched in 2023, which runs alongside the classic Stellar transaction layer. MultiversX contracts also run on a WASM virtual machine. So developers on either chain write in Rust and ship Wasm bytecode." } },
-        { "@type": "Question", "name": "Where does yield come from on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "On Stellar, yield mainly comes from providing liquidity to Aquarius AMM pools and from AQUA emissions directed by ICE voting. Optimizers like WhaleHub pool AQUA, aggregate ICE voting power, and auto-compound rewards so users earn a proportional share without managing votes and claims themselves." } }
+        {
+          "@type": "Question",
+          "name": "Is Stellar or MultiversX better for DeFi?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Neither is strictly better — they optimize for different things. Stellar offers a native DEX and AMM, ~5-second finality, and sub-cent fees, making frequent compounding cheap. MultiversX uses adaptive state sharding and WASM smart contracts to target high throughput. The right chain depends on the assets and strategies you care about."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the main DEX on MultiversX?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "xExchange is the primary DEX on MultiversX. It is an automated market maker built by the core MultiversX team, with MEX as its native token. Other MultiversX DeFi protocols include AshSwap and yield aggregators such as JewelSwap that layer farming and lending on top."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do fees compare on Stellar vs MultiversX?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Both chains are low-fee by design. Stellar's base transaction fee is 0.00001 XLM, a fraction of a cent, with roughly 5-second finality. MultiversX also targets very low fees and about 6-second finality through its sharded architecture. For high-frequency strategies, both are far cheaper than congested chains."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What smart-contract language does each chain use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Both use Rust compiled to WebAssembly (Wasm). Stellar's smart-contract platform is Soroban, launched in 2023, which runs alongside the classic Stellar transaction layer. MultiversX contracts also run on a WASM virtual machine. So developers on either chain write in Rust and ship Wasm bytecode."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where does yield come from on Stellar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "On Stellar, yield mainly comes from providing liquidity to Aquarius AMM pools and from AQUA emissions directed by ICE voting. Optimizers like WhaleHub pool AQUA, aggregate ICE voting power, and auto-compound rewards so users earn a proportional share without managing votes and claims themselves."
+          }
+        }
       ]
     }
   ]

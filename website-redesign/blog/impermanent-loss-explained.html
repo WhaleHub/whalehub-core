@@ -42,32 +42,127 @@
       "@id": "https://whalehub.io/blog/impermanent-loss-explained#article",
       "headline": "Impermanent Loss Explained (With Real Numbers)",
       "description": "Impermanent loss is the gap between providing liquidity to an AMM pool and simply holding the two assets. This guide covers the formula, a full worked example, the standard loss table, and how trading fees offset it.",
-      "image": "https://whalehub.io/assets/blog/impermanent-loss-explained.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/impermanent-loss-explained.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-08-02",
-      "dateModified": "2026-08-02",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "dateModified": "2026-08-10",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/impermanent-loss-explained"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/impermanent-loss-explained"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/impermanent-loss-explained",
+      "wordCount": 2772
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Impermanent Loss Explained", "item": "https://whalehub.io/blog/impermanent-loss-explained" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Impermanent Loss Explained",
+          "item": "https://whalehub.io/blog/impermanent-loss-explained"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is impermanent loss?", "acceptedAnswer": { "@type": "Answer", "text": "Impermanent loss is the difference in value between providing two assets to a liquidity pool and simply holding those same two assets in your wallet. It appears when the two assets change price relative to each other, because the pool automatically rebalances by selling the asset that rose and buying the one that fell." } },
-        { "@type": "Question", "name": "Why is it called impermanent?", "acceptedAnswer": { "@type": "Answer", "text": "Because the loss only exists on paper while the price divergence lasts. If the two assets return to their original price ratio, the gap disappears entirely. The moment you withdraw from the pool, however, whatever loss exists at that instant becomes permanent and realised." } },
-        { "@type": "Question", "name": "How do you calculate impermanent loss?", "acceptedAnswer": { "@type": "Answer", "text": "For a standard 50/50 constant-product pool, impermanent loss = 2 × √p ÷ (1 + p) − 1, where p is the ratio of the new price to the original price of one asset against the other. A 2× price move gives roughly 5.7% loss, a 4× move gives 20%, and a 10× move gives about 42.5%." } },
-        { "@type": "Question", "name": "Can trading fees offset impermanent loss?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Liquidity providers earn a share of every swap that passes through the pool, plus any incentive rewards the protocol pays. If those earnings over your holding period exceed the divergence loss at the moment you withdraw, your position outperforms simply holding. High-volume pools and low-volatility pairs are where this happens most reliably." } },
-        { "@type": "Question", "name": "How can you reduce impermanent loss?", "acceptedAnswer": { "@type": "Answer", "text": "Provide liquidity to pairs whose prices track each other closely, such as two dollar stablecoins or a token and its own staked derivative, since prices that move together produce almost no divergence. Prefer pools with high trading volume relative to their size, be aware that concentrated liquidity amplifies both fees and losses, and size positions so that a large adverse move is survivable." } }
+        {
+          "@type": "Question",
+          "name": "What is impermanent loss?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Impermanent loss is the difference in value between providing two assets to a liquidity pool and simply holding those same two assets in your wallet. It appears when the two assets change price relative to each other, because the pool automatically rebalances by selling the asset that rose and buying the one that fell."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is it called impermanent?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because the loss only exists on paper while the price divergence lasts. If the two assets return to their original price ratio, the gap disappears entirely. The moment you withdraw from the pool, however, whatever loss exists at that instant becomes permanent and realised."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you calculate impermanent loss?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For a standard 50/50 constant-product pool, impermanent loss = 2 × √p ÷ (1 + p) − 1, where p is the ratio of the new price to the original price of one asset against the other. A 2× price move gives roughly 5.7% loss, a 4× move gives 20%, and a 10× move gives about 42.5%."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can trading fees offset impermanent loss?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Liquidity providers earn a share of every swap that passes through the pool, plus any incentive rewards the protocol pays. If those earnings over your holding period exceed the divergence loss at the moment you withdraw, your position outperforms simply holding. High-volume pools and low-volatility pairs are where this happens most reliably."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the impermanent loss formula?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For a standard two-asset pool holding equal value in each token, the formula is IL = 2·√r / (1 + r) − 1, where r is the price ratio of the two assets at withdrawal divided by that ratio at deposit. The result is negative, and that figure is how far below simply holding your position ends up, before fees. Worked through: a 2× divergence gives 2·√2/3 − 1 ≈ −5.7%; 4× gives 2·2/5 − 1 = −20%; 5× gives about −25.5%. Note what the formula does not contain — time. Only the price ratio at the two moments matters, so a pair that moves apart and comes back produces no loss at all."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do all liquidity pools have impermanent loss?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Impermanent loss comes from the two assets in a pool diverging in price, so it only exists where divergence is possible. A pool holding two assets that track each other tightly — two dollar stablecoins, or a token and its own staked receipt — sees almost none, because r stays close to 1 and the formula returns nearly zero. A volatile pair against a stablecoin sees the most. Single-asset staking and lending markets have none whatsoever, since there is no second asset to diverge from. This is also why the loss is not really a fee being taken from you: it is the arithmetic consequence of the pool rebalancing you toward whichever asset is falling."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can you reduce impermanent loss?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Provide liquidity to pairs whose prices track each other closely, such as two dollar stablecoins or a token and its own staked derivative, since prices that move together produce almost no divergence. Prefer pools with high trading volume relative to their size, be aware that concentrated liquidity amplifies both fees and losses, and size positions so that a large adverse move is survivable."
+          }
+        }
       ]
     }
   ]
@@ -258,6 +353,8 @@
       <details><summary>Why is it called impermanent?</summary><p>Because the loss only exists on paper while the price divergence lasts. If the two assets return to their original price ratio, the gap disappears entirely. The moment you withdraw from the pool, however, whatever loss exists at that instant becomes permanent and realised.</p></details>
       <details><summary>How do you calculate impermanent loss?</summary><p>For a standard 50/50 constant-product pool, impermanent loss = 2 × √p ÷ (1 + p) − 1, where p is the ratio of the new price to the original price of one asset against the other. A 2× price move gives roughly 5.7% loss, a 4× move gives 20%, and a 10× move gives about 42.5%.</p></details>
       <details><summary>Can trading fees offset impermanent loss?</summary><p>Yes. Liquidity providers earn a share of every swap that passes through the pool, plus any incentive rewards the protocol pays. If those earnings over your holding period exceed the divergence loss at the moment you withdraw, your position outperforms simply holding. High-volume pools and low-volatility pairs are where this happens most reliably.</p></details>
+      <details><summary>What is the impermanent loss formula?</summary><p>For a standard two-asset pool holding equal value in each token, the formula is <strong>IL = 2·√r / (1 + r) − 1</strong>, where <em>r</em> is the price ratio of the two assets at withdrawal divided by that ratio at deposit. The result is negative, and that figure is how far below simply holding your position ends up, before fees. Worked through: a 2× divergence gives 2·√2/3 − 1 ≈ −5.7%; 4× gives 2·2/5 − 1 = −20%; 5× gives about −25.5%. Note what the formula does not contain — time. Only the price ratio at the two moments matters, so a pair that moves apart and comes back produces no loss at all.</p></details>
+      <details><summary>Do all liquidity pools have impermanent loss?</summary><p>No. Impermanent loss comes from the two assets in a pool diverging in price, so it only exists where divergence is possible. A pool holding two assets that track each other tightly — two dollar stablecoins, or a token and its own staked receipt — sees almost none, because <em>r</em> stays close to 1 and the formula returns nearly zero. A volatile pair against a stablecoin sees the most. Single-asset staking and lending markets have none whatsoever, since there is no second asset to diverge from. This is also why the loss is not really a fee being taken from you: it is the arithmetic consequence of the pool rebalancing you toward whichever asset is falling.</p></details>
       <details><summary>How can you reduce impermanent loss?</summary><p>Provide liquidity to pairs whose prices track each other closely, such as two dollar stablecoins or a token and its own staked derivative, since prices that move together produce almost no divergence. Prefer pools with high trading volume relative to their size, be aware that concentrated liquidity amplifies both fees and losses, and size positions so that a large adverse move is survivable.</p></details>
     </section>
 

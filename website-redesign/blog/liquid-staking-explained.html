@@ -42,32 +42,111 @@
       "@id": "https://whalehub.io/blog/liquid-staking-explained#article",
       "headline": "What Is Liquid Staking? Tokens, Risks & How It Works",
       "description": "Liquid staking lets you stake an asset and still hold a tradable receipt token that represents the position. A plain-English guide to how liquid staking tokens work, what they unlock, the real risks, and how the idea maps onto Stellar.",
-      "image": "https://whalehub.io/assets/blog/liquid-staking-explained.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/liquid-staking-explained.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-08-02",
       "dateModified": "2026-08-02",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/liquid-staking-explained"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/liquid-staking-explained"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/liquid-staking-explained",
+      "wordCount": 2530
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "What Is Liquid Staking?", "item": "https://whalehub.io/blog/liquid-staking-explained" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "What Is Liquid Staking?",
+          "item": "https://whalehub.io/blog/liquid-staking-explained"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is liquid staking?", "acceptedAnswer": { "@type": "Answer", "text": "Liquid staking is a way to stake an asset while still holding something tradable that represents the position. Instead of your capital being locked and inert, a protocol stakes on your behalf and issues you a receipt token you can hold, transfer, or use elsewhere in DeFi while the underlying stake keeps earning." } },
-        { "@type": "Question", "name": "What is a liquid staking token?", "acceptedAnswer": { "@type": "Answer", "text": "A liquid staking token, or LST, is the receipt a liquid staking protocol issues when you deposit. It is a normal transferable token whose value derives from the staked position behind it. Some LSTs accrue value by slowly rising against the underlying asset, while others rebase so that your token balance grows over time." } },
-        { "@type": "Question", "name": "What are the risks of liquid staking?", "acceptedAnswer": { "@type": "Answer", "text": "The main risks are smart-contract failure in the staking protocol, market risk on the receipt token, which can trade below the value of the assets behind it during stress, exit-queue and liquidity risk when many people want out at once, penalties or slashing on the underlying stake where the network imposes them, and concentration risk when one protocol controls a large share of a network's stake." } },
-        { "@type": "Question", "name": "Is liquid staking better than regular staking?", "acceptedAnswer": { "@type": "Answer", "text": "It is a different trade, not a strictly better one. Liquid staking gives you flexibility and composability that locked staking cannot, but it adds a layer of smart-contract risk and introduces a receipt token whose market price can move independently of the assets behind it. Locked staking is simpler and has fewer moving parts." } },
-        { "@type": "Question", "name": "Can you stake XLM on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "Not in the proof-of-stake sense. Stellar reaches consensus through the Stellar Consensus Protocol rather than by staking, so there is no native protocol reward for locking up XLM. Yield on Stellar comes from application-layer activity instead — providing liquidity on AMMs, lending, and staking ecosystem tokens such as AQUA for Aquarius rewards." } }
+        {
+          "@type": "Question",
+          "name": "What is liquid staking?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Liquid staking is a way to stake an asset while still holding something tradable that represents the position. Instead of your capital being locked and inert, a protocol stakes on your behalf and issues you a receipt token you can hold, transfer, or use elsewhere in DeFi while the underlying stake keeps earning."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a liquid staking token?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A liquid staking token, or LST, is the receipt a liquid staking protocol issues when you deposit. It is a normal transferable token whose value derives from the staked position behind it. Some LSTs accrue value by slowly rising against the underlying asset, while others rebase so that your token balance grows over time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the risks of liquid staking?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The main risks are smart-contract failure in the staking protocol, market risk on the receipt token, which can trade below the value of the assets behind it during stress, exit-queue and liquidity risk when many people want out at once, penalties or slashing on the underlying stake where the network imposes them, and concentration risk when one protocol controls a large share of a network's stake."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is liquid staking better than regular staking?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It is a different trade, not a strictly better one. Liquid staking gives you flexibility and composability that locked staking cannot, but it adds a layer of smart-contract risk and introduces a receipt token whose market price can move independently of the assets behind it. Locked staking is simpler and has fewer moving parts."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you stake XLM on Stellar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not in the proof-of-stake sense. Stellar reaches consensus through the Stellar Consensus Protocol rather than by staking, so there is no native protocol reward for locking up XLM. Yield on Stellar comes from application-layer activity instead — providing liquidity on AMMs, lending, and staking ecosystem tokens such as AQUA for Aquarius rewards."
+          }
+        }
       ]
     }
   ]

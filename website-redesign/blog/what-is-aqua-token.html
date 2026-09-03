@@ -42,32 +42,111 @@
       "@id": "https://whalehub.io/blog/what-is-aqua-token#article",
       "headline": "What Is the AQUA Token? Aquarius on Stellar",
       "description": "AQUA is the token behind Aquarius, Stellar's main liquidity-incentive protocol. What AQUA does, the AQUA-to-ICE lock, how ICE votes direct emissions, AQUA vs XLM, and how holders earn.",
-      "image": "https://whalehub.io/assets/blog/what-is-aqua-token.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/what-is-aqua-token.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-07-04",
       "dateModified": "2026-07-04",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/what-is-aqua-token"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/what-is-aqua-token"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/what-is-aqua-token",
+      "wordCount": 1711
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "What Is the AQUA Token?", "item": "https://whalehub.io/blog/what-is-aqua-token" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "What Is the AQUA Token?",
+          "item": "https://whalehub.io/blog/what-is-aqua-token"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is the AQUA token used for?", "acceptedAnswer": { "@type": "Answer", "text": "AQUA is the token of Aquarius, Stellar's main liquidity-incentive protocol. You lock AQUA to receive ICE, a non-transferable voting power, and use ICE to direct AQUA emissions toward specific AMM pools. Liquidity providers in well-voted pools earn AQUA rewards on top of trading fees." } },
-        { "@type": "Question", "name": "What is the difference between AQUA and XLM?", "acceptedAnswer": { "@type": "Answer", "text": "XLM is Stellar's native asset used to pay network fees and meet account reserves. AQUA is an application token issued by the Aquarius protocol that governs where liquidity incentives flow. XLM secures and powers the network; AQUA coordinates rewards for liquidity providers." } },
-        { "@type": "Question", "name": "What is ICE and how do you get it?", "acceptedAnswer": { "@type": "Answer", "text": "ICE is the non-transferable voting power you receive when you lock AQUA in Aquarius. Longer locks grant more ICE. You spend ICE by voting on which AMM pools should receive AQUA emissions; the most-voted pools earn the most rewards each epoch." } },
-        { "@type": "Question", "name": "Can you sell ICE?", "acceptedAnswer": { "@type": "Answer", "text": "No. ICE is non-transferable and cannot be sold or moved between accounts. It only represents voting weight while your AQUA stays locked. This is why aggregation matters: a protocol like WhaleHub pools stakers' locks so small holders share whale-tier voting power." } },
-        { "@type": "Question", "name": "How does WhaleHub help small AQUA holders?", "acceptedAnswer": { "@type": "Answer", "text": "WhaleHub pools AQUA from many stakers into one large lock, aggregates the resulting ICE, and votes it toward the highest-yielding Aquarius pool. Small holders gain whale-tier voting weight, and the backend claims and compounds rewards roughly every 30 minutes." } }
+        {
+          "@type": "Question",
+          "name": "What is the AQUA token used for?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AQUA is the token of Aquarius, Stellar's main liquidity-incentive protocol. You lock AQUA to receive ICE, a non-transferable voting power, and use ICE to direct AQUA emissions toward specific AMM pools. Liquidity providers in well-voted pools earn AQUA rewards on top of trading fees."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between AQUA and XLM?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "XLM is Stellar's native asset used to pay network fees and meet account reserves. AQUA is an application token issued by the Aquarius protocol that governs where liquidity incentives flow. XLM secures and powers the network; AQUA coordinates rewards for liquidity providers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is ICE and how do you get it?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ICE is the non-transferable voting power you receive when you lock AQUA in Aquarius. Longer locks grant more ICE. You spend ICE by voting on which AMM pools should receive AQUA emissions; the most-voted pools earn the most rewards each epoch."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you sell ICE?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. ICE is non-transferable and cannot be sold or moved between accounts. It only represents voting weight while your AQUA stays locked. This is why aggregation matters: a protocol like WhaleHub pools stakers' locks so small holders share whale-tier voting power."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does WhaleHub help small AQUA holders?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "WhaleHub pools AQUA from many stakers into one large lock, aggregates the resulting ICE, and votes it toward the highest-yielding Aquarius pool. Small holders gain whale-tier voting weight, and the backend claims and compounds rewards roughly every 30 minutes."
+          }
+        }
       ]
     }
   ]

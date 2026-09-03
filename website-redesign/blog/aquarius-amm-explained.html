@@ -42,33 +42,119 @@
       "@id": "https://whalehub.io/blog/aquarius-amm-explained#article",
       "headline": "Aquarius AMM Explained: Stellar's Liquidity Layer",
       "description": "How Aquarius adds a liquidity-incentive layer on top of Stellar's native constant-product AMM pools — x*y=k pricing, AQUA emissions, ICE voting, and how LPs earn fees plus rewards.",
-      "image": "https://whalehub.io/assets/blog/aquarius-amm-explained.png",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/aquarius-amm-explained.png",
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": "2026-07-04",
       "dateModified": "2026-07-04",
-      "author": { "@type": "Organization", "name": "WhaleHub Research", "url": "https://whalehub.io/" },
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev",
+          "https://t.me/whalehubdefi"
+        ]
+      },
       "publisher": {
         "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
         "name": "WhaleHub",
-        "logo": { "@type": "ImageObject", "url": "https://whalehub.io/assets/logo-full.webp" }
+        "url": "https://whalehub.io/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://whalehub.io/assets/logo-full.webp",
+          "width": 512,
+          "height": 128
+        }
       },
-      "mainEntityOfPage": "https://whalehub.io/blog/aquarius-amm-explained"
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/aquarius-amm-explained"
+      },
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "Blog",
+        "@id": "https://whalehub.io/blog/#blog",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/blog/"
+      },
+      "url": "https://whalehub.io/blog/aquarius-amm-explained",
+      "wordCount": 2165
     },
     {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Blog", "item": "https://whalehub.io/blog/" },
-        { "@type": "ListItem", "position": 2, "name": "Aquarius AMM Explained", "item": "https://whalehub.io/blog/aquarius-amm-explained" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Aquarius AMM Explained",
+          "item": "https://whalehub.io/blog/aquarius-amm-explained"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "What is the Aquarius AMM on Stellar?", "acceptedAnswer": { "@type": "Answer", "text": "Aquarius is Stellar's liquidity-incentive protocol. It runs on top of Stellar's native constant-product AMM pools and adds AQUA emissions on top of trading fees. Holders lock AQUA for ICE voting power and vote to direct those emissions toward specific pools, so the most-voted markets earn the most rewards." } },
-        { "@type": "Question", "name": "How does a constant-product AMM work?", "acceptedAnswer": { "@type": "Answer", "text": "A constant-product AMM prices trades with the formula x*y=k, where x and y are the two pool reserves and k stays constant. Buying one asset removes it from the pool and adds the other, moving the price along a curve. The bigger a trade is relative to the pool, the more the price slips." } },
-        { "@type": "Question", "name": "How do liquidity providers earn on Aquarius?", "acceptedAnswer": { "@type": "Answer", "text": "Liquidity providers earn two ways: a share of the swap fees every trade pays into the pool, and AQUA emissions directed to that pool by ICE voters. Your share is proportional to how much of the pool you supply. The trade-off is impermanent loss if the two assets diverge in price." } },
-        { "@type": "Question", "name": "What is the difference between Aquarius and the Stellar SDEX?", "acceptedAnswer": { "@type": "Answer", "text": "The SDEX is Stellar's built-in order book, where traders post limit orders that others fill. Aquarius pools use a constant-product curve, so liquidity is always available at an algorithmic price and providers earn passively. Aquarius also adds AQUA reward emissions, which the bare order book does not." } },
-        { "@type": "Question", "name": "What is impermanent loss in an Aquarius pool?", "acceptedAnswer": { "@type": "Answer", "text": "Impermanent loss is the gap between holding two tokens in a pool versus holding them in your wallet. When the pool's assets diverge in price, arbitrage rebalances the reserves and you end up with more of the weaker asset. Fees and AQUA emissions can offset it, but not always." } },
-        { "@type": "Question", "name": "How does WhaleHub work with Aquarius?", "acceptedAnswer": { "@type": "Answer", "text": "WhaleHub aggregates ICE voting power from all its stakers and votes it toward high-yielding Aquarius markets each epoch. It claims the AQUA rewards and bribes those votes earn, then auto-compounds them for depositors, so users capture Aquarius incentives without managing votes or claims themselves." } }
+        {
+          "@type": "Question",
+          "name": "What is the Aquarius AMM on Stellar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aquarius is Stellar's liquidity-incentive protocol. It runs on top of Stellar's native constant-product AMM pools and adds AQUA emissions on top of trading fees. Holders lock AQUA for ICE voting power and vote to direct those emissions toward specific pools, so the most-voted markets earn the most rewards."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does a constant-product AMM work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A constant-product AMM prices trades with the formula x*y=k, where x and y are the two pool reserves and k stays constant. Buying one asset removes it from the pool and adds the other, moving the price along a curve. The bigger a trade is relative to the pool, the more the price slips."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do liquidity providers earn on Aquarius?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Liquidity providers earn two ways: a share of the swap fees every trade pays into the pool, and AQUA emissions directed to that pool by ICE voters. Your share is proportional to how much of the pool you supply. The trade-off is impermanent loss if the two assets diverge in price."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between Aquarius and the Stellar SDEX?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The SDEX is Stellar's built-in order book, where traders post limit orders that others fill. Aquarius pools use a constant-product curve, so liquidity is always available at an algorithmic price and providers earn passively. Aquarius also adds AQUA reward emissions, which the bare order book does not."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is impermanent loss in an Aquarius pool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Impermanent loss is the gap between holding two tokens in a pool versus holding them in your wallet. When the pool's assets diverge in price, arbitrage rebalances the reserves and you end up with more of the weaker asset. Fees and AQUA emissions can offset it, but not always."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does WhaleHub work with Aquarius?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "WhaleHub aggregates ICE voting power from all its stakers and votes it toward high-yielding Aquarius markets each epoch. It claims the AQUA rewards and bribes those votes earn, then auto-compounds them for depositors, so users capture Aquarius incentives without managing votes or claims themselves."
+          }
+        }
       ]
     }
   ]
