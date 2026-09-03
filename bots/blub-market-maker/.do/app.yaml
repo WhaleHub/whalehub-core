@@ -1,0 +1,95 @@
+# DigitalOcean App Platform spec — BLUB/AQUA market maker.
+#
+# A SEPARATE app from whalehub-server. Do not fold this into that app: it runs
+# two instances with separate filesystems, which would give you two bots quoting
+# the same order book with the same key — duplicate offers, sequence-number
+# collisions, and double the exposure you configured.
+#
+# Create:  doctl apps create --spec bots/blub-market-maker/.do/app.yaml
+# Update:  doctl apps update <app-id> --spec bots/blub-market-maker/.do/app.yaml
+
+name: whalehub-mm-bot
+region: fra
+
+workers:
+  - name: blub-market-maker
+
+    # ⚠️ MUST STAY 1. The bot's file lock is per-filesystem and cannot
+    # coordinate across instances. Two instances = two sets of offers.
+    instance_count: 1
+    instance_size_slug: basic-xxs
+
+    github:
+      repo: WhaleHub/whalehub-core
+      branch: feature/blub-market-maker-bot
+      # Deliberately manual. A trading bot should not restart because someone
+      # pushed a README change.
+      deploy_on_push: false
+
+    source_dir: bots/blub-market-maker
+    dockerfile_path: bots/blub-market-maker/Dockerfile
+
+    envs:
+      # ---- the switch -------------------------------------------------------
+      # "true" = compute and log intended offers, submit nothing.
+      # Only an explicit false/0/no/off goes live.
+      - key: DRY_RUN
+        scope: RUN_TIME
+        value: "true"
+
+      # Set this in the DO dashboard as an encrypted secret, never here.
+      # Required only when DRY_RUN is false; the config schema rejects a live
+      # run without a valid S... secret.
+      - key: BOT_SECRET
+        scope: RUN_TIME
+        type: SECRET
+        value: ""
+
+      # ---- network ----------------------------------------------------------
+      - key: HORIZON_URL
+        scope: RUN_TIME
+        value: "https://horizon.stellar.org"
+      - key: SOROBAN_RPC_URL
+        scope: RUN_TIME
+        value: "https://mainnet.sorobanrpc.com"
+      - key: STELLAR_NETWORK
+        scope: RUN_TIME
+        value: "public"
+
+      # ---- start small: one level, wide spread ------------------------------
+      - key: LADDER_LEVELS
+        scope: RUN_TIME
+        value: "1"
+      - key: HALF_SPREAD_BPS
+        scope: RUN_TIME
+        value: "150"
+      - key: ORDER_SIZE_BLUB
+        scope: RUN_TIME
+        value: "10000"
+
+      # ---- risk bounds ------------------------------------------------------
+      - key: MAX_EXPOSURE_BLUB
+        scope: RUN_TIME
+        value: "25000"
+      - key: MAX_EXPOSURE_AQUA
+        scope: RUN_TIME
+        value: "25000"
+      - key: PRICE_FLOOR
+        scope: RUN_TIME
+        value: "0.30"
+      - key: PRICE_CEILING
+        scope: RUN_TIME
+        value: "1.00"
+      - key: PEG_CEILING
+        scope: RUN_TIME
+        value: "1.00"
+      - key: MIN_RESERVE_BUFFER_XLM
+        scope: RUN_TIME
+        value: "5"
+
+      - key: LOOP_INTERVAL_MS
+        scope: RUN_TIME
+        value: "20000"
+      - key: LOG_LEVEL
+        scope: RUN_TIME
+        value: "info"
