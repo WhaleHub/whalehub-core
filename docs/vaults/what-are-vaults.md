@@ -9,9 +9,9 @@ Vaults are auto-compounding liquidity positions on Aquarius AMM pools. You depos
 | What you deposit | AQUA (or restake BLUB) | Token pairs (e.g. XLM + AQUA) |
 | What you earn | BLUB rewards | Growing LP position |
 | How you earn | Share of protocol reward pool | AMM trading fees + AQUA farming rewards |
-| Compounding | Manual (claim + restake) | Automatic (48x per day) |
+| Compounding | Manual (claim + restake) | Automatic (4-6x per day) |
 | Lock period | Fixed (your choice) | None — withdraw anytime |
-| Fee | None | 30% of rewards to treasury |
+| Fee | None | None on bribe income; 15% on claimed pool emissions |
 
 ## Available Pools
 
@@ -22,16 +22,28 @@ Vaults are auto-compounding liquidity positions on Aquarius AMM pools. You depos
 
 ## How Auto-Compounding Works
 
+BLUB-AQUA is funded by the bribe harvest (the pool itself emits nothing since Aquarius de-whitelisted it):
+
 ```
-Every 30 minutes:
+Every 6 hours:
+└── 30% of the bribe harvest (Stream B), as AQUA only
+    ├── 70% → single-sided-AQUA reward class
+    └── 30% → balanced reward class
+        └── Deposited as liquidity; your LP share grows automatically
+```
+
+The other pools compound their own emissions:
+
+```
+Every 4 hours:
 ├── Backend claims AQUA farming rewards from pool
-├── 30% → treasury
-└── 70% → split into both pool tokens
+├── vault_fee_bps (15%) → treasury
+└── Remainder → split into both pool tokens
     └── Re-deposited into the pool as new liquidity
         └── Your LP share grows automatically
 ```
 
-Over a year, 48 daily compounds produce significantly higher effective APY than the base pool rate. For example, a pool with 50% base APY compounds to approximately 64% effective APY.
+Compounding returns are effectively flat above about 4 cycles a day: a pool with 50% base APY compounds to roughly 64% effective APY at any cadence from 6x daily upward.
 
 ## ICE Boost for Vaults
 

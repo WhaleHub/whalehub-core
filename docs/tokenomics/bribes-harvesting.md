@@ -13,17 +13,21 @@ Whalehub holds a large ICE position, so it earns bribes simply by voting — and
 ```mermaid
 flowchart LR
     A[Whalehub ICE<br/>voting power] -->|vote highest-yield market| B[Aquarius bribes<br/>~50-60K AQUA/day]
-    B -->|30%| C[Treasury]
-    B -->|70%| D[Swap AQUA → BLUB<br/>on Aquarius router]
+    B -->|50% Stream A| D[Swap AQUA → BLUB<br/>on Aquarius router]
     D --> E[add_rewards to<br/>staking contract]
     E --> F[Stakers earn BLUB<br/>Synthetix pro-rata]
+    B -->|30% Stream B| G[Single-sided AQUA<br/>into the vault]
+    G --> H[70% single-AQUA class<br/>30% balanced class]
+    B -->|20% Stream C| I[Single-sided AQUA<br/>into POL]
 ```
 
 1. **Vote** — Whalehub casts its ICE (upvoteICE) on the market chosen by the optimizer (below).
 2. **Collect** — bribes arrive in the manager wallet as plain AQUA payments, roughly daily.
-3. **Split** — 30% of the AQUA is sent to the protocol treasury.
-4. **Convert** — the remaining 70% is swapped AQUA → BLUB on the Aquarius router (chunked to limit price impact). BLUB is **bought on the open market, never minted** — so rewards are non-dilutive.
-5. **Distribute** — that BLUB is added to the staking contract and accrues to every staker pro-rata via the [Synthetix reward model](reward-distribution.md#the-math).
+3. **Split** — the batch is divided 50 / 30 / 20 across stakers, vault LPs and POL. **No treasury cut is taken** (removed July 2026); the harvest is recycled in full.
+4. **Convert (Stream A only)** — the staker tranche is swapped AQUA → BLUB on the Aquarius router (chunked to limit price impact). BLUB is **bought on the open market, never minted** — so rewards are non-dilutive. Streams B and C are deposited as AQUA and are never swapped.
+5. **Distribute** — that BLUB is added to the staking contract and accrues to every staker pro-rata via the [Synthetix reward model](reward-distribution.md#stream-a--stakers-50).
+
+See [Reward Distribution](reward-distribution.md) for what each stream does with its tranche.
 
 ## Yield optimization — voting for the best yield
 
@@ -60,4 +64,4 @@ The optimizer accounts for **dilution** — moving votes onto a market lowers ev
 ## Notes & cadence
 
 - Bribes are distributed by Aquarius over weekly epochs and arrive ~daily. Voting has a minimum lock period, so Whalehub does not chase one-off spikes — it targets durable, repeating bribes.
-- Backend service: `BribeRewardService` (collection, 30/70 split, swap, `add_rewards`). Vote targeting is driven by the optimizer's output.
+- Backend service: `BribeRewardService` (collection, 50/30/20 split, swap, `add_rewards`, vault and POL deposits). Vote targeting is driven by the optimizer's output.

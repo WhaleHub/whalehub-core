@@ -77,9 +77,9 @@ Backend Server (NestJS on Digital Ocean)
 | BLUB per AQUA locked | 1.0 (+ 0.1 to liquidity pool) |
 | AQUA to liquidity pool | 10% of each lock |
 | AQUA to ICE governance | 90% of each lock |
-| Treasury fee | 30% of pool earnings |
-| Staker share | 70% of pool earnings |
-| Auto-compound frequency | 48x per day (every 30 min) |
+| Treasury cut on bribe income | None — 100% recycled (removed July 2026) |
+| Harvest split | 50% stakers / 30% vault LPs / 20% POL |
+| Auto-compound frequency | 4x/day BLUB-AQUA (bribe Stream B), 6x/day other pools |
 | Min lock duration | 7 days |
 | Withdrawal cooldown | 10 days after lock expires |
 | Reward claim cooldown | 7 days |

@@ -21,8 +21,8 @@ Whalehub is a DeFi protocol built on the **Stellar Network** that lets you earn 
 | Minimum lock | 7 days |
 | Withdrawal cooldown | 10 days after lock expires |
 | Reward claim cooldown | 7 days |
-| Vault fee | 30% to treasury, 70% compounded back |
-| Auto-compound frequency | 48 times per day |
+| Vault fee | `vault_fee_bps` (15%) on claimed pool emissions; none on bribe income |
+| Auto-compound frequency | 4x/day (BLUB-AQUA), 6x/day (other pools) |
 
 ## How It Fits Together
 
