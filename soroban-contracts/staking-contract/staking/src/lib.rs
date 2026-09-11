@@ -744,8 +744,14 @@ impl StakingRegistry {
         config: &Config,
         aqua_amount: i128,
         blub_amount: i128,
+        min_lp_out: u128,
     ) -> Result<(), Error> {
-        if aqua_amount <= 0 || blub_amount <= 0 {
+        // Single-sided deposits are allowed: exactly one leg may be zero.
+        // Both zero is a no-op; a negative leg is rejected outright.
+        if aqua_amount < 0 || blub_amount < 0 {
+            return Err(Error::InvalidInput);
+        }
+        if aqua_amount == 0 && blub_amount == 0 {
             return Ok(()); // Nothing to deposit
         }
         
@@ -844,30 +850,40 @@ impl StakingRegistry {
         amounts.push_back(amount_0 as u128);
         amounts.push_back(amount_1 as u128);
         
-        let min_shares: u128 = 0;
+        // Slippage bound. A SINGLE-SIDED deposit into a stable pool that is far
+        // off ratio pays a large imbalance fee and is trivially sandwichable, so
+        // the caller must price the deposit and pass a floor. 0 disables the
+        // check and is only safe for a balanced deposit.
+        let min_shares: u128 = min_lp_out;
         
         // Build authorization: The pool will call transfer on each token on our behalf
         let mut auth_entries = SorobanVec::new(env);
         
-        // Authorize token 0 transfer (will be called by the pool contract)
-        auth_entries.push_back(InvokerContractAuthEntry::Contract(SubContractInvocation {
-            context: ContractContext {
-                contract: token_0.clone(),
-                fn_name: soroban_sdk::symbol_short!("transfer"),
-                args: (contract_address.clone(), config.liquidity_contract.clone(), amount_0).into_val(env),
-            },
-            sub_invocations: SorobanVec::new(env),
-        }));
-        
+        // Authorize token 0 transfer (will be called by the pool contract).
+        // A zero leg is never transferred by the pool, so it is not authorized —
+        // mirrors `vault_deposit_single`, which authorizes only the funded token.
+        if amount_0 > 0 {
+            auth_entries.push_back(InvokerContractAuthEntry::Contract(SubContractInvocation {
+                context: ContractContext {
+                    contract: token_0.clone(),
+                    fn_name: soroban_sdk::symbol_short!("transfer"),
+                    args: (contract_address.clone(), config.liquidity_contract.clone(), amount_0).into_val(env),
+                },
+                sub_invocations: SorobanVec::new(env),
+            }));
+        }
+
         // Authorize token 1 transfer (will be called by the pool contract)
-        auth_entries.push_back(InvokerContractAuthEntry::Contract(SubContractInvocation {
-            context: ContractContext {
-                contract: token_1.clone(),
-                fn_name: soroban_sdk::symbol_short!("transfer"),
-                args: (contract_address.clone(), config.liquidity_contract.clone(), amount_1).into_val(env),
-            },
-            sub_invocations: SorobanVec::new(env),
-        }));
+        if amount_1 > 0 {
+            auth_entries.push_back(InvokerContractAuthEntry::Contract(SubContractInvocation {
+                context: ContractContext {
+                    contract: token_1.clone(),
+                    fn_name: soroban_sdk::symbol_short!("transfer"),
+                    args: (contract_address.clone(), config.liquidity_contract.clone(), amount_1).into_val(env),
+                },
+                sub_invocations: SorobanVec::new(env),
+            }));
+        }
         
         env.authorize_as_current_contract(auth_entries);
         
@@ -2587,7 +2603,7 @@ impl StakingRegistry {
             use soroban_sdk::token as pol_token;
             let contract_lp =
                 pol_token::Client::new(&env, &share_token).balance(&contract_address);
-            let vault_lp = Self::get_pool_info(env.clone(), 0u32)?.total_lp_tokens;
+            let vault_lp = Self::vault_lp_credit(&env, &share_token);
             if share_amount > contract_lp.saturating_sub(vault_lp) {
                 return Err(Error::InsufficientBalance);
             }
@@ -2648,6 +2664,151 @@ impl StakingRegistry {
             }
             Ok(Err(_)) => Err(Error::InvalidInput),
             Err(_) => Err(Error::InvalidInput)
+        }
+    }
+
+    // Total LP credited to vault depositors across EVERY pool bucket that shares
+    // `share_token`.
+    //
+    // Vault buckets are allowed to point at the same Aquarius pool (that is how
+    // the single-sided-AQUA reward class is separated from the balanced class:
+    // two `PoolInfo` entries, one physical LP balance). The POL-surplus guard
+    // must therefore compare the contract's LP balance against the SUM of those
+    // buckets' credit, not just pool 0's — otherwise the admin could withdraw
+    // LP that backs a second bucket and `vault_withdraw` would be unable to
+    // settle. This is the vault-solvency invariant.
+    fn vault_lp_credit(env: &Env, share_token: &Address) -> i128 {
+        let pool_count = env
+            .storage()
+            .instance()
+            .get::<DataKey, GlobalState>(&DataKey::GlobalState)
+            .map(|g| g.pool_count)
+            .unwrap_or(0);
+
+        let mut credit: i128 = 0;
+        for pool_id in 0..pool_count {
+            if let Some(info) = env
+                .storage()
+                .persistent()
+                .get::<DataKey, PoolInfo>(&DataKey::PoolInfo(pool_id))
+            {
+                if &info.share_token == share_token {
+                    credit = credit.saturating_add(info.total_lp_tokens);
+                }
+            }
+        }
+        credit
+    }
+
+    // Admin: withdraw protocol-owned pool-0 LP as a SINGLE token.
+    //
+    // `withdraw_from_pool` burns LP for both legs pro-rata, which leaves the pool
+    // ratio (and therefore the BLUB price) exactly where it was. Pulling one leg
+    // only is what actually moves the ratio, so this wraps Aquarius
+    // `withdraw_one_coin(user, share_amount, i, min_amount)`.
+    //
+    // `coin_index` is the pool's own token ordering from `get_tokens()`
+    // (pool 0: 0 = AQUA, 1 = BLUB), NOT PoolInfo's (token_a, token_b) order.
+    //
+    // The withdrawn token stays in this contract. Subject to the same
+    // POL-surplus guard as `withdraw_from_pool`: only LP held ABOVE vault credit
+    // (`pool_info[0].total_lp_tokens`) may be withdrawn, so vault redemptions
+    // can always settle.
+    //
+    // `min_amount` is mandatory slippage protection — a single-sided withdrawal
+    // pays a StableSwap imbalance fee that grows with size, so simulate first.
+    pub fn withdraw_pol_one_coin(
+        env: Env,
+        admin: Address,
+        share_amount: i128,
+        coin_index: u32,
+        min_amount: i128,
+    ) -> Result<i128, Error> {
+        let config = Self::get_config(env.clone())?;
+        admin.require_auth();
+        let stored_admin = env.storage()
+            .instance()
+            .get::<DataKey, Address>(&DataKey::AdminAddress)
+            .ok_or(Error::Unauthorized)?;
+        if stored_admin != admin {
+            return Err(Error::Unauthorized);
+        }
+
+        if share_amount <= 0 || min_amount < 0 || coin_index > 1 {
+            return Err(Error::InvalidInput);
+        }
+
+        let contract_address = env.current_contract_address();
+        let share_token = Self::get_pool_share_token(env.clone())?;
+
+        // POL-surplus guard — identical to `withdraw_from_pool`.
+        {
+            use soroban_sdk::token as pol_token;
+            let contract_lp =
+                pol_token::Client::new(&env, &share_token).balance(&contract_address);
+            let vault_lp = Self::vault_lp_credit(&env, &share_token);
+            if share_amount > contract_lp.saturating_sub(vault_lp) {
+                return Err(Error::InsufficientBalance);
+            }
+        }
+
+        use soroban_sdk::IntoVal;
+        use soroban_sdk::auth::{ContractContext, InvokerContractAuthEntry, SubContractInvocation};
+
+        // Aquarius burns our LP shares inside withdraw_one_coin.
+        let auth_entries = soroban_sdk::vec![
+            &env,
+            InvokerContractAuthEntry::Contract(SubContractInvocation {
+                context: ContractContext {
+                    contract: share_token,
+                    fn_name: soroban_sdk::Symbol::new(&env, "burn"),
+                    args: (contract_address.clone(), share_amount).into_val(&env),
+                },
+                sub_invocations: soroban_sdk::vec![&env],
+            }),
+        ];
+        env.authorize_as_current_contract(auth_entries);
+
+        // Aquarius `withdraw_one_coin` returns a Vec<u128> of per-token amounts
+        // (verified against the pool's on-chain interface), NOT a scalar — the
+        // same shape `withdraw` returns. Decoding it as u128 makes the call fail
+        // on conversion every time, so keep these two types in sync.
+        let result = env.try_invoke_contract::<soroban_sdk::Vec<u128>, soroban_sdk::Error>(
+            &config.liquidity_contract,
+            &soroban_sdk::Symbol::new(&env, "withdraw_one_coin"),
+            (
+                contract_address.clone(),
+                share_amount as u128,
+                coin_index,
+                min_amount as u128,
+            ).into_val(&env),
+        );
+
+        match result {
+            Ok(Ok(amounts)) => {
+                // Exactly one leg is funded, so the sum is the withdrawn amount
+                // whether the pool returns one slot per token or a single entry.
+                let mut withdrawn: i128 = 0;
+                for amount in amounts.iter() {
+                    withdrawn = withdrawn.saturating_add(amount as i128);
+                }
+                if withdrawn <= 0 {
+                    return Err(Error::InvalidInput);
+                }
+
+                let mut pol = Self::get_pol(&env);
+                pol.aqua_blub_lp_position =
+                    pol.aqua_blub_lp_position.saturating_sub(share_amount);
+                env.storage().instance().set(&DataKey::ProtocolOwnedLiquidity, &pol);
+
+                env.events().publish(
+                    (symbol_short!("pol_wd1"),),
+                    (share_amount, coin_index, withdrawn),
+                );
+
+                Ok(withdrawn)
+            }
+            _ => Err(Error::InvalidInput),
         }
     }
 
@@ -2817,11 +2978,14 @@ impl StakingRegistry {
         manager: Address,
         aqua_amount: i128,
         blub_amount: i128,
+        min_lp_out: u128,
     ) -> Result<(), Error> {
         let cfg = Self::get_config(env.clone())?;
         Self::require_manager_auth(&env, &manager)?;
 
-        if aqua_amount <= 0 || blub_amount <= 0 {
+        // Single-sided POL deposits are allowed (one leg may be zero), but a
+        // deposit of nothing is a caller error rather than a silent success.
+        if aqua_amount < 0 || blub_amount < 0 || (aqua_amount == 0 && blub_amount == 0) {
             return Err(Error::InvalidInput);
         }
 
@@ -2843,7 +3007,7 @@ impl StakingRegistry {
         }
 
         // Deposit to LP
-        Self::deposit_pol_to_lp(&env, &cfg, aqua_amount, blub_amount)?;
+        Self::deposit_pol_to_lp(&env, &cfg, aqua_amount, blub_amount, min_lp_out)?;
 
         env.events().publish(
             (symbol_short!("man_pol"),),
@@ -5487,6 +5651,7 @@ impl StakingRegistry {
         pool_id: u32,
         amount_a: i128,
         amount_b: i128,
+        min_lp_out: u128,
     ) -> Result<i128, Error> {
         Self::require_manager_auth(&env, &manager)?;
 
@@ -5500,19 +5665,43 @@ impl StakingRegistry {
             return Err(Error::PoolNotActive);
         }
 
-        if amount_a <= 0 || amount_b <= 0 {
+        // Single-sided compounds are allowed: exactly one leg may be zero, so a
+        // reward tranche can be added as pure AQUA without a half-swap to BLUB.
+        if amount_a < 0 || amount_b < 0 || (amount_a == 0 && amount_b == 0) {
+            return Err(Error::InvalidInput);
+        }
+
+        // Refuse to compound into a bucket with no depositors.
+        //
+        // This call raises `total_lp_tokens` WITHOUT minting shares, while
+        // `vault_withdraw` pays `user_shares * total_lp_tokens / total_shares`.
+        // With `total_shares == 0` the credited LP has no owner, and the first
+        // depositor mints via the `total_shares == 0` branch — becoming sole
+        // shareholder and redeeming the whole accumulated tranche for the price
+        // of a dust deposit. Seed a bucket with a real deposit before pointing a
+        // reward stream at it.
+        let total_shares: i128 = env
+            .storage()
+            .persistent()
+            .get(&DataKey::VaultTotalShares(pool_id))
+            .unwrap_or(0);
+        if total_shares <= 0 {
             return Err(Error::InvalidInput);
         }
 
         let contract_address = env.current_contract_address();
 
-        // STEP 1: Transfer both tokens from admin to contract
+        // STEP 1: Transfer the funded token(s) from admin to contract
         use soroban_sdk::token;
         let token_a_client = token::Client::new(&env, &pool_info.token_a);
         let token_b_client = token::Client::new(&env, &pool_info.token_b);
 
-        token_a_client.transfer(&manager, &contract_address, &amount_a);
-        token_b_client.transfer(&manager, &contract_address, &amount_b);
+        if amount_a > 0 {
+            token_a_client.transfer(&manager, &contract_address, &amount_a);
+        }
+        if amount_b > 0 {
+            token_b_client.transfer(&manager, &contract_address, &amount_b);
+        }
 
         // STEP 2: Deposit to Aquarius pool
         // Aquarius pools order tokens by contract address (sorted).
@@ -5529,9 +5718,10 @@ impl StakingRegistry {
                 (pool_info.token_b.clone(), amount_b, pool_info.token_a.clone(), amount_a)
             };
 
-        let auth_entries = soroban_sdk::vec![
-            &env,
-            InvokerContractAuthEntry::Contract(SubContractInvocation {
+        // Authorize only the funded legs — the pool never pulls a zero amount.
+        let mut auth_entries = Vec::new(&env);
+        if first_amount > 0 {
+            auth_entries.push_back(InvokerContractAuthEntry::Contract(SubContractInvocation {
                 context: ContractContext {
                     contract: first_token,
                     fn_name: Symbol::new(&env, "transfer"),
@@ -5542,8 +5732,10 @@ impl StakingRegistry {
                     ).into_val(&env),
                 },
                 sub_invocations: soroban_sdk::vec![&env],
-            }),
-            InvokerContractAuthEntry::Contract(SubContractInvocation {
+            }));
+        }
+        if second_amount > 0 {
+            auth_entries.push_back(InvokerContractAuthEntry::Contract(SubContractInvocation {
                 context: ContractContext {
                     contract: second_token,
                     fn_name: Symbol::new(&env, "transfer"),
@@ -5554,18 +5746,20 @@ impl StakingRegistry {
                     ).into_val(&env),
                 },
                 sub_invocations: soroban_sdk::vec![&env],
-            }),
-        ];
+            }));
+        }
         env.authorize_as_current_contract(auth_entries);
 
         let mut desired_amounts = Vec::new(&env);
         desired_amounts.push_back(first_amount as u128);
         desired_amounts.push_back(second_amount as u128);
 
+        // See `deposit_pol_to_lp`: a single-sided compound into an off-ratio
+        // stable pool needs a real floor, not 0.
         let (_actual_amounts, lp_shares_minted) = aquarius_pool.deposit(
             &contract_address,
             &desired_amounts,
-            &0u128,
+            &min_lp_out,
         );
 
         // STEP 3: Update pool LP tracking

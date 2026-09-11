@@ -14,7 +14,7 @@ from stellar_sdk import xdr as xdr_
 # ── Config ───────────────────────────────────────────────────────────────
 STAKING_CONTRACT   = "CC72BEVVKHQ57PB5FCKAZYRXCSR6DOQSTN46QR7RZMMM64YWNRPDS24S"
 MULTISIG_ADMIN     = "GALE4XON37AQ4KFTJKB3W32BUQGXFE46TQLKUIGBSIHSOEHTDBMKEI3M"
-NEW_WASM_HASH      = "6e370b607e3ce105ae9280aa5d4953c9a08c9ef29e22d59bc6dcc58d719dce63"  # v2: adds withdraw_from_pool LP-burn authorization (POL top-up fix)
+NEW_WASM_HASH      = "8f821edf2cdc322418780097c8998880dee8664dc248580e0a18fbf3623f60aa"  # 2026-09-11: single-sided POL/compound deposits (min_lp_out), withdraw_pol_one_coin, multi-bucket vault-solvency guard, zero-share bucket guard
 RPC_URL            = "https://mainnet.sorobanrpc.com"
 NETWORK_PASSPHRASE = Network.PUBLIC_NETWORK_PASSPHRASE
 MAX_FEE            = 1_000_000

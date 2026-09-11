@@ -234,3 +234,98 @@ fn test_withdraw_from_pool_rejects_nonpositive() {
     let res = c.client().try_withdraw_from_pool(&c.admin, &0i128, &0i128, &0i128);
     assert!(res.is_err(), "withdraw_from_pool must reject share_amount <= 0");
 }
+
+// ── single-sided POL deposits (2026-09-08) ────────────────────────────────
+//
+// A reward tranche can now be added as pure AQUA (or pure BLUB) so it is not
+// half-swapped into the other leg first. Exactly one leg may be zero; both zero
+// is a caller error rather than a silent success.
+
+#[test]
+fn test_manual_deposit_pol_rejects_both_legs_zero() {
+    let c = setup();
+    let res = c.client().try_manual_deposit_pol(&c.admin, &0i128, &0i128, &0u128);
+    assert!(res.is_err(), "a deposit of nothing must be rejected, not silently accepted");
+}
+
+#[test]
+fn test_manual_deposit_pol_rejects_negative_leg() {
+    let c = setup();
+    let res = c.client().try_manual_deposit_pol(&c.admin, &-1i128, &10i128, &0u128);
+    assert!(res.is_err(), "a negative leg must be rejected");
+}
+
+// NOTE: the single-sided *happy path* (one leg zero, deposit actually reaching
+// the Aquarius pool) is NOT unit-tested. `liquidity_contract` is a bare address
+// in this harness, so every call that reaches the pool collapses to
+// `InvalidInput` and cannot be distinguished from a guard rejection. That path
+// needs a mock AMM (as the leverage-vault workspace has) or a testnet dry-run.
+// Only the input guards below are covered here.
+
+#[test]
+fn test_admin_compound_deposit_rejects_both_legs_zero() {
+    let c = setup();
+    let res = c.client().try_admin_compound_deposit(&c.admin, &0u32, &0i128, &0i128, &0u128);
+    assert!(res.is_err(), "compounding nothing must be rejected");
+}
+
+// ── single-coin POL withdrawal (2026-09-08) ───────────────────────────────
+
+#[test]
+fn test_withdraw_pol_one_coin_requires_admin() {
+    let c = setup();
+    let attacker = Address::generate(&c.env);
+    let res = c.client().try_withdraw_pol_one_coin(&attacker, &1_000_000_i128, &1u32, &0i128);
+    assert!(res.is_err(), "withdraw_pol_one_coin must reject a non-admin caller");
+}
+
+#[test]
+fn test_withdraw_pol_one_coin_rejects_bad_input() {
+    let c = setup();
+    let cl = c.client();
+    assert!(
+        cl.try_withdraw_pol_one_coin(&c.admin, &0i128, &1u32, &0i128).is_err(),
+        "share_amount <= 0 must be rejected"
+    );
+    assert!(
+        cl.try_withdraw_pol_one_coin(&c.admin, &1_000_i128, &2u32, &0i128).is_err(),
+        "a coin_index outside the pool's two tokens must be rejected"
+    );
+    assert!(
+        cl.try_withdraw_pol_one_coin(&c.admin, &1_000_i128, &1u32, &-1i128).is_err(),
+        "a negative min_amount must be rejected"
+    );
+}
+
+// ── zero-share bucket guard (2026-09-11) ──────────────────────────────────
+//
+// `admin_compound_deposit` raises a bucket's `total_lp_tokens` without minting
+// shares. With `total_shares == 0` that LP has no owner, and the first depositor
+// mints through the `total_shares == 0` branch — becoming sole shareholder and
+// redeeming the entire accumulated tranche for a dust deposit. Pools 1 and 2
+// were already sitting in exactly this state on mainnet when the guard was
+// written.
+//
+// LIMITATION: as with the single-sided tests above, `liquidity_contract` is a
+// bare address here, so a rejected call cannot be distinguished from a call that
+// died reaching the pool. What this test does pin down is the PRECONDITION —
+// a freshly added bucket really does report zero shares — plus the rejection
+// itself, so removing the guard without replacing it is caught.
+
+#[test]
+fn test_admin_compound_deposit_rejects_zero_share_bucket() {
+    let c = setup();
+    let cl = c.client();
+
+    assert_eq!(
+        cl.get_vault_total_shares(&0u32),
+        0,
+        "a bucket with no depositors must report zero shares"
+    );
+
+    assert!(
+        cl.try_admin_compound_deposit(&c.admin, &0u32, &1_000_i128, &1_000_i128, &0u128)
+            .is_err(),
+        "compounding into a bucket with no depositors must be rejected"
+    );
+}
