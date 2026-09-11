@@ -787,15 +787,20 @@ export class SorobanVaultService {
       const apyDecimal = parseFloat(rawApy);
       if (isNaN(apyDecimal)) return { poolApy: "--", compoundApy: "--", totalShare };
 
-      // Compound APY: 24 auto-compounds per day × 365 = 8,760 per year.
-      // Cadence kept in sync with whalehub-server's staking-reward cron
-      // (`'0 * * * *'` — hourly; was every 30 min until 2026-05-10).
-      // Contract takes a 15% treasury fee on claimed rewards (vault_fee_bps=1500,
-      // set on-chain 2026-05-16) before they reach vault depositors, so the
-      // compounded APY is computed on the net 85%. POL/staking gets an extra
-      // 17.65% deducted in the backend before BLUB distribution; vault is untouched.
-      const n = 24 * 365;
-      const compoundApy = (Math.pow(1 + (apyDecimal * 0.85) / n, n) - 1) * 100;
+      // Compound APY: 6 auto-compounds per day × 365 = 2,190 per year.
+      // Cadence kept in sync with whalehub-server's vault-compound cron
+      // (`'0 *\/4 * * *'` — every 4h since 2026-09-08; was EVERY_2_HOURS).
+      // Compounding is flat above ~4x/day, so the displayed rate barely moves.
+      //
+      // NET_OF_FEE is the share of claimed rewards that actually reaches vault
+      // depositors: the contract deducts `vault_fee_bps` inside
+      // `claim_and_compound` before anything is compounded. Set to 0.85 while
+      // vault_fee_bps = 1500. ⚠️ Change to 1 in the SAME change that lands the
+      // signed `update_vault_fee_bps(admin, 0)` — not before, or this overstates
+      // the rate.
+      const NET_OF_FEE = 0.85;
+      const n = 6 * 365;
+      const compoundApy = (Math.pow(1 + (apyDecimal * NET_OF_FEE) / n, n) - 1) * 100;
 
       return {
         poolApy: (apyDecimal * 100).toFixed(2),

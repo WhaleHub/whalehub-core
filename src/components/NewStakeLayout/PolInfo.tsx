@@ -241,13 +241,13 @@ function PolInfo({ onDialogOpen }: PolInfoProps) {
                 <div className="text-sm text-[#B1B3B8]">Compounded APY</div>
                 <InformationCircleIcon className="h-[14px] w-[14px] text-[#6B7280] cursor-pointer flex-shrink-0" />
                 <div className="absolute bottom-full left-0 mb-2 w-64 bg-gray-800 text-white text-xs rounded px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
-                  Your actual return through WhaleHub's vault. Higher than the base Pool APY because earnings are automatically reinvested into your position 24 times a day. Each reinvestment grows your backer share a tiny bit, and those tiny bits compound into a meaningfully higher annual return.
+                  Your actual return through WhaleHub's vault. Higher than the base Pool APY because earnings are automatically reinvested into your position 6 times a day. Each reinvestment grows your backer share a tiny bit, and those tiny bits compound into a meaningfully higher annual return.
                 </div>
               </div>
               <div className="text-lg font-semibold text-[#3B82F6]">
                 {stats?.compoundApy === "--" ? "--" : `${stats?.compoundApy}%`}
               </div>
-              <div className="text-[10px] text-[#6B7280] mt-0.5">24x daily · via Whalehub</div>
+              <div className="text-[10px] text-[#6B7280] mt-0.5">6x daily · via Whalehub</div>
             </div>
           </div>
 

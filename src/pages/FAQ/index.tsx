@@ -15,7 +15,7 @@ const faqData = [
       },
       {
         q: "Is WhaleHub live?",
-        a: "Yes. The staking contract has been through multiple on-chain upgrades. The protocol is actively managing an ICE position, voting every epoch, and auto-compounding rewards to stakers 24 times a day.",
+        a: "Yes. The staking contract has been through multiple on-chain upgrades. The protocol is actively managing an ICE position, voting every epoch, and auto-compounding rewards to stakers 6 times a day.",
       },
       {
         q: "How do I start?",
@@ -75,7 +75,7 @@ const faqData = [
       },
       {
         q: "How often is yield distributed?",
-        a: "Auto-compounding runs 24 times per day, every hour. You don't need to claim, restake, or do anything manually. Rewards get reinvested into your position before you'd even notice they arrived, which is why the effective (compounded) APY is meaningfully higher than the base APY.",
+        a: "Auto-compounding runs 6 times per day, every 4 hours. You don't need to claim, restake, or do anything manually. Rewards get reinvested into your position before you'd even notice they arrived, which is why the effective (compounded) APY is meaningfully higher than the base APY.",
       },
       {
         q: "How is the yield split?",
@@ -87,7 +87,7 @@ const faqData = [
       },
       {
         q: "Why is the effective APY higher than the base APY?",
-        a: "Compounding frequency. A rate that compounds 24 times a day produces materially higher returns over a year than the same rate claimed once a month. WhaleHub's automation captures this compounding advantage for every staker, regardless of position size. A solo staker would have to pay gas to claim and redeploy that often, which would eat the benefit. The pooled model makes it economical for everyone.",
+        a: "Compounding frequency. A rate that compounds 6 times a day produces materially higher returns over a year than the same rate claimed once a month. WhaleHub's automation captures this compounding advantage for every staker, regardless of position size. A solo staker would have to pay gas to claim and redeploy that often, which would eat the benefit. The pooled model makes it economical for everyone.",
       },
       {
         q: "Is WhaleHub's yield sustainable?",
@@ -161,7 +161,7 @@ const faqData = [
     items: [
       {
         q: "What is a vault?",
-        a: "A vault is WhaleHub's auto-compounding liquidity wrapper. You deposit a token pair into an Aquarius AMM pool through WhaleHub, and instead of earning static fees and rewards that sit unclaimed, the vault automatically harvests and reinvests those earnings 24 times every day, every hour, around the clock.\n\nThe underlying pool is on Aquarius. The difference is everything that happens after your initial deposit: claiming, swapping, and redepositing runs automatically without you doing anything or paying gas.",
+        a: "A vault is WhaleHub's auto-compounding liquidity wrapper. You deposit a token pair into an Aquarius AMM pool through WhaleHub, and instead of earning static fees and rewards that sit unclaimed, the vault automatically harvests and reinvests those earnings 6 times every day, around the clock.\n\nThe underlying pool is on Aquarius. The difference is everything that happens after your initial deposit: claiming, swapping, and redepositing runs automatically without you doing anything or paying gas.",
       },
       {
         q: "What vaults are currently available?",
@@ -169,11 +169,11 @@ const faqData = [
       },
       {
         q: "What's the difference between staking BLUB and depositing into the AQUA/BLUB vault?",
-        a: "Two separate products with different mechanics and risk profiles:\n\nBLUB Staking: You deposit BLUB into the staking contract. You earn yield from ICE rewards, bribes, and POL fees. No impermanent loss exposure. Your principal is denominated in BLUB.\n\nAQUA/BLUB Vault: You deposit into the AMM pool. You earn swap fees plus AQUA pool rewards, auto-compounded 24x daily. This is LP exposure, so it carries impermanent loss dynamics.\n\nStaking is simpler with no LP exposure. Vault LPing typically produces higher headline yield in exchange for carrying pool dynamics.",
+        a: "Two separate products with different mechanics and risk profiles:\n\nBLUB Staking: You deposit BLUB into the staking contract. You earn yield from ICE rewards, bribes, and POL fees. No impermanent loss exposure. Your principal is denominated in BLUB.\n\nAQUA/BLUB Vault: You deposit into the AMM pool. You earn swap fees plus AQUA pool rewards, auto-compounded 6x daily. This is LP exposure, so it carries impermanent loss dynamics.\n\nStaking is simpler with no LP exposure. Vault LPing typically produces higher headline yield in exchange for carrying pool dynamics.",
       },
       {
         q: "Why use WhaleHub vaults instead of providing liquidity directly on Aquarius?",
-        a: "Two layers: compounding mechanics and structural advantages.\n\nCompounding math:\nThe base APY shown on Aquarius represents what you'd earn if you claimed rewards once at the end of the year. WhaleHub reinvests those rewards 24 times per day. The same pool, the same rewards, but the reinvestment frequency multiplies your effective return significantly:\n\n• 20% base APY → 22.1% with WhaleHub (manual)\n• 50% base APY → 64.8% with WhaleHub vs 50% manual (+14.8%)\n• 100% base APY → 171.5% with WhaleHub vs 100% manual (+71.5%)\n• 150% base APY → 348.3% with WhaleHub vs 150% manual (+198.3%)\n\nThe gap widens dramatically as base rates increase. On high-APY pools, WhaleHub can more than double the effective return compared to leaving rewards unclaimed.\n\nWhy you can't just compound manually:\nEach compound cycle is 3-4 Stellar transactions: claim, swap, deposit. Doing this 24 times per day would cost real transaction fees and your time. WhaleHub's pooled model makes it economical for every depositor regardless of size, because the cost is shared across all vault participants.\n\nStructural advantages:\n• Rewards don't sit unclaimed between manual sessions. They're reinvested every hour, every day, including nights and weekends.\n• Single-asset entry supported: deposit just AQUA or just BLUB and the vault handles the internal swap.\n• No operational overhead: no monitoring, no timing, no multi-step manual transactions.\n• Even after the 30% protocol fee, the compounding advantage puts you materially ahead of manual LP on active pools.",
+        a: "Two layers: compounding mechanics and structural advantages.\n\nCompounding math:\nThe base APY shown on Aquarius represents what you'd earn if you claimed rewards once at the end of the year. WhaleHub reinvests those rewards 6 times per day. The same pool, the same rewards, but the reinvestment frequency multiplies your effective return significantly:\n\n• 20% base APY → 22.1% with WhaleHub (manual)\n• 50% base APY → 64.8% with WhaleHub vs 50% manual (+14.8%)\n• 100% base APY → 171.5% with WhaleHub vs 100% manual (+71.5%)\n• 150% base APY → 348.3% with WhaleHub vs 150% manual (+198.3%)\n\nThe gap widens dramatically as base rates increase. On high-APY pools, WhaleHub can more than double the effective return compared to leaving rewards unclaimed.\n\nWhy you can't just compound manually:\nEach compound cycle is 3-4 Stellar transactions: claim, swap, deposit. Doing this 6 times per day would cost real transaction fees and your time. WhaleHub's pooled model makes it economical for every depositor regardless of size, because the cost is shared across all vault participants.\n\nStructural advantages:\n• Rewards don't sit unclaimed between manual sessions. They're reinvested every 4 hours, every day, including nights and weekends.\n• Single-asset entry supported: deposit just AQUA or just BLUB and the vault handles the internal swap.\n• No operational overhead: no monitoring, no timing, no multi-step manual transactions.\n• Even after the 30% protocol fee, the compounding advantage puts you materially ahead of manual LP on active pools.",
       },
       {
         q: "The compounding formula, if you want the math",

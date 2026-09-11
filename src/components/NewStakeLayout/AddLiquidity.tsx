@@ -20,6 +20,24 @@ import usdcLogo from "../../assets/images/usdc.svg";
 const fmtNum = (val: string | number, decimals = 4): string =>
   parseFloat(String(val)).toFixed(decimals).replace(/,/g, ".");
 
+// Tokens that may NOT be used for a single-asset vault deposit. A single-sided
+// BLUB deposit pushes BLUB-AQUA further off ratio, which is the opposite of what
+// the pool needs; AQUA-only entry is the supported single-asset path.
+const SINGLE_ASSET_BLOCKED_CODES = ["BLUB"];
+
+// Vault bucket that holds the single-sided-AQUA reward class. It points at the
+// SAME Aquarius pool as pool 0 but is a separate `PoolInfo`, so Stream B can pay
+// it 70% while the balanced class gets 30%. A single-asset deposit MUST land
+// here or the depositor silently joins the balanced class instead.
+//
+// Unset until `add_pool` has been called on-chain; while unset, single-asset
+// deposits fall back to the selected pool (current behaviour, no 70% class).
+const SINGLE_AQUA_POOL_ID = (() => {
+  const raw = process.env.REACT_APP_SINGLE_AQUA_POOL_ID;
+  const n = Number(raw);
+  return raw && Number.isInteger(n) && n > 0 ? n : null;
+})();
+
 const TOKEN_LOGOS: Record<string, string> = {
   AQUA: aquaLogo,
   XLM: xlmLogo,
@@ -113,6 +131,26 @@ function AddLiquidity() {
 
   const [singleAsset, setSingleAsset] = useState<boolean>(false);
   const [singleAssetToken, setSingleAssetToken] = useState<"a" | "b">("a");
+
+  // Single-asset entry options for the selected pool, minus blocked tokens.
+  const singleAssetOptions = useMemo(() => {
+    if (!selectedPool) return [] as { key: "a" | "b"; code: string }[];
+    return (
+      [
+        { key: "a" as const, code: selectedPool.token_a_code },
+        { key: "b" as const, code: selectedPool.token_b_code },
+      ] as { key: "a" | "b"; code: string }[]
+    ).filter((t) => !SINGLE_ASSET_BLOCKED_CODES.includes(t.code));
+  }, [selectedPool]);
+
+  // Keep the selection on an allowed token. Pool token order comes from the
+  // contract (pool 0 is token_a = BLUB, token_b = AQUA), so never assume a key.
+  useEffect(() => {
+    if (singleAssetOptions.length === 0) return;
+    if (!singleAssetOptions.some((t) => t.key === singleAssetToken)) {
+      setSingleAssetToken(singleAssetOptions[0].key);
+    }
+  }, [singleAssetOptions, singleAssetToken]);
 
   // Slippage tolerance in percentage (e.g., 0.5 = 0.5%)
   const [slippageTolerance, setSlippageTolerance] = useState<number>(0.5);
@@ -516,9 +554,15 @@ function AddLiquidity() {
 
       if (singleAsset) {
         const tokenIn = singleAssetToken === "a" ? selectedPool.token_a : selectedPool.token_b;
+        // Route into the single-sided-AQUA reward class when it exists; only
+        // pool 0 has a paired class, so other pools keep their own id.
+        const singleAssetPoolId =
+          SINGLE_AQUA_POOL_ID != null && selectedPool.pool_id === 0
+            ? SINGLE_AQUA_POOL_ID
+            : selectedPool.pool_id;
         result = await vaultService.vaultDepositSingle({
           userAddress: user.userWalletAddress,
-          poolId: selectedPool.pool_id,
+          poolId: singleAssetPoolId,
           tokenIn,
           amountIn: amount1.toString(),
           minShares: "0",
@@ -652,7 +696,7 @@ function AddLiquidity() {
               className="h-4 w-4 text-[#6B7280] cursor-pointer hover:text-white transition-colors"
               onClick={() =>
                 onDialogOpen(
-                  "You're joining a crowdfunded liquidity pool. Every backer contributes both AQUA and BLUB, and everyone earns a proportional share of what the pool generates.\n\nWhen traders swap AQUA and BLUB, the pool keeps a small fee. Your LP tokens are your backer share. The more you contribute, the bigger your slice of those fees.\n\nOn top of that, the pool earns rewards from Aquarius. Both fees and rewards are automatically reinvested into your position every hour. No buttons to press, no manual claiming.\n\nWithdraw your share anytime. No lockups.",
+                  "You're joining a crowdfunded liquidity pool. Every backer contributes both AQUA and BLUB, and everyone earns a proportional share of what the pool generates.\n\nWhen traders swap AQUA and BLUB, the pool keeps a small fee. Your LP tokens are your backer share. The more you contribute, the bigger your slice of those fees.\n\nOn top of that, the pool earns rewards from Aquarius. Both fees and rewards are automatically reinvested into your position every 4 hours. No buttons to press, no manual claiming.\n\nWithdraw your share anytime. No lockups.",
                   "AQUA-BLUB Liquidity Vault"
                 )
               }
@@ -754,7 +798,7 @@ function AddLiquidity() {
           <div className="mt-5 space-y-3">
             {/* Banner */}
             <div className="bg-teal-500/10 border border-teal-500/30 rounded-lg p-3 mb-4 text-sm text-gray-200">
-              💡 You're a backer in a crowdfunded liquidity pool. Every trade and reward earns you a cut, automatically. Reinvested for you, 24x a day.
+              💡 You're a backer in a crowdfunded liquidity pool. Every trade and reward earns you a cut, automatically. Reinvested for you, 6x a day.
             </div>
 
             {/* APY Row — two cards side by side */}
@@ -781,7 +825,7 @@ function AddLiquidity() {
                   <InformationCircleIcon
                     className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
                     onClick={() => onDialogOpen(
-                      "Your actual return through WhaleHub's vault. Higher than the base Pool APY because earnings are automatically reinvested into your position 24 times a day.\n\nEach reinvestment grows your backer share a tiny bit, and those tiny bits compound into a meaningfully higher annual return.\n\nDoing this manually would mean claiming and re-depositing every hour, 24/7. The vault does it for you, automatically.",
+                      "Your actual return through WhaleHub's vault. Higher than the base Pool APY because earnings are automatically reinvested into your position 6 times a day.\n\nEach reinvestment grows your backer share a tiny bit, and those tiny bits compound into a meaningfully higher annual return.\n\nDoing this manually would mean claiming and re-depositing around the clock. The vault does it for you, automatically.",
                       "Compounded APY"
                     )}
                   />
@@ -789,7 +833,7 @@ function AddLiquidity() {
                 <div className="text-xl font-bold text-[#3B82F6]">
                   {compoundApy === "--" ? "--" : `${compoundApy}%`}
                 </div>
-                <div className="text-[10px] text-[#6B7280] mt-0.5">24× daily auto-compound · <span className="text-[#3B82F6]/80">via Whalehub</span></div>
+                <div className="text-[10px] text-[#6B7280] mt-0.5">6× daily auto-compound · <span className="text-[#3B82F6]/80">via Whalehub</span></div>
               </div>
             </div>
 
@@ -877,7 +921,7 @@ function AddLiquidity() {
               <InformationCircleIcon
                 className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
                 onClick={() => onDialogOpen(
-                  "Your share of the crowdfunded vault. The LP tokens you hold represent your contribution.\n\nBigger contribution = bigger cut of every trade fee + bigger share of AQUA rewards. All reinvested for you, every hour.\n\nWithdraw anytime. No lockups.",
+                  "Your share of the crowdfunded vault. The LP tokens you hold represent your contribution.\n\nBigger contribution = bigger cut of every trade fee + bigger share of AQUA rewards. All reinvested for you, every 4 hours.\n\nWithdraw anytime. No lockups.",
                   "Your Position"
                 )}
               />
@@ -917,7 +961,7 @@ function AddLiquidity() {
                   <InformationCircleIcon
                     className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
                     onClick={() => onDialogOpen(
-                      "Every hour, the vault takes the fees and rewards it earned and instantly puts them back into your position.\n\nEach reinvestment grows your backer share a tiny bit, and those tiny bits add up.\n\nDoing this manually would mean claiming, swapping, and re-depositing every hour, 24/7. The vault does it for you, for free.",
+                      "Every 4 hours, the vault takes the fees and rewards it earned and instantly puts them back into your position.\n\nEach reinvestment grows your backer share a tiny bit, and those tiny bits add up.\n\nDoing this manually would mean claiming, swapping, and re-depositing around the clock. The vault does it for you, for free.",
                       "Auto-Compounded"
                     )}
                   />
@@ -957,7 +1001,7 @@ function AddLiquidity() {
         {activeTab === "deposit" && selectedPool && (
           <div className="mt-5 space-y-4">
             <div className="text-xs text-[#B1B3B8] italic mb-1">
-              Auto-compounded every hour. Your share of pool fees and AQUA rewards are reinvested for you automatically. No claiming, no manual work.
+              Auto-compounded every 4 hours. Your share of pool fees and AQUA rewards are reinvested for you automatically. No claiming, no manual work.
             </div>
             <div className="flex items-center justify-between">
               <div>
@@ -966,7 +1010,7 @@ function AddLiquidity() {
                   <InformationCircleIcon
                     className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
                     onClick={() => onDialogOpen(
-                      "Deposit just AQUA or just BLUB. The vault automatically splits and pairs your token to enter the pool.\n\nYou don't need both tokens to become a backer.",
+                      "Deposit AQUA only. The vault automatically splits and pairs your token to enter the pool.\n\nYou don't need both tokens to become a backer.\n\nSingle-sided BLUB deposits are disabled: they push BLUB-AQUA further off ratio.",
                       "Single Asset Deposit"
                     )}
                   />
@@ -998,10 +1042,7 @@ function AddLiquidity() {
               <div>
                 {/* Token selector */}
                 <div className="flex items-center gap-2 mb-2">
-                  {[
-                    { key: "a" as const, code: selectedPool.token_a_code, bal: balanceA },
-                    { key: "b" as const, code: selectedPool.token_b_code, bal: balanceB },
-                  ].map((t) => (
+                  {singleAssetOptions.map((t) => (
                     <button
                       key={t.key}
                       onClick={() => {
