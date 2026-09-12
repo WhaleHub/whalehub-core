@@ -6,7 +6,7 @@ Quick reference sheet for onboarding. Everything you need to know in one page.
 
 ## What Is WhaleHub
 
-DeFi protocol on Stellar. Users lock AQUA -> earn BLUB rewards. Protocol deploys liquidity into Aquarius AMM pools, compounds earnings, and directs ICE voting power for boosted yields. Think Convex for Stellar.
+DeFi protocol on Stellar. Users lock AQUA -> mint BLUB -> stake BLUB -> earn AQUA rewards. Protocol deploys liquidity into Aquarius AMM pools, compounds earnings, and directs ICE voting power for boosted yields. Think Convex for Stellar.
 
 ---
 
@@ -78,7 +78,8 @@ Backend Server (NestJS on Digital Ocean)
 | AQUA to liquidity pool | 10% of each lock |
 | AQUA to ICE governance | 90% of each lock |
 | Treasury cut on bribe income | None — 100% recycled (removed July 2026) |
-| Harvest split | 50% stakers / 30% vault LPs / 20% POL |
+| Revenue split (v3) | 50% stakers / 30% vault LPs / 10% POL / 10% treasury |
+| Staker payout token | AQUA (parameter — revertible to BLUB via `set_reward_policy`) |
 | Auto-compound frequency | 4x/day BLUB-AQUA (bribe Stream B), 6x/day other pools |
 | Min lock duration | 7 days |
 | Withdrawal cooldown | 10 days after lock expires |

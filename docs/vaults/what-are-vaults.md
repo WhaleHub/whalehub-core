@@ -7,7 +7,7 @@ Vaults are auto-compounding liquidity positions on Aquarius AMM pools. You depos
 | | Staking | Vaults |
 |---|---|---|
 | What you deposit | AQUA (or restake BLUB) | Token pairs (e.g. XLM + AQUA) |
-| What you earn | BLUB rewards | Growing LP position |
+| What you earn | AQUA rewards | Growing LP position |
 | How you earn | Share of protocol reward pool | AMM trading fees + AQUA farming rewards |
 | Compounding | Manual (claim + restake) | Automatic (4-6x per day) |
 | Lock period | Fixed (your choice) | None — withdraw anytime |

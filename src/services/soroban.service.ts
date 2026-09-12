@@ -2106,6 +2106,89 @@ export class SorobanService {
   // ============================================================================
 
   /**
+   * The token the staking contract currently pays stakers in.
+   *
+   * Read from the contract rather than hardcoded, so that a revert of the v3
+   * policy (multisig `set_reward_policy` back to Blub) is reflected in the UI
+   * without a redeploy. Falls back to "BLUB" — a pre-v3 contract has no
+   * `get_reward_policy`, and that is what it pays.
+   */
+  async queryRewardPayoutToken(userAddress: string): Promise<"AQUA" | "BLUB"> {
+    try {
+      const contract = this.getContract("staking");
+      // A read-only simulation still needs a source account to build against;
+      // nothing is signed or submitted.
+      const account = await this.server.getAccount(userAddress);
+
+      const transaction = new TransactionBuilder(account, {
+        fee: "100",
+        networkPassphrase: this.getNetworkPassphrase(),
+      })
+        .addOperation(contract.call("get_reward_policy"))
+        .setTimeout(30)
+        .build();
+
+      const simulation: any = await this.server.simulateTransaction(transaction);
+      if (simulation.result?.retval) {
+        const policy: any = scValToNative(simulation.result.retval);
+        // Soroban unit-variant enums decode to a single-element array.
+        const raw = policy?.payout_token;
+        const name = Array.isArray(raw) ? raw[0] : raw;
+        if (name === "Aqua") return "AQUA";
+        if (name === "Blub") return "BLUB";
+      }
+      return "BLUB";
+    } catch (error: any) {
+      console.warn(
+        "[SorobanService] get_reward_policy unavailable; assuming BLUB:",
+        error?.message
+      );
+      return "BLUB";
+    }
+  }
+
+  /**
+   * A staker's elected payout token, or null when they follow the default.
+   */
+  async queryRewardPreference(
+    userAddress: string
+  ): Promise<"AQUA" | "BLUB" | null> {
+    try {
+      const contract = this.getContract("staking");
+      const account = await this.server.getAccount(userAddress);
+
+      const transaction = new TransactionBuilder(account, {
+        fee: "100",
+        networkPassphrase: this.getNetworkPassphrase(),
+      })
+        .addOperation(
+          contract.call(
+            "get_reward_preference",
+            Address.fromString(userAddress).toScVal()
+          )
+        )
+        .setTimeout(30)
+        .build();
+
+      const simulation: any = await this.server.simulateTransaction(transaction);
+      if (simulation.result?.retval) {
+        const pref: any = scValToNative(simulation.result.retval);
+        if (pref == null) return null;
+        const name = Array.isArray(pref) ? pref[0] : pref;
+        if (name === "Aqua") return "AQUA";
+        if (name === "Blub") return "BLUB";
+      }
+      return null;
+    } catch (error: any) {
+      console.warn(
+        "[SorobanService] get_reward_preference unavailable:",
+        error?.message
+      );
+      return null;
+    }
+  }
+
+  /**
    * Query pending BLUB rewards for a user
    * Calls get_pending_rewards(user) on staking contract
    */

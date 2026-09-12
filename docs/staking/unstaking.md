@@ -44,6 +44,6 @@ Day 0          Day 30              Day 40
 - **Lock period**: the duration you chose when staking (minimum 7 days)
 - **Cooldown**: 10 additional days after the lock expires
 - **Partial unstaking**: you can unstake specific lock positions without affecting others
-- **Rewards are separate**: unstaking does NOT claim your pending BLUB rewards — use [Claim Rewards](claiming-rewards.md) for that
+- **Rewards are separate**: unstaking does NOT claim your pending AQUA rewards — use [Claim Rewards](claiming-rewards.md) for that
 - **You receive back** the same token type you deposited (AQUA for AQUA locks, BLUB for BLUB restakes)
 - **Liquidity-backed**: if the staking contract is short on BLUB, the protocol withdraws from POL to cover your withdrawal (see [Liquidity backing](#liquidity-backing-pol-replenishment) above)

@@ -6,10 +6,10 @@ Whalehub is a DeFi protocol built on the **Stellar Network** that lets you earn 
 
 | Feature | Description |
 |---------|-------------|
-| **Stake AQUA** | Lock AQUA tokens for a chosen period and earn BLUB rewards |
-| **Restake BLUB** | Compound your BLUB earnings back into the staking pool |
+| **Stake AQUA** | Lock AQUA tokens for a chosen period and earn AQUA rewards |
+| **Restake BLUB** | Compound your earnings back into the staking pool |
 | **Liquidity Vaults** | Deposit into auto-compounding AMM pools for hands-off yield |
-| **Claim Rewards** | Collect BLUB rewards earned from your staked position |
+| **Claim Rewards** | Collect AQUA rewards earned from your staked position |
 
 ## Quick Numbers
 
@@ -32,4 +32,4 @@ Whalehub operates on three layers:
 2. **Backend server** — automates reward distribution, compounding, and ICE governance
 3. **Web app** — user interface for staking, vaults, and claiming rewards
 
-The protocol earns yield by deploying staked AQUA into Aquarius AMM liquidity pools. Rewards flow back to stakers as BLUB tokens, while a portion strengthens the protocol's own liquidity position.
+The protocol earns yield by voting its pooled ICE position on Aquarius and collecting the voting revenue that power attracts. Revenue arrives as AQUA and flows back to stakers as AQUA, while a portion strengthens the protocol's own liquidity position.

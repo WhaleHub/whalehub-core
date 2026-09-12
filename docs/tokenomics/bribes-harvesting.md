@@ -8,24 +8,25 @@ Aquarius lets AQUA holders lock AQUA into **ICE** (non-transferable voting power
 
 Whalehub holds a large ICE position, so it earns bribes simply by voting — and those bribes become staker rewards.
 
-## How stakers get BLUB
+## How stakers get AQUA
 
 ```mermaid
 flowchart LR
-    A[Whalehub ICE<br/>voting power] -->|vote highest-yield market| B[Aquarius bribes<br/>~50-60K AQUA/day]
-    B -->|50% Stream A| D[Swap AQUA → BLUB<br/>on Aquarius router]
-    D --> E[add_rewards to<br/>staking contract]
-    E --> F[Stakers earn BLUB<br/>Synthetix pro-rata]
+    A[Whalehub ICE<br/>voting power] -->|vote highest-yield market| B[Voting revenue<br/>~50-60K AQUA/day]
+    B -->|50% Stream A| D[add_rewards to<br/>staking contract]
+    D --> F[Stakers earn AQUA<br/>Synthetix pro-rata]
     B -->|30% Stream B| G[Single-sided AQUA<br/>into the vault]
     G --> H[70% single-AQUA class<br/>30% balanced class]
-    B -->|20% Stream C| I[Single-sided AQUA<br/>into POL]
+    B -->|10% Stream C| I[Single-sided AQUA<br/>into POL]
+    B -->|10% Stream D| J[Treasury]
 ```
 
 1. **Vote** — Whalehub casts its ICE (upvoteICE) on the market chosen by the optimizer (below).
-2. **Collect** — bribes arrive in the manager wallet as plain AQUA payments, roughly daily.
-3. **Split** — the batch is divided 50 / 30 / 20 across stakers, vault LPs and POL. **No treasury cut is taken** (removed July 2026); the harvest is recycled in full.
-4. **Convert (Stream A only)** — the staker tranche is swapped AQUA → BLUB on the Aquarius router (chunked to limit price impact). BLUB is **bought on the open market, never minted** — so rewards are non-dilutive. Streams B and C are deposited as AQUA and are never swapped.
-5. **Distribute** — that BLUB is added to the staking contract and accrues to every staker pro-rata via the [Synthetix reward model](reward-distribution.md#stream-a--stakers-50).
+2. **Collect** — revenue arrives in the manager wallet as plain AQUA payments, roughly daily.
+3. **Split** — the batch is divided 50 / 30 / 10 / 10 across stakers, vault LPs, POL and treasury.
+4. **Distribute** — the staker tranche passes straight through as AQUA and accrues to every staker pro-rata via the [Synthetix reward model](reward-distribution.md#stream-a--stakers-50). **No swap and no minting**, so rewards are non-dilutive and cost the pool nothing.
+
+> **Changed in v3 (September 2026).** v2 swapped the staker tranche AQUA → BLUB on the Aquarius router before distributing it, which turned every reward into a buy order into a thin pool — and most recipients sold it straight back. That swap is removed. Stakers who specifically want BLUB can elect it individually and the contract swaps at claim time, at their own cost.
 
 See [Reward Distribution](reward-distribution.md) for what each stream does with its tranche.
 

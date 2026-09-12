@@ -329,3 +329,139 @@ fn test_admin_compound_deposit_rejects_zero_share_bucket() {
         "compounding into a bucket with no depositors must be rejected"
     );
 }
+
+// ── v3 reward engine (2026-09-12) ─────────────────────────────────────────
+//
+// v2 paid stakers in BLUB, which made every reward a market buy into a thin
+// pool. v3 pays the AQUA that pooled ICE voting already earns. The payout token
+// is a parameter so the change is reversible without an upgrade.
+
+use crate::{RewardToken};
+
+#[test]
+fn test_reward_policy_defaults_to_v2_behaviour() {
+    let c = setup();
+    let p = c.client().get_reward_policy();
+    assert_eq!(
+        p.payout_token,
+        RewardToken::Blub,
+        "landing the v3 upgrade must not change payout behaviour on its own — \
+         the engine only switches when the multisig sets the policy"
+    );
+    assert!(!p.allow_user_choice);
+    assert_eq!(
+        p.staker_bps + p.lp_bps + p.pol_bps + p.treasury_bps,
+        10_000
+    );
+}
+
+#[test]
+fn test_set_reward_policy_requires_admin() {
+    let c = setup();
+    let attacker = Address::generate(&c.env);
+    let res = c.client().try_set_reward_policy(
+        &attacker, &RewardToken::Aqua, &true, &5000u32, &3000u32, &1000u32, &1000u32, &100u32,
+    );
+    assert!(res.is_err(), "only the multisig admin may set the reward policy");
+}
+
+#[test]
+fn test_set_reward_policy_rejects_splits_that_do_not_total_10000() {
+    let c = setup();
+    let res = c.client().try_set_reward_policy(
+        &c.admin, &RewardToken::Blub, &false, &5000u32, &3000u32, &1000u32, &2000u32, &100u32,
+    );
+    assert!(res.is_err(), "revenue split must total exactly 100%");
+}
+
+#[test]
+fn test_set_reward_policy_applies_version_a_split() {
+    let c = setup();
+    let cl = c.client();
+    // Version A: 50 stakers / 30 LPs / 10 POL / 10 treasury, no protocol BLUB buys.
+    cl.set_reward_policy(
+        &c.admin, &RewardToken::Aqua, &true, &5000u32, &3000u32, &1000u32, &1000u32, &100u32,
+    );
+    let p = cl.get_reward_policy();
+    assert_eq!(p.payout_token, RewardToken::Aqua);
+    assert!(p.allow_user_choice);
+    assert_eq!(p.staker_bps, 5000);
+    assert_eq!(p.lp_bps, 3000);
+    assert_eq!(p.pol_bps, 1000);
+    assert_eq!(p.treasury_bps, 1000);
+}
+
+#[test]
+fn test_reward_policy_is_revertible() {
+    let c = setup();
+    let cl = c.client();
+    cl.set_reward_policy(
+        &c.admin, &RewardToken::Aqua, &true, &5000u32, &3000u32, &1000u32, &1000u32, &100u32,
+    );
+    assert_eq!(cl.get_reward_policy().payout_token, RewardToken::Aqua);
+
+    // Nothing outstanding, so the switch back needs no upgrade.
+    cl.set_reward_policy(
+        &c.admin, &RewardToken::Blub, &false, &5000u32, &3000u32, &1000u32, &1000u32, &100u32,
+    );
+    assert_eq!(
+        cl.get_reward_policy().payout_token,
+        RewardToken::Blub,
+        "the v3 switch must be reversible from the multisig alone"
+    );
+}
+
+#[test]
+fn test_user_reward_preference_roundtrip() {
+    let c = setup();
+    let cl = c.client();
+    let user = Address::generate(&c.env);
+
+    assert_eq!(
+        cl.get_reward_preference(&user),
+        None,
+        "a staker who never elects defaults to the protocol token"
+    );
+
+    cl.set_reward_policy(
+        &c.admin, &RewardToken::Aqua, &true, &5000u32, &3000u32, &1000u32, &1000u32, &100u32,
+    );
+    cl.set_reward_preference(&user, &Some(RewardToken::Blub));
+    assert_eq!(cl.get_reward_preference(&user), Some(RewardToken::Blub));
+
+    cl.set_reward_preference(&user, &None);
+    assert_eq!(cl.get_reward_preference(&user), None, "clearing reverts to the default");
+}
+
+#[test]
+fn test_reward_preference_rejected_when_choice_disabled() {
+    let c = setup();
+    let cl = c.client();
+    let user = Address::generate(&c.env);
+
+    // Default policy pays BLUB with allow_user_choice = false.
+    let res = cl.try_set_reward_preference(&user, &Some(RewardToken::Aqua));
+    assert!(
+        res.is_err(),
+        "electing the non-default token must be refused while user choice is off"
+    );
+}
+
+#[test]
+fn test_settle_user_rewards_is_idempotent_and_manager_gated() {
+    let c = setup();
+    let cl = c.client();
+    let user = Address::generate(&c.env);
+
+    // Nothing accrued: returns 0 rather than erroring, so a migration sweep can
+    // run over every staker without special-casing.
+    assert_eq!(cl.settle_user_rewards(&c.admin, &user), 0);
+    assert_eq!(cl.settle_user_rewards(&c.admin, &user), 0);
+}
+
+// NOTE: the swap-on-claim path and the RewardsUnsettled guard are NOT unit
+// tested. Both need a live AMM — `liquidity_contract` is a bare address in this
+// harness, so any call reaching the pool collapses to an error indistinguishable
+// from a guard rejection, and `outstanding` can only become non-zero via
+// `add_rewards`, which needs a funded manager and a real pool to be meaningful.
+// Cover them on testnet against a deployed Aquarius pool before the policy flip.

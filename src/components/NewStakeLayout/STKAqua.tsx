@@ -108,6 +108,13 @@ function STKAqua() {
   const [rewardInfo, setRewardInfo] = useState<any>(null);
   const [claimingRewards, setClaimingRewards] = useState<boolean>(false);
 
+  // Payout token, read from the contract's reward policy rather than hardcoded.
+  // v3 pays AQUA; the multisig can revert the policy to BLUB without a redeploy,
+  // and this UI follows it either way. Defaults to BLUB so a pre-v3 contract —
+  // or a failed read — never mislabels what the user is about to receive.
+  const [payoutToken, setPayoutToken] = useState<"AQUA" | "BLUB">("BLUB");
+  const rewardPrice = payoutToken === "AQUA" ? aquaPrice : blubPrice;
+
   //get user aqua record
   const aquaRecord = user?.userRecords?.balances?.find(
     (balance) =>
@@ -411,6 +418,14 @@ function STKAqua() {
         setPendingRewards(rewardInfoData.pending_rewards || "0");
         setRewardInfo(rewardInfoData);
       }
+
+      // Which token these rewards will actually arrive in. Read every refresh
+      // so a policy change lands in the UI without a redeploy; the service
+      // falls back to BLUB if the contract predates v3.
+      const token = await sorobanService.queryRewardPayoutToken(
+        user.userWalletAddress
+      );
+      setPayoutToken(token);
     } catch (error: any) {
       console.error("❌ [STKAqua] Error fetching pending rewards:", error);
       setPendingRewards("0");
@@ -515,10 +530,10 @@ function STKAqua() {
         fetchPendingRewards(),
       ]);
 
-      toast.success(`Successfully claimed ${pendingRewards} BLUB rewards!`);
+      toast.success(`Successfully claimed ${pendingRewards} ${payoutToken} rewards!`);
       setDialogTitle("Rewards Claimed!");
       setDialogMsg(
-        `Transaction Hash: ${result.transactionHash}\n\n${pendingRewards} BLUB has been transferred to your wallet.`
+        `Transaction Hash: ${result.transactionHash}\n\n${pendingRewards} ${payoutToken} has been transferred to your wallet.`
       );
       setOptDialog(true);
     } catch (err: any) {
@@ -1095,8 +1110,8 @@ const handleAddTrustline = async () => {
                       </span>
                     </div>
                     <div className="text-white font-medium">
-                      {staking.isLoading ? "..." : parseFloat(pendingRewards).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} BLUB
-                      {!staking.isLoading && <span className="text-[#6B7280] text-xs ml-1">{formatUsd(pendingRewards, blubPrice)}</span>}
+                      {staking.isLoading ? "..." : parseFloat(pendingRewards).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {payoutToken}
+                      {!staking.isLoading && <span className="text-[#6B7280] text-xs ml-1">{formatUsd(pendingRewards, rewardPrice)}</span>}
                     </div>
                   </div>
                 </div>
@@ -1232,10 +1247,10 @@ const handleAddTrustline = async () => {
                 <div className="flex items-center space-x-2">
                   <img src={"/Blub_logo2.svg"} alt="BLUB" className="w-4 h-4 rounded-full shrink-0" />
                   <span className="text-sm sm:text-base font-normal truncate">
-                    {parseFloat(pendingRewards).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} BLUB
+                    {parseFloat(pendingRewards).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {payoutToken}
                   </span>
                 </div>
-                <span className="text-[11px] text-[#6B7280]">{formatUsd(pendingRewards, blubPrice)}</span>
+                <span className="text-[11px] text-[#6B7280]">{formatUsd(pendingRewards, rewardPrice)}</span>
               </div>
             </div>
 
@@ -1243,9 +1258,9 @@ const handleAddTrustline = async () => {
               <div className="text-sm font-normal text-white shrink-0">Total Claimed</div>
               <div className="flex flex-col items-end min-w-0">
                 <span className="text-sm sm:text-base font-normal truncate">
-                  {rewardInfo ? parseFloat(rewardInfo.total_claimed || "0").toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0.00"} BLUB
+                  {rewardInfo ? parseFloat(rewardInfo.total_claimed || "0").toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0.00"} {payoutToken}
                 </span>
-                <span className="text-[11px] text-[#6B7280]">{formatUsd(rewardInfo?.total_claimed || "0", blubPrice)}</span>
+                <span className="text-[11px] text-[#6B7280]">{formatUsd(rewardInfo?.total_claimed || "0", rewardPrice)}</span>
               </div>
             </div>
 
@@ -1266,7 +1281,7 @@ const handleAddTrustline = async () => {
               disabled={claimingRewards || parseFloat(pendingRewards) <= 0 || (rewardInfo && !rewardInfo.can_claim && rewardInfo.last_claim_time > 0)}
             >
               {!claimingRewards ? (
-                <span>Claim BLUB</span>
+                <span>Claim {payoutToken}</span>
               ) : (
                 <div className="flex justify-center items-center gap-[10px]">
                   <span className="text-white">Processing...</span>

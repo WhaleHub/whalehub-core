@@ -9,7 +9,7 @@ The staking contract exposes functions for users, the manager (backend), and the
 | `lock(user, amount, duration)` | Lock AQUA tokens, receive BLUB into staking balance |
 | `stake(user, amount, duration)` | Restake existing BLUB tokens |
 | `record_unlock(user, lock_index)` | Withdraw tokens after lock + cooldown expires |
-| `claim_rewards(user)` | Claim pending BLUB rewards (7-day cooldown) |
+| `claim_rewards(user)` | Claim pending rewards in the policy token, default AQUA (7-day cooldown) |
 | `vault_deposit(user, pool_id, amount_a, amount_b)` | Deposit token pair into a vault pool |
 | `vault_withdraw(user, pool_id, lp_amount)` | Withdraw liquidity from a vault pool |
 
@@ -17,8 +17,13 @@ The staking contract exposes functions for users, the manager (backend), and the
 
 | Function | Description |
 |----------|-------------|
-| `add_rewards(manager, amount)` | Distribute BLUB rewards to all stakers |
-| `add_rewards_from_aqua(manager, aqua, blub)` | Distribute both AQUA and BLUB rewards |
+| `add_rewards(manager, amount)` | Distribute rewards to all stakers in the policy token (no cap since v3) |
+| `add_rewards_from_aqua(manager, aqua, blub)` | v2 only; refused while the policy pays AQUA |
+| `settle_user_rewards(manager, user)` | Pay out one staker's accrued balance, ignoring cooldown (migration sweep) |
+| `get_reward_policy()` | Read the payout token and revenue split |
+| `set_reward_policy(admin, token, allow_choice, staker_bps, lp_bps, pol_bps, treasury_bps, slippage_bps)` | Multisig: set payout token and split. Refuses a token change while balances are outstanding |
+| `set_reward_preference(user, Option<token>)` | Staker: elect a payout token; `None` restores the default |
+| `get_reward_preference(user)` | Read a staker's election |
 | `claim_and_compound(manager, pool_id)` | Claim pool rewards and split to treasury/manager |
 | `admin_compound_deposit(manager, pool_id, amount_a, amount_b)` | Re-deposit compounded rewards into pool |
 | `authorize_ice_lock(manager, amount, years)` | Authorize AQUA for ICE governance locking |

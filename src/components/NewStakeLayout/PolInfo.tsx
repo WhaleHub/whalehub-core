@@ -87,9 +87,12 @@ function PolInfo({ onDialogOpen }: PolInfoProps) {
         const polResA = totalResA * polShare;
         const polResB = totalResB * polShare;
 
-        // USD value — BLUB is pegged 1:1 to AQUA, so use AQUA price for both
-        // to avoid the reserve-ratio fallback giving a wrong price (stableswap pool
-        // has imbalanced reserves that don't reflect the 1:1 peg)
+        // USD value — both legs are valued at the AQUA price. BLUB is a
+        // floating asset, not pegged, but the alternative here is the
+        // reserve-ratio fallback, and pool 0's reserves are deliberately
+        // imbalanced (AQUA is the scarce leg), which would misprice the
+        // position badly. Valuing at mint parity is the conservative choice
+        // for a POL telemetry figure, NOT a claim about BLUB's market price.
         let usdValue = 0;
         try {
           const aquaPrice = await TokenPriceService.getTokenPrice("AQUA");

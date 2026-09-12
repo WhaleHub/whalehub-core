@@ -124,6 +124,57 @@ pub struct Config {
     pub claim_reward_cooldown_seconds: u64, // Default: 604800 (7 days)
 }
 
+// ── v3 reward engine ──────────────────────────────────────────────────────
+//
+// v2 paid stakers in BLUB, which meant every reward was a market buy into a
+// thin pool — the protocol subsidising its own exit. v3 pays the AQUA that
+// pooled ICE voting already earns, which costs the protocol nothing extra.
+//
+// The payout token is a PARAMETER, not a constant, so the change is
+// reversible: `set_reward_policy` can put it back to Blub without an upgrade.
+
+#[contracttype]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub enum RewardToken {
+    Aqua,
+    Blub,
+}
+
+// Revenue routing + payout denomination. Stored under its own DataKey rather
+// than folded into `Config`: Config is one serialized blob, and adding fields
+// to it breaks deserialization of the entry already on-chain.
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct RewardPolicy {
+    pub payout_token: RewardToken,
+    // Whether a staker may elect the other token and have the contract swap
+    // for them at claim time. The protocol default still applies to everyone
+    // who expresses no preference.
+    pub allow_user_choice: bool,
+    // Revenue split in basis points; must total 10_000.
+    pub staker_bps: u32,
+    pub lp_bps: u32,
+    pub pol_bps: u32,
+    pub treasury_bps: u32,
+    // Slippage floor applied to a user-elected swap at claim time.
+    pub max_swap_slippage_bps: u32,
+}
+
+// Reward units credited but not yet paid out, in whatever token the
+// accumulator is currently denominated in.
+//
+// This is what makes the payout token safe to change. Flipping the
+// denomination while stakers still hold accrued balances would pay them a
+// different asset than they earned, so `set_reward_policy` refuses a token
+// change unless this is zero. Counts only from the v3 upgrade forward —
+// pre-v3 balances are cleared by the `settle_user_rewards` sweep, and the
+// saturating subtraction keeps the counter pinned at zero through it.
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct RewardLedger {
+    pub outstanding: i128,
+}
+
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct IceTokens {
@@ -442,6 +493,10 @@ pub enum DataKey {
     ManagerAddress,                  // Single-sig backend manager (blub-issuer-v2)
     // Vault share model (v1.8.0) — sum of all user shares per pool
     VaultTotalShares(u32),
+    // v3 reward engine
+    RewardPolicyKey,                 // RewardPolicy (payout token + revenue split)
+    RewardLedgerKey,                 // RewardLedger (unpaid reward units)
+    UserRewardPref(Address),         // Per-user payout token election
 }
 
 #[contracttype]
@@ -472,6 +527,9 @@ pub enum Error {
     ClaimCooldownActive = 29,
     UnstakeCooldownActive = 30,
     NoRewardsToClaim = 31,
+    // v3 reward engine
+    SwapFailed = 32,
+    RewardsUnsettled = 33,
 }
 
 impl From<Error> for soroban_sdk::Error {
@@ -4128,6 +4186,310 @@ impl StakingRegistry {
     //
     // # Authorization
     // Requires admin authorization
+    // ── v3 reward engine ──────────────────────────────────────────────────
+
+    // Current reward policy.
+    //
+    // The default is deliberately v2 behaviour (pay BLUB, no user choice, v2
+    // split), so landing the v3 upgrade changes NOTHING on its own. The engine
+    // only switches when the multisig calls `set_reward_policy`, and it can be
+    // put back the same way without another upgrade.
+    pub fn get_reward_policy(env: Env) -> RewardPolicy {
+        env.storage()
+            .instance()
+            .get::<DataKey, RewardPolicy>(&DataKey::RewardPolicyKey)
+            .unwrap_or(RewardPolicy {
+                payout_token: RewardToken::Blub,
+                allow_user_choice: false,
+                staker_bps: 5000,
+                lp_bps: 3000,
+                pol_bps: 1000,
+                treasury_bps: 1000,
+                max_swap_slippage_bps: 100,
+            })
+    }
+
+    fn get_reward_ledger(env: &Env) -> RewardLedger {
+        env.storage()
+            .instance()
+            .get::<DataKey, RewardLedger>(&DataKey::RewardLedgerKey)
+            .unwrap_or(RewardLedger { outstanding: 0 })
+    }
+
+    fn set_reward_ledger(env: &Env, ledger: &RewardLedger) {
+        env.storage()
+            .instance()
+            .set(&DataKey::RewardLedgerKey, ledger);
+    }
+
+    // Admin: set the payout token and revenue split.
+    //
+    // Changing `payout_token` requires the outstanding reward balance to be
+    // zero. Accrued units carry no record of which asset funded them, so
+    // flipping the denomination with balances outstanding would pay stakers an
+    // asset they did not earn. Clear them with `settle_user_rewards` first.
+    //
+    // Splits are recorded here for the off-chain distributor to read; the
+    // contract does not itself route the LP/POL/treasury lines.
+    pub fn set_reward_policy(
+        env: Env,
+        admin: Address,
+        payout_token: RewardToken,
+        allow_user_choice: bool,
+        staker_bps: u32,
+        lp_bps: u32,
+        pol_bps: u32,
+        treasury_bps: u32,
+        max_swap_slippage_bps: u32,
+    ) -> Result<(), Error> {
+        admin.require_auth();
+        let stored_admin = env
+            .storage()
+            .instance()
+            .get::<DataKey, Address>(&DataKey::AdminAddress)
+            .ok_or(Error::Unauthorized)?;
+        if stored_admin != admin {
+            return Err(Error::Unauthorized);
+        }
+
+        if staker_bps
+            .saturating_add(lp_bps)
+            .saturating_add(pol_bps)
+            .saturating_add(treasury_bps)
+            != 10_000
+        {
+            return Err(Error::InvalidInput);
+        }
+        if max_swap_slippage_bps >= 10_000 {
+            return Err(Error::InvalidInput);
+        }
+
+        let current = Self::get_reward_policy(env.clone());
+        if current.payout_token != payout_token {
+            let ledger = Self::get_reward_ledger(&env);
+            if ledger.outstanding != 0 {
+                return Err(Error::RewardsUnsettled);
+            }
+        }
+
+        let policy = RewardPolicy {
+            payout_token,
+            allow_user_choice,
+            staker_bps,
+            lp_bps,
+            pol_bps,
+            treasury_bps,
+            max_swap_slippage_bps,
+        };
+        env.storage()
+            .instance()
+            .set(&DataKey::RewardPolicyKey, &policy);
+
+        env.events().publish(
+            (symbol_short!("rwd_pol"),),
+            (staker_bps, lp_bps, pol_bps, treasury_bps, allow_user_choice),
+        );
+
+        Ok(())
+    }
+
+    // Staker: elect which token to be paid in.
+    //
+    // Electing the non-default token means the contract swaps on your behalf at
+    // claim time and you wear the slippage. Passing `None` reverts to the
+    // protocol default, which is what every staker gets until they say
+    // otherwise.
+    pub fn set_reward_preference(
+        env: Env,
+        user: Address,
+        preference: Option<RewardToken>,
+    ) -> Result<(), Error> {
+        user.require_auth();
+
+        match preference {
+            Some(token) => {
+                let policy = Self::get_reward_policy(env.clone());
+                if !policy.allow_user_choice && token != policy.payout_token {
+                    return Err(Error::InvalidInput);
+                }
+                env.storage()
+                    .persistent()
+                    .set(&DataKey::UserRewardPref(user.clone()), &token);
+            }
+            None => {
+                env.storage()
+                    .persistent()
+                    .remove(&DataKey::UserRewardPref(user.clone()));
+            }
+        }
+
+        Ok(())
+    }
+
+    pub fn get_reward_preference(env: Env, user: Address) -> Option<RewardToken> {
+        env.storage()
+            .persistent()
+            .get::<DataKey, RewardToken>(&DataKey::UserRewardPref(user))
+    }
+
+    fn reward_token_address(config: &Config, token: RewardToken) -> Address {
+        match token {
+            RewardToken::Aqua => config.aqua_token.clone(),
+            RewardToken::Blub => config.blub_token.clone(),
+        }
+    }
+
+    // Swap the accrued reward token for the one the staker elected.
+    //
+    // Token indices are read from the pool rather than hardcoded — pool 0
+    // happens to order [AQUA, BLUB], but Aquarius sorts by contract address and
+    // a different pool would not match.
+    fn swap_reward_token(
+        env: &Env,
+        config: &Config,
+        from: RewardToken,
+        to: RewardToken,
+        amount: i128,
+        min_out: i128,
+    ) -> Result<i128, Error> {
+        use soroban_sdk::auth::{ContractContext, InvokerContractAuthEntry, SubContractInvocation};
+        use soroban_sdk::IntoVal;
+
+        let contract_address = env.current_contract_address();
+        let in_token = Self::reward_token_address(config, from);
+        let out_token = Self::reward_token_address(config, to);
+
+        let tokens = match env
+            .try_invoke_contract::<soroban_sdk::Vec<Address>, soroban_sdk::Error>(
+                &config.liquidity_contract,
+                &soroban_sdk::Symbol::new(env, "get_tokens"),
+                ().into_val(env),
+            ) {
+            Ok(Ok(t)) if t.len() >= 2 => t,
+            _ => return Err(Error::SwapFailed),
+        };
+
+        let mut in_idx: u32 = u32::MAX;
+        let mut out_idx: u32 = u32::MAX;
+        for i in 0..tokens.len() {
+            if let Some(t) = tokens.get(i) {
+                if t == in_token {
+                    in_idx = i;
+                }
+                if t == out_token {
+                    out_idx = i;
+                }
+            }
+        }
+        if in_idx == u32::MAX || out_idx == u32::MAX {
+            return Err(Error::SwapFailed);
+        }
+
+        // The pool pulls the input token from this contract.
+        let auth_entries = soroban_sdk::vec![
+            env,
+            InvokerContractAuthEntry::Contract(SubContractInvocation {
+                context: ContractContext {
+                    contract: in_token.clone(),
+                    fn_name: soroban_sdk::Symbol::new(env, "transfer"),
+                    args: (
+                        contract_address.clone(),
+                        config.liquidity_contract.clone(),
+                        amount,
+                    )
+                        .into_val(env),
+                },
+                sub_invocations: soroban_sdk::vec![env],
+            }),
+        ];
+        env.authorize_as_current_contract(auth_entries);
+
+        match env.try_invoke_contract::<u128, soroban_sdk::Error>(
+            &config.liquidity_contract,
+            &soroban_sdk::Symbol::new(env, "swap"),
+            (
+                contract_address.clone(),
+                in_idx,
+                out_idx,
+                amount as u128,
+                min_out as u128,
+            )
+                .into_val(env),
+        ) {
+            Ok(Ok(received)) => Ok(received as i128),
+            _ => Err(Error::SwapFailed),
+        }
+    }
+
+    // Admin/manager: pay out a staker's accrued rewards in the CURRENT accrual
+    // token, ignoring the claim cooldown.
+    //
+    // This exists for the v2 → v3 migration. The payout token can only change
+    // once every accrued balance is cleared, and stakers cannot be made to
+    // claim on demand — the cooldown alone would stall the switch for a week.
+    // Returns the amount paid; returns 0 (not an error) when there is nothing
+    // outstanding, so a sweep can run over every staker idempotently.
+    pub fn settle_user_rewards(
+        env: Env,
+        manager: Address,
+        user: Address,
+    ) -> Result<i128, Error> {
+        let config = Self::get_config(env.clone())?;
+        Self::require_manager_auth(&env, &manager)?;
+
+        let reward_state = Self::get_reward_state(&env);
+        let mut user_state = Self::get_user_reward_state(&env, &user);
+        let pending = Self::calculate_user_pending_rewards(&reward_state, &user_state);
+
+        if pending <= 0 {
+            // Still sync the watermark so a later policy change cannot pay this
+            // staker in a token they did not accrue.
+            user_state.reward_per_token_paid = reward_state.reward_per_token_stored;
+            env.storage()
+                .persistent()
+                .set(&DataKey::UserRewardStateV2(user.clone()), &user_state);
+            return Ok(0);
+        }
+
+        let now = env.ledger().timestamp();
+        user_state.rewards_earned = 0;
+        user_state.reward_per_token_paid = reward_state.reward_per_token_stored;
+        user_state.last_claim_time = now;
+        user_state.total_claimed = user_state.total_claimed.saturating_add(pending);
+
+        let mut reward_state_mut = reward_state.clone();
+        reward_state_mut.total_rewards_claimed = reward_state_mut
+            .total_rewards_claimed
+            .saturating_add(pending);
+
+        env.storage()
+            .instance()
+            .set(&DataKey::RewardStateV2, &reward_state_mut);
+        env.storage()
+            .persistent()
+            .set(&DataKey::UserRewardStateV2(user.clone()), &user_state);
+
+        let policy = Self::get_reward_policy(env.clone());
+        let token = Self::reward_token_address(&config, policy.payout_token);
+        use soroban_sdk::token;
+        let client = token::Client::new(&env, &token);
+        if client
+            .try_transfer(&env.current_contract_address(), &user, &pending)
+            .is_err()
+        {
+            return Err(Error::InsufficientBalance);
+        }
+
+        let mut ledger = Self::get_reward_ledger(&env);
+        ledger.outstanding = ledger.outstanding.saturating_sub(pending).max(0);
+        Self::set_reward_ledger(&env, &ledger);
+
+        env.events()
+            .publish((symbol_short!("rwd_setl"),), (user, pending));
+
+        Ok(pending)
+    }
+
     pub fn add_rewards(env: Env, manager: Address, amount: i128) -> Result<(), Error> {
         let config = Self::get_config(env.clone())?;
         Self::require_manager_auth(&env, &manager)?;
@@ -4136,23 +4498,28 @@ impl StakingRegistry {
             return Err(Error::InvalidInput);
         }
 
-        // Hard cap: 100,000 BLUB (7 decimals) per call
-        const MAX_BLUB_PER_CALL: i128 = 1_000_000_000_000;
-        if amount > MAX_BLUB_PER_CALL {
-            return Err(Error::InvalidInput);
-        }
+        // The v2 hard cap of 100,000 BLUB per call is gone (v3). It existed to
+        // bound the blast radius of minting rewards; v3 distributes AQUA that
+        // pooled ICE already earned, so there is nothing to mint and a weekly
+        // voting-revenue tranche can legitimately exceed the old ceiling.
 
         let contract_address = env.current_contract_address();
         let mut reward_state = Self::get_reward_state(&env);
         let now = env.ledger().timestamp();
 
-        // Transfer BLUB from manager to contract
+        // Pull the reward in whatever token the policy currently pays out.
+        let policy = Self::get_reward_policy(env.clone());
         use soroban_sdk::token;
-        let blub_client = token::Client::new(&env, &config.blub_token);
-        let transfer_result = blub_client.try_transfer(&manager, &contract_address, &amount);
+        let reward_token = Self::reward_token_address(&config, policy.payout_token);
+        let reward_client = token::Client::new(&env, &reward_token);
+        let transfer_result = reward_client.try_transfer(&manager, &contract_address, &amount);
         if transfer_result.is_err() {
             return Err(Error::InsufficientBalance);
         }
+
+        let mut ledger = Self::get_reward_ledger(&env);
+        ledger.outstanding = ledger.outstanding.saturating_add(amount);
+        Self::set_reward_ledger(&env, &ledger);
 
         // Update reward_per_token: how much reward each token earns
         // Only update if there are stakers
@@ -4275,6 +4642,15 @@ impl StakingRegistry {
         Self::require_manager_auth(&env, &manager)?;
 
         if aqua_amount <= 0 || blub_reward_amount <= 0 {
+            return Err(Error::InvalidInput);
+        }
+
+        // v2-only path: it credits BLUB-denominated units and predates the
+        // outstanding-reward ledger, so running it while the policy pays AQUA
+        // would mix denominations in one accumulator and desync the ledger that
+        // gates `set_reward_policy`. Unused by the backend since v3; use
+        // `add_rewards` instead.
+        if Self::get_reward_policy(env.clone()).payout_token != RewardToken::Blub {
             return Err(Error::InvalidInput);
         }
 
@@ -4403,16 +4779,57 @@ impl StakingRegistry {
             .persistent()
             .set(&DataKey::UserRewardStateV2(user.clone()), &user_state);
 
-        // Transfer rewards to user
+        // Settle the outstanding-reward counter before paying out, so the
+        // payout token can only be changed once every balance is cleared.
+        let mut ledger = Self::get_reward_ledger(&env);
+        ledger.outstanding = ledger.outstanding.saturating_sub(pending).max(0);
+        Self::set_reward_ledger(&env, &ledger);
+
+        // Pay out in the staker's elected token, defaulting to the protocol's.
+        // Rewards accrue in `policy.payout_token`; electing the other one means
+        // the contract swaps here and the staker wears the slippage.
+        let policy = Self::get_reward_policy(env.clone());
+        let elected = match Self::get_reward_preference(env.clone(), user.clone()) {
+            Some(token) if policy.allow_user_choice => token,
+            _ => policy.payout_token,
+        };
+
         use soroban_sdk::token;
-        let blub_client = token::Client::new(&env, &config.blub_token);
         let contract_address = env.current_contract_address();
-        let transfer_result = blub_client.try_transfer(&contract_address, &user, &pending);
+
+        let delivered = if elected == policy.payout_token {
+            pending
+        } else {
+            let min_out = pending
+                .saturating_mul(
+                    10_000i128.saturating_sub(policy.max_swap_slippage_bps as i128),
+                )
+                .saturating_div(10_000);
+            let received = Self::swap_reward_token(
+                &env,
+                &config,
+                policy.payout_token,
+                elected,
+                pending,
+                min_out,
+            )?;
+            env.events().publish(
+                (symbol_short!("rwd_swap"),),
+                (user.clone(), pending, received),
+            );
+            received
+        };
+
+        let payout_token = Self::reward_token_address(&config, elected);
+        let payout_client = token::Client::new(&env, &payout_token);
+        let transfer_result = payout_client.try_transfer(&contract_address, &user, &delivered);
         if transfer_result.is_err() {
             return Err(Error::InsufficientBalance);
         }
 
-        // Emit event
+        // `amount` stays the ACCRUED unit count so the reward indexer keeps
+        // reading one consistent series across the v3 switch; `rwd_swap` above
+        // carries the delivered amount when the staker elected the other token.
         let event = RewardsClaimedEvent {
             user: user.clone(),
             amount: pending,
@@ -4421,7 +4838,9 @@ impl StakingRegistry {
         };
         env.events().publish((symbol_short!("rwd_clm"),), event);
 
-        Ok(pending)
+        // Returns what actually reached the staker's wallet, which differs from
+        // `pending` after a swap.
+        Ok(delivered)
     }
 
     // View function: Get user's pending rewards (without claiming)

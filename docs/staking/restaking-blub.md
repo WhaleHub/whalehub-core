@@ -31,4 +31,4 @@ sequenceDiagram
 
 ## When to Restake
 
-Restaking is useful for compounding your returns. After claiming BLUB rewards, you can lock them back into the protocol to earn even more BLUB on top.
+Restaking is useful for compounding your returns. Rewards are paid in AQUA since v3, so the compounding loop is: claim AQUA, lock it to mint BLUB, stake that BLUB. If you elected BLUB payouts instead, you can restake the BLUB directly.

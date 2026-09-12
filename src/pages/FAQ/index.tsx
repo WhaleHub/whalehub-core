@@ -27,7 +27,7 @@ const faqData = [
       },
       {
         q: "What does WhaleHub cost?",
-        a: "Two fee tiers depending on what you do with your AQUA:\n\n• Stake BLUB to earn POL yield: 70% to stakers, 30% to the protocol treasury.\n• Deposit into Vaults: 85% auto-compounded back into your LP position, 15% to treasury.\n\nThe treasury share is reinvested to grow the ICE position and buy BLUB from the open market. Both ultimately benefit users: a bigger ICE position means a larger share of future rewards, and treasury buys create ongoing demand for BLUB. There are no separate deposit fees, withdrawal fees, or subscription fees.",
+        a: "There are no deposit fees, withdrawal fees, or subscription fees. The protocol takes a share of the yield it generates:\n\n• Voting revenue: 50% to BLUB stakers, 30% to vault LPs, 10% to protocol-owned liquidity, 10% to treasury.\n• Vault pool emissions: 85% auto-compounded back into your LP position, 15% to treasury.\n\nThe treasury share funds runway, audits and operations. The POL share deepens the AQUA/BLUB pool, which is the exit for everyone holding BLUB.",
       },
     ],
   },
@@ -49,11 +49,11 @@ const faqData = [
       },
       {
         q: "Can I redeem BLUB back for AQUA at 1:1?",
-        a: "No. 90% of the AQUA you deposit is committed to ICE governance to generate the yield. There's no native redemption path, and that's by design.\n\nThis is how every productive liquid staking token works. You can't directly redeem cvxCRV for CRV. The underlying CRV is vote-locked forever. The exit is always the open market.\n\nFor BLUB, you exit via the AQUA/BLUB pool on Aquarius AMM, or via LOBSTR, or via Stellar's DEX. The peg holds because of three things working together: protocol-owned liquidity, constant treasury buying pressure, and real yield that makes BLUB worth accumulating.",
+        a: "No. 90% of the AQUA you deposit is committed to ICE governance to generate the yield. There's no native redemption path, and that's by design.\n\nThis is how every productive liquid staking token works. You can't directly redeem cvxCRV for CRV. The underlying CRV is vote-locked forever. The exit is always the open market.\n\nFor BLUB, you exit via the AQUA/BLUB pool on Aquarius AMM, or via LOBSTR, or via Stellar's DEX. BLUB floats — there is no peg to hold. What supports it is a deep exit pool, funded continuously by 40% of all voting revenue, and real AQUA yield that makes BLUB worth accumulating rather than passing through.",
       },
       {
         q: "What if BLUB trades below AQUA on the market?",
-        a: "Three mechanisms push the peg back toward 1:1:\n\n1. Protocol-owned liquidity in the AQUA/BLUB pool provides deep, permanent backstop liquidity. This liquidity is never pulled.\n2. Treasury earnings (30% of all earned AQUA) are used to buy BLUB from the open market, creating a constant bid.\n3. Real staking yield makes BLUB an accumulating asset, not a pass-through. Holders are incentivized to stake and earn rather than dump.",
+        a: "BLUB is a floating asset. It is not pegged to AQUA and is not redeemable from the protocol, so its price is whatever the pool says it is. Minting is one-way: AQUA in, BLUB out, and the AQUA is frozen as ICE permanently.\n\nWhat supports the price is yield, not a peg mechanism:\n\n1. Staking BLUB earns AQUA every epoch from the pooled ICE position's voting revenue. The cheaper BLUB is, the more AQUA yield you get per unit of capital spent buying it.\n2. 40% of all voting revenue goes into deepening the AQUA/BLUB pool — 30% to vault LPs and 10% to protocol-owned liquidity, which is never pulled. A deeper pool means selling moves the price less.\n\nThe protocol does not buy BLUB to support the price. It used to, by paying staker rewards in BLUB bought on the open market; that spent revenue moving its own market and was removed in v3.",
       },
       {
         q: "Is BLUB the same whether I staked AQUA or bought it on the market?",
@@ -79,7 +79,7 @@ const faqData = [
       },
       {
         q: "How is the yield split?",
-        a: "Stakers receive 70% of POL yield (30% to treasury). Vault depositors receive 85% auto-compounded (15% to treasury).",
+        a: "Voting revenue splits four ways: 50% to BLUB stakers (paid in AQUA), 30% to vault LPs, 10% to protocol-owned liquidity, 10% to treasury. Vault pool emissions are separate: 85% auto-compounded into your position, 15% to treasury.",
       },
       {
         q: "Is the APY guaranteed?",
@@ -109,7 +109,7 @@ const faqData = [
       },
       {
         q: "What are the main risks?",
-        a: "Honest list, in order of priority:\n\n1. Smart contract risk. The code has been in production through multiple upgrade cycles, but all smart contracts carry residual risk.\n2. Aquarius dependency. Yield depends on Aquarius continuing to operate, distribute rewards, and maintain reward zone mechanics.\n3. Peg risk. BLUB's market price can deviate from AQUA in stressed market conditions, though POL and treasury buying work to stabilize it.\n4. AQUA token risk. BLUB's underlying value is tied to AQUA. If AQUA's price or utility collapses, BLUB tracks down with it.\n5. Soroban ecosystem risk. As a newer smart contract platform, Soroban carries some platform-level maturity risk compared to more battle-tested environments.\n\nIf anyone is telling you a DeFi protocol has no risk, they're either lying or confused. We list these up front because that's how responsible DeFi operates.",
+        a: "Honest list, in order of priority:\n\n1. Smart contract risk. The code has been in production through multiple upgrade cycles, but all smart contracts carry residual risk.\n2. Aquarius dependency. Yield depends on Aquarius continuing to operate, distribute rewards, and maintain reward zone mechanics.\n3. Price risk. BLUB floats and is not redeemable, so it can and does trade below the 1:1 rate at which it is minted. Deepening the exit pool reduces how far a given sale moves the price, but nothing holds a floor.\n4. AQUA token risk. BLUB's underlying value is tied to AQUA. If AQUA's price or utility collapses, BLUB tracks down with it.\n5. Soroban ecosystem risk. As a newer smart contract platform, Soroban carries some platform-level maturity risk compared to more battle-tested environments.\n\nIf anyone is telling you a DeFi protocol has no risk, they're either lying or confused. We list these up front because that's how responsible DeFi operates.",
       },
       {
         q: "Is my wallet safe?",

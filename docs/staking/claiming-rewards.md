@@ -1,8 +1,14 @@
 # Claiming Rewards
 
-BLUB rewards accumulate continuously while your tokens are staked. You can claim them every 7 days.
+**AQUA** rewards accumulate continuously while your BLUB is staked. You can claim them every 7 days.
 
-> **Status (2026-06):** BLUB rewards are actively accruing. Staker income now comes from the [Bribes Harvesting Module (v2)](../tokenomics/bribes-harvesting.md), which earns Aquarius bribes by voting Whalehub's ICE on the **highest-yielding market** — replacing the earlier pool-farming source.
+> **Status (2026-09):** rewards are paid in **AQUA** since v3. Staker income comes from voting Whalehub's pooled ICE on the **highest-yielding Aquarius market** and passing the resulting AQUA straight through — see [Reward Distribution](../tokenomics/reward-distribution.md). Under v2 the protocol bought BLUB on the open market to pay stakers; that is removed.
+
+## Choosing your payout token
+
+AQUA is the default and needs no action.
+
+If you would rather be paid in BLUB, set your preference once with `set_reward_preference` and the contract swaps your AQUA for BLUB through the pool each time you claim. You receive whatever the pool returns after price impact, protected by a slippage floor that reverts the claim rather than accepting a bad fill. Set your preference back to none at any time to return to AQUA.
 
 ## How Claiming Works
 

@@ -14,7 +14,7 @@ from stellar_sdk import xdr as xdr_
 # ── Config ───────────────────────────────────────────────────────────────
 STAKING_CONTRACT   = "CC72BEVVKHQ57PB5FCKAZYRXCSR6DOQSTN46QR7RZMMM64YWNRPDS24S"
 MULTISIG_ADMIN     = "GALE4XON37AQ4KFTJKB3W32BUQGXFE46TQLKUIGBSIHSOEHTDBMKEI3M"
-NEW_WASM_HASH      = "8f821edf2cdc322418780097c8998880dee8664dc248580e0a18fbf3623f60aa"  # 2026-09-11: single-sided POL/compound deposits (min_lp_out), withdraw_pol_one_coin, multi-bucket vault-solvency guard, zero-share bucket guard
+NEW_WASM_HASH      = "77b6b533a7436ee6ff8d15e7a5160d67739ae062b572b2bdb7b6891f992e0a8a"  # 2026-09-12 v3 reward engine: AQUA payouts via RewardPolicy (revertible), per-user payout election + claim-time swap, settle_user_rewards, 100K add_rewards cap removed. NOT YET UPLOADED.
 RPC_URL            = "https://mainnet.sorobanrpc.com"
 NETWORK_PASSPHRASE = Network.PUBLIC_NETWORK_PASSPHRASE
 MAX_FEE            = 1_000_000
