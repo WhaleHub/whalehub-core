@@ -2,7 +2,7 @@
 
 **AQUA** rewards accumulate continuously while your BLUB is staked. You can claim them every 7 days.
 
-> **Status (2026-09):** rewards are paid in **AQUA** since v3. Staker income comes from voting Whalehub's pooled ICE on the **highest-yielding Aquarius market** and passing the resulting AQUA straight through — see [Reward Distribution](../tokenomics/reward-distribution.md). Under v2 the protocol bought BLUB on the open market to pay stakers; that is removed.
+> **Status (14 September 2026):** rewards are paid in **AQUA**. v3 went live on mainnet on this date. Staker income comes from voting Whalehub's pooled ICE on the **highest-yielding Aquarius market** and passing the resulting AQUA straight through — see [Reward Distribution](../tokenomics/reward-distribution.md). Under v2 the protocol bought BLUB on the open market to pay stakers; that is removed.
 
 ## Choosing your payout token
 

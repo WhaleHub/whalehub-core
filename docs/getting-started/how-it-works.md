@@ -2,7 +2,7 @@
 
 Whalehub connects users, smart contracts, liquidity pools, and a backend automation server into a single yield-generating system.
 
-> **Status (2026-09):** staker rewards are active and paid in **AQUA**. Whalehub votes its pooled ICE on the **highest-yielding Aquarius market** and routes the voting revenue to stakers as AQUA — see [Reward Distribution](../tokenomics/reward-distribution.md). v2 bought BLUB on the open market to pay stakers; v3 does not, because the revenue already arrives as AQUA. The legacy POL pool-emissions leg (BLUB-AQUA) is paused pending Aquarius re-whitelisting and resumes automatically if approved — but it is no longer required for rewards.
+> **Status (14 September 2026):** staker rewards are active and paid in **AQUA** — v3 went live on mainnet on this date. Whalehub votes its pooled ICE on the **highest-yielding Aquarius market** and routes the voting revenue to stakers as AQUA — see [Reward Distribution](../tokenomics/reward-distribution.md). v2 bought BLUB on the open market to pay stakers; v3 does not, because the revenue already arrives as AQUA. The legacy POL pool-emissions leg (BLUB-AQUA) is paused pending Aquarius re-whitelisting and resumes automatically if approved — but it is no longer required for rewards.
 
 ## System Overview
 
