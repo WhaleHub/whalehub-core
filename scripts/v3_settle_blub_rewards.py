@@ -57,10 +57,22 @@ EXECUTE = "--execute" in sys.argv[1:]
 
 
 def load_manager() -> Keypair:
+    """
+    Load blub-issuer-v2.
+
+    The stellar CLI stores identities either way round: multisig-admin.toml
+    holds a raw `secret_key`, blub-issuer-v2.toml holds a `seed_phrase`. Handle
+    both rather than assuming, then fall back to MANAGER_SECRET.
+    """
     path = os.path.expanduser("~/.config/stellar/identity/blub-issuer-v2.toml")
     try:
         with open(path, "rb") as f:
-            return Keypair.from_secret(tomllib.load(f)["secret_key"])
+            data = tomllib.load(f)
+        if data.get("secret_key"):
+            return Keypair.from_secret(data["secret_key"])
+        if data.get("seed_phrase"):
+            return Keypair.from_mnemonic_phrase(data["seed_phrase"])
+        raise KeyError("neither secret_key nor seed_phrase present")
     except Exception as e:
         secret = os.environ.get("MANAGER_SECRET", "")
         if not secret:
@@ -155,9 +167,30 @@ def main() -> None:
             tx = server.prepare_transaction(tx)
             tx.sign(manager)
             resp = server.send_transaction(tx)
-            print(f"  {addr}  {amount/STROOP:>15,.7f} BLUB  -> {resp.hash}")
-            ok += 1
-            time.sleep(2)  # stay under the RPC rate limit
+
+            # send_transaction returning a hash means QUEUED, not applied. Poll
+            # until the ledger closes on it. Without this the loop races itself:
+            # `load_account` hands back a stale sequence number while the prior
+            # transaction is still pending, and the duplicate seq fails as
+            # tx_bad_seq — silently, because nothing ever checked.
+            status = "PENDING"
+            for _ in range(30):
+                time.sleep(2)
+                try:
+                    got = server.get_transaction(resp.hash)
+                    status = str(getattr(got, "status", "")).upper()
+                except Exception:
+                    continue
+                if "NOT_FOUND" in status or "PENDING" in status:
+                    continue
+                break
+
+            if "SUCCESS" in status:
+                print(f"  {addr}  {amount/STROOP:>15,.7f} BLUB  -> {resp.hash}")
+                ok += 1
+            else:
+                print(f"  {addr}  FAILED ({status or 'timeout'}): {resp.hash}")
+                failed += 1
         except (PrepareTransactionException, Exception) as e:
             print(f"  {addr}  FAILED: {e}")
             failed += 1
