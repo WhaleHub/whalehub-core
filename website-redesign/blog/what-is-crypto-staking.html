@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>What Is Crypto Staking? How It Works and What It Actually Pays | WhaleHub</title>
+<meta name="description" content="Crypto staking explained: how proof-of-stake rewards work, where the yield actually comes from, the four different things called staking, and what can go wrong." />
+<link rel="canonical" href="https://whalehub.io/blog/what-is-crypto-staking" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="what is staking crypto, crypto staking explained, how does staking work, proof of stake rewards, staking vs lending, staking risks" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/what-is-crypto-staking" />
+<meta property="og:title" content="What Is Crypto Staking? How It Works and What It Actually Pays" />
+<meta property="og:description" content="Crypto staking explained: how proof-of-stake rewards work, where the yield actually comes from, the four different things called staking, and what can go wrong." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/what-is-crypto-staking.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-15" />
+<meta property="article:modified_time" content="2026-09-15" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="What Is Crypto Staking? How It Works and What It Actually Pays" />
+<meta name="twitter:description" content="Crypto staking explained: how proof-of-stake rewards work, where the yield actually comes from, the four different things called staking, and what can go wrong." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/what-is-crypto-staking.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/what-is-crypto-staking#article",
+      "headline": "What Is Crypto Staking? How It Works and What It Actually Pays",
+      "description": "Crypto staking explained: how proof-of-stake rewards work, where the yield actually comes from, the four different things called staking, and what can go wrong.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/what-is-crypto-staking.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-09-15",
+      "dateModified": "2026-09-15",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev"
+        ]
+      },
+      "publisher": {
+        "@id": "https://whalehub.io/#organization"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/what-is-crypto-staking"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://whalehub.io/blog/what-is-crypto-staking#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is crypto staking in simple terms?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Crypto staking is locking up tokens to help secure a proof-of-stake blockchain, in return for a share of the rewards that network pays. Validators put up tokens as collateral and are chosen to produce blocks; honest work earns newly issued tokens and transaction fees, while misbehaviour can destroy part of the collateral. Staking is supplying some of that collateral and taking a share of the pay."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does staking make money?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Staking rewards come from two main sources: newly issued tokens, and transaction fees paid by network users. Issuance dilutes non-stakers to pay stakers, while fees are genuine external revenue. Some ecosystems add a third source, where locked tokens carry voting power that other protocols pay for. Any yield exceeding what these can fund is coming from somewhere else."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is crypto staking safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Staking carries real risks. The largest by far is price risk \u2014 earning 6% on an asset that falls 40% is still a loss. Beyond that: slashing penalties for validator misbehaviour, illiquidity during unbonding periods, platform insolvency on custodial services, and smart-contract bugs on non-custodial ones. Staked principal is not guaranteed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you lose money staking crypto?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Most commonly through the staked asset falling in price by more than the yield earned. You can also lose through slashing, a platform failing or freezing withdrawals, a smart-contract exploit, or a liquid staking token trading below the asset it represents. A positive APY does not make a position profitable in your home currency."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between staking and lending?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Staking secures a blockchain and is paid from network issuance and fees. Lending hands your tokens to a borrower and is paid from the interest they owe. Some products marketed as staking are really lending \u2014 a clear sign is a fixed rate offered on an asset whose network has no staking mechanism at all, such as Bitcoin. The risks are different and should be disclosed differently."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long are tokens locked when staking?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It depends on the network and the product. Many proof-of-stake chains impose an unbonding period of several days, which exists so a validator cannot misbehave and exit before being penalised. Some platforms add their own notice period. Liquid staking avoids the wait by giving you a tradeable receipt token, but then your exit price is whatever the market pays for that receipt."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://whalehub.io/blog/what-is-crypto-staking#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://whalehub.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "What Is Crypto Staking? How It Works and What It Actually Pays",
+          "item": "https://whalehub.io/blog/what-is-crypto-staking"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; Staking</div>
+      <span class="tag">Staking</span>
+      <h1>What Is Crypto Staking? How It Works and What It Actually Pays</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: September 2026</span>
+        <span class="dot-sep"></span>
+        <span>10 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/what-is-crypto-staking.png" alt="What is crypto staking — how it works and what it pays, explained" width="1200" height="630" />
+    </figure>
+
+    <p class="lead"><strong>Crypto staking</strong> is locking tokens to help secure a blockchain, in exchange for a share of the rewards that network pays out. That is the honest one-line version. The longer version matters, because "staking" has become a label attached to several very different products — some of which are not staking at all, and one of which is lending with a friendlier name.</p>
+
+    <div class="callout">
+      <div class="k">The short answer</div>
+      <p>On a proof-of-stake blockchain, validators put up tokens as collateral and get chosen to produce blocks. Honest work earns newly issued tokens and transaction fees; dishonest work can get the collateral destroyed. Staking is you supplying some of that collateral and taking a cut of the reward.</p>
+      <p>Everything else — liquid staking, exchange staking, "staking" products paying fixed rates on assets that have no staking mechanism — is a wrapper around that idea, or a different thing borrowing the word.</p>
+    </div>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#how-it-works">How staking works</a></li>
+        <li><a href="#where-yield-comes-from">Where the yield comes from</a></li>
+        <li><a href="#types">The four things called "staking"</a></li>
+        <li><a href="#risks">What can go wrong</a></li>
+        <li><a href="#returns">What it actually pays</a></li>
+        <li><a href="#getting-started">How to start</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="how-it-works">How staking works</h2>
+      <p class="answer">A proof-of-stake network needs someone to order transactions and produce blocks. Instead of awarding that right to whoever burns the most electricity, it awards it to validators who lock up tokens as collateral. The network pays them for doing it correctly and can destroy part of their collateral for doing it incorrectly. Staking is contributing to that collateral and sharing in the pay.</p>
+      <p>Mechanically, three things happen when you stake:</p>
+      <ul>
+        <li><strong>Your tokens are bonded.</strong> They stop being freely transferable and start counting toward a validator's stake weight.</li>
+        <li><strong>The validator does work.</strong> It proposes and attests to blocks. The network tracks whether it is online and honest.</li>
+        <li><strong>Rewards accrue.</strong> Newly issued tokens and a share of transaction fees are distributed in proportion to stake, minus whatever commission the validator charges.</li>
+      </ul>
+      <p>Unbonding usually takes time — days on many networks — because a validator that could exit instantly could misbehave and escape the penalty. That delay is a feature of the security model, not an inconvenience someone forgot to remove.</p>
+
+      <h2 id="where-yield-comes-from">Where the yield actually comes from</h2>
+      <p class="answer">Staking rewards come from two places: new token issuance, and transaction fees paid by users. Issuance dilutes existing holders to pay stakers; fees are real revenue. Any "staking" yield that exceeds what those two can fund is coming from somewhere else, and that somewhere else is the thing worth understanding before you deposit.</p>
+
+      <h3>Issuance</h3>
+      <p>Most of a typical staking reward is newly minted tokens. This is the part people misread. If a network issues 5% more tokens per year and pays it all to stakers, a staker earning "5%" has roughly preserved their share of the network while non-stakers have been diluted by 5%. The nominal yield is real; the wealth transfer is from people who did not stake to people who did.</p>
+      <p>That is a perfectly sound design — it pays for security — but it means comparing a staking APY to a savings rate is a category error. One is a share of new issuance, the other is interest on a loan.</p>
+
+      <h3>Transaction fees</h3>
+      <p>The rest comes from fees users pay to transact. This is genuine external revenue: it scales with how much the network is actually used, and it does not dilute anyone. On busy networks it can be a meaningful slice of staking income; on quiet ones it rounds to nothing.</p>
+
+      <h3>Governance revenue</h3>
+      <p>Some ecosystems add a third source. Where a token confers voting power over how incentives are distributed, that vote itself becomes valuable, and protocols will pay for it. Locking tokens for governance weight and collecting the resulting revenue is not staking in the validator sense — no blocks are produced — but it is the same shape: commit capital, receive a share of what the commitment earns. This is what WhaleHub does with AQUA on Stellar, and it is why our payouts are funded by voting revenue rather than issuance.</p>
+
+      <h2 id="types">The four different things called "staking"</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>What it is</th><th>Who holds keys</th><th>Main risk</th></tr></thead>
+          <tbody>
+            <tr><td>Native / solo</td><td>Running your own validator</td><td>You</td><td>Slashing, downtime, operational error</td></tr>
+            <tr><td>Delegated</td><td>Assigning your stake to a validator</td><td>You</td><td>Validator misbehaviour, commission</td></tr>
+            <tr><td>Liquid</td><td>Stake via a protocol, receive a tradeable receipt token</td><td>Smart contract</td><td>Contract bugs; receipt trading below the asset</td></tr>
+            <tr><td>Custodial / exchange</td><td>An exchange stakes on your behalf</td><td>The platform</td><td>Insolvency, withdrawal freezes, hacks</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>A fifth category deserves naming because it causes the most losses: <strong>products marketed as "staking" that are actually lending</strong>. If a platform offers a fixed rate on an asset whose network has no staking mechanism at all — Bitcoin is the usual example — then your tokens are being lent to somebody. That can be a legitimate business, but the risk is a borrower defaulting, not a validator misbehaving, and it should be priced and disclosed as such.</p>
+      <p>The test is simple: ask what the yield is paid from. A real staking product can answer in one sentence.</p>
+
+      <h2 id="risks">What can go wrong</h2>
+      <p class="answer">Staking is not a savings account and the principal is not guaranteed. The main risks are slashing, lock-up illiquidity, platform failure, smart-contract bugs, and — most commonly of all — the staked asset simply falling in price by more than the yield.</p>
+
+      <h3>Price risk, which dominates everything else</h3>
+      <p>Earning 6% on an asset that falls 40% is a 36% loss. This is by far the most common way people lose money "staking", and it has nothing to do with the staking mechanism. Yield is denominated in the token; your rent is not.</p>
+
+      <h3>Slashing</h3>
+      <p>Networks penalise validators for double-signing or extended downtime by destroying part of their stake. Delegators typically share that penalty. It is uncommon on well-run validators, but it is a real mechanism and not a theoretical one.</p>
+
+      <h3>Lock-up and unbonding</h3>
+      <p>You usually cannot exit instantly. If the price moves against you during an unbonding period, you watch it happen. Liquid staking exists to solve this, at the cost of introducing a receipt token whose market price can itself dislocate.</p>
+
+      <h3>Platform and contract risk</h3>
+      <p>Custodial staking makes you an unsecured creditor of a company. Non-custodial staking makes you dependent on a smart contract being correct, and on whoever controls its upgrade key. Neither is strictly safer — they fail differently, and you should know which failure you are exposed to. We cover that trade-off in detail in <a href="best-crypto-staking-platforms">Best Crypto Staking Platforms in 2026</a>.</p>
+
+      <h2 id="returns">What staking actually pays</h2>
+      <p>Rates vary by network and change constantly, so any figure printed here would be stale before long. What is stable is the shape of the thing:</p>
+      <ul>
+        <li><strong>Large, established proof-of-stake networks</strong> generally pay low-to-mid single digits. Security is well funded and stake participation is high, so rewards are spread thin.</li>
+        <li><strong>Smaller or newer networks</strong> pay more, because they need to attract stake. The extra yield is compensation for extra risk, and often for higher issuance.</li>
+        <li><strong>Anything paying a dramatic multiple of the category</strong> is either funded by emissions that dilute you, taking a risk it has not disclosed, or both.</li>
+      </ul>
+      <p>Two adjustments to make to any advertised number. First, subtract commission — a 5% gross rate at 25% commission is 3.75% to you. Second, check whether the figure is APR or APY, because compounding makes the same underlying rate look bigger. We unpack that in <a href="apy-vs-apr-crypto">APY vs APR in crypto</a>.</p>
+
+      <h2 id="getting-started">How to start</h2>
+      <ol>
+        <li><strong>Pick the asset first, not the yield.</strong> You are taking price exposure to whatever you stake, and that dominates the return.</li>
+        <li><strong>Decide custody.</strong> If managing a wallet and seed phrase is not something you are confident doing, a reputable custodial platform is genuinely the safer start despite counterparty risk. Losing a seed phrase is permanent in a way an exchange outage usually is not.</li>
+        <li><strong>Read the exit terms before depositing.</strong> Unbonding period, notice period, and whether there is a liquid receipt.</li>
+        <li><strong>Find the commission</strong> and compute your net rate yourself.</li>
+        <li><strong>Start small.</strong> Run one full cycle — stake, accrue, claim, exit — with an amount you do not mind before committing more.</li>
+      </ol>
+
+      <h2>The one-sentence summary</h2>
+      <p>Staking pays you for helping secure a network, funded mostly by new issuance and partly by fees; the yield is real but denominated in a volatile asset, the risks differ sharply by custody model, and any rate far above the category norm is a question rather than an opportunity.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is crypto staking in simple terms?</summary><p>Crypto staking is locking up tokens to help secure a proof-of-stake blockchain, in return for a share of the rewards that network pays. Validators put up tokens as collateral and are chosen to produce blocks; honest work earns newly issued tokens and transaction fees, while misbehaviour can destroy part of the collateral. Staking is supplying some of that collateral and taking a share of the pay.</p></details>
+      <details><summary>How does staking make money?</summary><p>Staking rewards come from two main sources: newly issued tokens, and transaction fees paid by network users. Issuance dilutes non-stakers to pay stakers, while fees are genuine external revenue. Some ecosystems add a third source, where locked tokens carry voting power that other protocols pay for. Any yield exceeding what these can fund is coming from somewhere else.</p></details>
+      <details><summary>Is crypto staking safe?</summary><p>Staking carries real risks. The largest by far is price risk — earning 6% on an asset that falls 40% is still a loss. Beyond that: slashing penalties for validator misbehaviour, illiquidity during unbonding periods, platform insolvency on custodial services, and smart-contract bugs on non-custodial ones. Staked principal is not guaranteed.</p></details>
+      <details><summary>Can you lose money staking crypto?</summary><p>Yes. Most commonly through the staked asset falling in price by more than the yield earned. You can also lose through slashing, a platform failing or freezing withdrawals, a smart-contract exploit, or a liquid staking token trading below the asset it represents. A positive APY does not make a position profitable in your home currency.</p></details>
+      <details><summary>What is the difference between staking and lending?</summary><p>Staking secures a blockchain and is paid from network issuance and fees. Lending hands your tokens to a borrower and is paid from the interest they owe. Some products marketed as staking are really lending — a clear sign is a fixed rate offered on an asset whose network has no staking mechanism at all, such as Bitcoin. The risks are different and should be disclosed differently.</p></details>
+      <details><summary>How long are tokens locked when staking?</summary><p>It depends on the network and the product. Many proof-of-stake chains impose an unbonding period of several days, which exists so a validator cannot misbehave and exit before being penalised. Some platforms add their own notice period. Liquid staking avoids the wait by giving you a tradeable receipt token, but then your exit price is whatever the market pays for that receipt.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — and the wider market around it — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="best-crypto-staking-platforms"><img src="../assets/blog/best-crypto-staking-platforms.png" alt="" /><span>Best Crypto Staking Platforms</span></a>
+        <a href="liquid-staking-explained"><img src="../assets/blog/liquid-staking-explained.png" alt="" /><span>Liquid Staking Explained</span></a>
+        <a href="apy-vs-apr-crypto"><img src="../assets/blog/apy-vs-apr-crypto.png" alt="" /><span>APY vs APR in Crypto</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Staking, without the operational overhead</h2>
+      <p>WhaleHub pools AQUA into a shared governance position on Stellar and auto-compounds what it earns. Non-custodial, no lockup on BLUB, always in your control.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not financial, tax, or legal advice. WhaleHub operates a staking protocol and therefore has a commercial interest in this subject. Network mechanics, reward rates, and platform terms change frequently — verify current details directly with any network or platform before depositing. Staking and DeFi involve risk, including the total loss of capital. Do your own research and consult a qualified professional before making decisions.</p>
+  </div>
+</article>
+
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>
