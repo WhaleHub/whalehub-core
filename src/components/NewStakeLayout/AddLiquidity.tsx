@@ -799,7 +799,7 @@ function AddLiquidity() {
           <div className="mt-5 space-y-3">
             {/* Banner */}
             <div className="bg-teal-500/10 border border-teal-500/30 rounded-lg p-3 mb-4 text-sm text-gray-200">
-              💡 You're a backer in a crowdfunded liquidity pool. Your yield comes from three places: swap fees on every trade, Aquarius AQUA rewards, and a share of WhaleHub's voting incentives (ex bribes). All reinvested for you every 4 hours.
+              💡 You're a backer in a crowdfunded liquidity pool. You earn swap fees plus AQUA rewards, reinvested for you every 4 hours.
             </div>
 
             {/* APY Row — two cards side by side */}
@@ -949,7 +949,7 @@ function AddLiquidity() {
                     <InformationCircleIcon
                       className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
                       onClick={() => onDialogOpen(
-                        "LP tokens added to your position by auto-compounding since you deposited, and what they are worth now.\n\nThey come from swap fees and, for AQUA-only deposits, the vault's share of Aquarius rewards from voting incentives (ex bribes).\n\nEvery 4 hours the vault reinvests, so this number only moves up.",
+                        "LP tokens added to your position by auto-compounding since you deposited, and what they are worth now.\n\nThey come from swap fees and, for AQUA-only deposits, AQUA rewards.\n\nEvery 4 hours the vault reinvests, so this number only moves up.",
                         "Earned So Far"
                       )}
                     />
@@ -968,7 +968,7 @@ function AddLiquidity() {
                 <InformationCircleIcon
                   className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
                   onClick={() => onDialogOpen(
-                    "Your position earns the highest Aquarius reward tier the pool qualifies for, thanks to WhaleHub's pooled ICE voting power. Solo, you would earn the base rate.\n\nAQUA-only deposits also receive the vault's share of Aquarius rewards from voting incentives (ex bribes).",
+                    "Your position earns the highest reward tier the pool qualifies for, thanks to WhaleHub's pooled ICE voting power. Solo, you would earn the base rate.\n\nAQUA-only deposits also receive AQUA rewards on top of swap fees.",
                     "Earning Boosted Rewards"
                   )}
                 />
@@ -1030,7 +1030,7 @@ function AddLiquidity() {
               <InformationCircleIcon
                 className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
                 onClick={() => onDialogOpen(
-                  "AQUA only (Boosted): deposit AQUA on its own and the vault pairs it into the AQUA-BLUB pool for you. On top of swap fees, AQUA-only deposits receive the vault's share of the protocol's Aquarius rewards from voting incentives (ex bribes), auto-compounded every 4 hours.\n\nAQUA + BLUB: deposit both tokens in pool ratio. You earn swap fees only, auto-compounded. No Aquarius rewards from voting incentives: that share goes to AQUA-only deposits.\n\nBLUB-only deposits are not offered: they push the pool off ratio.",
+                  "AQUA only (Boosted): deposit AQUA on its own and the vault pairs it into the AQUA-BLUB pool for you. You earn swap fees plus AQUA rewards, auto-compounded every 4 hours.\n\nAQUA + BLUB: deposit both tokens in pool ratio. You earn swap fees only, auto-compounded. AQUA rewards go to AQUA-only deposits.\n\nBLUB-only deposits are not offered: they push the pool off ratio.",
                   "Deposit Options"
                 )}
               />
@@ -1049,7 +1049,7 @@ function AddLiquidity() {
                   <span className="ml-auto text-[10px] uppercase tracking-wider text-[#00CC99] font-bold">Boosted</span>
                 </div>
                 <div className="text-[10px] text-[#B1B3B8] mt-1 leading-snug">
-                  Fees + Aquarius rewards from voting incentives (ex bribes)
+                  Swap fees + AQUA rewards
                 </div>
               </button>
               <button
@@ -1064,12 +1064,12 @@ function AddLiquidity() {
                   {TOKEN_LOGOS["BLUB"] && <img src={TOKEN_LOGOS["BLUB"]} alt="BLUB" className="w-4 h-4 rounded-full -ml-2.5" />}
                   AQUA + BLUB
                 </div>
-                <div className="text-[10px] text-[#B1B3B8] mt-1 leading-snug">Fees only</div>
+                <div className="text-[10px] text-[#B1B3B8] mt-1 leading-snug">Swap fees only</div>
               </button>
             </div>
             {!singleAsset && (
               <div className="text-[11px] text-[#F5B942] bg-[#F5B942]/10 border border-[#F5B942]/30 rounded-[8px] px-3 py-2">
-                Pair deposits earn swap fees only. Aquarius rewards from voting incentives (ex bribes) go to AQUA-only deposits. Choose AQUA only to earn them.
+                Pair deposits earn swap fees only. AQUA rewards go to AQUA-only deposits. Choose AQUA only to earn them.
               </div>
             )}
 
