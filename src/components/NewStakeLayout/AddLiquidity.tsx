@@ -38,6 +38,11 @@ const SINGLE_AQUA_POOL_ID = (() => {
   return raw && Number.isInteger(n) && n > 0 ? n : null;
 })();
 
+// True once the AQUA-only reward class is live on-chain and configured. Copy that
+// promises the extra voting-incentive share to AQUA-only depositors is gated on
+// this so the app never claims a payout the contract is not making yet.
+const BOOSTED_CLASS_LIVE = SINGLE_AQUA_POOL_ID != null;
+
 const TOKEN_LOGOS: Record<string, string> = {
   AQUA: aquaLogo,
   XLM: xlmLogo,
@@ -129,7 +134,8 @@ function AddLiquidity() {
   const [compoundApy, setCompoundApy] = useState<string>("--");
   const [iceBoost, setIceBoost] = useState<IceBoostInfo | null>(null);
 
-  const [singleAsset, setSingleAsset] = useState<boolean>(false);
+  // AQUA-only is the default entry: it is the class WhaleHub incentivizes.
+  const [singleAsset, setSingleAsset] = useState<boolean>(true);
   const [singleAssetToken, setSingleAssetToken] = useState<"a" | "b">("a");
 
   // Single-asset entry options for the selected pool, minus blocked tokens.
@@ -936,11 +942,30 @@ function AddLiquidity() {
               {" "}<span className="text-[#6B7280] text-xs font-normal">your slice of the pool</span>
             </div>
 
-            {userCompoundGains && parseFloat(userCompoundGains.compoundGainLp) > 0 && (
-              <div className="text-xs text-[#00CC99] mb-2">
-                +{fmtNum(userCompoundGains.compoundGainLp)} LP from compounding
-              </div>
-            )}
+            {/* What this position has earned: LP gained from compounding, with its USD value */}
+            {(() => {
+              const gainLp = parseFloat(userCompoundGains?.compoundGainLp ?? "0");
+              const lp = parseFloat(userPosition.user_lp_amount || "0");
+              const gainUsd = gainLp > 0 && lp > 0 && positionValueUsd ? (gainLp / lp) * positionValueUsd : null;
+              return (
+                <div className="bg-[#070910] border border-[#1C2235] rounded-[8px] px-3 py-2 mb-2 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1">
+                    <span className="text-[11px] text-[#B1B3B8]">Earned so far</span>
+                    <InformationCircleIcon
+                      className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
+                      onClick={() => onDialogOpen(
+                        "LP tokens added to your position by auto-compounding since you deposited, and what they are worth now.\n\nThey come from swap fees and Aquarius AQUA rewards" + (BOOSTED_CLASS_LIVE ? ", plus the vault's share of the protocol's voting incentives (ex bribes) for AQUA-only deposits." : ". The boosted class for AQUA-only deposits, with a share of the protocol's voting incentives (ex bribes), is launching soon.") + "\n\nEvery 4 hours the vault reinvests, so this number only moves up.",
+                        "Earned So Far"
+                      )}
+                    />
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-semibold text-[#00CC99]">{gainLp > 0 ? `+${fmtNum(gainLp)} LP` : "Compounding started"}</div>
+                    {gainUsd !== null && <div className="text-[10px] text-[#6B7280]">{`$${formatPositionUsd(gainUsd)}`}</div>}
+                  </div>
+                </div>
+              );
+            })()}
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
@@ -948,7 +973,7 @@ function AddLiquidity() {
                 <InformationCircleIcon
                   className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
                   onClick={() => onDialogOpen(
-                    "Your position is currently earning the maximum reward tier the pool qualifies for, thanks to WhaleHub's pooled ICE voting power.\n\nSolo, you'd earn the base rate. Together with every other backer in the vault, the pool unlocks higher reward tiers individuals can't reach alone.",
+                    "Your position earns the highest Aquarius reward tier the pool qualifies for, thanks to WhaleHub's pooled ICE voting power. Solo, you would earn the base rate." + (BOOSTED_CLASS_LIVE ? "\n\nAQUA-only deposits also receive the vault's share of the protocol's voting incentives (ex bribes)." : ""),
                     "Earning Boosted Rewards"
                   )}
                 />
@@ -1001,41 +1026,61 @@ function AddLiquidity() {
         {activeTab === "deposit" && selectedPool && (
           <div className="mt-5 space-y-4">
             <div className="text-xs text-[#B1B3B8] italic mb-1">
-              Auto-compounded every 4 hours. Your share of pool fees and AQUA rewards are reinvested for you automatically. No claiming, no manual work.
+              Auto-compounded every 4 hours. Your share of pool fees and AQUA rewards is reinvested for you automatically. No claiming, no manual work.
             </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-1">
-                  <span className="text-sm text-[#B1B3B8]">Single asset deposit</span>
-                  <InformationCircleIcon
-                    className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
-                    onClick={() => onDialogOpen(
-                      "Deposit AQUA only. The vault automatically splits and pairs your token to enter the pool.\n\nYou don't need both tokens to become a backer.\n\nSingle-sided BLUB deposits are disabled: they push BLUB-AQUA further off ratio.",
-                      "Single Asset Deposit"
-                    )}
-                  />
-                </div>
-                <div className="text-[10px] text-[#6B7280]">Deposit only one token, vault handles the rest</div>
-              </div>
+
+            {/* Deposit class: AQUA only (incentivized) vs AQUA + BLUB pair */}
+            <div className="flex items-center gap-1 mb-1.5">
+              <span className="text-sm text-[#B1B3B8]">How do you want to deposit?</span>
+              <InformationCircleIcon
+                className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
+                onClick={() => onDialogOpen(
+                  BOOSTED_CLASS_LIVE
+                    ? "AQUA only: deposit AQUA on its own and the vault pairs it into the AQUA-BLUB pool for you. This is the class WhaleHub incentivizes. On top of swap fees and Aquarius AQUA rewards, AQUA-only deposits receive the vault's share of the protocol's voting incentives (ex bribes).\n\nAQUA + BLUB: deposit both tokens in pool ratio. You earn swap fees and Aquarius AQUA rewards, auto-compounded, but no share of the voting incentives. That extra share goes to AQUA-only deposits.\n\nBLUB-only deposits are not offered: they push the pool off ratio."
+                    : "AQUA only: deposit AQUA on its own and the vault pairs it into the AQUA-BLUB pool for you. This is the class WhaleHub incentivizes: once the boosted reward class goes live, AQUA-only deposits will receive the vault's share of the protocol's voting incentives (ex bribes) on top of swap fees and Aquarius AQUA rewards.\n\nAQUA + BLUB: deposit both tokens in pool ratio. You earn swap fees and Aquarius AQUA rewards, auto-compounded, but no share of the voting incentives.\n\nBLUB-only deposits are not offered: they push the pool off ratio.",
+                  "Deposit Options"
+                )}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-2">
               <button
-                onClick={() => {
-                  setSingleAsset(!singleAsset);
-                  setDepositAmount1("");
-                  setDepositAmount2("");
-                }}
+                onClick={() => { setSingleAsset(true); setDepositAmount1(""); setDepositAmount2(""); }}
                 className={clsx(
-                  "relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none",
-                  singleAsset ? "bg-[#00CC99]" : "bg-[#2A3050]"
+                  "text-left rounded-[10px] border px-3 py-2.5 transition-colors",
+                  singleAsset ? "border-[#00CC99] bg-[#00CC99]/10" : "border-[#1C2235] bg-[#0A0D14] hover:border-[#2A3050]"
                 )}
               >
-                <span
-                  className={clsx(
-                    "inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform",
-                    singleAsset ? "translate-x-5" : "translate-x-1"
-                  )}
-                />
+                <div className="flex items-center gap-1.5 text-sm font-medium text-white">
+                  {TOKEN_LOGOS["AQUA"] && <img src={TOKEN_LOGOS["AQUA"]} alt="AQUA" className="w-4 h-4 rounded-full" />}
+                  AQUA only
+                  <span className="ml-auto text-[9px] uppercase tracking-wider text-[#00CC99] font-semibold">Incentivized</span>
+                </div>
+                <div className="text-[10px] text-[#B1B3B8] mt-1 leading-snug">
+                  {BOOSTED_CLASS_LIVE
+                    ? "Fees + Aquarius rewards + share of voting incentives (ex bribes)"
+                    : "Fees + Aquarius rewards. Boosted class with a share of voting incentives (ex bribes) launching soon"}
+                </div>
+              </button>
+              <button
+                onClick={() => { setSingleAsset(false); setDepositAmount1(""); setDepositAmount2(""); }}
+                className={clsx(
+                  "text-left rounded-[10px] border px-3 py-2.5 transition-colors",
+                  !singleAsset ? "border-[#00CC99] bg-[#00CC99]/10" : "border-[#1C2235] bg-[#0A0D14] hover:border-[#2A3050]"
+                )}
+              >
+                <div className="flex items-center gap-1.5 text-sm font-medium text-white">
+                  {TOKEN_LOGOS["AQUA"] && <img src={TOKEN_LOGOS["AQUA"]} alt="AQUA" className="w-4 h-4 rounded-full" />}
+                  {TOKEN_LOGOS["BLUB"] && <img src={TOKEN_LOGOS["BLUB"]} alt="BLUB" className="w-4 h-4 rounded-full -ml-2.5" />}
+                  AQUA + BLUB
+                </div>
+                <div className="text-[10px] text-[#B1B3B8] mt-1 leading-snug">Fees + Aquarius rewards only</div>
               </button>
             </div>
+            {!singleAsset && (
+              <div className="text-[11px] text-[#F5B942] bg-[#F5B942]/10 border border-[#F5B942]/30 rounded-[8px] px-3 py-2">
+                Pair deposits do not receive the extra AQUA share from voting incentives (ex bribes). Choose AQUA only to earn it.
+              </div>
+            )}
 
             {singleAsset ? (
               /* Single-asset mode: token selector + single input */

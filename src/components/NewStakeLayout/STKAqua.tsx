@@ -112,7 +112,7 @@ function STKAqua() {
   // v3 pays AQUA; the multisig can revert the policy to BLUB without a redeploy,
   // and this UI follows it either way. Defaults to BLUB so a pre-v3 contract —
   // or a failed read — never mislabels what the user is about to receive.
-  const [payoutToken, setPayoutToken] = useState<"AQUA" | "BLUB">("BLUB");
+  const [payoutToken, setPayoutToken] = useState<"AQUA" | "BLUB">("AQUA");
   const rewardPrice = payoutToken === "AQUA" ? aquaPrice : blubPrice;
 
   //get user aqua record

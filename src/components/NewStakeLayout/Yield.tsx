@@ -75,7 +75,7 @@ function Yield() {
   const blubPrice = useTokenPrice("BLUB");
   const aquaPrice = useTokenPrice("AQUA");
   // Token pending rewards will be paid in, read from the contract's reward policy (v3 = AQUA).
-  const [payoutToken, setPayoutToken] = useState<"AQUA" | "BLUB">("BLUB");
+  const [payoutToken, setPayoutToken] = useState<"AQUA" | "BLUB">("AQUA");
   const rewardPrice = payoutToken === "AQUA" ? aquaPrice : blubPrice;
 
   const blubRecord = user?.userRecords?.balances?.find(
