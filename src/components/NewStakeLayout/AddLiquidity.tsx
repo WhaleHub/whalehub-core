@@ -955,8 +955,11 @@ function AddLiquidity() {
                     />
                   </div>
                   <div className="text-right">
-                    <div className="text-sm font-semibold text-[#00CC99]">{gainLp > 0 ? `+${fmtNum(gainLp)} LP` : "Compounding started"}</div>
+                    <div className="text-sm font-semibold text-[#00CC99]">+{fmtNum(gainLp)} LP</div>
                     {gainUsd !== null && <div className="text-[10px] text-[#6B7280]">{`$${formatPositionUsd(gainUsd)}`}</div>}
+                    {gainLp <= 0 && compoundStats && compoundStats.lastCompoundTime > 0 && (
+                      <div className="text-[10px] text-[#6B7280]">No compounds since {new Date(compoundStats.lastCompoundTime * 1000).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</div>
+                    )}
                   </div>
                 </div>
               );
@@ -976,7 +979,7 @@ function AddLiquidity() {
               {compoundStats && compoundStats.compoundCount > 0 && (
                 <div className="flex items-center gap-1">
                   <div className="text-[10px] text-[#6B7280]">
-                    Auto-compounded {compoundStats.compoundCount.toLocaleString()}x since you deposited
+                    Pool auto-compounded {compoundStats.compoundCount.toLocaleString()}x{compoundStats.lastCompoundTime > 0 ? `, last on ${new Date(compoundStats.lastCompoundTime * 1000).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}` : ""}
                   </div>
                   <InformationCircleIcon
                     className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
