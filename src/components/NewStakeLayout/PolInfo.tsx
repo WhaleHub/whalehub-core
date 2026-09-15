@@ -263,7 +263,7 @@ function PolInfo({ onDialogOpen }: PolInfoProps) {
                   className="h-[14px] w-[14px] text-[#6B7280] cursor-pointer"
                   onClick={() =>
                     onDialogOpen(
-                      "Total ICE voting power held by the protocol from locking AQUA on Aquarius. ICE is non-transferable and is used to direct AQUA emissions and bribes toward WhaleHub's pools — the core of the yield strategy.",
+                      "Total ICE voting power held by the protocol from locking AQUA on Aquarius. ICE is non-transferable and is used to direct AQUA emissions and voting incentives (ex bribes) toward WhaleHub's pools, the core of the yield strategy.",
                       "Total ICE Locked"
                     )
                   }
@@ -285,7 +285,7 @@ function PolInfo({ onDialogOpen }: PolInfoProps) {
                   className="h-[14px] w-[14px] text-[#6B7280] cursor-pointer"
                   onClick={() =>
                     onDialogOpen(
-                      "Total BLUB rewards distributed to all stakers from POL (Protocol-Owned Liquidity) yield. Rewards are added automatically by the backend when AQUA is claimed from the BLUB-AQUA pool and swapped to BLUB.",
+                      "Total rewards paid to all stakers since launch, counted in reward units: paid in BLUB before 14 September 2026 and in AQUA since.\n\nRewards come from the protocol's ICE voting incentives (ex bribes) and POL yield, passed to stakers with no market swap in between.",
                       "Total Distributed"
                     )
                   }
@@ -294,8 +294,8 @@ function PolInfo({ onDialogOpen }: PolInfoProps) {
               <div className="min-w-0 text-right">
                 {staking.isLoading ? <span>...</span> : (
                   <div className="text-sm sm:text-base font-normal text-[#00CC99] break-words">
-                    {(staking.rewardState?.total_rewards_added ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} BLUB
-                    <span className="text-[11px] text-[#6B7280] font-normal block sm:inline mt-0.5 sm:mt-0 sm:ml-1">{formatUsd(staking.rewardState?.total_rewards_added ?? 0, blubPrice)}</span>
+                    {(staking.rewardState?.total_rewards_added ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    <span className="text-[11px] text-[#6B7280] font-normal block sm:inline mt-0.5 sm:mt-0 sm:ml-1">reward units</span>
                   </div>
                 )}
               </div>

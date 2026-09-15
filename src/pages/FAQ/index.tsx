@@ -11,7 +11,7 @@ const faqData = [
       },
       {
         q: "Who is WhaleHub for?",
-        a: "Anyone holding AQUA who wants meaningful yield without doing the manual work themselves. Managing a competitive AQUA position yourself means locking tokens for up to 3 years, voting every epoch, tracking bribe markets, and re-locking as ICE decays. WhaleHub does all of that for you at scale.\n\nIf you'd rather spend zero hours on your AQUA position and still earn an amplified rate, you're the target user.",
+        a: "Anyone holding AQUA who wants meaningful yield without doing the manual work themselves. Managing a competitive AQUA position yourself means locking tokens for up to 3 years, voting every epoch, tracking voting incentives (ex bribes), and re-locking as ICE decays. WhaleHub does all of that for you at scale.\n\nIf you'd rather spend zero hours on your AQUA position and still earn an amplified rate, you're the target user.",
       },
       {
         q: "Is WhaleHub live?",
@@ -19,7 +19,7 @@ const faqData = [
       },
       {
         q: "How do I start?",
-        a: "1. Open app.whalehub.io\n2. Connect your wallet (Freighter, LOBSTR, or WalletConnect)\n3. Deposit AQUA\n4. Receive BLUB 1:1\n5. Stake BLUB to earn yield, or hold it liquid\n\nThe protocol handles everything after the deposit: ICE locking, voting, reward claiming, and compounding.",
+        a: "1. Open app.whalehub.io\n2. Connect your wallet (Freighter, LOBSTR, or WalletConnect)\n3. Deposit AQUA\n4. Receive BLUB 1:1\n5. Stake BLUB to earn rewards, paid in AQUA, or hold it liquid\n\nThe protocol handles everything after the deposit: ICE locking, voting, reward claiming, and compounding.",
       },
       {
         q: "Is there a minimum deposit?",
@@ -71,7 +71,7 @@ const faqData = [
     items: [
       {
         q: "Where does the yield actually come from?",
-        a: "Three real sources, all earned from actual protocol activity:\n\n1. ICE voting rewards. The protocol's ICE position earns AQUA rewards every epoch for directing votes to liquidity pools. Because we lock at maximum duration, we get the full 10x voting multiplier, meaning our share of the reward pool is outsized relative to our AQUA position.\n\n2. Bribe revenue. Projects that want their pools to rank higher in the Aquarius reward zone pay bribes to ICE holders. WhaleHub aggregates these bribes and routes the proceeds to stakers.\n\n3. Protocol-owned liquidity. The 10% of every deposit that enters the AQUA/BLUB pool earns swap fees and additional AQUA rewards.\n\nNo token emissions. No inflationary printing. Yield is earned, not manufactured.",
+        a: "Three real sources, all earned from actual protocol activity:\n\n1. ICE voting rewards. The protocol's ICE position earns AQUA rewards every epoch for directing votes to liquidity pools. Because we lock at maximum duration, we get the full 10x voting multiplier, meaning our share of the reward pool is outsized relative to our AQUA position.\n\n2. Voting incentives (ex bribes). Projects that want their pools to rank higher in the Aquarius reward zone pay voting incentives to ICE holders. WhaleHub aggregates these and passes them to stakers as AQUA.\n\n3. Protocol-owned liquidity. The 10% of every deposit that enters the AQUA/BLUB pool earns swap fees and additional AQUA rewards.\n\nNo token emissions. No inflationary printing. Yield is earned, not manufactured.",
       },
       {
         q: "How often is yield distributed?",
@@ -83,7 +83,7 @@ const faqData = [
       },
       {
         q: "Is the APY guaranteed?",
-        a: "No. APY is a function of total ICE in circulation, voting participation, bribe market health, and pool performance. It moves with market conditions. We publish live APY figures in the app rather than promising fixed rates, because honest DeFi yield is variable yield.",
+        a: "No. APY is a function of total ICE in circulation, voting participation, the voting incentive (ex bribe) market, and pool performance. It moves with market conditions. We publish live APY figures in the app rather than promising fixed rates, because honest DeFi yield is variable yield.",
       },
       {
         q: "Why is the effective APY higher than the base APY?",
@@ -91,7 +91,7 @@ const faqData = [
       },
       {
         q: "Is WhaleHub's yield sustainable?",
-        a: "Yes. It comes from real economic activity: governance reward distributions, bribe market payments, and trading fees. None of it is emissions-based or dependent on new deposits to pay old ones.",
+        a: "Yes. It comes from real economic activity: governance reward distributions, voting incentive (ex bribe) payments, and trading fees. None of it is emissions-based or dependent on new deposits to pay old ones.",
       },
     ],
   },
@@ -169,7 +169,7 @@ const faqData = [
       },
       {
         q: "What's the difference between staking BLUB and depositing into the AQUA/BLUB vault?",
-        a: "Two separate products with different mechanics and risk profiles:\n\nBLUB Staking: You deposit BLUB into the staking contract. You earn yield from ICE rewards, bribes, and POL fees. No impermanent loss exposure. Your principal is denominated in BLUB.\n\nAQUA/BLUB Vault: You deposit into the AMM pool. You earn swap fees plus AQUA pool rewards, auto-compounded 6x daily. This is LP exposure, so it carries impermanent loss dynamics.\n\nStaking is simpler with no LP exposure. Vault LPing typically produces higher headline yield in exchange for carrying pool dynamics.",
+        a: "Two separate products with different mechanics and risk profiles:\n\nBLUB Staking: You deposit BLUB into the staking contract. You earn yield from ICE rewards, voting incentives (ex bribes), and POL fees, paid in AQUA. No impermanent loss exposure. Your principal is denominated in BLUB.\n\nAQUA/BLUB Vault: You deposit into the AMM pool. You earn swap fees plus AQUA pool rewards, auto-compounded 6x daily. This is LP exposure, so it carries impermanent loss dynamics.\n\nStaking is simpler with no LP exposure. Vault LPing typically produces higher headline yield in exchange for carrying pool dynamics.",
       },
       {
         q: "Why use WhaleHub vaults instead of providing liquidity directly on Aquarius?",

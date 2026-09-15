@@ -70,7 +70,7 @@ function STKAqua() {
   const blubPrice = useTokenPrice("BLUB");
   const aquaPrice = useTokenPrice("AQUA");
 
-  // Daily BLUB rewards estimate: activeStakedBlub * apy / 100 / 365.25.
+  // Daily reward estimate in the payout token: activeStakedBlub * apy / 100 / 365.25.
   // Shown alongside the APY % so users can see the concrete number (like AQUA dex).
   // Falls back to "--" when APY is unknown or the user has nothing staked.
   const userStakedBlub = parseFloat(staking.userStats?.activeAmount ?? "0");
@@ -1182,11 +1182,11 @@ const handleAddTrustline = async () => {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
                 <img
-                  src={"/Blub_logo2.svg"}
-                  alt="BLUB"
+                  src={payoutToken === "AQUA" ? AquaLogo : "/Blub_logo2.svg"}
+                  alt={payoutToken}
                   className="w-8 h-8 rounded-full"
                 />
-                <span className="text-lg">BLUB</span>
+                <span className="text-lg">{payoutToken}</span>
               </div>
             </div>
 
@@ -1197,7 +1197,7 @@ const handleAddTrustline = async () => {
                   className="h-[15px] w-[15px] text-white cursor-pointer"
                   onClick={() =>
                     onDialogOpen(
-                      "The BLUB you've accrued as a backer of the staking pool. New rewards are added on a rolling schedule.\n\nClaim them anytime, or leave them in to compound by re-staking.",
+                      `The ${payoutToken} you have earned as a backer of the staking pool. New rewards are added on a rolling schedule.\n\nClaim any time. To compound, deposit your claimed AQUA again in the card above.`,
                       "Your Earned Rewards"
                     )
                   }
@@ -1206,7 +1206,7 @@ const handleAddTrustline = async () => {
             </div>
 
             {/* Current APY — rolling 7-day rate from the backend indexer, with
-                a live "~X BLUB/day" estimate based on the user's active stake. */}
+                a live "~X AQUA/day" estimate based on the user's active stake. */}
             <div className="flex items-center bg-[#0E111B] px-3 sm:px-5 py-4 mt-4 rounded-[8px] justify-between gap-2">
               <div className="text-sm font-normal text-white flex items-center space-x-1 shrink-0">
                 <span>Current APY</span>
@@ -1214,7 +1214,7 @@ const handleAddTrustline = async () => {
                   className="h-[14px] w-[14px] text-[#B1B3B8] cursor-pointer"
                   onClick={() =>
                     onDialogOpen(
-                      "Your annual return rate, calculated from real BLUB rewards distributed over the last 7 days (not a marketing estimate or lifetime average).\n\nFloats with actual protocol activity. Higher when more rewards flow in, lower during quieter periods.\n\nYour share of those rewards is proportional to your staked BLUB. The bigger your stake, the bigger your slice.",
+                      "Your annual return rate, calculated from real rewards distributed over the last 7 days (not a marketing estimate or lifetime average).\n\nFloats with actual protocol activity. Higher when more rewards flow in, lower during quieter periods.\n\nYour share of those rewards is proportional to your staked BLUB. The bigger your stake, the bigger your slice.",
                       "Current APY"
                     )
                   }
@@ -1232,9 +1232,9 @@ const handleAddTrustline = async () => {
                 </div>
                 {dailyBlubEstimate !== null && (
                   <div className="text-[11px] text-[#6B7280] mt-0.5">
-                    ~{dailyBlubEstimate.toLocaleString("en-US", { maximumFractionDigits: 2 })} BLUB/day
-                    {blubPrice > 0 && (
-                      <span className="ml-1">{formatUsd(dailyBlubEstimate, blubPrice)}</span>
+                    ~{dailyBlubEstimate.toLocaleString("en-US", { maximumFractionDigits: 2 })} {payoutToken}/day
+                    {rewardPrice > 0 && (
+                      <span className="ml-1">{formatUsd(dailyBlubEstimate, rewardPrice)}</span>
                     )}
                   </div>
                 )}
@@ -1245,7 +1245,7 @@ const handleAddTrustline = async () => {
               <div className="text-sm font-normal text-white shrink-0">Pending Rewards</div>
               <div className="flex flex-col items-end min-w-0">
                 <div className="flex items-center space-x-2">
-                  <img src={"/Blub_logo2.svg"} alt="BLUB" className="w-4 h-4 rounded-full shrink-0" />
+                  <img src={payoutToken === "AQUA" ? AquaLogo : "/Blub_logo2.svg"} alt={payoutToken} className="w-4 h-4 rounded-full shrink-0" />
                   <span className="text-sm sm:text-base font-normal truncate">
                     {parseFloat(pendingRewards).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {payoutToken}
                   </span>

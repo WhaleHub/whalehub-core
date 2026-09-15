@@ -798,7 +798,7 @@ function AddLiquidity() {
           <div className="mt-5 space-y-3">
             {/* Banner */}
             <div className="bg-teal-500/10 border border-teal-500/30 rounded-lg p-3 mb-4 text-sm text-gray-200">
-              💡 You're a backer in a crowdfunded liquidity pool. Every trade and reward earns you a cut, automatically. Reinvested for you, 6x a day.
+              💡 You're a backer in a crowdfunded liquidity pool. Your yield comes from three places: swap fees on every trade, Aquarius AQUA rewards, and a share of WhaleHub's voting incentives (ex bribes). All reinvested for you every 4 hours.
             </div>
 
             {/* APY Row — two cards side by side */}

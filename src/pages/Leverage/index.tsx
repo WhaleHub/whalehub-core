@@ -375,7 +375,7 @@ export default function Leverage() {
           </p>
           <ul className="mt-2 space-y-1 text-sm text-white/70">
             <li>• AMM <span className="text-white/90">trading fees</span></li>
-            <li>• <span className="text-white/90">Liquidity-mining incentives</span> (AQUA / BLUB rewards, bribes)</li>
+            <li>• <span className="text-white/90">Liquidity-mining incentives</span> (AQUA / BLUB rewards, voting incentives (ex bribes))</li>
           </ul>
           <div className="mt-3 rounded-lg border border-white/10 bg-black/30 p-3 font-mono text-[11px] text-emerald-300/90">
             Net APY = L · LP_APY − (L−1) · Borrow_APR

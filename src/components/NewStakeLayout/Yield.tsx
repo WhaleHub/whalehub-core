@@ -73,6 +73,10 @@ function Yield() {
   const user = useSelector((state: RootState) => state.user);
   const staking = useSelector((state: RootState) => state.staking);
   const blubPrice = useTokenPrice("BLUB");
+  const aquaPrice = useTokenPrice("AQUA");
+  // Token pending rewards will be paid in, read from the contract's reward policy (v3 = AQUA).
+  const [payoutToken, setPayoutToken] = useState<"AQUA" | "BLUB">("BLUB");
+  const rewardPrice = payoutToken === "AQUA" ? aquaPrice : blubPrice;
 
   const blubRecord = user?.userRecords?.balances?.find(
     (balance) =>
@@ -313,6 +317,7 @@ function Yield() {
         setPendingRewards(rewardInfoData.pending_rewards || "0");
         setRewardInfo(rewardInfoData);
       }
+      setPayoutToken(await sorobanService.queryRewardPayoutToken(user.userWalletAddress));
     } catch (error: any) {
       console.error("❌ [Yield] Error fetching pending rewards:", error);
       setPendingRewards("0");
@@ -752,7 +757,7 @@ function Yield() {
                 <div className="flex items-center space-x-2">
                   <img
                     src={"/Blub_logo2.svg"}
-                    alt="Aqua"
+                    alt="BLUB"
                     className="w-8 h-8 rounded-full"
                   />
                   <span className="text-lg">BLUB</span>
@@ -764,14 +769,14 @@ function Yield() {
                   className="h-[15px] w-[15px] text-white cursor-pointer"
                   onClick={() =>
                     onDialogOpen(
-                      "Instead of withdrawing your earned BLUB, you can put it back into the pool. Now your rewards earn rewards too.\n\nEvery BLUB you re-stake increases your backer share, which means your next reward payout is bigger than your last. The earlier and more often you re-stake, the faster your position snowballs.",
+                      "Stake any BLUB you hold to grow your position. Every BLUB you stake increases your backer share, so your next AQUA payout is bigger than your last.\n\nTo compound your earned AQUA, claim it and deposit it in the card above: it becomes BLUB (1:1) and joins your stake. The earlier and more often you do this, the faster your position snowballs.",
                       "Re-stake & Compound"
                     )
                   }
                 />
               </div>
               <div className="text-xs text-[#B1B3B8] mt-2">
-                Re-stake your earned BLUB. Bigger position = bigger share of next reward.
+                Stake any BLUB you hold. Bigger position = bigger share of the next AQUA payout.
               </div>
 
               <div className="flex items-center bg-[#0E111B] py-2 space-x-2 mt-2 rounded-[8px]">
@@ -815,10 +820,10 @@ function Yield() {
                 <div className="mt-3 bg-[#0A0D14] rounded-[8px] px-3 py-2 flex flex-col">
                   <span className="text-[11px] text-[#B1B3B8] leading-tight">Rewards to be distributed</span>
                   <span className="text-[12px] font-medium text-[#00CC99] leading-tight mt-1">
-                    {parseFloat(rewardInfo.pending_rewards).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} BLUB
+                    {parseFloat(rewardInfo.pending_rewards).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {payoutToken}
                   </span>
                   <span className="text-[11px] text-[#6B7280] leading-tight">
-                    {formatUsd(rewardInfo.pending_rewards, blubPrice)}
+                    {formatUsd(rewardInfo.pending_rewards, rewardPrice)}
                   </span>
                 </div>
               )}
