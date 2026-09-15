@@ -285,7 +285,7 @@ function PolInfo({ onDialogOpen }: PolInfoProps) {
                   className="h-[14px] w-[14px] text-[#6B7280] cursor-pointer"
                   onClick={() =>
                     onDialogOpen(
-                      "Total rewards paid to all stakers since launch, counted in reward units: paid in BLUB before 14 September 2026 and in AQUA since.\n\nRewards come from the protocol's ICE voting incentives (ex bribes) and POL yield, passed to stakers with no market swap in between.",
+                      "Total rewards paid to all stakers since launch, counted in reward units: paid in BLUB before 14 September 2026 and in AQUA since.\n\nRewards come from the voting incentives (ex bribes) that our ICE votes earn every week, plus POL yield, passed to stakers with no market swap in between.",
                       "Total Distributed"
                     )
                   }
