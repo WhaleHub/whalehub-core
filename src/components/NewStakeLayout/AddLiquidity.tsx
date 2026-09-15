@@ -976,20 +976,30 @@ function AddLiquidity() {
                   )}
                 />
               </div>
-              {compoundStats && compoundStats.compoundCount > 0 && (
-                <div className="flex items-center gap-1">
-                  <div className="text-[10px] text-[#6B7280]">
-                    Pool auto-compounded {compoundStats.compoundCount.toLocaleString()}x{compoundStats.lastCompoundTime > 0 ? `, last on ${new Date(compoundStats.lastCompoundTime * 1000).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}` : ""}
+              {/* Compounding health, driven by the last compound timestamp rather than a
+                  lifetime counter: the cadence has changed several times, so a count
+                  says nothing, but a stale timestamp exposes a stalled cron. */}
+              {compoundStats && compoundStats.lastCompoundTime > 0 && (() => {
+                const ageSec = Math.max(0, Math.floor(Date.now() / 1000) - compoundStats.lastCompoundTime);
+                const stalled = ageSec > 8 * 3600; // twice the 4h cadence
+                const ago = ageSec < 3600 ? `${Math.max(1, Math.floor(ageSec / 60))}m ago`
+                  : ageSec < 86400 ? `${Math.floor(ageSec / 3600)}h ago`
+                  : `${Math.floor(ageSec / 86400)}d ago`;
+                return (
+                  <div className="flex items-center gap-1">
+                    <div className={clsx("text-[10px] font-medium px-2 py-0.5 rounded-full border", stalled ? "text-[#F5B942] border-[#F5B942]/40 bg-[#F5B942]/10" : "text-[#00CC99] border-[#00CC99]/40 bg-[#00CC99]/10")}>
+                      {stalled ? "Compounding stalled" : "Compounding active"} · last {ago}
+                    </div>
+                    <InformationCircleIcon
+                      className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
+                      onClick={() => onDialogOpen(
+                        "Every 4 hours the vault takes the fees and rewards it earned and puts them back into your position. This shows when that last happened.\n\nActive: the last compound was within the expected window.\nStalled: it has been more than 8 hours, so nothing new has been added to positions since then. Existing positions are unaffected; compounding resumes automatically once the schedule is running again.",
+                        "Compounding Status"
+                      )}
+                    />
                   </div>
-                  <InformationCircleIcon
-                    className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
-                    onClick={() => onDialogOpen(
-                      "Every 4 hours, the vault takes the fees and rewards it earned and instantly puts them back into your position.\n\nEach reinvestment grows your backer share a tiny bit, and those tiny bits add up.\n\nDoing this manually would mean claiming, swapping, and re-depositing around the clock. The vault does it for you, for free.",
-                      "Auto-Compounded"
-                    )}
-                  />
-                </div>
-              )}
+                );
+              })()}
             </div>
           </div>
         )}
@@ -1291,12 +1301,9 @@ function AddLiquidity() {
                       <span>+{fmtNum(userCompoundGains.compoundGainLp)} LP</span>
                     </div>
                   )}
-                  {compoundStats && compoundStats.compoundCount > 0 && (
+                  {compoundStats && compoundStats.lastCompoundTime > 0 && (
                     <div className="pt-2 border-t border-[#1C2235] text-xs text-[#6B7280]">
-                      Auto-compounded {compoundStats.compoundCount.toLocaleString()}×
-                      {compoundStats.lastCompoundTime > 0 && (
-                        <span className="ml-1.5">(last: {new Date(compoundStats.lastCompoundTime * 1000).toLocaleDateString()})</span>
-                      )}
+                      Last compound: {new Date(compoundStats.lastCompoundTime * 1000).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
                     </div>
                   )}
                 </div>
