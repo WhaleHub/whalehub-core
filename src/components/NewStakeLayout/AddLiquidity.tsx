@@ -38,11 +38,6 @@ const SINGLE_AQUA_POOL_ID = (() => {
   return raw && Number.isInteger(n) && n > 0 ? n : null;
 })();
 
-// True once the AQUA-only reward class is live on-chain and configured. Copy that
-// promises the extra voting-incentive share to AQUA-only depositors is gated on
-// this so the app never claims a payout the contract is not making yet.
-const BOOSTED_CLASS_LIVE = SINGLE_AQUA_POOL_ID != null;
-
 const TOKEN_LOGOS: Record<string, string> = {
   AQUA: aquaLogo,
   XLM: xlmLogo,
@@ -954,7 +949,7 @@ function AddLiquidity() {
                     <InformationCircleIcon
                       className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
                       onClick={() => onDialogOpen(
-                        "LP tokens added to your position by auto-compounding since you deposited, and what they are worth now.\n\nThey come from swap fees and Aquarius AQUA rewards" + (BOOSTED_CLASS_LIVE ? ", plus the vault's share of the protocol's voting incentives (ex bribes) for AQUA-only deposits." : ". The boosted class for AQUA-only deposits, with a share of the protocol's voting incentives (ex bribes), is launching soon.") + "\n\nEvery 4 hours the vault reinvests, so this number only moves up.",
+                        "LP tokens added to your position by auto-compounding since you deposited, and what they are worth now.\n\nThey come from swap fees and, for AQUA-only deposits, the vault's share of Aquarius rewards from voting incentives (ex bribes).\n\nEvery 4 hours the vault reinvests, so this number only moves up.",
                         "Earned So Far"
                       )}
                     />
@@ -973,7 +968,7 @@ function AddLiquidity() {
                 <InformationCircleIcon
                   className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
                   onClick={() => onDialogOpen(
-                    "Your position earns the highest Aquarius reward tier the pool qualifies for, thanks to WhaleHub's pooled ICE voting power. Solo, you would earn the base rate." + (BOOSTED_CLASS_LIVE ? "\n\nAQUA-only deposits also receive the vault's share of the protocol's voting incentives (ex bribes)." : ""),
+                    "Your position earns the highest Aquarius reward tier the pool qualifies for, thanks to WhaleHub's pooled ICE voting power. Solo, you would earn the base rate.\n\nAQUA-only deposits also receive the vault's share of Aquarius rewards from voting incentives (ex bribes).",
                     "Earning Boosted Rewards"
                   )}
                 />
@@ -1035,9 +1030,7 @@ function AddLiquidity() {
               <InformationCircleIcon
                 className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
                 onClick={() => onDialogOpen(
-                  BOOSTED_CLASS_LIVE
-                    ? "AQUA only: deposit AQUA on its own and the vault pairs it into the AQUA-BLUB pool for you. This is the class WhaleHub incentivizes. On top of swap fees and Aquarius AQUA rewards, AQUA-only deposits receive the vault's share of the protocol's voting incentives (ex bribes).\n\nAQUA + BLUB: deposit both tokens in pool ratio. You earn swap fees and Aquarius AQUA rewards, auto-compounded, but no share of the voting incentives. That extra share goes to AQUA-only deposits.\n\nBLUB-only deposits are not offered: they push the pool off ratio."
-                    : "AQUA only: deposit AQUA on its own and the vault pairs it into the AQUA-BLUB pool for you. This is the class WhaleHub incentivizes: once the boosted reward class goes live, AQUA-only deposits will receive the vault's share of the protocol's voting incentives (ex bribes) on top of swap fees and Aquarius AQUA rewards.\n\nAQUA + BLUB: deposit both tokens in pool ratio. You earn swap fees and Aquarius AQUA rewards, auto-compounded, but no share of the voting incentives.\n\nBLUB-only deposits are not offered: they push the pool off ratio.",
+                  "AQUA only (Boosted): deposit AQUA on its own and the vault pairs it into the AQUA-BLUB pool for you. On top of swap fees, AQUA-only deposits receive the vault's share of the protocol's Aquarius rewards from voting incentives (ex bribes), auto-compounded every 4 hours.\n\nAQUA + BLUB: deposit both tokens in pool ratio. You earn swap fees only, auto-compounded. No Aquarius rewards from voting incentives: that share goes to AQUA-only deposits.\n\nBLUB-only deposits are not offered: they push the pool off ratio.",
                   "Deposit Options"
                 )}
               />
@@ -1053,12 +1046,10 @@ function AddLiquidity() {
                 <div className="flex items-center gap-1.5 text-sm font-medium text-white">
                   {TOKEN_LOGOS["AQUA"] && <img src={TOKEN_LOGOS["AQUA"]} alt="AQUA" className="w-4 h-4 rounded-full" />}
                   AQUA only
-                  <span className="ml-auto text-[9px] uppercase tracking-wider text-[#00CC99] font-semibold">Incentivized</span>
+                  <span className="ml-auto text-[10px] uppercase tracking-wider text-[#00CC99] font-bold">Boosted</span>
                 </div>
                 <div className="text-[10px] text-[#B1B3B8] mt-1 leading-snug">
-                  {BOOSTED_CLASS_LIVE
-                    ? "Fees + Aquarius rewards + share of voting incentives (ex bribes)"
-                    : "Fees + Aquarius rewards. Boosted class with a share of voting incentives (ex bribes) launching soon"}
+                  Fees + Aquarius rewards from voting incentives (ex bribes)
                 </div>
               </button>
               <button
@@ -1073,12 +1064,12 @@ function AddLiquidity() {
                   {TOKEN_LOGOS["BLUB"] && <img src={TOKEN_LOGOS["BLUB"]} alt="BLUB" className="w-4 h-4 rounded-full -ml-2.5" />}
                   AQUA + BLUB
                 </div>
-                <div className="text-[10px] text-[#B1B3B8] mt-1 leading-snug">Fees + Aquarius rewards only</div>
+                <div className="text-[10px] text-[#B1B3B8] mt-1 leading-snug">Fees only</div>
               </button>
             </div>
             {!singleAsset && (
               <div className="text-[11px] text-[#F5B942] bg-[#F5B942]/10 border border-[#F5B942]/30 rounded-[8px] px-3 py-2">
-                Pair deposits do not receive the extra AQUA share from voting incentives (ex bribes). Choose AQUA only to earn it.
+                Pair deposits earn swap fees only. Aquarius rewards from voting incentives (ex bribes) go to AQUA-only deposits. Choose AQUA only to earn them.
               </div>
             )}
 
