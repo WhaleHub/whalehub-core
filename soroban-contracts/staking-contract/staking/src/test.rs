@@ -545,3 +545,54 @@ fn test_migrate_requires_manager() {
 // requires vault_deposit_single, which reaches the Aquarius pool, and
 // `liquidity_contract` is a bare address in this harness. Cover it on testnet
 // against a deployed pool before running the migration on mainnet depositors.
+
+// ── single-asset vault withdrawal (2026-09-16) ────────────────────────────
+//
+// vault_withdraw burns LP for both legs pro-rata, so an AQUA-only depositor
+// leaves holding BLUB they never wanted and pays spread selling it. This is the
+// matching exit for a single-sided entry.
+
+#[test]
+fn test_vault_withdraw_single_rejects_bad_input() {
+    let c = setup();
+    let cl = c.client();
+    let user = Address::generate(&c.env);
+    assert!(
+        cl.try_vault_withdraw_single(&user, &0u32, &0u32, &1u32, &0u128).is_err(),
+        "share_percent 0 must be rejected"
+    );
+    assert!(
+        cl.try_vault_withdraw_single(&user, &0u32, &10001u32, &1u32, &0u128).is_err(),
+        "share_percent above 100% must be rejected"
+    );
+    assert!(
+        cl.try_vault_withdraw_single(&user, &0u32, &5000u32, &2u32, &0u128).is_err(),
+        "a coin_index outside the pool's two tokens must be rejected"
+    );
+}
+
+#[test]
+fn test_vault_withdraw_single_requires_position() {
+    let c = setup();
+    let user = Address::generate(&c.env);
+    let res = c.client().try_vault_withdraw_single(&user, &0u32, &10000u32, &1u32, &0u128);
+    assert!(
+        res.is_err(),
+        "a user with no vault position must be rejected, not paid out"
+    );
+}
+
+#[test]
+fn test_vault_withdraw_single_rejects_unknown_pool() {
+    let c = setup();
+    let user = Address::generate(&c.env);
+    let res = c.client().try_vault_withdraw_single(&user, &99u32, &10000u32, &0u32, &0u128);
+    assert!(res.is_err(), "an unknown pool must be rejected");
+}
+
+// NOTE: the happy path is NOT unit tested. It needs a real position (created via
+// vault_deposit_single) and a live AMM to settle against; `liquidity_contract`
+// is a bare address in this harness, so every call reaching the pool collapses
+// into an error indistinguishable from a guard rejection. The accounting mirrors
+// vault_withdraw line for line — only the settlement differs — but that is an
+// argument for reviewing them together, not a substitute for a testnet run.

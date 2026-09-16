@@ -25,6 +25,13 @@ const fmtNum = (val: string | number, decimals = 4): string =>
 // the pool needs; AQUA-only entry is the supported single-asset path.
 const SINGLE_ASSET_BLOCKED_CODES = ["BLUB"];
 
+// The POOL's own get_tokens() ordering for pool 0, which is sorted by contract
+// address: index 0 = AQUA, index 1 = BLUB. This is NOT PoolInfo's
+// (token_a = BLUB, token_b = AQUA) — the two orders are reversed, and
+// `vault_withdraw_single` takes the pool's.
+const POOL_COIN_ORDER = ["AQUA", "BLUB"] as const;
+
+
 // Vault bucket that holds the single-sided-AQUA reward class. It points at the
 // SAME Aquarius pool as pool 0 but is a separate `PoolInfo`, so Stream B can pay
 // it 70% while the balanced class gets 30%. A single-asset deposit MUST land
@@ -81,6 +88,12 @@ function AddLiquidity() {
   const [depositAmount1, setDepositAmount1] = useState<string>("");
   const [depositAmount2, setDepositAmount2] = useState<string>("");
   const [withdrawPercent, setWithdrawPercent] = useState<number>(100);
+  // Withdrawal mode. `vault_withdraw` returns both legs pro-rata; someone who
+  // entered with AQUA only would otherwise leave holding BLUB they have to sell.
+  // null = both tokens (default), otherwise the POOL's get_tokens() index —
+  // pool 0 is [AQUA, BLUB], which is NOT PoolInfo's (token_a=BLUB, token_b=AQUA).
+  const [withdrawCoinIndex, setWithdrawCoinIndex] = useState<number | null>(null);
+
 
   const [isDepositing, setIsDepositing] = useState(false);
   const [isWithdrawing, setIsWithdrawing] = useState(false);
@@ -634,14 +647,27 @@ function AddLiquidity() {
         minBWithSlippage,
       });
 
-      const result = await vaultService.vaultWithdraw({
-        userAddress: user.userWalletAddress,
-        poolId: selectedPool.pool_id,
-        sharePercent: withdrawPercent * 100, // Convert to basis points
-        minA: minAWithSlippage,
-        minB: minBWithSlippage,
-        walletName: user.walletName,
-      });
+      const result =
+        withdrawCoinIndex == null
+          ? await vaultService.vaultWithdraw({
+              userAddress: user.userWalletAddress,
+              poolId: selectedPool.pool_id,
+              sharePercent: withdrawPercent * 100, // Convert to basis points
+              minA: minAWithSlippage,
+              minB: minBWithSlippage,
+              walletName: user.walletName,
+            })
+          : await vaultService.vaultWithdrawSingle({
+              userAddress: user.userWalletAddress,
+              poolId: selectedPool.pool_id,
+              sharePercent: withdrawPercent * 100,
+              coinIndex: withdrawCoinIndex,
+              // Pool index 0 is AQUA, 1 is BLUB. PoolInfo has token_a = BLUB and
+              // token_b = AQUA, so estimatedA/B map the other way round.
+              minAmount:
+                withdrawCoinIndex === 0 ? minBWithSlippage : minAWithSlippage,
+              walletName: user.walletName,
+            });
 
       if (result.success) {
         toast.success("Withdrawal successful!");
@@ -1339,18 +1365,75 @@ function AddLiquidity() {
                   </div>
                 </div>
 
+                {/* Withdraw-as selector. Taking a single leg out of a stable
+                    pool pays an imbalance fee, so it is offered rather than
+                    defaulted — the pro-rata exit stays the cheap one. */}
+                <div className="mb-3">
+                  <div className="text-xs text-[#6B7280] uppercase tracking-wider mb-2">Receive as</div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <button
+                      onClick={() => setWithdrawCoinIndex(null)}
+                      className={clsx(
+                        "px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors",
+                        withdrawCoinIndex === null
+                          ? "bg-[#0B6AA6]/20 border-[#0B6AA6] text-white"
+                          : "bg-transparent border-[#1C2235] text-[#B1B3B8] hover:border-[#2A3550]"
+                      )}
+                    >
+                      Both tokens
+                    </button>
+                    {POOL_COIN_ORDER.map((code, idx) => (
+                      <button
+                        key={code}
+                        onClick={() => setWithdrawCoinIndex(idx)}
+                        className={clsx(
+                          "px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors",
+                          withdrawCoinIndex === idx
+                            ? "bg-[#0B6AA6]/20 border-[#0B6AA6] text-white"
+                            : "bg-transparent border-[#1C2235] text-[#B1B3B8] hover:border-[#2A3550]"
+                        )}
+                      >
+                        {code} only
+                      </button>
+                    ))}
+                  </div>
+                  {withdrawCoinIndex !== null && (
+                    <div className="text-[11px] text-[#6B7280] mt-2">
+                      Taking one token out of a balanced pool costs an imbalance fee that grows with size. Your slippage tolerance ({slippageTolerance}%) is the floor — the withdrawal reverts rather than filling below it.
+                    </div>
+                  )}
+                </div>
+
                 {/* Receipt summary */}
                 <div className="bg-[#070910] border border-[#1C2235] rounded-[10px] p-4">
                   <div className="text-xs text-[#6B7280] uppercase tracking-wider mb-3">You will receive</div>
                   <div className="space-y-2.5 text-sm">
-                    <div className="flex justify-between text-white">
-                      <span className="text-[#B1B3B8]">{selectedPool.token_a_code}</span>
-                      <span>~{fmtNum(getEstimatedWithdrawAmounts().estimatedA)}</span>
-                    </div>
-                    <div className="flex justify-between text-white">
-                      <span className="text-[#B1B3B8]">{selectedPool.token_b_code}</span>
-                      <span>~{fmtNum(getEstimatedWithdrawAmounts().estimatedB)}</span>
-                    </div>
+                    {withdrawCoinIndex === null ? (
+                      <>
+                        <div className="flex justify-between text-white">
+                          <span className="text-[#B1B3B8]">{selectedPool.token_a_code}</span>
+                          <span>~{fmtNum(getEstimatedWithdrawAmounts().estimatedA)}</span>
+                        </div>
+                        <div className="flex justify-between text-white">
+                          <span className="text-[#B1B3B8]">{selectedPool.token_b_code}</span>
+                          <span>~{fmtNum(getEstimatedWithdrawAmounts().estimatedB)}</span>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex justify-between text-white">
+                        <span className="text-[#B1B3B8]">{POOL_COIN_ORDER[withdrawCoinIndex]}</span>
+                        {/* Pro-rata value of the position, shown before the
+                            imbalance fee the pool charges for a single leg —
+                            so treat it as an upper bound, not a quote. */}
+                        <span>
+                          ≤ {fmtNum(
+                            withdrawCoinIndex === 0
+                              ? getEstimatedWithdrawAmounts().estimatedB
+                              : getEstimatedWithdrawAmounts().estimatedA
+                          )}
+                        </span>
+                      </div>
+                    )}
                     <div className="border-t border-[#1C2235] pt-2.5">
                       <div className="text-xs text-[#6B7280] mb-2">Minimum ({slippageTolerance}% slippage)</div>
                       <div className="flex justify-between text-[#00CC99]">

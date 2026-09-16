@@ -702,6 +702,130 @@ export class SorobanVaultService {
     }
   }
 
+  /**
+   * Withdraw a vault position as a SINGLE token.
+   *
+   * `vaultWithdraw` returns both legs pro-rata, so someone who entered with AQUA
+   * only still leaves holding BLUB and has to sell it. This is the matching exit
+   * for a single-sided entry.
+   *
+   * Derived from vaultWithdraw and intentionally identical apart from the
+   * arguments — same wallet setup, simulation, signing, WalletConnect recovery
+   * and submission. Keep them in step.
+   *
+   * Requires wasm eb0f8ab3+. Against an older contract the simulation fails and
+   * the caller should fall back to vaultWithdraw.
+   */
+  async vaultWithdrawSingle(params: {
+    userAddress: string;
+    poolId: number;
+    sharePercent: number;
+    coinIndex: number;
+    minAmount: string;
+    walletName: string;
+  }): Promise<{ success: boolean; error?: string; transactionHash?: string }> {
+    try {
+      const { userAddress, poolId, sharePercent, coinIndex, minAmount, walletName } = params;
+
+      // Setup wallet - use existing WalletConnect kit for WalletConnect, create new kit for others
+      let signKit: StellarWalletsKit;
+
+      if (walletName === WALLET_CONNECT_ID || walletName === ("wallet_connect" as any)) {
+        // Use the shared WalletConnect kit from Navbar
+        signKit = walletConnectKit;
+        await signKit.setWallet(WALLET_CONNECT_ID);
+      } else {
+        const selectedModule = walletName === LOBSTR_ID ? new LobstrModule() : new FreighterModule();
+        const walletId = walletName === LOBSTR_ID ? LOBSTR_ID : FREIGHTER_ID;
+        signKit = new StellarWalletsKit({
+          network: WalletNetwork.PUBLIC,
+          selectedWalletId: walletId,
+          modules: [selectedModule],
+        });
+        await signKit.setWallet(walletId);
+      }
+
+      // Build transaction
+      const contract = new Contract(this.stakingContractId);
+      const account = await this.withRetry(() => this.server.getAccount(userAddress));
+
+      const userScVal = nativeToScVal(userAddress, { type: "address" });
+      const poolIdScVal = nativeToScVal(poolId, { type: "u32" });
+      const sharePercentScVal = nativeToScVal(sharePercent, { type: "u32" });
+      // coinIndex is the POOL's get_tokens() ordering (pool 0: 0 = AQUA,
+      // 1 = BLUB), NOT PoolInfo's (token_a, token_b) which is (BLUB, AQUA).
+      const coinIndexScVal = nativeToScVal(coinIndex, { type: "u32" });
+      // Use BigInt to guarantee u128 ScVal encoding
+      const minAmountScVal = nativeToScVal(BigInt(Math.round(parseFloat(minAmount) * 1e7)), { type: "u128" });
+
+      let tx = new TransactionBuilder(account, {
+        fee: "1000000", // 1 XLM — required for Soroban mainnet inclusion
+        networkPassphrase: this.networkPassphrase,
+      })
+        .addOperation(
+          contract.call(
+            "vault_withdraw_single",
+            userScVal,
+            poolIdScVal,
+            sharePercentScVal,
+            coinIndexScVal,
+            minAmountScVal
+          )
+        )
+        .setTimeout(300) // 5 min TTL
+        .build();
+
+      // Simulate to prepare transaction
+      const simulated = await this.simulateTx(tx);
+
+      if (rpc.Api.isSimulationError(simulated)) {
+        throw new Error(`Simulation failed: ${simulated.error}`);
+      }
+
+      // Prepare transaction with auth
+      tx = rpc.assembleTransaction(tx, simulated).build();
+
+      // Sign transaction — with WalletConnect reconnect retry on stale session
+      const txXdr = tx.toXDR();
+      const signOpts = { address: userAddress, networkPassphrase: this.networkPassphrase };
+      let signedTxXdr: string;
+      try {
+        ({ signedTxXdr } = await signKit.signTransaction(txXdr, signOpts));
+      } catch (signErr: any) {
+        const isWC = walletName === WALLET_CONNECT_ID || walletName === ("wallet_connect" as any);
+        if (isWC && isWCConnectionError(signErr)) {
+          console.warn("[Vault] WC session stale, reconnecting...", signErr.message);
+          signKit = reconnectWalletConnect();
+          await signKit.setWallet(WALLET_CONNECT_ID);
+          ({ signedTxXdr } = await signKit.signTransaction(txXdr, signOpts));
+        } else {
+          throw signErr;
+        }
+      }
+
+      // Submit via gateway FM, poll via read RPC
+      const signedTx = TransactionBuilder.fromXDR(signedTxXdr, this.networkPassphrase);
+      console.log("[Vault] Submitting signed transaction...");
+      const sendResponse = await this.sendServer.sendTransaction(signedTx as any);
+      console.log("[Vault] Send response:", sendResponse.status, sendResponse.hash, (sendResponse as any).errorResult ?? "");
+
+      if (sendResponse.status === "PENDING") {
+        return await this.pollTransactionResult(sendResponse.hash);
+      } else if (sendResponse.status === "ERROR") {
+        console.error("[Vault] Send error:", (sendResponse as any).errorResult);
+        throw new Error("Transaction send error");
+      } else {
+        throw new Error(`Unexpected send status: ${sendResponse.status}`);
+      }
+    } catch (error: any) {
+      console.error("Vault single-asset withdraw error:", error);
+      return {
+        success: false,
+        error: error.message || "Withdrawal failed",
+      };
+    }
+  }
+
   // Helper methods
 
   // Known token contract addresses → symbol mapping to avoid RPC calls

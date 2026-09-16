@@ -14,7 +14,7 @@ from stellar_sdk import xdr as xdr_
 # ── Config ───────────────────────────────────────────────────────────────
 STAKING_CONTRACT   = "CC72BEVVKHQ57PB5FCKAZYRXCSR6DOQSTN46QR7RZMMM64YWNRPDS24S"
 MULTISIG_ADMIN     = "GALE4XON37AQ4KFTJKB3W32BUQGXFE46TQLKUIGBSIHSOEHTDBMKEI3M"
-NEW_WASM_HASH      = "56d08842146aaf5e9ca948b2e6fed0df0012adcb2ae97ab1d72abac62523866b"  # 2026-09-16: adds migrate_vault_position (manager-auth, same-share_token only). NOT YET UPLOADED.
+NEW_WASM_HASH      = "eb0f8ab30987ef90e1c37cc36ce261eb1d5f1f42f57a10aeda6681b1191cbc0c"  # 2026-09-16: migrate_vault_position + vault_withdraw_single. NOT YET UPLOADED.
 RPC_URL            = "https://mainnet.sorobanrpc.com"
 NETWORK_PASSPHRASE = Network.PUBLIC_NETWORK_PASSPHRASE
 MAX_FEE            = 1_000_000

@@ -5788,6 +5788,196 @@ impl StakingRegistry {
     //
     // # Authorization
     // Requires user authorization
+    // Withdraw a vault position as a SINGLE token.
+    //
+    // `vault_withdraw` burns LP for both legs pro-rata, so a depositor who
+    // entered with AQUA only still leaves holding BLUB they never wanted and
+    // has to sell it — paying spread on the way out of a pool the protocol is
+    // trying to keep deep. This is the matching exit for a single-sided entry.
+    //
+    // `coin_index` is the POOL's own token ordering from `get_tokens()`
+    // (pool 0: 0 = AQUA, 1 = BLUB), NOT `PoolInfo`'s (token_a, token_b), which
+    // for pool 0 is (BLUB, AQUA). Getting this backwards hands the user the
+    // other asset, so the token actually paid out is read from `get_tokens()`
+    // rather than assumed.
+    //
+    // `min_amount` is mandatory slippage protection: taking one leg out of a
+    // stable pool pays an imbalance fee that grows with size, and taking the
+    // SCARCE leg is the expensive direction. Quote `calc_withdraw_one_coin`
+    // first.
+    pub fn vault_withdraw_single(
+        env: Env,
+        user: Address,
+        pool_id: u32,
+        share_percent: u32,
+        coin_index: u32,
+        min_amount: u128,
+    ) -> Result<i128, Error> {
+        user.require_auth();
+
+        if share_percent == 0 || share_percent > 10000 || coin_index > 1 {
+            return Err(Error::InvalidInput);
+        }
+
+        let mut pool_info: PoolInfo = env
+            .storage()
+            .persistent()
+            .get(&DataKey::PoolInfo(pool_id))
+            .ok_or(Error::PoolNotFound)?;
+
+        let mut user_position: UserVaultPosition = env
+            .storage()
+            .persistent()
+            .get(&DataKey::UserVaultPosition(user.clone(), pool_id))
+            .ok_or(Error::PositionNotFound)?;
+        if !user_position.active {
+            return Err(Error::PositionNotFound);
+        }
+
+        let total_shares: i128 = env
+            .storage()
+            .persistent()
+            .get(&DataKey::VaultTotalShares(pool_id))
+            .unwrap_or(0);
+        let user_shares = user_position.share_ratio;
+        if user_shares <= 0 || total_shares <= 0 {
+            return Err(Error::InsufficientBalance);
+        }
+
+        let user_total_lp = user_shares
+            .checked_mul(pool_info.total_lp_tokens)
+            .unwrap_or(0)
+            .checked_div(total_shares)
+            .unwrap_or(0);
+        if user_total_lp <= 0 {
+            return Err(Error::InsufficientBalance);
+        }
+
+        let lp_to_withdraw = user_total_lp
+            .checked_mul(share_percent as i128)
+            .unwrap_or(0)
+            .checked_div(10000)
+            .unwrap_or(0);
+        let shares_to_burn = user_shares
+            .checked_mul(share_percent as i128)
+            .unwrap_or(0)
+            .checked_div(10000)
+            .unwrap_or(0);
+        if lp_to_withdraw <= 0 {
+            return Err(Error::InvalidInput);
+        }
+
+        let contract_address = env.current_contract_address();
+
+        // Resolve which token index `coin_index` actually refers to, so the
+        // payout cannot be sent in the wrong asset.
+        let payout_token = match env
+            .try_invoke_contract::<Vec<Address>, soroban_sdk::Error>(
+                &pool_info.pool_address,
+                &Symbol::new(&env, "get_tokens"),
+                ().into_val(&env),
+            ) {
+            Ok(Ok(ref tokens)) if tokens.len() > coin_index => {
+                tokens.get(coin_index).unwrap()
+            }
+            _ => return Err(Error::InvalidInput),
+        };
+
+        // The pool burns our LP inside withdraw_one_coin.
+        let auth_entries = soroban_sdk::vec![
+            &env,
+            InvokerContractAuthEntry::Contract(SubContractInvocation {
+                context: ContractContext {
+                    contract: pool_info.share_token.clone(),
+                    fn_name: Symbol::new(&env, "burn"),
+                    args: (contract_address.clone(), lp_to_withdraw).into_val(&env),
+                },
+                sub_invocations: soroban_sdk::vec![&env],
+            }),
+        ];
+        env.authorize_as_current_contract(auth_entries);
+
+        // Returns a Vec<u128> of per-token amounts, not a scalar — same shape
+        // as `withdraw`. Decoding it as u128 fails conversion on every call.
+        let result = env.try_invoke_contract::<Vec<u128>, soroban_sdk::Error>(
+            &pool_info.pool_address,
+            &Symbol::new(&env, "withdraw_one_coin"),
+            (
+                contract_address.clone(),
+                lp_to_withdraw as u128,
+                coin_index,
+                min_amount,
+            )
+                .into_val(&env),
+        );
+
+        let withdrawn: i128 = match result {
+            Ok(Ok(amounts)) => {
+                let mut total: i128 = 0;
+                for amount in amounts.iter() {
+                    total = total.saturating_add(amount as i128);
+                }
+                total
+            }
+            _ => return Err(Error::InvalidInput),
+        };
+        if withdrawn <= 0 {
+            return Err(Error::InsufficientBalance);
+        }
+
+        use soroban_sdk::token;
+        token::Client::new(&env, &payout_token).transfer(
+            &contract_address,
+            &user,
+            &withdrawn,
+        );
+
+        // Accounting mirrors `vault_withdraw` exactly — only the settlement
+        // differs, so the two exits must not drift apart.
+        pool_info.total_lp_tokens = pool_info.total_lp_tokens.saturating_sub(lp_to_withdraw);
+
+        let remaining_shares = user_shares.saturating_sub(shares_to_burn);
+        if remaining_shares > 0 {
+            user_position.share_ratio = remaining_shares;
+        } else {
+            user_position.share_ratio = 0;
+            user_position.active = false;
+        }
+
+        env.storage()
+            .persistent()
+            .set(&DataKey::PoolInfo(pool_id), &pool_info);
+        env.storage()
+            .persistent()
+            .set(&DataKey::UserVaultPosition(user.clone(), pool_id), &user_position);
+        env.storage().persistent().set(
+            &DataKey::VaultTotalShares(pool_id),
+            &total_shares.saturating_sub(shares_to_burn),
+        );
+
+        let prev_deposited: i128 = env
+            .storage()
+            .persistent()
+            .get(&DataKey::UserDepositedLp(user.clone(), pool_id))
+            .unwrap_or(0);
+        if prev_deposited > 0 && user_total_lp > 0 {
+            let remaining = prev_deposited
+                .saturating_mul(user_total_lp.saturating_sub(lp_to_withdraw))
+                .checked_div(user_total_lp)
+                .unwrap_or(0);
+            env.storage()
+                .persistent()
+                .set(&DataKey::UserDepositedLp(user.clone(), pool_id), &remaining);
+        }
+
+        env.events().publish(
+            (symbol_short!("vlt_wd1"), user.clone(), pool_id),
+            (lp_to_withdraw, coin_index, withdrawn),
+        );
+
+        Ok(withdrawn)
+    }
+
     // Manager: move a depositor's vault position from one bucket to another.
     //
     // Two `PoolInfo` buckets may point at the same Aquarius pool and share token
