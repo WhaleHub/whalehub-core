@@ -22,6 +22,19 @@ The BLUB-AQUA pool contains both POL and vault user LP. The contract tracks vaul
 POL LP = Total contract LP balance - Vault user LP (tracked in contract)
 ```
 
+### Rebalancing the pool (September 2026)
+
+Pool 0 had drifted heavily to one side — roughly **98.8% BLUB** against a thin AQUA leg. A lopsided pool is a worse exit for everyone holding BLUB, because each sale moves the price further.
+
+On 16 September the protocol burned **9,880,000 LP** of its own position to withdraw **~10,001,407 BLUB** as a single token, using `withdraw_pol_one_coin`. The BLUB was moved into the staking contract. Nothing was sold and nothing left the protocol.
+
+Two things worth being precise about:
+
+- **Why this direction is cheap.** Removing the *abundant* leg of a StableSwap pool costs almost nothing in imbalance fees — the quote held at ~1.012 BLUB per LP even at that size. Removing the scarce leg would have been punitive.
+- **Arbitrage took back part of the gain.** The intended move was 1.16% → 2.60% AQUA. What was realised was **1.16% → 1.91%**, because traders immediately sold BLUB into the repriced pool and took roughly 55,500 AQUA out. On a pool this thin, a single large move is partly arbitraged away; smaller tranches give less to work with.
+
+Protocol-owned LP remaining after the withdrawal was ~3.3M, still well above the vault credit the solvency guard protects.
+
 > **Note (2026-06):** the BLUB-AQUA pool is awaiting whitelist approval from the Aquarius team. Until that approval lands, the pool earns 0 AQUA emissions, so POL earnings and the staker distribution described below are temporarily paused. The POL position itself remains intact; distribution resumes automatically when the pool is re-whitelisted.
 
 ## How POL Earnings Are Distributed

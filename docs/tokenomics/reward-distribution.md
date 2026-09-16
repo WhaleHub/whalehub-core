@@ -13,7 +13,7 @@ The revenue is split four ways. The proportions are on-chain parameters, set by 
 | **C — Protocol liquidity** | 10% | The protocol's own POL | AQUA deposited as liquidity → deeper pool |
 | **D — Treasury** | 10% | Runway, audits, operations | Held |
 
-> **Status (14 September 2026):** v3 is live on mainnet. Stakers are paid in AQUA as of this date. Stream D is configured in the on-chain policy but its destination is not yet wired up in the distributor, so until it is, that 10% is routed to protocol-owned liquidity (Stream C) rather than held — making live routing 50 / 30 / 20 for now. The on-chain policy is the source of truth for the intended split and is readable by anyone via `get_reward_policy`.
+> **Status (16 September 2026):** v3 is live on mainnet and stakers are paid in AQUA. Stream D is now wired up — the treasury destination is configured and the split runs the full 50 / 30 / 10 / 10 from the next distribution onward. Between 14 and 16 September the distributor was misconfigured and routed 100% of revenue to stakers; that is fixed. The on-chain policy is the source of truth and is readable by anyone via `get_reward_policy`.
 
 > BLUB is a **floating** asset. It is not pegged and not redeemable. Its market price is set by the pool, not maintained by the protocol. Rewards are paid from revenue the pooled ICE position already earned — never minted — so distributions are non-dilutive.
 
@@ -83,7 +83,9 @@ Stream C was 20% under v2. Half of it now funds Stream D.
 
 v2 took no cut of reward income. v3 takes 10%, for runway, audits and operations.
 
-**Not yet active.** The share exists in the on-chain policy but the distributor has no destination configured for it, so it currently flows to Stream C (protocol-owned liquidity) instead. Nothing is being withheld from stakers or LPs in the meantime — their 50% and 30% are unaffected either way.
+**Active since 16 September 2026.** The destination is configured and the share is paid as a plain AQUA transfer — no swap, no pool interaction.
+
+Between 14 and 16 September this line was configured but unrouted, and a validator bug meant the whole revenue split fell back to paying stakers 100%. For those two days vault LPs, POL and the treasury received nothing. The cause was a partial configuration that did not total 100%, and the distributor now reports its own split so the same failure cannot pass unnoticed.
 
 This is a deliberate trade. Running the protocol has costs that were previously funded from elsewhere, and a revenue line that covers them is more durable than one that does not. The figure is an on-chain parameter, visible in `get_reward_policy` alongside the other three.
 
@@ -109,7 +111,7 @@ The same principle covers the optional BLUB election in Stream A: the claim-time
 
 | Fee | Amount |
 |---|---|
-| Treasury share of voting revenue | **10%** (Stream D) — *not yet routed; currently flows to POL* |
+| Treasury share of voting revenue | **10%** (Stream D) |
 | Staking, claiming, unstaking | None (gas only) |
 | Vault fee on claimed pool emissions | `vault_fee_bps`, currently 15% |
 

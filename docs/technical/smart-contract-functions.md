@@ -11,7 +11,10 @@ The staking contract exposes functions for users, the manager (backend), and the
 | `record_unlock(user, lock_index)` | Withdraw tokens after lock + cooldown expires |
 | `claim_rewards(user)` | Claim pending rewards in the policy token, default AQUA (7-day cooldown) |
 | `vault_deposit(user, pool_id, amount_a, amount_b)` | Deposit token pair into a vault pool |
-| `vault_withdraw(user, pool_id, lp_amount)` | Withdraw liquidity from a vault pool |
+| `vault_withdraw(user, pool_id, share_percent, min_a, min_b)` | Withdraw a vault position as both tokens, pro-rata |
+| `vault_withdraw_single(user, pool_id, share_percent, coin_index, min_amount)` | Withdraw as a single token. `coin_index` is the POOL's `get_tokens()` order (pool 0: 0 = AQUA, 1 = BLUB), **not** PoolInfo's `(token_a, token_b)` — those are reversed. Pays the pool's imbalance fee |
+| `migrate_vault_position(manager, user, from_pool, to_pool)` | Move a depositor's position between two buckets sharing a `share_token`. Moves no tokens; re-credits only |
+| `withdraw_pol_one_coin(admin, share_amount, coin_index, min_amount)` | Admin: withdraw protocol-owned LP as one token, into the contract |
 
 ## Manager Functions (Backend)
 
