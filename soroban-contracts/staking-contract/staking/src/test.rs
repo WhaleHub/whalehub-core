@@ -465,3 +465,83 @@ fn test_settle_user_rewards_is_idempotent_and_manager_gated() {
 // from a guard rejection, and `outstanding` can only become non-zero via
 // `add_rewards`, which needs a funded manager and a real pool to be meaningful.
 // Cover them on testnet against a deployed Aquarius pool before the policy flip.
+
+// ── vault position migration (2026-09-16) ─────────────────────────────────
+//
+// Two PoolInfo buckets may share one Aquarius pool and share token, which is how
+// a single-sided-AQUA reward class is separated from the balanced one. Splitting
+// the classes strands everyone who deposited before the second bucket existed:
+// vault_deposit_single mints against a specific pool_id and nothing could move
+// them. migrate_vault_position re-credits between buckets WITHOUT moving tokens.
+
+#[test]
+fn test_migrate_rejects_same_pool() {
+    let c = setup();
+    let user = Address::generate(&c.env);
+    let res = c.client().try_migrate_vault_position(&c.admin, &user, &0u32, &0u32);
+    assert!(res.is_err(), "migrating a bucket into itself must be rejected");
+}
+
+#[test]
+fn test_migrate_rejects_unknown_pool() {
+    let c = setup();
+    let user = Address::generate(&c.env);
+    let res = c.client().try_migrate_vault_position(&c.admin, &user, &0u32, &99u32);
+    assert!(res.is_err(), "a non-existent destination bucket must be rejected");
+}
+
+#[test]
+fn test_migrate_rejects_user_without_position() {
+    let c = setup();
+    let cl = c.client();
+    let user = Address::generate(&c.env);
+    // Second bucket over the SAME pool/share token — the supported shape.
+    let pool_addr = Address::generate(&c.env);
+    let share = Address::generate(&c.env);
+    let a = Address::generate(&c.env);
+    let b = Address::generate(&c.env);
+    let p1 = cl.add_pool(&c.admin, &pool_addr, &a, &b, &share);
+    let p2 = cl.add_pool(&c.admin, &pool_addr, &a, &b, &share);
+    assert_ne!(p1, p2, "add_pool must allow a second bucket over the same pool");
+
+    let res = cl.try_migrate_vault_position(&c.admin, &user, &p1, &p2);
+    assert!(
+        res.is_err(),
+        "a user with no position in the source bucket must be rejected, not credited"
+    );
+}
+
+#[test]
+fn test_migrate_rejects_mismatched_share_tokens() {
+    let c = setup();
+    let cl = c.client();
+    let user = Address::generate(&c.env);
+    // Different share tokens means different physical LP. Re-crediting between
+    // them would invent value, so the guard must refuse regardless of anything
+    // else being valid.
+    let p1 = cl.add_pool(
+        &c.admin, &Address::generate(&c.env), &Address::generate(&c.env),
+        &Address::generate(&c.env), &Address::generate(&c.env),
+    );
+    let p2 = cl.add_pool(
+        &c.admin, &Address::generate(&c.env), &Address::generate(&c.env),
+        &Address::generate(&c.env), &Address::generate(&c.env),
+    );
+    let res = cl.try_migrate_vault_position(&c.admin, &user, &p1, &p2);
+    assert!(res.is_err(), "buckets with different share tokens must never be migrated between");
+}
+
+#[test]
+fn test_migrate_requires_manager() {
+    let c = setup();
+    let attacker = Address::generate(&c.env);
+    let user = Address::generate(&c.env);
+    let res = c.client().try_migrate_vault_position(&attacker, &user, &0u32, &1u32);
+    assert!(res.is_err(), "migration must be manager-gated");
+}
+
+// NOTE: the happy path — a real position moving between two buckets with its LP
+// and share accounting intact — is NOT unit tested here. Creating a position
+// requires vault_deposit_single, which reaches the Aquarius pool, and
+// `liquidity_contract` is a bare address in this harness. Cover it on testnet
+// against a deployed pool before running the migration on mainnet depositors.

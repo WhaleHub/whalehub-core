@@ -5788,6 +5788,182 @@ impl StakingRegistry {
     //
     // # Authorization
     // Requires user authorization
+    // Manager: move a depositor's vault position from one bucket to another.
+    //
+    // Two `PoolInfo` buckets may point at the same Aquarius pool and share token
+    // — that is how a single-sided-AQUA reward class is separated from the
+    // balanced class: two buckets, ONE physical LP balance. Splitting the
+    // classes therefore strands everyone who deposited before the second bucket
+    // existed, because `vault_deposit_single` mints shares against a specific
+    // `pool_id` and nothing could move them afterwards. Their only options were
+    // withdrawing and redepositing (costs them gas, exits and re-enters at
+    // current prices) or being grandfathered into a cohort that earns
+    // differently for an identical deposit. This is the third option.
+    //
+    // NO TOKENS MOVE. The contract's LP balance is untouched; only the credit
+    // between two buckets is rewritten. Both buckets must share a `share_token`,
+    // which is what makes that safe — `vault_lp_credit` already sums
+    // `total_lp_tokens` across every bucket sharing one, so the vault-solvency
+    // invariant is unaffected by where the credit sits.
+    //
+    // Migrating into an empty bucket seeds it, which also satisfies the
+    // zero-share guard on `admin_compound_deposit`.
+    pub fn migrate_vault_position(
+        env: Env,
+        manager: Address,
+        user: Address,
+        from_pool: u32,
+        to_pool: u32,
+    ) -> Result<i128, Error> {
+        Self::require_manager_auth(&env, &manager)?;
+
+        if from_pool == to_pool {
+            return Err(Error::InvalidInput);
+        }
+
+        let mut from_info: PoolInfo = env
+            .storage()
+            .persistent()
+            .get(&DataKey::PoolInfo(from_pool))
+            .ok_or(Error::PoolNotFound)?;
+        let mut to_info: PoolInfo = env
+            .storage()
+            .persistent()
+            .get(&DataKey::PoolInfo(to_pool))
+            .ok_or(Error::PoolNotFound)?;
+
+        // The whole safety argument rests on this: same share token means the
+        // same physical LP, so re-crediting between buckets moves no value.
+        if from_info.share_token != to_info.share_token {
+            return Err(Error::InvalidInput);
+        }
+        if !to_info.active {
+            return Err(Error::PoolNotActive);
+        }
+
+        let mut from_position: UserVaultPosition = env
+            .storage()
+            .persistent()
+            .get(&DataKey::UserVaultPosition(user.clone(), from_pool))
+            .ok_or(Error::PositionNotFound)?;
+        if !from_position.active || from_position.share_ratio <= 0 {
+            return Err(Error::PositionNotFound);
+        }
+
+        let from_total_shares: i128 = env
+            .storage()
+            .persistent()
+            .get(&DataKey::VaultTotalShares(from_pool))
+            .unwrap_or(0);
+        if from_total_shares <= 0 {
+            return Err(Error::InsufficientBalance);
+        }
+
+        let moved_shares = from_position.share_ratio;
+        let moved_lp = moved_shares
+            .checked_mul(from_info.total_lp_tokens)
+            .unwrap_or(0)
+            .checked_div(from_total_shares)
+            .unwrap_or(0);
+        if moved_lp <= 0 {
+            return Err(Error::InsufficientBalance);
+        }
+
+        // ── debit the source bucket ──────────────────────────────────────
+        from_info.total_lp_tokens = from_info.total_lp_tokens.saturating_sub(moved_lp).max(0);
+        env.storage()
+            .persistent()
+            .set(&DataKey::PoolInfo(from_pool), &from_info);
+        env.storage().persistent().set(
+            &DataKey::VaultTotalShares(from_pool),
+            &from_total_shares.saturating_sub(moved_shares).max(0),
+        );
+
+        from_position.share_ratio = 0;
+        from_position.active = false;
+        env.storage().persistent().set(
+            &DataKey::UserVaultPosition(user.clone(), from_pool),
+            &from_position,
+        );
+
+        let moved_deposited: i128 = env
+            .storage()
+            .persistent()
+            .get(&DataKey::UserDepositedLp(user.clone(), from_pool))
+            .unwrap_or(0);
+        env.storage()
+            .persistent()
+            .set(&DataKey::UserDepositedLp(user.clone(), from_pool), &0i128);
+
+        // ── credit the destination bucket ────────────────────────────────
+        let to_total_shares: i128 = env
+            .storage()
+            .persistent()
+            .get(&DataKey::VaultTotalShares(to_pool))
+            .unwrap_or(0);
+
+        // Mint at the destination's existing share price, so migrating never
+        // dilutes or enriches the depositors already in it. An empty bucket
+        // mints 1:1, matching `vault_deposit_single`.
+        let minted_shares = if to_info.total_lp_tokens == 0 || to_total_shares == 0 {
+            moved_lp
+        } else {
+            moved_lp
+                .checked_mul(to_total_shares)
+                .unwrap_or(0)
+                .checked_div(to_info.total_lp_tokens)
+                .unwrap_or(0)
+        };
+        if minted_shares <= 0 {
+            return Err(Error::InvalidInput);
+        }
+
+        to_info.total_lp_tokens = to_info.total_lp_tokens.saturating_add(moved_lp);
+        env.storage()
+            .persistent()
+            .set(&DataKey::PoolInfo(to_pool), &to_info);
+        env.storage().persistent().set(
+            &DataKey::VaultTotalShares(to_pool),
+            &to_total_shares.saturating_add(minted_shares),
+        );
+
+        // Fold into any position the user already holds in the destination.
+        let mut to_position: UserVaultPosition = env
+            .storage()
+            .persistent()
+            .get(&DataKey::UserVaultPosition(user.clone(), to_pool))
+            .unwrap_or(UserVaultPosition {
+                user: user.clone(),
+                pool_id: to_pool,
+                share_ratio: 0,
+                deposited_at: env.ledger().timestamp(),
+                active: true,
+            });
+        to_position.share_ratio = to_position.share_ratio.saturating_add(minted_shares);
+        to_position.active = true;
+        env.storage().persistent().set(
+            &DataKey::UserVaultPosition(user.clone(), to_pool),
+            &to_position,
+        );
+
+        let prev_deposited: i128 = env
+            .storage()
+            .persistent()
+            .get(&DataKey::UserDepositedLp(user.clone(), to_pool))
+            .unwrap_or(0);
+        env.storage().persistent().set(
+            &DataKey::UserDepositedLp(user.clone(), to_pool),
+            &prev_deposited.saturating_add(moved_deposited),
+        );
+
+        env.events().publish(
+            (symbol_short!("vlt_migr"),),
+            (user, from_pool, to_pool, moved_lp, minted_shares),
+        );
+
+        Ok(moved_lp)
+    }
+
     pub fn vault_withdraw(
         env: Env,
         user: Address,
