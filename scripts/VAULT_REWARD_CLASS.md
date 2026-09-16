@@ -137,36 +137,41 @@ Steps 1 and 3 are mine to run. Steps 2 and 4 are not.
 
 ## 5. Open decisions — needed before announcing
 
-### 5.1 Stream B split: 70/30 or 100/0?
+### 5.1 Stream B split — DECIDED: 100/0
 
-- **Docs as written:** 70% to the single-AQUA class, 30% to the balanced class.
-- **Robert's call:** 100% to the AQUA-only bucket; pool 0 keeps swap fees only.
+**Confirmed 16 Sep: Stream B goes entirely to the AQUA-only bucket. Pair
+depositors earn swap fees only.** Backend default `BRIBE_VAULT_SINGLE_AQUA_BPS`
+is now 10000; docs and app copy match.
 
-The difference is not cosmetic. Under 100/0, every existing pool 0 depositor —
-**including the AQUA-only ones who would qualify for the new class** — stops
-earning Stream B the moment pool 3 is seeded. They cannot be moved by the
-contract (§5.2), so they would go to zero without having done anything.
+This is only safe to switch on because `migrate_vault_position` exists (§5.2).
+Without it, every existing AQUA-only depositor in pool 0 would have dropped to
+zero Stream B the moment pool 3 was seeded, through no action of their own.
 
-Recommendation: **start at 70/30.** It ships the new class without cutting
-existing depositors to nothing overnight, and the ratio is a backend constant
-that can be moved later once migration has actually happened.
+**Interlock:** while `VAULT_POOL_SINGLE_AQUA_ID` is unset there is no second
+bucket, so the entire tranche still goes to pool 0 regardless of the ratio.
+Nothing changes for anyone until that bucket exists and is seeded — which means
+the 100/0 default can ship ahead of the bucket without effect.
 
-### 5.2 Existing AQUA-only depositors in pool 0
+### 5.2 Existing AQUA-only depositors — RESOLVED by contract
 
-The contract cannot migrate them. `vault_deposit_single` mints shares against a
-specific `pool_id`, and there is no transfer path between buckets. Options:
+`migrate_vault_position(manager, user, from_pool, to_pool)` was added on 16 Sep
+(wasm `56d08842`, **not yet uploaded**). It re-credits a position between two
+buckets sharing a `share_token`. No tokens move; the contract's LP balance is
+untouched and only the credit is rewritten. Shares mint at the destination's
+share price, so nobody already in it is diluted, and an empty destination mints
+1:1 — meaning the first migration also seeds the bucket.
 
-- **Grandfather** — leave them in pool 0 and accept two cohorts earning
-  differently for the same deposit shape. Simple, no user action, permanently
-  confusing.
-- **Withdraw and redeposit** — clean end state, but costs them gas, exits and
-  re-enters the pool at current prices, and needs to be communicated before the
-  change rather than after.
+So neither bad option is needed: no forced redeposit, no permanent two-cohort
+grandfathering.
 
-Not my call, but it must be decided **before** the announcement, because the
-answer changes what the announcement has to say.
+**Required order.** Migrate first, verify, then flip routing. Seeding pool 3 and
+enabling 100/0 before migrating would leave existing AQUA-only depositors earning
+nothing in the gap.
 
----
+**Caveat:** the happy path is not unit tested — creating a position needs
+`vault_deposit_single`, which reaches the Aquarius pool, and the test harness
+uses a bare address. Guards are covered. Run it on testnet against a real pool
+before touching mainnet positions, because this rewrites live depositor state.
 
 ## 6. Also open, from the v3 deployment
 

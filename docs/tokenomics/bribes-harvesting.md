@@ -16,7 +16,7 @@ flowchart LR
     B -->|50% Stream A| D[add_rewards to<br/>staking contract]
     D --> F[Stakers earn AQUA<br/>Synthetix pro-rata]
     B -->|30% Stream B| G[Single-sided AQUA<br/>into the vault]
-    G --> H[70% single-AQUA class<br/>30% balanced class]
+    G --> H[100% single-AQUA class<br/>pair = swap fees only]
     B -->|10% Stream C| I[Single-sided AQUA<br/>into POL]
     B -->|10% Stream D| J[Treasury]
 ```

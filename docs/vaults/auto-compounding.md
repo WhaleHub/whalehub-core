@@ -26,8 +26,7 @@ sequenceDiagram
     Note over Backend: Every 6 hours, per bribe batch
     Backend->>Backend: Take Stream B — 30% of the harvest
     Backend->>Backend: Quote calc_token_amount → min_lp_out
-    Backend->>Contract: admin_compound_deposit(single-AQUA class, 70%)
-    Backend->>Contract: admin_compound_deposit(balanced class, 30%)
+    Backend->>Contract: admin_compound_deposit(single-AQUA class, 100%)
     Contract->>Aquarius Pool: Deposit AQUA single-sided
     Note over Contract: total_lp_tokens rises, no shares minted
     Note over Contract: Every depositor in that class grows pro-rata

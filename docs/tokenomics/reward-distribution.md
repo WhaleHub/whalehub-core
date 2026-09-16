@@ -57,6 +57,16 @@ This tranche is deposited into the BLUB-AQUA pool as **AQUA only** — it is not
 - The pool holds more BLUB than AQUA, so AQUA is the scarce leg. The StableSwap imbalance term therefore *rewards* adding it: at recent reserves, 100,000 AQUA deposited single-sided minted roughly **137,357 LP**, against roughly **118,108 LP** for the same value added balanced. Buying BLUB first discarded that premium.
 - Adding the scarce leg moves the pool toward balance instead of further away from it.
 
+### Who receives Stream B
+
+**Stream B goes entirely to depositors who entered with AQUA only.** If you deposited a pair, you earn your share of the pool's swap fees and nothing from Stream B.
+
+The reason is the same one that makes the tranche AQUA-only in the first place: the pool is short of AQUA, so an AQUA-only deposit is the one that improves it. Stream B pays for that, and a balanced deposit does not provide it.
+
+Mechanically this is two vault buckets pointing at the same Aquarius pool and sharing one LP balance — the contract separates the reward classes, not the liquidity.
+
+> **Not live yet.** The second bucket does not exist on-chain at the time of writing, so every vault depositor is currently in one bucket and earns identically. Until it ships, the paragraph above describes intent rather than behaviour. Check `get_pool_count` if you want to know where it stands.
+
 Deposits land via `admin_compound_deposit`, which raises the class's `total_lp_tokens` **without minting vault shares**. Every depositor in the class grows pro-rata, automatically. There is nothing to claim and no sell pressure — the reward becomes depth.
 
 Protocol-owned liquidity is tracked separately in `aqua_blub_lp_position`, outside `total_lp_tokens`, so **POL earns nothing from Stream B**. That exclusion is structural, not a filter that could be misconfigured. POL is funded by Stream C instead.

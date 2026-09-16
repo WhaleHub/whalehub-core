@@ -27,8 +27,8 @@ BLUB-AQUA is funded by the bribe harvest (the pool itself emits nothing since Aq
 ```
 Every 6 hours:
 └── 30% of the bribe harvest (Stream B), as AQUA only
-    ├── 70% → single-sided-AQUA reward class
-    └── 30% → balanced reward class
+    └── 100% → single-sided-AQUA reward class
+           (pair depositors earn swap fees only)
         └── Deposited as liquidity; your LP share grows automatically
 ```
 
