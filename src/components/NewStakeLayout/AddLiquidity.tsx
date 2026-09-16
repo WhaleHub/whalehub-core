@@ -93,6 +93,10 @@ function AddLiquidity() {
   // null = both tokens (default), otherwise the POOL's get_tokens() index —
   // pool 0 is [AQUA, BLUB], which is NOT PoolInfo's (token_a=BLUB, token_b=AQUA).
   const [withdrawCoinIndex, setWithdrawCoinIndex] = useState<number | null>(null);
+  // LP quote for the pending deposit, priced by the POOL itself.
+  // undefined = not yet quoted, null = quote unavailable (show so, never guess).
+  const [quotedLp, setQuotedLp] = useState<string | null | undefined>(undefined);
+
 
 
   const [isDepositing, setIsDepositing] = useState(false);
@@ -401,24 +405,41 @@ function AddLiquidity() {
     }
   };
 
-  // Calculate estimated LP shares for deposit based on pool reserves
-  const calculateExpectedShares = (amountA: number, amountB: number): string => {
-    const resA = parseFloat(reserveA);
-    const resB = parseFloat(reserveB);
-    const totalLp = parseFloat(totalLpSupply);
-
-    if (totalLp <= 0 || resA <= 0 || resB <= 0) {
-      // First deposit - shares equal to sqrt(amountA * amountB)
-      return Math.sqrt(amountA * amountB).toString();
+  // LP for a deposit is quoted by the pool via calc_token_amount, not computed
+  // here. The previous local estimate used constant-product math
+  // ((amount / reserve) * totalLp, min of both legs), which is wrong twice on a
+  // StableSwap pool: it overstated a 1,000 AQUA deposit by ~43x against live
+  // reserves, and Math.min(x, 0) returned ZERO for every single-sided deposit.
+  useEffect(() => {
+    if (!selectedPool) return;
+    const a = parseFloat(depositAmount1 || "0");
+    const b = parseFloat(depositAmount2 || "0");
+    if (!(a > 0) && !(b > 0)) {
+      setQuotedLp(undefined);
+      return;
     }
 
-    // Calculate shares based on the smaller ratio to prevent manipulation
-    const sharesFromA = (amountA / resA) * totalLp;
-    const sharesFromB = (amountB / resB) * totalLp;
+    let cancelled = false;
+    setQuotedLp(undefined);
+    // Debounced: this is an RPC round trip on every keystroke otherwise.
+    const t = setTimeout(async () => {
+      // calc_token_amount takes the POOL's get_tokens() order — [AQUA, BLUB] —
+      // while depositAmount1/2 follow PoolInfo's (token_a = BLUB, token_b = AQUA).
+      const aqua = singleAsset
+        ? (singleAssetToken === "b" ? String(a) : "0")
+        : String(b);
+      const blub = singleAsset
+        ? (singleAssetToken === "a" ? String(a) : "0")
+        : String(a);
+      const lp = await vaultService.quoteDepositLp(selectedPool.pool_address, aqua, blub);
+      if (!cancelled) setQuotedLp(lp);
+    }, 400);
 
-    // Use the minimum to be conservative
-    return Math.min(sharesFromA, sharesFromB).toString();
-  };
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
+  }, [selectedPool, depositAmount1, depositAmount2, singleAsset, singleAssetToken]);
 
   // Apply slippage tolerance to get minimum acceptable amount (human-readable)
   const applySlippage = (amount: string | number): string => {
@@ -1260,19 +1281,19 @@ function AddLiquidity() {
                   <div className="flex justify-between">
                     <span className="text-[#B1B3B8]">Expected LP tokens</span>
                     <span className="text-white font-medium">
-                      ~{fmtNum(calculateExpectedShares(
-                        parseFloat(depositAmount1 || "0"),
-                        parseFloat(depositAmount2 || "0")
-                      ))}
+                      {quotedLp === undefined
+                        ? "…"
+                        : quotedLp === null
+                        ? "unavailable"
+                        : `~${fmtNum(quotedLp)}`}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-[#B1B3B8]">Min LP ({slippageTolerance}% slippage)</span>
                     <span className="text-[#00CC99] font-medium">
-                      ~{fmtNum(parseFloat(calculateExpectedShares(
-                        parseFloat(depositAmount1 || "0"),
-                        parseFloat(depositAmount2 || "0")
-                      )) * (1 - slippageTolerance / 100))}
+                      {quotedLp === undefined || quotedLp === null
+                        ? "—"
+                        : `~${fmtNum(parseFloat(quotedLp) * (1 - slippageTolerance / 100))}`}
                     </span>
                   </div>
                 </div>

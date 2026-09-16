@@ -120,6 +120,61 @@ export class SorobanVaultService {
   }
 
   // Simulate with retry + automatic fallback to second RPC on failure
+  /**
+   * Quote LP shares for a deposit, using the POOL's own pricing.
+   *
+   * The previous frontend estimate did constant-product math —
+   * `(amount / reserve) * totalLp`, taking the min of both legs. That is wrong
+   * here twice over: pool 0 is a StableSwap pool where LP tracks the invariant
+   * rather than one reserve's share (against live reserves it overstated a
+   * 1,000 AQUA deposit by ~43x), and `Math.min(x, 0)` returns ZERO for any
+   * single-sided deposit, so AQUA-only depositors were shown nothing at all.
+   *
+   * `amounts` must be in the POOL's get_tokens() order — pool 0 is
+   * [AQUA, BLUB], which is NOT PoolInfo's (token_a = BLUB, token_b = AQUA).
+   *
+   * Returns LP in whole units, or null when the quote is unavailable; callers
+   * should show an explicit "unavailable" rather than invent a number.
+   */
+  async quoteDepositLp(
+    poolAddress: string,
+    amountAqua: string,
+    amountBlub: string
+  ): Promise<string | null> {
+    try {
+      const toStroops = (v: string) => {
+        const n = parseFloat(v || "0");
+        return BigInt(Math.max(0, Math.round((isNaN(n) ? 0 : n) * 1e7)));
+      };
+      const amounts = nativeToScVal([
+        nativeToScVal(toStroops(amountAqua), { type: "u128" }),
+        nativeToScVal(toStroops(amountBlub), { type: "u128" }),
+      ]);
+
+      const poolContract = new Contract(poolAddress);
+      const account = await this.getDummyAccount();
+      const tx = new TransactionBuilder(account, {
+        fee: BASE_FEE,
+        networkPassphrase: this.networkPassphrase,
+      })
+        .addOperation(
+          poolContract.call("calc_token_amount", amounts, nativeToScVal(true))
+        )
+        .setTimeout(30)
+        .build();
+
+      const sim = await this.simulateTx(tx);
+      if (rpc.Api.isSimulationError(sim) || !sim.result?.retval) return null;
+
+      const lp = scValToNative(sim.result.retval);
+      const asNumber = Number(BigInt(lp)) / 1e7;
+      return Number.isFinite(asNumber) && asNumber > 0 ? asNumber.toString() : null;
+    } catch (err: any) {
+      console.warn("[Vault] calc_token_amount quote failed:", err?.message);
+      return null;
+    }
+  }
+
   private async simulateTx(tx: any): Promise<rpc.Api.SimulateTransactionResponse> {
     try {
       return await this.withRetry(() => this.server.simulateTransaction(tx));
