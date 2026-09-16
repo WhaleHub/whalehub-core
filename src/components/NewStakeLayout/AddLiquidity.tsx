@@ -833,8 +833,8 @@ function AddLiquidity() {
           ) : (
             <div className="w-full bg-[#0A0D14] text-white p-3 rounded-[10px] border border-[#1C2235] text-sm flex items-center gap-3">
               <div className="flex items-center -space-x-1">
-                <img src={TOKEN_LOGOS["BLUB"]} alt="BLUB" className="w-5 h-5 rounded-full" />
-                <img src={TOKEN_LOGOS["AQUA"]} alt="AQUA" className="w-5 h-5 rounded-full" />
+                <img src={TOKEN_LOGOS["BLUB"]} alt="BLUB" className="w-5 h-5 rounded-full flex-shrink-0" />
+                <img src={TOKEN_LOGOS["AQUA"]} alt="AQUA" className="w-5 h-5 rounded-full flex-shrink-0" />
               </div>
               <span>BLUB / AQUA</span>
             </div>
@@ -921,7 +921,7 @@ function AddLiquidity() {
               <div className="flex justify-between text-sm">
                 <div className="flex items-center space-x-1.5">
                   {TOKEN_LOGOS[selectedPool.token_a_code] && (
-                    <img src={TOKEN_LOGOS[selectedPool.token_a_code]} alt={selectedPool.token_a_code} className="w-4 h-4 rounded-full" />
+                    <img src={TOKEN_LOGOS[selectedPool.token_a_code]} alt={selectedPool.token_a_code} className="w-4 h-4 rounded-full flex-shrink-0" />
                   )}
                   <span className="text-[#B1B3B8]">{selectedPool.token_a_code}</span>
                 </div>
@@ -940,7 +940,7 @@ function AddLiquidity() {
               <div className="flex justify-between text-sm mt-2">
                 <div className="flex items-center space-x-1.5">
                   {TOKEN_LOGOS[selectedPool.token_b_code] && (
-                    <img src={TOKEN_LOGOS[selectedPool.token_b_code]} alt={selectedPool.token_b_code} className="w-4 h-4 rounded-full" />
+                    <img src={TOKEN_LOGOS[selectedPool.token_b_code]} alt={selectedPool.token_b_code} className="w-4 h-4 rounded-full flex-shrink-0" />
                   )}
                   <span className="text-[#B1B3B8]">{selectedPool.token_b_code}</span>
                 </div>
@@ -1104,7 +1104,7 @@ function AddLiquidity() {
                 )}
               >
                 <div className="flex items-center gap-1.5 text-sm font-medium text-white">
-                  {TOKEN_LOGOS["AQUA"] && <img src={TOKEN_LOGOS["AQUA"]} alt="AQUA" className="w-4 h-4 rounded-full" />}
+                  {TOKEN_LOGOS["AQUA"] && <img src={TOKEN_LOGOS["AQUA"]} alt="AQUA" className="w-4 h-4 rounded-full flex-shrink-0" />}
                   AQUA only
                   <span className="ml-auto text-[10px] uppercase tracking-wider text-[#00CC99] font-bold">Boosted</span>
                 </div>
@@ -1120,8 +1120,8 @@ function AddLiquidity() {
                 )}
               >
                 <div className="flex items-center gap-1.5 text-sm font-medium text-white">
-                  {TOKEN_LOGOS["AQUA"] && <img src={TOKEN_LOGOS["AQUA"]} alt="AQUA" className="w-4 h-4 rounded-full" />}
-                  {TOKEN_LOGOS["BLUB"] && <img src={TOKEN_LOGOS["BLUB"]} alt="BLUB" className="w-4 h-4 rounded-full -ml-2.5" />}
+                  {TOKEN_LOGOS["AQUA"] && <img src={TOKEN_LOGOS["AQUA"]} alt="AQUA" className="w-4 h-4 rounded-full flex-shrink-0" />}
+                  {TOKEN_LOGOS["BLUB"] && <img src={TOKEN_LOGOS["BLUB"]} alt="BLUB" className="w-4 h-4 rounded-full -ml-2.5 flex-shrink-0" />}
                   AQUA + BLUB
                 </div>
                 <div className="text-[10px] text-[#B1B3B8] mt-1 leading-snug">Swap fees only</div>
@@ -1153,7 +1153,7 @@ function AddLiquidity() {
                       )}
                     >
                       {TOKEN_LOGOS[t.code] && (
-                        <img src={TOKEN_LOGOS[t.code]} alt={t.code} className="w-4 h-4 rounded-full" />
+                        <img src={TOKEN_LOGOS[t.code]} alt={t.code} className="w-4 h-4 rounded-full flex-shrink-0" />
                       )}
                       {t.code}
                     </button>
