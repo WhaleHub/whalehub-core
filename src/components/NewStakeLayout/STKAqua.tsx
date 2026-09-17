@@ -49,7 +49,7 @@ import {
 import { toast } from "react-toastify";
 import { Balance } from "../../utils/interfaces";
 import { MIN_DEPOSIT_AMOUNT } from "../../config";
-import { InformationCircleIcon } from "@heroicons/react/16/solid";
+import { InformationCircleIcon, LockClosedIcon, LockOpenIcon, WalletIcon, GiftIcon } from "@heroicons/react/16/solid";
 import { walletTypes } from "../../enums";
 import DialogC from "./Dialog";
 import { signTransaction } from "@lobstrco/signer-extension-api";
@@ -1034,8 +1034,8 @@ const handleAddTrustline = async () => {
                   <div>
                     <div className="text-[#B1B3B8] flex items-center">
                       <span>Staked BLUB</span>
-                      <span className="ml-1 text-[10px] text-[#00CC99]">
-                        🔒 Staked
+                      <span className="ml-1 text-[10px] text-[#00CC99] inline-flex items-center gap-0.5">
+                        <LockClosedIcon className="h-[10px] w-[10px] flex-shrink-0" /> Staked
                       </span>
                     </div>
                     <div className="text-white font-medium text-base">
@@ -1070,8 +1070,8 @@ const handleAddTrustline = async () => {
                   <div>
                     <div className="text-[#B1B3B8] flex items-center">
                       <span>BLUB Balance</span>
-                      <span className="ml-1 text-[10px] text-[#4169E1]">
-                        💎 Wallet
+                      <span className="ml-1 text-[10px] text-[#4169E1] inline-flex items-center gap-0.5">
+                        <WalletIcon className="h-[10px] w-[10px] flex-shrink-0" /> Wallet
                       </span>
                     </div>
                     <div className="text-white font-medium text-base">
@@ -1088,8 +1088,8 @@ const handleAddTrustline = async () => {
                   <div>
                     <div className="text-[#B1B3B8] flex items-center">
                       <span>Unstakeable BLUB</span>
-                      <span className="ml-1 text-[10px] text-[#FFA500]">
-                        🔓 Ready
+                      <span className="ml-1 text-[10px] text-[#FFA500] inline-flex items-center gap-0.5">
+                        <LockOpenIcon className="h-[10px] w-[10px] flex-shrink-0" /> Ready
                       </span>
                     </div>
                     <div className="text-white font-medium">
@@ -1105,8 +1105,8 @@ const handleAddTrustline = async () => {
                   <div>
                     <div className="text-[#B1B3B8] flex items-center">
                       <span>Pending Rewards</span>
-                      <span className="ml-1 text-[10px] text-[#FFD700]">
-                        🎁 Earned
+                      <span className="ml-1 text-[10px] text-[#FFD700] inline-flex items-center gap-0.5">
+                        <GiftIcon className="h-[10px] w-[10px] flex-shrink-0" /> Earned
                       </span>
                     </div>
                     <div className="text-white font-medium">
@@ -1137,7 +1137,9 @@ const handleAddTrustline = async () => {
                             >
                               <div className="flex items-center space-x-2">
                                 <span className={isReady ? "text-[#00CC99]" : "text-[#FFA500]"}>
-                                  {isReady ? "🔓" : "🔒"}
+                                  {isReady
+                                    ? <LockOpenIcon className="h-4 w-4 flex-shrink-0" />
+                                    : <LockClosedIcon className="h-4 w-4 flex-shrink-0" />}
                                 </span>
                                 <span className="text-white font-medium">
                                   {entry.blubAmount} BLUB

@@ -40,7 +40,7 @@ import {
   TransactionBuilder,
 } from "@stellar/stellar-sdk";
 import { TailSpin } from "react-loader-spinner";
-import { InformationCircleIcon } from "@heroicons/react/16/solid";
+import { InformationCircleIcon, LockClosedIcon, LockOpenIcon } from "@heroicons/react/16/solid";
 import { walletTypes } from "../../enums";
 import { signTransaction } from "@lobstrco/signer-extension-api";
 import DialogC from "./Dialog";
@@ -926,7 +926,9 @@ function Yield() {
                             >
                               <div className="flex items-center space-x-2">
                                 <span className={isReady ? "text-[#00CC99]" : "text-[#FFA500]"}>
-                                  {isReady ? "🔓" : "🔒"}
+                                  {isReady
+                                    ? <LockOpenIcon className="h-4 w-4 flex-shrink-0" />
+                                    : <LockClosedIcon className="h-4 w-4 flex-shrink-0" />}
                                 </span>
                                 <span className="text-white font-medium">
                                   {entry.blubAmount} BLUB

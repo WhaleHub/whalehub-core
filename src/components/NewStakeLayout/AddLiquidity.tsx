@@ -6,7 +6,7 @@ import clsx from "clsx";
 import { Button, Input } from "@headlessui/react";
 import { toast } from "react-toastify";
 import { TailSpin } from "react-loader-spinner";
-import { InformationCircleIcon } from "@heroicons/react/16/solid";
+import { InformationCircleIcon, CheckCircleIcon } from "@heroicons/react/16/solid";
 import DialogC from "./Dialog";
 import { SorobanVaultService, TokenPriceService, IceBoostInfo } from "../../services/soroban-vault.service";
 import { useTokenPrice, formatUsd } from "../../hooks/useTokenPrice";
@@ -846,7 +846,7 @@ function AddLiquidity() {
           <div className="mt-5 space-y-3">
             {/* Banner */}
             <div className="bg-teal-500/10 border border-teal-500/30 rounded-lg p-3 mb-4 text-sm text-gray-200">
-              💡 You're a backer in a crowdfunded liquidity pool. You earn swap fees plus AQUA rewards, reinvested for you every 4 hours.
+              You're a backer in a crowdfunded liquidity pool. You earn swap fees plus AQUA rewards, reinvested for you every 4 hours.
             </div>
 
             {/* APY Row — two cards side by side */}
@@ -1002,7 +1002,7 @@ function AddLiquidity() {
                     />
                   </div>
                   <div className="text-right">
-                    <div className="text-sm font-semibold text-[#00CC99]">+{fmtNum(gainLp)} LP</div>
+                    <div className="text-sm font-semibold text-[#00CC99]">+{gainLp.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} LP</div>
                     {gainUsd !== null && <div className="text-[10px] text-[#6B7280]">{`$${formatPositionUsd(gainUsd)}`}</div>}
                     {gainLp <= 0 && compoundStats && compoundStats.lastCompoundTime > 0 && (
                       <div className="text-[10px] text-[#6B7280]">No compounds since {new Date(compoundStats.lastCompoundTime * 1000).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</div>
@@ -1014,7 +1014,10 @@ function AddLiquidity() {
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
-                <div className="text-xs text-[#00CC99] font-medium">✅ Earning Boosted Rewards</div>
+                <div className="text-xs text-[#00CC99] font-medium flex items-center gap-1">
+                  <CheckCircleIcon className="h-[14px] w-[14px] flex-shrink-0" />
+                  Earning Boosted Rewards
+                </div>
                 <InformationCircleIcon
                   className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
                   onClick={() => onDialogOpen(
@@ -1035,7 +1038,7 @@ function AddLiquidity() {
                 return (
                   <div className="flex items-center gap-1">
                     <div className={clsx("text-[10px] font-medium px-2 py-0.5 rounded-full border", stalled ? "text-[#F5B942] border-[#F5B942]/40 bg-[#F5B942]/10" : "text-[#00CC99] border-[#00CC99]/40 bg-[#00CC99]/10")}>
-                      {stalled ? "Compounding stalled" : "Compounding active"} · last {ago}
+                      {stalled ? "Compounding stalled" : "Compounding active"} · {ago}
                     </div>
                     <InformationCircleIcon
                       className="h-[13px] w-[13px] text-[#6B7280] cursor-pointer flex-shrink-0"
