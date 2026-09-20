@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DeFi Risks: The Nine That Actually Cost People Money | WhaleHub</title>
+<meta name="description" content="A practical taxonomy of DeFi risk — smart contract, oracle, liquidation, depeg, governance, bridge, counterparty, correlation and user error — with what each looks like before it happens." />
+<link rel="canonical" href="https://whalehub.io/blog/defi-risks" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="defi risks, is defi safe, smart contract risk, oracle manipulation, depeg risk, defi security" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/defi-risks" />
+<meta property="og:title" content="DeFi Risks: The Nine That Actually Cost People Money" />
+<meta property="og:description" content="A practical taxonomy of DeFi risk — smart contract, oracle, liquidation, depeg, governance, bridge, counterparty, correlation and user error — with what each looks like before it happens." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/defi-risks.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-20" />
+<meta property="article:modified_time" content="2026-09-20" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="DeFi Risks: The Nine That Actually Cost People Money" />
+<meta name="twitter:description" content="A practical taxonomy of DeFi risk — smart contract, oracle, liquidation, depeg, governance, bridge, counterparty, correlation and user error — with what each looks like before it happens." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/defi-risks.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/defi-risks#article",
+      "headline": "DeFi Risks: The Nine That Actually Cost People Money",
+      "description": "A practical taxonomy of DeFi risk \u2014 smart contract, oracle, liquidation, depeg, governance, bridge, counterparty, correlation and user error \u2014 with what each looks like before it happens.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/defi-risks.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-09-20",
+      "dateModified": "2026-09-20",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev"
+        ]
+      },
+      "publisher": {
+        "@id": "https://whalehub.io/#organization"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/defi-risks"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://whalehub.io/blog/defi-risks#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the biggest risk in DeFi?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Historically, oracle manipulation and economic design flaws have cost more than outright code bugs. A protocol can be flawlessly implemented and still be exploitable if it prices collateral from a market someone can move cheaply. Audits look hardest at the code, which is why the losses cluster in the parts audits cover least well."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is DeFi safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No individual position in DeFi is safe in the sense a bank deposit is \u2014 there is no insurance, no reversal and no recourse. Risk varies enormously by position, though: supplying a major stablecoin to a long-established lending market is a different proposition from a leveraged liquidity position in a new protocol. The useful question is never whether DeFi is safe but which specific risks a given position carries."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is oracle manipulation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An attack where someone moves the price a protocol reads, rather than breaking the protocol. If collateral is valued from a thin market, an attacker can push that price, borrow far more than their collateral is worth, and walk away \u2014 leaving the protocol with bad debt. Protocols that aggregate prices across deep venues are much harder to attack this way."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you lose money in DeFi without being hacked?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Routinely, and it is the common case. Impermanent loss, liquidation during a normal drawdown, a reward token whose price falls faster than it accrues, and slippage on an illiquid exit all lose money with every contract behaving exactly as designed. Most DeFi losses are not thefts."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you reduce DeFi risk?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Size positions so any single one failing is survivable; prefer protocols with long operating histories through real drawdowns; understand where the yield comes from before depositing; avoid stacking a position on top of another protocol's token; keep meaningful headroom on any borrowing; and treat correlation as the default rather than the exception."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does an audit mean a protocol is safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. An audit is a time-boxed review of specific code at a specific commit by people who can be wrong. It raises the odds that obvious classes of bug were caught; it says nothing about economic design, oracle choices, governance risk, or code deployed after the review. Many audited protocols have been exploited."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://whalehub.io/blog/defi-risks#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://whalehub.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "DeFi Risks: The Nine That Actually Cost People Money",
+          "item": "https://whalehub.io/blog/defi-risks"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; DeFi</div>
+      <span class="tag">DeFi</span>
+      <h1>DeFi Risks: The Nine That Actually Cost People Money</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: September 2026</span>
+        <span class="dot-sep"></span>
+        <span>11 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/defi-risks.png" alt="DeFi risks — the nine categories that cost people money" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">"Is DeFi safe" is the wrong question, and it produces a useless answer. Every position carries a specific, nameable set of risks, and they differ enormously between positions. What follows is the taxonomy — <strong>nine categories</strong> that account for nearly everything that has actually cost people money.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#one">1. Smart contract failure</a></li>
+        <li><a href="#two">2. Oracle manipulation</a></li>
+        <li><a href="#three">3. Economic design</a></li>
+        <li><a href="#four">4. Liquidation</a></li>
+        <li><a href="#five">5. Depeg</a></li>
+        <li><a href="#six">6. Governance</a></li>
+        <li><a href="#seven">7. Bridges</a></li>
+        <li><a href="#eight">8. Counterparty</a></li>
+        <li><a href="#nine">9. Correlation</a></li>
+        <li><a href="#user">And: user error</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="one">1. Smart contract failure</h2>
+      <p>The risk everyone names first, and not the largest. Code holding funds can have bugs — reentrancy, arithmetic errors, broken access control, upgradeable proxies pointing somewhere unexpected.</p>
+      <p><strong>Signals:</strong> how long the contracts have been live and holding real value, whether they are upgradeable and who controls the upgrade key, whether there is a timelock on changes, and whether a bug bounty exists and pays enough to outbid an exploit. Time under load is the most reliable signal there is; audits help but prove less than people assume — see <a href="smart-contract-audits">smart contract audits</a>.</p>
+
+      <h2 id="two">2. Oracle manipulation</h2>
+      <p class="answer">Do not break the protocol — change what it believes. If a lending market prices collateral from a market an attacker can move cheaply, they push the price, borrow against inflated collateral, and leave the bad debt behind. Historically this has cost more than code bugs.</p>
+      <p><strong>Signals:</strong> whether prices come from a major aggregated provider or the protocol's own thin pool; whether they aggregate across venues; whether there are bounds on implausible moves; and what happens when a feed goes stale — halt, or keep liquidating on old data.</p>
+
+      <h2 id="three">3. Economic design</h2>
+      <p>Every contract works as written and the system still fails, because the incentives lead somewhere its designers did not model. Yields paid in a token whose only demand is the yield. Redemption mechanisms that are stabilising in calm markets and reflexive in falling ones. Reward emissions funded by nothing but new deposits.</p>
+      <p><strong>The test:</strong> where does the yield actually come from? If the answer is trading fees, borrower interest, or protocol revenue, it is real and it has a ceiling. If the answer is token emissions, you are being paid in dilution and the question becomes who buys the token. If nobody can explain the source in one sentence, that is the finding.</p>
+
+      <h2 id="four">4. Liquidation</h2>
+      <p>Any borrowed position has a price at which it is closed automatically, and liquidations cluster: everyone is liquidated in the same move, into the same order books, which pushes the price further and liquidates the next tier.</p>
+      <p><strong>Mitigation is unglamorous:</strong> headroom. Borrowing the maximum allowed means starting one bad hour from liquidation. Remember too that a health factor decays on its own as interest accrues — a position left alone gets riskier by doing nothing. More in <a href="defi-lending-platforms">DeFi lending platforms</a>.</p>
+
+      <h2 id="five">5. Depeg</h2>
+      <p>Assets that are supposed to track something sometimes don't: stablecoins below a dollar, liquid staking tokens below their backing, wrapped assets below the thing they wrap.</p>
+      <p>Two very different cases. A <em>liquidity</em> depeg is temporary — the backing is fine, the exit queue is congested, and it recovers. A <em>solvency</em> depeg is permanent, because the backing is not there. Telling them apart in the moment is hard and is where most losses occur, because the second one looks exactly like the first for the first few hours. The compounding danger is using a pegged asset as collateral: the depeg and the liquidation arrive together.</p>
+
+      <h2 id="six">6. Governance</h2>
+      <p>Parameters your position depends on can be changed by vote: collateral factors, fees, reward rates, which oracle is used, occasionally the contract itself. Governance attacks are real — acquire or borrow enough voting power, pass a proposal that drains the treasury.</p>
+      <p><strong>Signals:</strong> is voting power concentrated enough that one holder can pass a proposal alone; is there a timelock giving users time to exit after a proposal passes; can anything be executed with no delay at all.</p>
+
+      <h2 id="seven">7. Bridges</h2>
+      <p>Bridges have lost more value than any other category in DeFi, by a wide margin. They are structurally hard: large pooled value, complex cross-chain verification, and frequently a small validator set holding the keys.</p>
+      <p><strong>The practical implication:</strong> a wrapped asset is a claim on a bridge, not the asset. If the bridge fails, the wrapper is worth what its backing is worth, which may be nothing. Minimise both the number of bridges you cross and the time you sit in wrapped form.</p>
+
+      <h2 id="eight">8. Counterparty</h2>
+      <p>Some things called DeFi are not. Custodial yield products, centralised earn accounts, and protocols with a discretionary admin key are credit exposure wearing DeFi vocabulary. That is not automatically bad — it is simply a different risk, assessed by looking at the entity rather than the code.</p>
+      <p><strong>The question:</strong> can anyone move my funds without my signature? If yes, whatever the interface says, this is counterparty risk.</p>
+
+      <h2 id="nine">9. Correlation</h2>
+      <p class="answer">The one most consistently underpriced. Risks are presented as a list of small independent probabilities, which makes the total look tolerable. In a real stress event they arrive together, because they share a cause.</p>
+      <p>A leveraged liquidity position in a volatile market goes wrong like this: price falls, <a href="impermanent-loss-explained">impermanent loss</a> increases, the position's value drops, the health factor falls, liquidation fires into thin liquidity, and the reward token — correlated with everything else — falls at the same time. Five outcomes, one cause. Any risk model that treats them as independent is wrong by orders of magnitude, and it is exactly the model most people carry implicitly.</p>
+
+      <h2 id="user">And: user error</h2>
+      <p>Not a protocol risk, and it still loses more retail funds than several of the categories above combined: approving a malicious contract, signing a blind transaction, a phishing front end, sending to the wrong chain, a seed phrase stored in cloud notes.</p>
+      <p><strong>The unexciting defences work:</strong> revoke token approvals you no longer need, bookmark front ends instead of searching for them, use a hardware wallet for anything material, and treat any unexpected prompt to sign as hostile until proven otherwise.</p>
+
+      <h2>Using this</h2>
+      <p>Before any deposit, name which of the nine apply and how badly. A stablecoin supplied to an established lending market: contract, oracle, governance, mild correlation. A leveraged liquidity position on a new protocol with a bridged asset: all nine at once, and they are not independent.</p>
+      <p>Neither is wrong to do. Confusing one for the other is.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is the biggest risk in DeFi?</summary><p>Historically, oracle manipulation and economic design flaws have cost more than outright code bugs. A protocol can be flawlessly implemented and still be exploitable if it prices collateral from a market someone can move cheaply. Audits look hardest at the code, which is why the losses cluster in the parts audits cover least well.</p></details>
+      <details><summary>Is DeFi safe?</summary><p>No individual position in DeFi is safe in the sense a bank deposit is — there is no insurance, no reversal and no recourse. Risk varies enormously by position, though: supplying a major stablecoin to a long-established lending market is a different proposition from a leveraged liquidity position in a new protocol. The useful question is never whether DeFi is safe but which specific risks a given position carries.</p></details>
+      <details><summary>What is oracle manipulation?</summary><p>An attack where someone moves the price a protocol reads, rather than breaking the protocol. If collateral is valued from a thin market, an attacker can push that price, borrow far more than their collateral is worth, and walk away — leaving the protocol with bad debt. Protocols that aggregate prices across deep venues are much harder to attack this way.</p></details>
+      <details><summary>Can you lose money in DeFi without being hacked?</summary><p>Routinely, and it is the common case. Impermanent loss, liquidation during a normal drawdown, a reward token whose price falls faster than it accrues, and slippage on an illiquid exit all lose money with every contract behaving exactly as designed. Most DeFi losses are not thefts.</p></details>
+      <details><summary>How do you reduce DeFi risk?</summary><p>Size positions so any single one failing is survivable; prefer protocols with long operating histories through real drawdowns; understand where the yield comes from before depositing; avoid stacking a position on top of another protocol's token; keep meaningful headroom on any borrowing; and treat correlation as the default rather than the exception.</p></details>
+      <details><summary>Does an audit mean a protocol is safe?</summary><p>No. An audit is a time-boxed review of specific code at a specific commit by people who can be wrong. It raises the odds that obvious classes of bug were caught; it says nothing about economic design, oracle choices, governance risk, or code deployed after the review. Many audited protocols have been exploited.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — and the wider market around it — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="impermanent-loss-explained"><img src="../assets/blog/impermanent-loss-explained.png" alt="" /><span>Impermanent Loss Explained</span></a>
+        <a href="defi-lending-platforms"><img src="../assets/blog/defi-lending-platforms.png" alt="" /><span>DeFi Lending Platforms</span></a>
+        <a href="smart-contract-audits"><img src="../assets/blog/smart-contract-audits.png" alt="" /><span>Smart Contract Audits</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Know what you're holding</h2>
+      <p>WhaleHub publishes how its yield is generated and where the risk sits. Read it before you deposit anywhere.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not financial advice. DeFi involves risk, including smart-contract failure, liquidation, and the total loss of capital. Protocol mechanics and parameters change — verify current details with the protocol before depositing.</p>
+  </div>
+</article>
+
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

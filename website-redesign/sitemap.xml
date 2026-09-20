@@ -5,6 +5,18 @@
   <url><loc>https://whalehub.io/faq</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://whalehub.io/contact</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
 
+  <url><loc>https://whalehub.io/blog/crypto-passive-income</loc><lastmod>2026-09-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://whalehub.io/blog/smart-contract-audits</loc><lastmod>2026-09-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://whalehub.io/blog/defi-risks</loc><lastmod>2026-09-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://whalehub.io/blog/tokenized-treasuries</loc><lastmod>2026-09-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://whalehub.io/blog/tokenized-real-estate</loc><lastmod>2026-09-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://whalehub.io/blog/what-is-restaking</loc><lastmod>2026-09-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://whalehub.io/blog/stellar-rwa-tokenization</loc><lastmod>2026-09-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://whalehub.io/blog/stellar-vs-xrp</loc><lastmod>2026-09-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://whalehub.io/blog/xlm-staking</loc><lastmod>2026-09-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://whalehub.io/blog/defi-lending-platforms</loc><lastmod>2026-09-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://whalehub.io/blog/aave-vs-kamino</loc><lastmod>2026-09-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://whalehub.io/blog/what-is-aave</loc><lastmod>2026-09-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://whalehub.io/blog/is-kamino-finance-safe</loc><lastmod>2026-09-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://whalehub.io/blog/kamino-lend-explained</loc><lastmod>2026-09-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://whalehub.io/blog/what-is-kamino-finance</loc><lastmod>2026-09-20</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>

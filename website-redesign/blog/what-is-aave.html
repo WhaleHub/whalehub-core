@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>What Is Aave? The Lending Protocol, Not the Dialect | WhaleHub</title>
+<meta name="description" content="Aave explained: how supplying and borrowing work, aTokens, health factor, flash loans and GHO — plus what the AAVE token does and does not entitle you to." />
+<link rel="canonical" href="https://whalehub.io/blog/what-is-aave" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="what is aave, aave protocol, aave lending, atokens, health factor, aave flash loan, gho stablecoin" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/what-is-aave" />
+<meta property="og:title" content="What Is Aave? The Lending Protocol, Not the Dialect" />
+<meta property="og:description" content="Aave explained: how supplying and borrowing work, aTokens, health factor, flash loans and GHO — plus what the AAVE token does and does not entitle you to." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/what-is-aave.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-20" />
+<meta property="article:modified_time" content="2026-09-20" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="What Is Aave? The Lending Protocol, Not the Dialect" />
+<meta name="twitter:description" content="Aave explained: how supplying and borrowing work, aTokens, health factor, flash loans and GHO — plus what the AAVE token does and does not entitle you to." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/what-is-aave.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/what-is-aave#article",
+      "headline": "What Is Aave? The Lending Protocol, Not the Dialect",
+      "description": "Aave explained: how supplying and borrowing work, aTokens, health factor, flash loans and GHO \u2014 plus what the AAVE token does and does not entitle you to.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/what-is-aave.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-09-20",
+      "dateModified": "2026-09-20",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev"
+        ]
+      },
+      "publisher": {
+        "@id": "https://whalehub.io/#organization"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/what-is-aave"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://whalehub.io/blog/what-is-aave#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Aave?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aave is a decentralised, over-collateralised lending protocol. Suppliers deposit assets into pools and earn interest; borrowers post collateral worth more than they borrow and pay that interest. Everything is enforced by smart contracts rather than by a company, and it runs across many blockchains rather than one."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Aave the same as AAVE the dialect?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No, and the name collision causes real confusion in search. AAVE also stands for African American Vernacular English, a linguistic term entirely unrelated to cryptocurrency. This article is about Aave the DeFi lending protocol."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are aTokens?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "When you supply an asset to Aave you receive an aToken \u2014 aUSDC for USDC, for example. It represents your deposit and accrues interest directly, so your aToken balance increases over time rather than you claiming rewards separately. Redeeming the aToken returns the underlying asset plus accrued interest."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a health factor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A single number summarising how close a borrowing position is to liquidation. Above 1 the position is safe; at or below 1 it can be liquidated. It falls when collateral loses value or debt grows with interest, and it moves without you doing anything, which is why a comfortable-looking position can become a liquidated one overnight."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an Aave flash loan?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A loan with no collateral that must be repaid within the same transaction. If repayment does not happen, the entire transaction reverts as though it never occurred, so the protocol cannot lose. It is used programmatically for arbitrage, collateral swaps and refinancing \u2014 not for obtaining funds you keep, which is impossible by design."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does holding AAVE pay you protocol revenue?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not directly. AAVE is a governance token used to vote on protocol parameters and to backstop the protocol through the Safety Module, where staked AAVE can be slashed to cover a shortfall. Staking it earns incentives, but that is compensation for taking on backstop risk rather than a dividend on lending revenue."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://whalehub.io/blog/what-is-aave#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://whalehub.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "What Is Aave? The Lending Protocol, Not the Dialect",
+          "item": "https://whalehub.io/blog/what-is-aave"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; DeFi</div>
+      <span class="tag">DeFi</span>
+      <h1>What Is Aave? The Lending Protocol, Not the Dialect</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: September 2026</span>
+        <span class="dot-sep"></span>
+        <span>10 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/what-is-aave.png" alt="What is Aave — the DeFi lending protocol explained" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">A quick disambiguation first, because search engines conflate them constantly: <strong>AAVE</strong> also means African American Vernacular English. This article is about <strong>Aave the DeFi lending protocol</strong> — one of the largest and longest-running in the category, and the template most on-chain lending markets copy.</p>
+
+    <div class="callout">
+      <div class="k">The short version</div>
+      <p>Aave is a set of pooled lending markets. Suppliers deposit assets and earn the interest borrowers pay; borrowers post collateral worth more than they borrow, and are liquidated automatically if that cushion thins. No credit checks, no loan officers, no negotiation — rates move with supply and demand, and the rules are the contract.</p>
+    </div>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#supply">Supplying and aTokens</a></li>
+        <li><a href="#borrow">Borrowing and the health factor</a></li>
+        <li><a href="#flash">Flash loans</a></li>
+        <li><a href="#gho">GHO</a></li>
+        <li><a href="#token">What AAVE actually is</a></li>
+        <li><a href="#risks">Risks</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="supply">Supplying and aTokens</h2>
+      <p class="answer">Deposit an asset and you receive an <strong>aToken</strong> — supply USDC, receive aUSDC. The aToken represents your claim and accrues interest directly: the balance grows in your wallet. There is nothing to claim and no separate rewards screen.</p>
+      <p>This design has a quiet elegance. Because the aToken <em>is</em> the interest-bearing position, it can be moved, held elsewhere, or used in other protocols while still earning. It is also why Aave positions integrate so widely across DeFi — a yield-bearing token that needs no maintenance is unusually easy to build on.</p>
+      <p>The rate you earn is set by <strong>utilisation</strong>, the fraction of the pool currently borrowed. High utilisation pushes rates up to attract supply; low utilisation pushes them down. A rate you see is a snapshot of demand, not a commitment, and it can halve in a day.</p>
+
+      <h2 id="borrow">Borrowing and the health factor</h2>
+      <p>Borrowing requires posting more value than you take out. Each asset has a loan-to-value limit and a liquidation threshold, and your position is summarised by a single number: the <strong>health factor</strong>.</p>
+      <ul>
+        <li><strong>Above 1</strong> — the position is safe.</li>
+        <li><strong>At or below 1</strong> — liquidators may repay part of your debt and claim collateral plus a bonus.</li>
+      </ul>
+      <p>The part people underestimate is that the health factor <strong>moves on its own</strong>. It falls when collateral loses value and when debt accrues interest. You can open a comfortable position, do nothing, and be liquidated — the market did the work. Borrowing the maximum allowed means starting at a health factor barely above 1, which is a decision to be liquidated by the first meaningful move.</p>
+      <p>Aave V3 added tools that change this calculus: <em>isolation mode</em> limits what newly listed or riskier assets can be borrowed against, <em>e-mode</em> raises borrowing power between closely correlated assets such as two ETH derivatives, and supply and borrow caps limit concentration in a single asset.</p>
+
+      <h2 id="flash">Flash loans</h2>
+      <p class="answer">A flash loan borrows any amount with no collateral, on one condition: repayment inside the same transaction. If it does not happen, the whole transaction reverts and the loan never existed. The lender cannot lose.</p>
+      <p>Aave popularised the primitive, and it is widely misunderstood. You cannot flash-loan money to cover an expense — the loan lives for the span of a single transaction and must be returned before it completes. Its real uses are programmatic: arbitrage between venues, swapping collateral without unwinding a position, and refinancing debt from one protocol to another without capital up front.</p>
+      <p>Flash loans also feature in a great many DeFi exploits, which produces the assumption that they are the vulnerability. They are not. They make capital cheap enough to exploit a flaw that already existed — usually a manipulable price oracle. We cover the wider category in <a href="crypto-loans-without-collateral">crypto loans without collateral</a>.</p>
+
+      <h2 id="gho">GHO</h2>
+      <p>GHO is Aave's native over-collateralised stablecoin. Rather than supplying an existing stablecoin for someone else to borrow, users mint GHO directly against collateral in the protocol, and the interest paid goes to the Aave DAO rather than to a supplier.</p>
+      <p>Economically this shifts Aave from pure intermediary to issuer: the protocol earns the full borrowing cost instead of a slice of a spread. For a borrower the mechanics feel familiar — post collateral, mint, watch your health factor — but the governance sets the rate directly rather than a utilisation curve discovering it.</p>
+
+      <h2 id="token">What AAVE actually is</h2>
+      <p class="answer">AAVE is a governance token, not a claim on lending revenue. It votes on parameters and listings, and it backstops the protocol through the Safety Module, where staked AAVE can be <strong>slashed</strong> to cover a shortfall.</p>
+      <p>That second function is the one to understand before staking it. Safety Module rewards are not a dividend; they are payment for underwriting the protocol's tail risk with your principal. If a shortfall event occurs, staked AAVE is part of what absorbs it. That may be a perfectly good trade — it is simply a different trade from "stake the token, earn yield", which is how it is usually described.</p>
+
+      <h2 id="risks">Risks</h2>
+      <ul>
+        <li><strong>Liquidation</strong> — automatic, permissionless, and it does not care why the price moved.</li>
+        <li><strong>Oracle failure</strong> — collateral is priced by a feed; a bad print can liquidate a healthy position.</li>
+        <li><strong>Smart contract risk</strong> — heavily audited and long-running, which reduces rather than removes it.</li>
+        <li><strong>Utilisation</strong> — if nearly all of a pool is borrowed, suppliers may not withdraw promptly, exactly when they want to.</li>
+        <li><strong>Bad debt</strong> — a liquidation that fails to cover the loan leaves a shortfall, which is what the Safety Module exists for.</li>
+        <li><strong>Governance</strong> — parameters can change by vote, including ones your position depends on.</li>
+      </ul>
+
+      <h2>Who it suits</h2>
+      <p>Supplying to Aave is among the more conservative things to do in DeFi: no impermanent loss, no range management, a long operating history. Borrowing is a different activity with a liquidation price attached, and it should be sized accordingly. For a comparison with the newer Solana approach, see <a href="aave-vs-kamino">Aave vs Kamino</a>.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is Aave?</summary><p>Aave is a decentralised, over-collateralised lending protocol. Suppliers deposit assets into pools and earn interest; borrowers post collateral worth more than they borrow and pay that interest. Everything is enforced by smart contracts rather than by a company, and it runs across many blockchains rather than one.</p></details>
+      <details><summary>Is Aave the same as AAVE the dialect?</summary><p>No, and the name collision causes real confusion in search. AAVE also stands for African American Vernacular English, a linguistic term entirely unrelated to cryptocurrency. This article is about Aave the DeFi lending protocol.</p></details>
+      <details><summary>What are aTokens?</summary><p>When you supply an asset to Aave you receive an aToken — aUSDC for USDC, for example. It represents your deposit and accrues interest directly, so your aToken balance increases over time rather than you claiming rewards separately. Redeeming the aToken returns the underlying asset plus accrued interest.</p></details>
+      <details><summary>What is a health factor?</summary><p>A single number summarising how close a borrowing position is to liquidation. Above 1 the position is safe; at or below 1 it can be liquidated. It falls when collateral loses value or debt grows with interest, and it moves without you doing anything, which is why a comfortable-looking position can become a liquidated one overnight.</p></details>
+      <details><summary>What is an Aave flash loan?</summary><p>A loan with no collateral that must be repaid within the same transaction. If repayment does not happen, the entire transaction reverts as though it never occurred, so the protocol cannot lose. It is used programmatically for arbitrage, collateral swaps and refinancing — not for obtaining funds you keep, which is impossible by design.</p></details>
+      <details><summary>Does holding AAVE pay you protocol revenue?</summary><p>Not directly. AAVE is a governance token used to vote on protocol parameters and to backstop the protocol through the Safety Module, where staked AAVE can be slashed to cover a shortfall. Staking it earns incentives, but that is compensation for taking on backstop risk rather than a dividend on lending revenue.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — and the wider market around it — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="aave-vs-kamino"><img src="../assets/blog/aave-vs-kamino.png" alt="" /><span>Aave vs Kamino</span></a>
+        <a href="defi-lending-platforms"><img src="../assets/blog/defi-lending-platforms.png" alt="" /><span>DeFi Lending Platforms</span></a>
+        <a href="crypto-loans-without-collateral"><img src="../assets/blog/crypto-loans-without-collateral.png" alt="" /><span>Crypto Loans Without Collateral</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Lending isn't the only yield</h2>
+      <p>WhaleHub pools governance power on Stellar and pays out the revenue it earns — no borrowing, no liquidation price.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not financial advice. WhaleHub is not affiliated with any protocol described. Protocol mechanics, rates and parameters change frequently — verify current details directly with the protocol before depositing. DeFi involves risk, including smart-contract failure, liquidation and the total loss of capital.</p>
+  </div>
+</article>
+
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

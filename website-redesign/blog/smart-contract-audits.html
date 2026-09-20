@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Smart Contract Audits: What They Prove and What They Don't | WhaleHub</title>
+<meta name="description" content="What a smart contract audit actually covers, why audited protocols still get exploited, and how to read an audit report instead of just checking that one exists." />
+<link rel="canonical" href="https://whalehub.io/blog/smart-contract-audits" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="smart contract audit, defi audit, audited protocol, how to read an audit report, blockchain security audit" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/smart-contract-audits" />
+<meta property="og:title" content="Smart Contract Audits: What They Prove and What They Don't" />
+<meta property="og:description" content="What a smart contract audit actually covers, why audited protocols still get exploited, and how to read an audit report instead of just checking that one exists." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/smart-contract-audits.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-20" />
+<meta property="article:modified_time" content="2026-09-20" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="Smart Contract Audits: What They Prove and What They Don't" />
+<meta name="twitter:description" content="What a smart contract audit actually covers, why audited protocols still get exploited, and how to read an audit report instead of just checking that one exists." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/smart-contract-audits.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/smart-contract-audits#article",
+      "headline": "Smart Contract Audits: What They Prove and What They Don't",
+      "description": "What a smart contract audit actually covers, why audited protocols still get exploited, and how to read an audit report instead of just checking that one exists.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/smart-contract-audits.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-09-20",
+      "dateModified": "2026-09-20",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev"
+        ]
+      },
+      "publisher": {
+        "@id": "https://whalehub.io/#organization"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/smart-contract-audits"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://whalehub.io/blog/smart-contract-audits#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a smart contract audit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A time-boxed review of a specific version of a protocol's code by security researchers, looking for vulnerabilities and design weaknesses. It produces a report listing findings by severity and, usually, what the team did about each. It is a review, not a certification, and it has no standardised scope or pass mark."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does an audit mean a protocol is safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. An audit raises the probability that known classes of bug were caught in the code that was reviewed. It cannot prove the absence of bugs, does not usually cover economic design, and applies only to the exact commit reviewed. Many exploited protocols were audited, sometimes more than once."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do audited protocols still get hacked?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usually because the loss came from something outside the audit's scope: an oracle that can be manipulated, an incentive design that fails under stress, code changed after the review, a compromised admin key, or a front-end attack. When the failure is in the code itself, it is typically a subtle interaction between components rather than a textbook bug."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you read an audit report?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Check the commit hash against what is deployed, read the scope section to see what was excluded, look at the high and critical findings and \u2014 more importantly \u2014 what the team actually did about them, and note the date. A report on code from two years and forty upgrades ago describes a protocol that no longer exists."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are more audits better?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Somewhat, with diminishing returns, and only if they are independent. Several firms reviewing the same code find overlapping issues; the marginal value of the fourth is much lower than the first. A long-running bug bounty that pays competitively is often stronger evidence than an additional report, because it puts continuous adversarial attention on live code."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a formal verification?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Mathematically proving that code satisfies a specification, rather than searching for bugs by inspection. It is much stronger than an audit within its scope, and its scope is narrow: it proves the code matches the specification, so if the specification is wrong, the proof is correct and the protocol still fails."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://whalehub.io/blog/smart-contract-audits#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://whalehub.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Smart Contract Audits: What They Prove and What They Don't",
+          "item": "https://whalehub.io/blog/smart-contract-audits"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; Security</div>
+      <span class="tag t-sec">Security</span>
+      <h1>Smart Contract Audits: What They Prove and What They Don't</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: September 2026</span>
+        <span class="dot-sep"></span>
+        <span>9 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/smart-contract-audits.png" alt="Smart contract audits — what they prove and what they don't" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">"Audited by" is the most-cited safety signal in DeFi and among the least understood. An audit is a <strong>time-boxed review of specific code at a specific commit by people who can be wrong</strong>. That is genuinely valuable and it is not what most people think they are reading.</p>
+
+    <div class="callout">
+      <div class="k">The short version</div>
+      <p>An audit is evidence, not a guarantee. It raises the odds that known bug classes were caught in the code reviewed. It says little about economic design, oracle choices, governance keys, or anything deployed afterwards — which is where most of the money has actually been lost.</p>
+    </div>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#is">What an audit actually is</a></li>
+        <li><a href="#gaps">The four gaps</a></li>
+        <li><a href="#read">How to read a report</a></li>
+        <li><a href="#stronger">Stronger signals than an audit</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="is">What an audit actually is</h2>
+      <p>A team engages a security firm for a fixed period — often one to four weeks — to review an agreed scope of code. Researchers read it, reason about how components interact, write tests and attack hypotheses, and produce a report: findings graded by severity, each with a recommendation and usually a note on the team's response.</p>
+      <p>Skilled work, and worth doing. But note the structural facts, because every limitation follows from them: <strong>fixed time</strong>, <strong>agreed scope</strong>, <strong>a specific commit</strong>, and <strong>human judgement</strong>. There is no standard, no pass mark and no licence at stake. "Audited" means someone was paid to look. It does not say who, for how long, at what, or what they found.</p>
+
+      <h2 id="gaps">The four gaps</h2>
+      <h3>1. Scope</h3>
+      <p>Reports state what was reviewed and, more revealingly, what was not. Excluded items are routinely the interesting ones: oracle configuration, governance and admin processes, off-chain components, economic assumptions, and dependencies on external protocols. A protocol can be fully audited within its scope and lose everything to something the scope explicitly excluded — and the report said so, on page two, where nobody reads.</p>
+
+      <h3>2. Time</h3>
+      <p>Attackers are not time-boxed. An auditor has weeks and a checklist of known classes; an attacker has as long as they like and an incentive proportional to the value locked. Once a protocol holds serious value, the adversary's effort budget exceeds the auditor's by a wide margin, and it keeps growing.</p>
+
+      <h3>3. The commit</h3>
+      <p class="answer">This is the gap that catches the most people. An audit covers one exact version of the code. Protocols upgrade, add markets, change parameters, deploy on new chains. None of that is covered by the earlier report, and the badge on the website does not change.</p>
+      <p>So the first thing to check is not whether an audit exists but whether the audited commit hash is what is actually deployed. Frequently it is not, and frequently nobody has looked.</p>
+
+      <h3>4. Economics</h3>
+      <p>Most audits examine whether the code does what it is meant to. Far fewer examine whether what it is meant to do is a good idea. An incentive design that unravels under stress, a redemption mechanism that is reflexive in a falling market, a reward token with no demand beyond the reward — all of these can be implemented flawlessly. Correct code, broken system, and the report was right about everything it checked. This category is covered further in <a href="defi-risks">DeFi risks</a>.</p>
+
+      <h2 id="read">How to read a report</h2>
+      <p>Ten minutes on the actual document is worth more than any amount of looking at logos on a landing page:</p>
+      <ol>
+        <li><strong>Date and commit hash.</strong> Compare to what is deployed now. A mismatch is the finding.</li>
+        <li><strong>Scope section.</strong> Read what was excluded. This is usually the most informative page.</li>
+        <li><strong>Critical and high findings.</strong> Their presence is normal and healthy — complex code has bugs, and finding them is the point.</li>
+        <li><strong>The resolution column.</strong> What matters is whether each was fixed, and the fix verified. "Acknowledged" means the team read it and chose to ship anyway — sometimes reasonable, always worth knowing.</li>
+        <li><strong>Findings marked "won't fix" or "disputed".</strong> These are where the auditor and team disagreed about risk. Read them closely; you may side with the auditor.</li>
+        <li><strong>Centralisation findings.</strong> Almost every report notes admin keys with significant power. Nearly everyone skips these, and they describe exactly who can take your funds without exploiting anything.</li>
+      </ol>
+
+      <h2 id="stronger">Stronger signals than an audit</h2>
+      <p>Not replacements — additions, and several carry more weight:</p>
+      <ul>
+        <li><strong>Time under load.</strong> A protocol that has held significant value through a violent drawdown has evidence. A new one has assumptions. This is the single best signal available and it cannot be bought.</li>
+        <li><strong>A funded bug bounty.</strong> A bounty large enough to outbid an exploit converts would-be attackers into reporters, and applies continuous adversarial attention to live code rather than a snapshot. Check that it pays meaningfully relative to value at risk — a $50k cap on a protocol holding $200m is not a deterrent.</li>
+        <li><strong>Timelocks.</strong> If privileged changes take effect after a delay, users can exit. This constrains both a malicious team and a compromised key, and it is verifiable on-chain rather than asserted.</li>
+        <li><strong>Immutability.</strong> Non-upgradeable contracts cannot be changed against you. The trade is that bugs cannot be patched either — a real trade, not a free win.</li>
+        <li><strong>Formal verification.</strong> Proof that code satisfies a specification. Much stronger than review within its scope, and narrow: a correct proof of a wrong specification is still a broken protocol.</li>
+        <li><strong>Published incident history.</strong> A team that has documented a past failure honestly, including what they got wrong, is demonstrating something no audit can.</li>
+      </ul>
+
+      <h2>The takeaway</h2>
+      <p>Treat "audited" as the beginning of the question. The useful version is: audited by whom, when, against which commit, with what excluded, which findings were disputed, and what has changed since. That takes ten minutes and is the difference between using a signal and being reassured by a badge.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is a smart contract audit?</summary><p>A time-boxed review of a specific version of a protocol's code by security researchers, looking for vulnerabilities and design weaknesses. It produces a report listing findings by severity and, usually, what the team did about each. It is a review, not a certification, and it has no standardised scope or pass mark.</p></details>
+      <details><summary>Does an audit mean a protocol is safe?</summary><p>No. An audit raises the probability that known classes of bug were caught in the code that was reviewed. It cannot prove the absence of bugs, does not usually cover economic design, and applies only to the exact commit reviewed. Many exploited protocols were audited, sometimes more than once.</p></details>
+      <details><summary>Why do audited protocols still get hacked?</summary><p>Usually because the loss came from something outside the audit's scope: an oracle that can be manipulated, an incentive design that fails under stress, code changed after the review, a compromised admin key, or a front-end attack. When the failure is in the code itself, it is typically a subtle interaction between components rather than a textbook bug.</p></details>
+      <details><summary>How do you read an audit report?</summary><p>Check the commit hash against what is deployed, read the scope section to see what was excluded, look at the high and critical findings and — more importantly — what the team actually did about them, and note the date. A report on code from two years and forty upgrades ago describes a protocol that no longer exists.</p></details>
+      <details><summary>Are more audits better?</summary><p>Somewhat, with diminishing returns, and only if they are independent. Several firms reviewing the same code find overlapping issues; the marginal value of the fourth is much lower than the first. A long-running bug bounty that pays competitively is often stronger evidence than an additional report, because it puts continuous adversarial attention on live code.</p></details>
+      <details><summary>What is a formal verification?</summary><p>Mathematically proving that code satisfies a specification, rather than searching for bugs by inspection. It is much stronger than an audit within its scope, and its scope is narrow: it proves the code matches the specification, so if the specification is wrong, the proof is correct and the protocol still fails.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — and the wider market around it — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="defi-risks"><img src="../assets/blog/defi-risks.png" alt="" /><span>DeFi Risks</span></a>
+        <a href="defi-lending-platforms"><img src="../assets/blog/defi-lending-platforms.png" alt="" /><span>DeFi Lending Platforms</span></a>
+        <a href="best-yield-aggregators"><img src="../assets/blog/best-yield-aggregators.png" alt="" /><span>Best Yield Aggregators</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Read before you deposit</h2>
+      <p>The most useful thing you can do before any deposit is understand where the yield comes from and who can move your funds.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not financial advice. DeFi involves risk, including smart-contract failure, liquidation, and the total loss of capital. Protocol mechanics and parameters change — verify current details with the protocol before depositing. Nothing here should be read as an assessment of any particular auditor or protocol.</p>
+  </div>
+</article>
+
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

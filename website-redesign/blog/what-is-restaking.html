@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>What Is Restaking? The Yield, the Slashing, and the Part Nobody Prices | WhaleHub</title>
+<meta name="description" content="Restaking explained: how staked ETH gets reused to secure other services, what liquid restaking tokens actually are, and why the risks stack in a way the headline yield doesn't show." />
+<link rel="canonical" href="https://whalehub.io/blog/what-is-restaking" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="what is restaking, restaking crypto, eigenlayer, liquid restaking tokens, lrt, restaking risks, avs" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/what-is-restaking" />
+<meta property="og:title" content="What Is Restaking? The Yield, the Slashing, and the Part Nobody Prices" />
+<meta property="og:description" content="Restaking explained: how staked ETH gets reused to secure other services, what liquid restaking tokens actually are, and why the risks stack in a way the headline yield doesn't show." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/what-is-restaking.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-20" />
+<meta property="article:modified_time" content="2026-09-20" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="What Is Restaking? The Yield, the Slashing, and the Part Nobody Prices" />
+<meta name="twitter:description" content="Restaking explained: how staked ETH gets reused to secure other services, what liquid restaking tokens actually are, and why the risks stack in a way the headline yield doesn't show." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/what-is-restaking.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/what-is-restaking#article",
+      "headline": "What Is Restaking? The Yield, the Slashing, and the Part Nobody Prices",
+      "description": "Restaking explained: how staked ETH gets reused to secure other services, what liquid restaking tokens actually are, and why the risks stack in a way the headline yield doesn't show.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/what-is-restaking.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-09-20",
+      "dateModified": "2026-09-20",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev"
+        ]
+      },
+      "publisher": {
+        "@id": "https://whalehub.io/#organization"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/what-is-restaking"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://whalehub.io/blog/what-is-restaking#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is restaking?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Restaking lets capital already staked to secure one network be committed a second time to secure additional services. Instead of a new protocol having to bootstrap its own validator set and token, it rents security from existing staked capital, and the stakers earn extra rewards for accepting the additional slashing conditions that come with it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an AVS?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An Actively Validated Service \u2014 any system that needs its own decentralised validation but does not want to build a validator set from scratch. Oracles, data availability layers, bridges, sequencers and proving networks are typical examples. Restakers opt in to securing specific AVSs and are subject to each one's slashing rules."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are liquid restaking tokens?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "LRTs are tokens representing a restaked position, issued by protocols that handle the restaking on your behalf and choose which services to secure. They stay liquid and usable in DeFi, which is the appeal. The trade is that you have delegated the risk selection: the protocol decides which slashing conditions your capital is exposed to, and you usually cannot see or veto that per service."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is restaking risky?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It adds risk rather than yield alone. Your capital faces the base network's slashing conditions, plus each restaked service's conditions, plus the restaking protocol's contracts, plus \u2014 for LRTs \u2014 the issuing protocol's contracts and its potential to trade below the value of its backing. These are not independent risks; a stress event tends to hit several at once."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is restaking different from liquid staking?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Liquid staking gives you a tradeable token for a normal staking position, with the same single set of slashing conditions as staking directly. Restaking commits that capital to additional services, each with its own slashing rules. Liquid staking changes the liquidity of a position; restaking changes what the position is exposed to."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does restaking exist on every chain?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Restaking needs a proof-of-stake base layer with slashing to build on. Networks that do not use proof-of-stake \u2014 Stellar among them \u2014 have no staked capital to reuse and therefore no restaking, regardless of what any product is called."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://whalehub.io/blog/what-is-restaking#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://whalehub.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "What Is Restaking? The Yield, the Slashing, and the Part Nobody Prices",
+          "item": "https://whalehub.io/blog/what-is-restaking"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; DeFi</div>
+      <span class="tag">DeFi</span>
+      <h1>What Is Restaking? The Yield, the Slashing, and the Part Nobody Prices</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: September 2026</span>
+        <span class="dot-sep"></span>
+        <span>10 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/what-is-restaking.png" alt="What is restaking — reusing staked capital to secure other services" width="1200" height="630" />
+    </figure>
+
+    <p class="lead"><strong>Restaking</strong> is one of the more genuinely clever ideas in crypto and one of the more misrepresented. The mechanism: capital already staked to secure a network is committed a second time to secure other services, earning additional rewards. The part that gets lost: what you are paid for is accepting additional ways to lose the principal.</p>
+
+    <div class="callout">
+      <div class="k">The short version</div>
+      <p>Restaking rents out security. A new protocol that would otherwise need its own validator set and token instead borrows economic weight from capital already staked elsewhere. The stakers get extra yield; they also get extra slashing conditions. The yield is visible on the front page. The conditions usually are not.</p>
+    </div>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#problem">The problem it solves</a></li>
+        <li><a href="#works">How it works</a></li>
+        <li><a href="#lrt">Liquid restaking tokens</a></li>
+        <li><a href="#risk">Why the risk stacks</a></li>
+        <li><a href="#yield">What happened to the yields</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="problem">The problem it solves</h2>
+      <p class="answer">A new decentralised service — an oracle, a bridge, a data availability layer — needs validators with something at stake, or its guarantees are worth nothing. Historically that meant launching a token, convincing people to buy and stake it, and hoping the resulting security budget was large enough to deter attacks that might profit more.</p>
+      <p>That bootstrap is brutal, and it produced a decade of small networks whose token market cap was lower than the value they secured — an arrangement that works right up until someone does the arithmetic.</p>
+      <p>Restaking sidesteps it. Rather than creating new staked capital, rent existing capital. Billions are already staked on Ethereum doing exactly one job; let that same capital take on a second job, with real penalties attached, and pay for the service. New protocols get meaningful security on day one. It is a real improvement over the alternative.</p>
+
+      <h2 id="works">How it works</h2>
+      <p>Three moving parts:</p>
+      <ol>
+        <li><strong>Base stake.</strong> Capital staked on the underlying network — directly, or through a liquid staking token. It already has slashing conditions: go offline, or sign conflicting attestations, and you lose part of the principal.</li>
+        <li><strong>Opt-in.</strong> Through a restaking protocol, the staker commits that capital to one or more services, accepting each service's own slashing conditions on top of the base ones.</li>
+        <li><strong>Payment.</strong> The services pay for the security they rent, typically in their own token or in fees. That payment is the restaking yield.</li>
+      </ol>
+      <p>The services are usually called <strong>AVSs</strong> — Actively Validated Services — and the distinction that matters is that each one defines its own rules for what constitutes misbehaviour and how much gets slashed. Securing five services means five independent sets of conditions applying to the same capital.</p>
+      <p>EigenLayer established the category on Ethereum; Symbiotic and others have since taken varying approaches to collateral types and permissioning, and Babylon applies a related idea to Bitcoin. The differences are meaningful for a builder; for a depositor, the shape is the same.</p>
+
+      <h2 id="lrt">Liquid restaking tokens</h2>
+      <p>Restaking directly means locked capital and per-service decisions. <strong>Liquid restaking tokens</strong> package the whole thing: deposit, receive a token representing the position, keep it liquid, use it elsewhere in DeFi.</p>
+      <p>Convenient — and it moves one decision out of your hands. The issuing protocol chooses which services to secure. That choice is the entire risk profile of your position, and it is made by someone whose incentive is to show a competitive headline yield, which means securing more services rather than fewer. You generally cannot see the current set at a glance, cannot veto an addition, and cannot opt out of one service while staying in the rest.</p>
+      <p>There is also the familiar mechanic from <a href="liquid-staking-explained">liquid staking</a>: an LRT can trade below the value of what backs it. It is redeemable only through an exit queue, so in a stress event the market price is what you can actually get, and it decouples exactly when you would want to leave. LRTs used as collateral inherit that — a discount can trigger liquidations in an entirely separate protocol.</p>
+
+      <h2 id="risk">Why the risk stacks</h2>
+      <p class="answer">The core issue is that restaking risks are <strong>correlated</strong>. They are frequently presented as a list of small, independent probabilities, which makes the total look manageable. They are not independent.</p>
+      <p>A restaked position through an LRT carries, at minimum:</p>
+      <ul>
+        <li>Base network slashing.</li>
+        <li>Slashing from every service secured — n sets of conditions, not one.</li>
+        <li>Restaking protocol contract risk.</li>
+        <li>LRT issuer contract risk.</li>
+        <li>LRT market discount risk.</li>
+        <li>Liquidation risk, if the LRT is posted as collateral anywhere.</li>
+      </ul>
+      <p>Now consider what a genuine stress event looks like: a widely-used service is exploited, restaked capital is slashed, the LRT's backing falls, the LRT trades at a discount, positions collateralised by it are liquidated into thin liquidity, and the discount widens further. That is one cause arriving through six doors — the exact scenario the "independent risks" framing prices at approximately zero.</p>
+      <p>None of this makes restaking unreasonable. It makes it a leveraged position on the correctness of several systems at once, and it should be sized like one rather than like a savings account.</p>
+
+      <h2 id="yield">What happened to the yields</h2>
+      <p>Restaking's growth was driven substantially by <strong>points</strong> — non-transferable scores implying a future airdrop. People were not chasing the restaking yield; they were chasing an unpriced expectation, which is why deposits far exceeded what the actual service fees justified.</p>
+      <p>As those programmes have resolved, the picture has become more honest. The real yield is whatever AVSs actually pay for security, and that is a function of genuine demand — a much smaller number than the points era implied. Anyone evaluating restaking now should separate the two cleanly: what does this pay from service fees, and what am I hoping for on top? The first is a return. The second is a lottery ticket, and worth what lottery tickets are worth.</p>
+      <p>On APY figures generally, and why a headline number often is not what it appears, see <a href="apy-vs-apr-crypto">APY vs APR in crypto</a>.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is restaking?</summary><p>Restaking lets capital already staked to secure one network be committed a second time to secure additional services. Instead of a new protocol having to bootstrap its own validator set and token, it rents security from existing staked capital, and the stakers earn extra rewards for accepting the additional slashing conditions that come with it.</p></details>
+      <details><summary>What is an AVS?</summary><p>An Actively Validated Service — any system that needs its own decentralised validation but does not want to build a validator set from scratch. Oracles, data availability layers, bridges, sequencers and proving networks are typical examples. Restakers opt in to securing specific AVSs and are subject to each one's slashing rules.</p></details>
+      <details><summary>What are liquid restaking tokens?</summary><p>LRTs are tokens representing a restaked position, issued by protocols that handle the restaking on your behalf and choose which services to secure. They stay liquid and usable in DeFi, which is the appeal. The trade is that you have delegated the risk selection: the protocol decides which slashing conditions your capital is exposed to, and you usually cannot see or veto that per service.</p></details>
+      <details><summary>Is restaking risky?</summary><p>It adds risk rather than yield alone. Your capital faces the base network's slashing conditions, plus each restaked service's conditions, plus the restaking protocol's contracts, plus — for LRTs — the issuing protocol's contracts and its potential to trade below the value of its backing. These are not independent risks; a stress event tends to hit several at once.</p></details>
+      <details><summary>How is restaking different from liquid staking?</summary><p>Liquid staking gives you a tradeable token for a normal staking position, with the same single set of slashing conditions as staking directly. Restaking commits that capital to additional services, each with its own slashing rules. Liquid staking changes the liquidity of a position; restaking changes what the position is exposed to.</p></details>
+      <details><summary>Does restaking exist on every chain?</summary><p>No. Restaking needs a proof-of-stake base layer with slashing to build on. Networks that do not use proof-of-stake — Stellar among them — have no staked capital to reuse and therefore no restaking, regardless of what any product is called.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — and the wider market around it — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="defi-risks"><img src="../assets/blog/defi-risks.png" alt="" /><span>DeFi Risks</span></a>
+        <a href="liquid-staking-explained"><img src="../assets/blog/liquid-staking-explained.png" alt="" /><span>Liquid Staking Explained</span></a>
+        <a href="what-is-crypto-staking"><img src="../assets/blog/what-is-crypto-staking.png" alt="" /><span>What Is Crypto Staking?</span></a>
+        <a href="stablecoin-yield"><img src="../assets/blog/stablecoin-yield.png" alt="" /><span>Stablecoin Yield</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Yield without stacked slashing</h2>
+      <p>WhaleHub pools AQUA into a shared governance position on Stellar and compounds what it earns. One layer, not five.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not financial, legal or tax advice. WhaleHub is not affiliated with any protocol or issuer named. Products, terms and eligibility change frequently — verify current details with the issuer or protocol directly. Digital assets involve risk, including the total loss of capital.</p>
+  </div>
+</article>
+
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

@@ -41,6 +41,10 @@ h1,h2,h3,h4{font-family:var(--font-heading, 'Poppins', sans-serif);color:var(--t
   letter-spacing:.14em;text-transform:uppercase;border-radius:999px;padding:5px 13px;
   background:rgba(0,204,153,.10);color:var(--teal-300);border:1px solid rgba(0,204,153,.24)}
 .tag.blue{background:rgba(38,165,228,.10);color:var(--blue-sky);border-color:rgba(38,165,228,.26)}
+/* Category accents: RWA (amber) and Security (violet) keep the pill shape and
+   only swap the hue, so tags stay one family across the index grid. */
+.tag.t-rwa{background:rgba(232,168,56,.10);color:#f0b95c;border-color:rgba(232,168,56,.28)}
+.tag.t-sec{background:rgba(150,122,232,.10);color:#b4a0f2;border-color:rgba(150,122,232,.28)}
 
 /* ============================================================
    BLOG INDEX

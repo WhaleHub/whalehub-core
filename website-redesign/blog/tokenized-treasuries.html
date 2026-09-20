@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tokenized Treasuries: The RWA Category That Actually Took Off | WhaleHub</title>
+<meta name="description" content="Tokenized treasury and money-market funds explained — why this corner of RWA worked when others stalled, how they differ from stablecoins, and what the eligibility gates mean for you." />
+<link rel="canonical" href="https://whalehub.io/blog/tokenized-treasuries" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="tokenized treasuries, tokenized treasury bills, tokenized money market fund, buidl, benji, ondo, rwa yield" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/tokenized-treasuries" />
+<meta property="og:title" content="Tokenized Treasuries: The RWA Category That Actually Took Off" />
+<meta property="og:description" content="Tokenized treasury and money-market funds explained — why this corner of RWA worked when others stalled, how they differ from stablecoins, and what the eligibility gates mean for you." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/tokenized-treasuries.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-20" />
+<meta property="article:modified_time" content="2026-09-20" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="Tokenized Treasuries: The RWA Category That Actually Took Off" />
+<meta name="twitter:description" content="Tokenized treasury and money-market funds explained — why this corner of RWA worked when others stalled, how they differ from stablecoins, and what the eligibility gates mean for you." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/tokenized-treasuries.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/tokenized-treasuries#article",
+      "headline": "Tokenized Treasuries: The RWA Category That Actually Took Off",
+      "description": "Tokenized treasury and money-market funds explained \u2014 why this corner of RWA worked when others stalled, how they differ from stablecoins, and what the eligibility gates mean for you.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/tokenized-treasuries.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-09-20",
+      "dateModified": "2026-09-20",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev"
+        ]
+      },
+      "publisher": {
+        "@id": "https://whalehub.io/#organization"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/tokenized-treasuries"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://whalehub.io/blog/tokenized-treasuries#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a tokenized treasury?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A share in a fund holding short-term government debt \u2014 treasury bills and similar instruments \u2014 where ownership is recorded as a token on a blockchain instead of only on a transfer agent's register. The fund is an ordinary regulated fund; tokenisation changes how shares are held, transferred and settled, not what the fund invests in."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is it different from a stablecoin?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A stablecoin is designed to hold a constant value and usually passes no yield to the holder \u2014 the issuer keeps the return on the reserves. A tokenized treasury is a security that explicitly pays you the yield, either by accruing in the token's value or by distributing new units. Different legal status, different holder rights, and different eligibility requirements."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who can buy tokenized treasuries?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It depends on the product. Many are restricted to qualified, accredited or professional investors, with an on-chain allowlist enforcing it, so a wallet cannot simply buy in. Some newer products have broader access in specific jurisdictions. Eligibility is set by the issuer under securities law, not by the blockchain."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why did tokenized treasuries succeed when other RWA categories stalled?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because the underlying asset suits the structure. Treasury bills are homogeneous, priced continuously in a deep market, valued with no ambiguity, and already held through funds \u2014 so tokenising them changes the plumbing without introducing valuation or custody problems. Property and private credit have none of those properties, which is why they have been harder."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the risks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Small relative to most of DeFi, but not zero. The fund's assets are held by a custodian, so custodian risk exists. The issuer and its transfer agent are points of failure. Redemption may follow the fund's own schedule rather than being instant. Yields fall when policy rates fall. And smart contract risk applies to the token layer, though it does not affect the fund's underlying holdings."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you use tokenized treasuries as DeFi collateral?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Increasingly yes, and it is a large part of the appeal \u2014 collateral that earns a yield while posted, rather than sitting idle. The constraint is that transfer restrictions and allowlists have to be compatible with the lending protocol, which limits where a restricted token can go and is why integrations are specific rather than universal."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://whalehub.io/blog/tokenized-treasuries#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://whalehub.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Tokenized Treasuries: The RWA Category That Actually Took Off",
+          "item": "https://whalehub.io/blog/tokenized-treasuries"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; RWA</div>
+      <span class="tag t-rwa">RWA</span>
+      <h1>Tokenized Treasuries: The RWA Category That Actually Took Off</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: September 2026</span>
+        <span class="dot-sep"></span>
+        <span>9 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/tokenized-treasuries.png" alt="Tokenized treasuries — the RWA category that worked" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">Most of the RWA thesis is still a promise. <strong>Tokenized treasuries</strong> are the part that actually worked — real assets, real scale, real institutional issuers. Understanding why this category succeeded while others stalled tells you more about tokenisation than any of the projections do.</p>
+
+    <div class="callout">
+      <div class="k">The short version</div>
+      <p>A tokenized treasury is a share in a regulated fund holding short-term government debt, recorded on-chain. It worked because treasury bills are the ideal candidate for tokenisation: identical, deeply liquid, continuously priced, unambiguously valued, and already held through funds. Tokenisation improved the plumbing and introduced no new hard problems.</p>
+    </div>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#what">What they are</a></li>
+        <li><a href="#why">Why this category worked</a></li>
+        <li><a href="#stablecoin">Not a stablecoin</a></li>
+        <li><a href="#access">Eligibility and access</a></li>
+        <li><a href="#collateral">As DeFi collateral</a></li>
+        <li><a href="#risks">Risks</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="what">What they are</h2>
+      <p class="answer">A fund holds short-term government debt. Shares in that fund are represented as tokens on a blockchain, so the on-chain record is the ownership record rather than a mirror of one. Everything else about the fund is conventional: a manager, a custodian, a transfer agent, a prospectus, a regulator.</p>
+      <p>Yield reaches you one of two ways. Either the token's value accrues — one unit is worth slightly more each day — or the balance grows as new units are distributed. The first behaves better as DeFi collateral, since the unit count stays fixed; the second is more familiar to traditional fund investors. Neither is better in the abstract.</p>
+      <p>Issuers now include large asset managers and specialist on-chain firms, and the total outstanding runs to billions. Notably for the Stellar ecosystem, Franklin Templeton's money market fund has been issued on Stellar since 2021, well before the category had a name.</p>
+
+      <h2 id="why">Why this category worked</h2>
+      <p>Compare treasury bills against what makes tokenisation difficult:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Requirement</th><th>Treasury bills</th><th>Property / private credit</th></tr></thead>
+          <tbody>
+            <tr><td>Homogeneous</td><td>Yes — one bill is any other</td><td>No — every asset is unique</td></tr>
+            <tr><td>Continuously priced</td><td>Yes — deepest market in the world</td><td>No — appraisals, months apart</td></tr>
+            <tr><td>Custody</td><td>Solved, boringly, for decades</td><td>Physical or documentary, bespoke</td></tr>
+            <tr><td>Valuation disputes</td><td>None</td><td>Routine</td></tr>
+            <tr><td>Already fund-wrapped</td><td>Yes</td><td>Rarely, at this granularity</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Every box that tokenisation struggles with was already ticked. So the on-chain version changed only the parts blockchains genuinely improve: near-instant transfer between holders, settlement that does not wait for a business day, programmatic distribution, and usability inside other on-chain systems. No new valuation problem, no new custody problem.</p>
+      <p>The general lesson is the useful one. Tokenisation is a <em>settlement and distribution</em> technology. Where the hard part of an asset is settlement, it delivers immediately. Where the hard part is valuation, custody or legal enforcement — as with <a href="tokenized-real-estate">tokenized real estate</a> — it helps far less, because those problems stay exactly where they were.</p>
+
+      <h2 id="stablecoin">Not a stablecoin</h2>
+      <p>They look similar on a balance sheet and are legally very different things.</p>
+      <p>A <strong>stablecoin</strong> targets a constant value and generally pays the holder nothing; the issuer earns the return on the reserves and keeps it. That is the business model. You hold a payment instrument.</p>
+      <p>A <strong>tokenized treasury</strong> is a security. The yield is yours by right, you have the protections that come with a regulated fund, and you also have the obligations — eligibility checks, transfer restrictions, and tax treatment as an investment rather than as currency.</p>
+      <p>The practical distinction: use a stablecoin to move value and settle; use a tokenized treasury to hold value that should earn. Conflating them leads people to expect stablecoin-like fungibility from a restricted security, or regulated-fund protections from something that is neither. See <a href="stablecoin-yield">stablecoin yield</a> for how the other route to a dollar return works, and <a href="mica-stablecoins-defi">MiCA and stablecoins</a> for the regulatory divide in Europe.</p>
+
+      <h2 id="access">Eligibility and access</h2>
+      <p>This is where most retail interest runs aground. Many tokenized treasury products are restricted to qualified, accredited or professional investors, enforced by an on-chain allowlist: the token contract will not transfer to an address that has not been approved.</p>
+      <p>The restriction is securities law, not technology. The fund is a regulated security and the issuer must place it accordingly. Blockchain does not create an exemption, and a product claiming otherwise is a product to avoid.</p>
+      <p>Access is broadening — some issuers offer versions with lower thresholds or in specific jurisdictions — but check eligibility before planning around the yield. The verification behind these allowlists is covered in <a href="best-kyc-platforms-rwa">KYC platforms for RWA</a>.</p>
+
+      <h2 id="collateral">As DeFi collateral</h2>
+      <p class="answer">The compelling use is collateral that earns while it sits. Post a stablecoin as collateral and it yields nothing; post a tokenized treasury and it keeps paying while securing your loan. For anyone running a leveraged position, that is a direct improvement in carry.</p>
+      <p>The obstacle is mechanical. Allowlisted tokens cannot move freely, and a lending protocol needs to hold, transfer and liquidate collateral. If a liquidator is not on the allowlist, the position cannot be liquidated — which means the protocol cannot safely accept it without bespoke handling. Hence integrations are specific partnerships rather than general listings, and are likely to stay that way while the restrictions remain.</p>
+
+      <h2 id="risks">Risks</h2>
+      <ul>
+        <li><strong>Custodian.</strong> The fund's assets sit with a custodian. Conventional, well-understood, not zero.</li>
+        <li><strong>Issuer and transfer agent.</strong> Real institutional dependencies — the on-chain record is only as good as the entity maintaining it.</li>
+        <li><strong>Redemption timing.</strong> Secondary transfer may be instant; redeeming from the fund often follows the fund's own schedule, which can matter in a hurry.</li>
+        <li><strong>Rate risk.</strong> The yield is the short end of the government curve. When policy rates fall, so does this, and the entire appeal of the category is rate-dependent.</li>
+        <li><strong>Smart contract.</strong> Applies to the token layer. A bug there is serious for holders even though it does not touch the fund's actual holdings.</li>
+      </ul>
+      <p>Measured against most of DeFi, this is a short and mild list — which is precisely why the category grew. It is also a reminder that the yield is a government bond yield, not a DeFi yield, and should be compared to the former.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is a tokenized treasury?</summary><p>A share in a fund holding short-term government debt — treasury bills and similar instruments — where ownership is recorded as a token on a blockchain instead of only on a transfer agent's register. The fund is an ordinary regulated fund; tokenisation changes how shares are held, transferred and settled, not what the fund invests in.</p></details>
+      <details><summary>How is it different from a stablecoin?</summary><p>A stablecoin is designed to hold a constant value and usually passes no yield to the holder — the issuer keeps the return on the reserves. A tokenized treasury is a security that explicitly pays you the yield, either by accruing in the token's value or by distributing new units. Different legal status, different holder rights, and different eligibility requirements.</p></details>
+      <details><summary>Who can buy tokenized treasuries?</summary><p>It depends on the product. Many are restricted to qualified, accredited or professional investors, with an on-chain allowlist enforcing it, so a wallet cannot simply buy in. Some newer products have broader access in specific jurisdictions. Eligibility is set by the issuer under securities law, not by the blockchain.</p></details>
+      <details><summary>Why did tokenized treasuries succeed when other RWA categories stalled?</summary><p>Because the underlying asset suits the structure. Treasury bills are homogeneous, priced continuously in a deep market, valued with no ambiguity, and already held through funds — so tokenising them changes the plumbing without introducing valuation or custody problems. Property and private credit have none of those properties, which is why they have been harder.</p></details>
+      <details><summary>What are the risks?</summary><p>Small relative to most of DeFi, but not zero. The fund's assets are held by a custodian, so custodian risk exists. The issuer and its transfer agent are points of failure. Redemption may follow the fund's own schedule rather than being instant. Yields fall when policy rates fall. And smart contract risk applies to the token layer, though it does not affect the fund's underlying holdings.</p></details>
+      <details><summary>Can you use tokenized treasuries as DeFi collateral?</summary><p>Increasingly yes, and it is a large part of the appeal — collateral that earns a yield while posted, rather than sitting idle. The constraint is that transfer restrictions and allowlists have to be compatible with the lending protocol, which limits where a restricted token can go and is why integrations are specific rather than universal.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — and the wider market around it — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="rwa-tokenization-explained"><img src="../assets/blog/rwa-tokenization-explained.png" alt="" /><span>RWA Tokenization Explained</span></a>
+        <a href="stablecoin-yield"><img src="../assets/blog/stablecoin-yield.png" alt="" /><span>Stablecoin Yield</span></a>
+        <a href="tokenized-real-estate"><img src="../assets/blog/tokenized-real-estate.png" alt="" /><span>Tokenized Real Estate</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>A different kind of yield</h2>
+      <p>WhaleHub's return comes from Stellar protocol revenue, not from government debt. Different engine, same automation.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not financial, legal or tax advice. WhaleHub is not affiliated with any protocol or issuer named. Products, terms and eligibility change frequently — verify current details with the issuer or protocol directly. Digital assets involve risk, including the total loss of capital. Tokenised fund products are securities in most jurisdictions with eligibility restrictions that vary by investor type and location. Yields reflect prevailing interest rates and can fall.</p>
+  </div>
+</article>
+
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

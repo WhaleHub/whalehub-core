@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DeFi Lending Platforms in 2026: How They Differ | WhaleHub</title>
+<meta name="description" content="How DeFi lending platforms actually differ — pooled vs isolated markets, collateral models, oracle design, liquidation mechanics — and the questions that separate them." />
+<link rel="canonical" href="https://whalehub.io/blog/defi-lending-platforms" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="defi lending platforms, defi loans, best defi lending, crypto lending protocol, isolated lending markets" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/defi-lending-platforms" />
+<meta property="og:title" content="DeFi Lending Platforms in 2026: How They Differ" />
+<meta property="og:description" content="How DeFi lending platforms actually differ — pooled vs isolated markets, collateral models, oracle design, liquidation mechanics — and the questions that separate them." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/defi-lending-platforms.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-20" />
+<meta property="article:modified_time" content="2026-09-20" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="DeFi Lending Platforms in 2026: How They Differ" />
+<meta name="twitter:description" content="How DeFi lending platforms actually differ — pooled vs isolated markets, collateral models, oracle design, liquidation mechanics — and the questions that separate them." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/defi-lending-platforms.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/defi-lending-platforms#article",
+      "headline": "DeFi Lending Platforms in 2026: How They Differ",
+      "description": "How DeFi lending platforms actually differ \u2014 pooled vs isolated markets, collateral models, oracle design, liquidation mechanics \u2014 and the questions that separate them.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/defi-lending-platforms.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-09-20",
+      "dateModified": "2026-09-20",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev"
+        ]
+      },
+      "publisher": {
+        "@id": "https://whalehub.io/#organization"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/defi-lending-platforms"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://whalehub.io/blog/defi-lending-platforms#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a DeFi lending platform?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A protocol that matches lenders and borrowers through smart contracts rather than a company. Suppliers deposit assets into pools and earn interest; borrowers post collateral worth more than they borrow. There is no credit assessment \u2014 over-collateralisation replaces it, because a pseudonymous borrower cannot be pursued for a shortfall."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between pooled and isolated lending markets?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In a pooled market all assets share one risk pool, so a failure in one listed asset can create bad debt borne by every supplier. In an isolated market each pair is ring-fenced, so a blow-up is contained to that market. Pooled markets offer deeper liquidity and better rates; isolated markets contain contagion. Most large protocols now offer some form of both."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do DeFi loans require over-collateralisation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because there is no way to enforce repayment against a pseudonymous wallet \u2014 no identity, no credit file, no court. Posting more value than you borrow means the lender is protected by the collateral rather than by trust, and the protocol can sell that collateral automatically if the cushion thins."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the biggest risk in DeFi lending?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For borrowers, liquidation, which is automatic and happens fastest in the worst markets. For suppliers, a combination of bad debt (a liquidation that fails to cover its loan) and withdrawal risk at high utilisation. For everyone, smart contract and oracle failure \u2014 with oracle manipulation historically causing more losses than contract bugs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How are DeFi lending rates set?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Almost always by a utilisation curve. As more of a pool is borrowed the rate rises to attract supply and discourage borrowing; as utilisation falls the rate drops. Nobody sets it by hand, which is why quoted rates move constantly and why a rate today is not a rate tomorrow."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is supplying to a DeFi lending platform safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Safer than borrowing on the same platform, since there is no liquidation risk on your own position, but not safe. You still carry smart contract risk, oracle risk, the possibility of socialised bad debt, withdrawal constraints when utilisation is high, and the price risk of whatever you supplied."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://whalehub.io/blog/defi-lending-platforms#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://whalehub.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "DeFi Lending Platforms in 2026: How They Differ",
+          "item": "https://whalehub.io/blog/defi-lending-platforms"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; DeFi</div>
+      <span class="tag">DeFi</span>
+      <h1>DeFi Lending Platforms in 2026: How They Differ</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: September 2026</span>
+        <span class="dot-sep"></span>
+        <span>9 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/defi-lending-platforms.png" alt="DeFi lending platforms in 2026 — how they differ" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">Most <strong>DeFi lending platforms</strong> look alike from the outside: supply an asset, earn a rate; post collateral, borrow against it. The differences that decide whether you lose money are structural — how risk is partitioned, where prices come from, and what happens when a liquidation fails.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#basics">The shared model</a></li>
+        <li><a href="#pooled">Pooled vs isolated</a></li>
+        <li><a href="#oracle">Oracle design</a></li>
+        <li><a href="#liq">Liquidation mechanics</a></li>
+        <li><a href="#questions">Questions that separate them</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="basics">The shared model</h2>
+      <p class="answer">Nearly every DeFi lending platform is over-collateralised and rate-discovered by utilisation. Suppliers deposit into pools; borrowers post more value than they take; rates rise as the borrowed share of a pool grows. That is the whole common core.</p>
+      <p>Over-collateralisation is not conservatism, it is necessity. There is no identity, no credit file and no court that will help a lender pursue a pseudonymous borrower, so the collateral has to do the work that a legal system does elsewhere. Any platform offering uncollateralised loans to anonymous users is doing something else — see <a href="crypto-loans-without-collateral">crypto loans without collateral</a>.</p>
+
+      <h2 id="pooled">Pooled vs isolated</h2>
+      <p>This is the most consequential design choice and the least visible in a front end.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>&nbsp;</th><th>Pooled</th><th>Isolated</th></tr></thead>
+          <tbody>
+            <tr><td>Risk</td><td>Shared across all listed assets</td><td>Contained to one market</td></tr>
+            <tr><td>If an asset fails</td><td>Bad debt can hit every supplier</td><td>Loss stays in that market</td></tr>
+            <tr><td>Liquidity</td><td>Deeper, better rates</td><td>Thinner, fragmented</td></tr>
+            <tr><td>Listing bar</td><td>High — every listing is a shared risk</td><td>Low — permissionless is viable</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>A pooled market gives better rates because capital is not fragmented, and the price is that a governance mistake on one obscure listing can socialise a loss to everyone. Isolated markets invert both. Most large protocols now run a hybrid — a conservative shared pool plus ring-fenced markets for riskier assets, which is what Aave's isolation mode does.</p>
+      <p>When evaluating any platform, find out which model your deposit sits in. Suppliers often assume they are isolated when they are pooled.</p>
+
+      <h2 id="oracle">Oracle design</h2>
+      <p class="answer">Every lending protocol needs to know what collateral is worth. That price comes from an oracle, and oracle manipulation has historically caused more DeFi losses than smart contract bugs.</p>
+      <p>What to look for: whether prices come from a major provider or the protocol's own feed; whether they are aggregated across venues or read from a single pool that can be pushed; whether there are circuit breakers for implausible moves; and how the protocol behaves if a feed goes stale — does it halt, or keep liquidating on old data?</p>
+      <p>A protocol reading its collateral price from a thin on-chain pool is not secured by its audits. Someone can move that pool.</p>
+
+      <h2 id="liq">Liquidation mechanics</h2>
+      <p>Liquidations are where a lending protocol either works or doesn't, and the details vary more than people expect:</p>
+      <ul>
+        <li><strong>Bonus size.</strong> Liquidators need an incentive; you pay it. Too small and nobody liquidates in a fast market, which creates bad debt. Too large and borrowers are punished harshly for brief excursions.</li>
+        <li><strong>Partial or full.</strong> Some protocols close only enough to restore health; others take the whole position. The difference is significant when you are the one being closed.</li>
+        <li><strong>Who may liquidate.</strong> Permissionless is the norm and is healthier — a closed set of liquidators can be absent exactly when needed.</li>
+        <li><strong>What happens on a shortfall.</strong> If liquidation does not cover the debt, someone absorbs it: a reserve fund, a staking backstop, or suppliers via socialised loss. Find out which before supplying.</li>
+      </ul>
+
+      <h2 id="questions">Questions that separate them</h2>
+      <ol>
+        <li><strong>Pooled or isolated — and which is my deposit in?</strong></li>
+        <li><strong>Where do collateral prices come from, and what happens if the feed fails?</strong></li>
+        <li><strong>Who absorbs bad debt?</strong> Reserve, backstop, or suppliers.</li>
+        <li><strong>What is current utilisation on the asset I want to supply?</strong> High utilisation means a good rate and a possible queue to exit.</li>
+        <li><strong>Who can change parameters, and how fast?</strong> A governance vote can alter collateral factors your position depends on.</li>
+        <li><strong>Has it run through a real crash?</strong> Protocols that have handled a violent drawdown have evidence; new ones have assumptions.</li>
+      </ol>
+
+      <h2>The summary</h2>
+      <p>The lending model is standard; the risk architecture is not. Establish whether your deposit is pooled or isolated, where the price comes from, and who eats a shortfall. Those three answers tell you more than any rate comparison, and they are usually a click or two further into the documentation than the front page.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is a DeFi lending platform?</summary><p>A protocol that matches lenders and borrowers through smart contracts rather than a company. Suppliers deposit assets into pools and earn interest; borrowers post collateral worth more than they borrow. There is no credit assessment — over-collateralisation replaces it, because a pseudonymous borrower cannot be pursued for a shortfall.</p></details>
+      <details><summary>What is the difference between pooled and isolated lending markets?</summary><p>In a pooled market all assets share one risk pool, so a failure in one listed asset can create bad debt borne by every supplier. In an isolated market each pair is ring-fenced, so a blow-up is contained to that market. Pooled markets offer deeper liquidity and better rates; isolated markets contain contagion. Most large protocols now offer some form of both.</p></details>
+      <details><summary>Why do DeFi loans require over-collateralisation?</summary><p>Because there is no way to enforce repayment against a pseudonymous wallet — no identity, no credit file, no court. Posting more value than you borrow means the lender is protected by the collateral rather than by trust, and the protocol can sell that collateral automatically if the cushion thins.</p></details>
+      <details><summary>What is the biggest risk in DeFi lending?</summary><p>For borrowers, liquidation, which is automatic and happens fastest in the worst markets. For suppliers, a combination of bad debt (a liquidation that fails to cover its loan) and withdrawal risk at high utilisation. For everyone, smart contract and oracle failure — with oracle manipulation historically causing more losses than contract bugs.</p></details>
+      <details><summary>How are DeFi lending rates set?</summary><p>Almost always by a utilisation curve. As more of a pool is borrowed the rate rises to attract supply and discourage borrowing; as utilisation falls the rate drops. Nobody sets it by hand, which is why quoted rates move constantly and why a rate today is not a rate tomorrow.</p></details>
+      <details><summary>Is supplying to a DeFi lending platform safe?</summary><p>Safer than borrowing on the same platform, since there is no liquidation risk on your own position, but not safe. You still carry smart contract risk, oracle risk, the possibility of socialised bad debt, withdrawal constraints when utilisation is high, and the price risk of whatever you supplied.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — and the wider market around it — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="smart-contract-audits"><img src="../assets/blog/smart-contract-audits.png" alt="" /><span>Smart Contract Audits</span></a>
+        <a href="defi-risks"><img src="../assets/blog/defi-risks.png" alt="" /><span>DeFi Risks</span></a>
+        <a href="what-is-aave"><img src="../assets/blog/what-is-aave.png" alt="" /><span>What Is Aave?</span></a>
+        <a href="aave-vs-kamino"><img src="../assets/blog/aave-vs-kamino.png" alt="" /><span>Aave vs Kamino</span></a>
+        <a href="crypto-loans-without-collateral"><img src="../assets/blog/crypto-loans-without-collateral.png" alt="" /><span>Crypto Loans Without Collateral</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Earn without borrowing</h2>
+      <p>WhaleHub pools AQUA into a shared governance position on Stellar. No collateral, no liquidation price.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not financial advice. WhaleHub is not affiliated with any protocol described. Protocol mechanics, rates and parameters change frequently — verify current details directly with the protocol before depositing. DeFi involves risk, including smart-contract failure, liquidation and the total loss of capital.</p>
+  </div>
+</article>
+
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

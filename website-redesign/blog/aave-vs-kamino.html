@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aave vs Kamino: Two Approaches to On-Chain Lending | WhaleHub</title>
+<meta name="description" content="Aave and Kamino compared on scope, collateral models, chain trade-offs and risk — a multi-chain lending market against a Solana-native lending and liquidity stack." />
+<link rel="canonical" href="https://whalehub.io/blog/aave-vs-kamino" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="aave vs kamino, kamino vs aave, solana vs ethereum lending, defi lending comparison" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/aave-vs-kamino" />
+<meta property="og:title" content="Aave vs Kamino: Two Approaches to On-Chain Lending" />
+<meta property="og:description" content="Aave and Kamino compared on scope, collateral models, chain trade-offs and risk — a multi-chain lending market against a Solana-native lending and liquidity stack." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/aave-vs-kamino.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-20" />
+<meta property="article:modified_time" content="2026-09-20" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="Aave vs Kamino: Two Approaches to On-Chain Lending" />
+<meta name="twitter:description" content="Aave and Kamino compared on scope, collateral models, chain trade-offs and risk — a multi-chain lending market against a Solana-native lending and liquidity stack." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/aave-vs-kamino.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/aave-vs-kamino#article",
+      "headline": "Aave vs Kamino: Two Approaches to On-Chain Lending",
+      "description": "Aave and Kamino compared on scope, collateral models, chain trade-offs and risk \u2014 a multi-chain lending market against a Solana-native lending and liquidity stack.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/aave-vs-kamino.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-09-20",
+      "dateModified": "2026-09-20",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev"
+        ]
+      },
+      "publisher": {
+        "@id": "https://whalehub.io/#organization"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/aave-vs-kamino"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://whalehub.io/blog/aave-vs-kamino#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the main difference between Aave and Kamino?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Scope. Aave is a lending market deployed across many chains and does essentially one thing well. Kamino is Solana-native and combines lending with automated liquidity vaults and leverage products, so a Kamino depositor may be taking on liquidity-provision risk that an Aave supplier never encounters."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which is safer, Aave or Kamino?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aave has a longer operating history, broader audit coverage and an explicit backstop in its Safety Module, which are real advantages. But safety depends more on which product you use than which protocol: supplying a stablecoin on either is conservative, while leveraged vault positions on either are not. Product choice dominates protocol choice."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you use liquidity positions as collateral on Aave?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not in the way Kamino allows. Aave accepts listed assets as collateral, and while some yield-bearing tokens are listed, it does not natively take an actively managed concentrated-liquidity position as collateral. That capability is one of Kamino's distinguishing features and one of its distinctive risks."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Solana or Ethereum better for lending?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Neither is better outright. Solana offers much lower fees and faster settlement, which makes small positions and frequent rebalancing economic, but has had congestion episodes that can prevent you acting during volatility. Ethereum costs more per transaction and has deeper liquidity and longer-tested infrastructure. The trade is cost and speed against depth and resilience."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which has better rates?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Neither consistently. Rates on both are set by utilisation and move continuously, so a snapshot comparison is out of date quickly. Compare the same asset at the same moment, and remember that a higher rate usually reflects higher utilisation, which also means a greater chance of difficulty withdrawing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you use both?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, and many people do, usually splitting by chain and by purpose \u2014 Aave for conservative supply on Ethereum and its L2s, Kamino for Solana-native positions and managed liquidity. Using both does not diversify smart-contract risk away; it gives you two sets of it."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://whalehub.io/blog/aave-vs-kamino#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://whalehub.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Aave vs Kamino: Two Approaches to On-Chain Lending",
+          "item": "https://whalehub.io/blog/aave-vs-kamino"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; DeFi</div>
+      <span class="tag">DeFi</span>
+      <h1>Aave vs Kamino: Two Approaches to On-Chain Lending</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: September 2026</span>
+        <span class="dot-sep"></span>
+        <span>9 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/aave-vs-kamino.png" alt="Aave vs Kamino — two approaches to on-chain lending compared" width="1200" height="630" />
+    </figure>
+
+    <p class="lead"><strong>Aave and Kamino</strong> both lend, and comparing them as if that were the whole story misses the point. Aave is a lending market that does one thing across many chains. Kamino is a Solana-native stack where lending is one component alongside automated liquidity and leverage. The difference in scope matters more than any rate comparison.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#glance">At a glance</a></li>
+        <li><a href="#scope">Scope: market vs stack</a></li>
+        <li><a href="#collateral">The collateral difference</a></li>
+        <li><a href="#chain">Chain trade-offs</a></li>
+        <li><a href="#choose">Which suits what</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="glance">At a glance</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>&nbsp;</th><th>Aave</th><th>Kamino</th></tr></thead>
+          <tbody>
+            <tr><td>Core product</td><td>Over-collateralised lending</td><td>Lending + automated liquidity + leverage</td></tr>
+            <tr><td>Chains</td><td>Many (Ethereum, L2s, others)</td><td>Solana</td></tr>
+            <tr><td>Deposit receipt</td><td>aTokens, interest accrues in balance</td><td>Pool / vault positions</td></tr>
+            <tr><td>Distinctive feature</td><td>Flash loans, GHO, e-mode, isolation mode</td><td>Vault positions usable as collateral</td></tr>
+            <tr><td>Backstop</td><td>Safety Module (stakeable, slashable)</td><td>Protocol reserves</td></tr>
+            <tr><td>Impermanent loss</td><td>None — it does not do liquidity provision</td><td>Yes, in vault products</td></tr>
+            <tr><td>Track record</td><td>Longer, across multiple cycles</td><td>Shorter, Solana-native</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="scope">Scope: market vs stack</h2>
+      <p class="answer">Aave is deliberately narrow. It takes deposits, lends them out, liquidates when collateral thins. Kamino is deliberately broad — the lending market exists partly so that its liquidity positions have something to borrow against.</p>
+      <p>Narrowness is a feature. An Aave supplier is exposed to the price of what they deposited, the protocol's contracts, and the possibility of bad debt. They are <em>not</em> exposed to impermanent loss, a rebalancing strategy's judgement, or a DEX's behaviour, because Aave does not touch those things.</p>
+      <p>Breadth is also a feature, for a different user. If you want a managed liquidity position that can also serve as collateral, Kamino does that in one place and Aave cannot do it at all. You are accepting more moving parts in exchange for a capability that does not otherwise exist in a single product.</p>
+
+      <h2 id="collateral">The collateral difference</h2>
+      <p>This is the sharpest structural distinction, and it is where the risk profiles genuinely diverge.</p>
+      <p>On Aave, collateral is a listed asset. One thing moves: its price. Your health factor is a function of that single variable.</p>
+      <p>On Kamino, collateral may be an actively managed liquidity position. Several things move at once, and they move together: the position's value falls, <a href="impermanent-loss-explained">impermanent loss</a> is realised at the next rebalance, fee income may drop as the price leaves the range, and the LTV rises. These are not four independent risks that might offset — they are one market move arriving through four doors.</p>
+      <p>That does not make it worse. It means the same nominal LTV is a materially more leveraged position on Kamino than on Aave, and it should be sized with more headroom.</p>
+
+      <h2 id="chain">Chain trade-offs</h2>
+      <p><strong>Solana</strong> — fees measured in fractions of a cent make frequent rebalancing and small positions economic, which is precisely what automated vaults require. The cost is a history of congestion episodes, and the scenario that matters is narrow but severe: a leveraged position approaching liquidation while you cannot get a transaction through.</p>
+      <p><strong>Ethereum and its L2s</strong> — higher fees, deeper liquidity, longer-tested infrastructure, and more venues for liquidators to source capital during stress. Small positions can be uneconomic on mainnet; L2s largely fix that while adding their own bridging and sequencer considerations.</p>
+      <p>The honest summary is that this is a genuine trade rather than a ranking. Cost and speed against depth and resilience.</p>
+
+      <h2 id="choose">Which suits what</h2>
+      <ul>
+        <li><strong>Conservative supply</strong> — Aave, for track record, breadth of audit and an explicit backstop. Supplying a major stablecoin is among the milder things available in DeFi.</li>
+        <li><strong>Managed liquidity</strong> — Kamino, because Aave does not offer it. Understand you are buying a strategy, not a deposit.</li>
+        <li><strong>Borrowing against ordinary assets</strong> — either. Compare the asset's parameters at the same moment rather than the protocols in the abstract.</li>
+        <li><strong>Leverage</strong> — available on both, high risk on both, and the headroom matters more than the venue.</li>
+        <li><strong>Already committed to a chain</strong> — that usually settles it. Bridging to chase a rate rarely survives the round trip.</li>
+      </ul>
+      <p>And if the goal is yield without a liquidation price at all, neither is the answer — that is a different category, covered in <a href="what-is-crypto-staking">what is crypto staking</a>.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is the main difference between Aave and Kamino?</summary><p>Scope. Aave is a lending market deployed across many chains and does essentially one thing well. Kamino is Solana-native and combines lending with automated liquidity vaults and leverage products, so a Kamino depositor may be taking on liquidity-provision risk that an Aave supplier never encounters.</p></details>
+      <details><summary>Which is safer, Aave or Kamino?</summary><p>Aave has a longer operating history, broader audit coverage and an explicit backstop in its Safety Module, which are real advantages. But safety depends more on which product you use than which protocol: supplying a stablecoin on either is conservative, while leveraged vault positions on either are not. Product choice dominates protocol choice.</p></details>
+      <details><summary>Can you use liquidity positions as collateral on Aave?</summary><p>Not in the way Kamino allows. Aave accepts listed assets as collateral, and while some yield-bearing tokens are listed, it does not natively take an actively managed concentrated-liquidity position as collateral. That capability is one of Kamino's distinguishing features and one of its distinctive risks.</p></details>
+      <details><summary>Is Solana or Ethereum better for lending?</summary><p>Neither is better outright. Solana offers much lower fees and faster settlement, which makes small positions and frequent rebalancing economic, but has had congestion episodes that can prevent you acting during volatility. Ethereum costs more per transaction and has deeper liquidity and longer-tested infrastructure. The trade is cost and speed against depth and resilience.</p></details>
+      <details><summary>Which has better rates?</summary><p>Neither consistently. Rates on both are set by utilisation and move continuously, so a snapshot comparison is out of date quickly. Compare the same asset at the same moment, and remember that a higher rate usually reflects higher utilisation, which also means a greater chance of difficulty withdrawing.</p></details>
+      <details><summary>Can you use both?</summary><p>Yes, and many people do, usually splitting by chain and by purpose — Aave for conservative supply on Ethereum and its L2s, Kamino for Solana-native positions and managed liquidity. Using both does not diversify smart-contract risk away; it gives you two sets of it.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — and the wider market around it — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="what-is-aave"><img src="../assets/blog/what-is-aave.png" alt="" /><span>What Is Aave?</span></a>
+        <a href="what-is-kamino-finance"><img src="../assets/blog/what-is-kamino-finance.png" alt="" /><span>What Is Kamino Finance?</span></a>
+        <a href="defi-lending-platforms"><img src="../assets/blog/defi-lending-platforms.png" alt="" /><span>DeFi Lending Platforms</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>A third shape entirely</h2>
+      <p>WhaleHub isn't a lending market. It pools governance power on Stellar and pays out the revenue that position earns.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not financial advice. WhaleHub is not affiliated with any protocol described. Protocol mechanics, rates and parameters change frequently — verify current details directly with the protocol before depositing. DeFi involves risk, including smart-contract failure, liquidation and the total loss of capital. This comparison is structural rather than a recommendation; neither protocol is presented as superior.</p>
+  </div>
+</article>
+
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>
