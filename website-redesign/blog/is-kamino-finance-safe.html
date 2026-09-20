@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Is Kamino Finance Safe? The Risks, Honestly Assessed | WhaleHub</title>
+<meta name="description" content="A risk-by-risk look at Kamino Finance: smart contract exposure, oracle and liquidation mechanics, Solana chain risk, and which of its products carry which dangers." />
+<link rel="canonical" href="https://whalehub.io/blog/is-kamino-finance-safe" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="is kamino finance safe, kamino risk, kamino audit, solana defi risk, kamino liquidation risk" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/is-kamino-finance-safe" />
+<meta property="og:title" content="Is Kamino Finance Safe? The Risks, Honestly Assessed" />
+<meta property="og:description" content="A risk-by-risk look at Kamino Finance: smart contract exposure, oracle and liquidation mechanics, Solana chain risk, and which of its products carry which dangers." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/is-kamino-finance-safe.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-20" />
+<meta property="article:modified_time" content="2026-09-20" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="Is Kamino Finance Safe? The Risks, Honestly Assessed" />
+<meta name="twitter:description" content="A risk-by-risk look at Kamino Finance: smart contract exposure, oracle and liquidation mechanics, Solana chain risk, and which of its products carry which dangers." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/is-kamino-finance-safe.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/is-kamino-finance-safe#article",
+      "headline": "Is Kamino Finance Safe? The Risks, Honestly Assessed",
+      "description": "A risk-by-risk look at Kamino Finance: smart contract exposure, oracle and liquidation mechanics, Solana chain risk, and which of its products carry which dangers.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/is-kamino-finance-safe.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-09-20",
+      "dateModified": "2026-09-20",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev"
+        ]
+      },
+      "publisher": {
+        "@id": "https://whalehub.io/#organization"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/is-kamino-finance-safe"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://whalehub.io/blog/is-kamino-finance-safe#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is Kamino Finance safe to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Kamino has operated at scale on Solana and its contracts have been audited, which puts it in the better-established tier of Solana DeFi. That is not the same as safe. Audits reduce the chance of a known bug class and cannot prove absence of bugs, and the largest risks for most users are not contract failure at all \u2014 they are liquidation, impermanent loss and the price of the asset itself."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Has Kamino been audited?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Kamino's contracts have undergone third-party audits, and audit reports are the first thing to check and read rather than take on trust. An audit is a point-in-time review of specific code by specific people. It does not cover code deployed afterwards, economic design failures, oracle manipulation, or governance decisions."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the biggest risk when using Kamino?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For most users, price risk on the deposited asset, followed by liquidation for anyone borrowing or using leverage. Smart contract risk gets the most attention and is statistically the least likely of the three to cost you money on an established protocol. People lose far more to leverage in a normal drawdown than to exploits."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you lose money in a Kamino vault without a hack?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Easily, and it is the common case. A liquidity vault realises impermanent loss each time it rebalances, so in a trending market the position can underperform simply holding the two assets, even while earning fees the whole time. Fees compensate for this in choppy markets and often do not in strongly trending ones."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Solana chain risk affect Kamino?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, particularly for leveraged positions. Solana has had congestion and outage episodes, and an inability to transact during volatility means an inability to add collateral or close a position while it approaches liquidation. That risk belongs to the chain rather than the protocol, but it lands on the user either way."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How should I size a position on Kamino?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "By what you can lose rather than what you hope to earn. Supplying carries no liquidation risk; vaults add impermanent loss; leverage compresses the distance to liquidation sharply. Start at the least complex product that meets your goal, run one full cycle with an amount you would not mind losing, and only then scale."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://whalehub.io/blog/is-kamino-finance-safe#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://whalehub.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Is Kamino Finance Safe? The Risks, Honestly Assessed",
+          "item": "https://whalehub.io/blog/is-kamino-finance-safe"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; DeFi</div>
+      <span class="tag">DeFi</span>
+      <h1>Is Kamino Finance Safe? The Risks, Honestly Assessed</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: September 2026</span>
+        <span class="dot-sep"></span>
+        <span>9 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/is-kamino-finance-safe.png" alt="Is Kamino Finance safe — a risk-by-risk assessment" width="1200" height="630" />
+    </figure>
+
+    <p class="lead">"<strong>Is Kamino Finance safe?</strong>" is the right question asked slightly wrong. Kamino is an established, audited protocol on Solana, and that tells you about one risk out of six. The risks that actually empty accounts on platforms like this are ordinary ones — liquidation, impermanent loss, and the price of the thing you deposited.</p>
+
+    <div class="callout">
+      <div class="k">The honest summary</div>
+      <p>Kamino sits in the better-established tier of Solana DeFi: real scale, real audit history, products that have run through volatile markets. None of that makes any of its products low risk, and the highest-risk product on the platform is available to anyone with a wallet and two clicks.</p>
+      <p>The useful exercise is not rating the protocol out of ten. It is working out which risks apply to the specific product you are considering.</p>
+    </div>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#contract">Smart contract risk</a></li>
+        <li><a href="#economic">Economic risk, by product</a></li>
+        <li><a href="#oracle">Oracle and liquidation</a></li>
+        <li><a href="#chain">Solana chain risk</a></li>
+        <li><a href="#matrix">Which risks apply to what</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="contract">Smart contract risk</h2>
+      <p class="answer">Kamino's contracts have been audited by third parties and have handled significant value through volatile conditions. That is meaningful evidence and it is not a guarantee.</p>
+      <p>What an audit does: reviews specific code, at a point in time, against known vulnerability classes, by people who may miss things. What it does not do: cover code deployed later, catch economic design flaws, prevent oracle manipulation, or constrain what governance later changes.</p>
+      <p>Read the reports rather than the fact of them. Check the date, what was in scope, and whether findings were fixed or accepted. "Audited" as an unqualified badge is marketing; the report is the evidence.</p>
+
+      <h2 id="economic">Economic risk, by product</h2>
+      <h3>Supplying to K-Lend</h3>
+      <p>The mildest product. No liquidation risk on your own position. The real exposures are <strong>utilisation</strong> — if nearly everything is borrowed you may not be able to withdraw promptly — and <strong>bad debt</strong>, where a liquidation fails to cover a loan in a violent move and the shortfall is socialised across suppliers. Rare, and it has happened to lending protocols across every chain.</p>
+      <h3>Liquidity vaults</h3>
+      <p>Here you can lose money with nothing going wrong. A vault rebalances its range as the price moves, and each rebalance realises divergence. In a market that trends hard in one direction, the position can end up worth less than simply holding the two assets, even while collecting fees continuously. Fees make up for it in choppy markets; they frequently do not in trending ones. This is <a href="impermanent-loss-explained">impermanent loss</a>, made permanent by automation.</p>
+      <h3>Borrowing and Multiply</h3>
+      <p>The highest-risk products, and the arithmetic is unforgiving. Leverage shortens the distance between where you are and where you are closed out. A 3× position can liquidate on a move an unleveraged position barely registers. Automation makes entering the loop a single click; exiting during a crash is not automated on your behalf.</p>
+
+      <h2 id="oracle">Oracle and liquidation</h2>
+      <p>Every lending market prices collateral through an oracle, which creates two exposures. <strong>Manipulation</strong>: if a feed can be pushed, positions can be liquidated or loans over-issued — the cause of a long list of DeFi losses across every chain. <strong>Staleness</strong>: during extreme volatility a feed can lag the market, and you can be liquidated at a price that never really existed, or survive briefly at one that did.</p>
+      <p>Liquidation itself is permissionless and instant. No grace period, no human review, no consideration of how brief the excursion was.</p>
+
+      <h2 id="chain">Solana chain risk</h2>
+      <p>This is not Kamino's doing and it lands on Kamino's users. Solana has experienced congestion and outage episodes, and the relevant scenario is narrow but severe: you hold a leveraged position, the market moves hard, you try to add collateral or close — and cannot get a transaction through.</p>
+      <p>For a supplier this is an inconvenience. For a borrower near their threshold it is the difference between managing a position and discovering it was liquidated. Anyone using leverage on any Solana protocol should size positions on the assumption that they may be unable to act for a period.</p>
+
+      <h2 id="matrix">Which risks apply to what</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Risk</th><th>Supply</th><th>Vaults</th><th>Borrow / Multiply</th></tr></thead>
+          <tbody>
+            <tr><td>Smart contract</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+            <tr><td>Price of the asset</td><td>Yes</td><td>Yes</td><td>Amplified</td></tr>
+            <tr><td>Impermanent loss</td><td>No</td><td><strong>Yes</strong></td><td>Yes, if vault-backed</td></tr>
+            <tr><td>Liquidation</td><td>No</td><td>No</td><td><strong>Yes</strong></td></tr>
+            <tr><td>Oracle failure</td><td>Indirect</td><td>Indirect</td><td><strong>Yes</strong></td></tr>
+            <tr><td>Withdrawal / utilisation</td><td><strong>Yes</strong></td><td>Partly</td><td>Yes</td></tr>
+            <tr><td>Chain congestion</td><td>Low impact</td><td>Low impact</td><td><strong>High impact</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>So — is it safe?</h2>
+      <p>It is a well-established protocol offering products that range from conservative to genuinely dangerous, and the dangerous ones are the easiest to enter. Supplying a stable asset is a modest-risk activity. Running leveraged vault positions is not, and no amount of audit history changes that.</p>
+      <p>If what you want is yield without a liquidation price and without managing a range, that is a different product category — see <a href="best-crypto-staking-platforms">best crypto staking platforms</a> for the trade-offs of the simpler route.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>Is Kamino Finance safe to use?</summary><p>Kamino has operated at scale on Solana and its contracts have been audited, which puts it in the better-established tier of Solana DeFi. That is not the same as safe. Audits reduce the chance of a known bug class and cannot prove absence of bugs, and the largest risks for most users are not contract failure at all — they are liquidation, impermanent loss and the price of the asset itself.</p></details>
+      <details><summary>Has Kamino been audited?</summary><p>Kamino's contracts have undergone third-party audits, and audit reports are the first thing to check and read rather than take on trust. An audit is a point-in-time review of specific code by specific people. It does not cover code deployed afterwards, economic design failures, oracle manipulation, or governance decisions.</p></details>
+      <details><summary>What is the biggest risk when using Kamino?</summary><p>For most users, price risk on the deposited asset, followed by liquidation for anyone borrowing or using leverage. Smart contract risk gets the most attention and is statistically the least likely of the three to cost you money on an established protocol. People lose far more to leverage in a normal drawdown than to exploits.</p></details>
+      <details><summary>Can you lose money in a Kamino vault without a hack?</summary><p>Easily, and it is the common case. A liquidity vault realises impermanent loss each time it rebalances, so in a trending market the position can underperform simply holding the two assets, even while earning fees the whole time. Fees compensate for this in choppy markets and often do not in strongly trending ones.</p></details>
+      <details><summary>Does Solana chain risk affect Kamino?</summary><p>Yes, particularly for leveraged positions. Solana has had congestion and outage episodes, and an inability to transact during volatility means an inability to add collateral or close a position while it approaches liquidation. That risk belongs to the chain rather than the protocol, but it lands on the user either way.</p></details>
+      <details><summary>How should I size a position on Kamino?</summary><p>By what you can lose rather than what you hope to earn. Supplying carries no liquidation risk; vaults add impermanent loss; leverage compresses the distance to liquidation sharply. Start at the least complex product that meets your goal, run one full cycle with an amount you would not mind losing, and only then scale.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — and the wider market around it — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="what-is-kamino-finance"><img src="../assets/blog/what-is-kamino-finance.png" alt="" /><span>What Is Kamino Finance?</span></a>
+        <a href="kamino-lend-explained"><img src="../assets/blog/kamino-lend-explained.png" alt="" /><span>Kamino Lend Explained</span></a>
+        <a href="impermanent-loss-explained"><img src="../assets/blog/impermanent-loss-explained.png" alt="" /><span>Impermanent Loss Explained</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Fewer moving parts</h2>
+      <p>No borrowing, no liquidation price, no range to manage. WhaleHub pools AQUA on Stellar and compounds what it earns.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not financial advice. WhaleHub is not affiliated with any protocol described. Protocol mechanics, rates and token designs change frequently — verify current details directly with the protocol before depositing. DeFi involves risk, including smart-contract failure, liquidation and the total loss of capital. Nothing here should be read as an assessment of any protocol's solvency or as a recommendation to use or avoid it.</p>
+  </div>
+</article>
+
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

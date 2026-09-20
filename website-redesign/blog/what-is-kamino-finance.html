@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>What Is Kamino Finance? Solana's Lending and Liquidity Layer | WhaleHub</title>
+<meta name="description" content="Kamino Finance explained: automated liquidity vaults, K-Lend borrowing, Multiply leverage, and where the yield actually comes from — plus the risks each product carries." />
+<link rel="canonical" href="https://whalehub.io/blog/what-is-kamino-finance" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="kamino finance, kamino crypto, kamino solana, kamino vaults, what is kamino, kmno token" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/what-is-kamino-finance" />
+<meta property="og:title" content="What Is Kamino Finance? Solana's Lending and Liquidity Layer" />
+<meta property="og:description" content="Kamino Finance explained: automated liquidity vaults, K-Lend borrowing, Multiply leverage, and where the yield actually comes from — plus the risks each product carries." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/what-is-kamino-finance.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-20" />
+<meta property="article:modified_time" content="2026-09-20" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="What Is Kamino Finance? Solana's Lending and Liquidity Layer" />
+<meta name="twitter:description" content="Kamino Finance explained: automated liquidity vaults, K-Lend borrowing, Multiply leverage, and where the yield actually comes from — plus the risks each product carries." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/what-is-kamino-finance.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/what-is-kamino-finance#article",
+      "headline": "What Is Kamino Finance? Solana's Lending and Liquidity Layer",
+      "description": "Kamino Finance explained: automated liquidity vaults, K-Lend borrowing, Multiply leverage, and where the yield actually comes from \u2014 plus the risks each product carries.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/what-is-kamino-finance.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-09-20",
+      "dateModified": "2026-09-20",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev"
+        ]
+      },
+      "publisher": {
+        "@id": "https://whalehub.io/#organization"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/what-is-kamino-finance"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://whalehub.io/blog/what-is-kamino-finance#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Kamino Finance?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Kamino Finance is a DeFi protocol on Solana that bundles three related products: automated concentrated-liquidity vaults that manage LP positions on Solana DEXes, a lending market known as K-Lend, and leveraged strategies built on top of both. The unifying idea is that positions which normally require active management are run by the protocol instead."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does Kamino make money for depositors?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "From three ordinary sources. Liquidity vaults earn DEX trading fees, plus whatever incentive tokens the pool emits. K-Lend pays suppliers the interest borrowers pay. Leveraged strategies amplify one of those by borrowing against the position. There is no fourth source, and any advertised return has to be explainable by one of these."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are Kamino vaults?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Automated liquidity vaults. On a concentrated-liquidity DEX an LP must choose a price range and move it as the market moves, or stop earning fees. Kamino's vaults rebalance that range automatically according to a published strategy, so depositors get a managed position instead of a manual one. The trade-off is that rebalancing crystallises impermanent loss and you inherit the strategy's judgement."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Kamino the same as Aave?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. They overlap on lending but differ in scope. Aave is a lending market and little else, deployed across many chains. Kamino is Solana-native and combines lending with automated liquidity management and leverage products, so depositors take on liquidity-provision risk that a pure lending market does not have."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the KMNO token?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "KMNO is Kamino's governance token, used for protocol governance and distributed through incentive programmes including its points and season campaigns. Governance tokens are not a claim on protocol revenue unless the protocol explicitly makes them one, so treat KMNO's value and any yield paid in it separately from the underlying product's economics."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you need SOL to use Kamino?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, for transaction fees. Solana fees are very low, but you need a small SOL balance in your wallet to sign transactions, and you should keep some in reserve \u2014 being unable to pay fees when you need to adjust or close a leveraged position is an avoidable way to get liquidated."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://whalehub.io/blog/what-is-kamino-finance#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://whalehub.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "What Is Kamino Finance? Solana's Lending and Liquidity Layer",
+          "item": "https://whalehub.io/blog/what-is-kamino-finance"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; DeFi</div>
+      <span class="tag">DeFi</span>
+      <h1>What Is Kamino Finance? Solana's Lending and Liquidity Layer</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: September 2026</span>
+        <span class="dot-sep"></span>
+        <span>10 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/what-is-kamino-finance.png" alt="What is Kamino Finance — Solana lending and liquidity, explained" width="1200" height="630" />
+    </figure>
+
+    <p class="lead"><strong>Kamino Finance</strong> is a DeFi protocol on Solana that does three things: it runs automated liquidity positions on Solana DEXes, it operates a lending market called K-Lend, and it stacks leverage on top of both. The common thread is automation — positions that would otherwise need constant manual attention are managed by the protocol.</p>
+
+    <div class="callout">
+      <div class="k">The one-paragraph version</div>
+      <p>Providing concentrated liquidity on a modern DEX is a job, not a deposit: you pick a price range, and when the market leaves it you stop earning until you move. Kamino automates that. It then adds a lending market so those positions can be borrowed against, and leverage products that do the borrowing for you. Each layer adds return and a distinct new way to lose money.</p>
+    </div>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#vaults">Liquidity vaults</a></li>
+        <li><a href="#lend">K-Lend</a></li>
+        <li><a href="#multiply">Leverage products</a></li>
+        <li><a href="#yield">Where the yield comes from</a></li>
+        <li><a href="#risks">The risks, by product</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="vaults">Liquidity vaults</h2>
+      <p class="answer">Concentrated liquidity lets an LP commit capital to a chosen price range, earning far more fees per dollar inside that range and nothing outside it. The catch is that the market moves. Kamino's vaults hold the position and rebalance the range automatically according to a published strategy.</p>
+      <p>What you gain is not having to watch a chart to keep earning. What you give up is more subtle and worth understanding before depositing:</p>
+      <ul>
+        <li><strong>Rebalancing realises losses.</strong> Moving a range after the price has moved locks in the divergence. Automation does not avoid <a href="impermanent-loss-explained">impermanent loss</a> — it converts it from an unrealised position into a realised one, repeatedly.</li>
+        <li><strong>You inherit the strategy.</strong> Range width, rebalance frequency and triggers are decisions someone else made. A wide range earns less and rebalances rarely; a tight one earns more and churns. Read which you are buying.</li>
+        <li><strong>Fees compound quietly.</strong> Earned fees are typically reinvested rather than claimable, which is efficient but means your headline balance moves for two different reasons at once.</li>
+      </ul>
+
+      <h2 id="lend">K-Lend</h2>
+      <p>An ordinary over-collateralised lending market, with the usual shape: suppliers deposit assets and earn interest, borrowers post collateral worth more than they borrow, and rates move with utilisation. If collateral value falls toward the loan, the position is liquidated automatically.</p>
+      <p>The feature that distinguishes it is accepting Kamino's own vault positions as collateral, so a liquidity position can back a loan without being closed. Convenient, and it also means a single adverse move can hit both the collateral's value and its fee income simultaneously. We unpack the mechanics in <a href="kamino-lend-explained">Kamino Lend explained</a>.</p>
+
+      <h2 id="multiply">Leverage products</h2>
+      <p>Multiply-style products automate a loop that users used to run by hand: deposit, borrow against it, buy more of the deposit asset, repeat. The protocol executes the loop in one transaction and manages the resulting position.</p>
+      <p>This is the highest-risk product on the platform and the arithmetic deserves stating plainly. Leverage multiplies the return <em>and</em> the drawdown, and it compresses the distance to liquidation. A position that survives a 40% fall unleveraged may liquidate on a 15% fall at 3×. Automation makes the loop convenient; it does not make it safe, and convenience at the point of entry is not a substitute for understanding the exit.</p>
+
+      <h2 id="yield">Where the yield comes from</h2>
+      <p class="answer">Three sources, all ordinary: DEX trading fees, borrower interest, and token incentives. Anything beyond what those can fund is either leverage or an undisclosed risk.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Source</th><th>Paid by</th><th>Sustainable?</th></tr></thead>
+          <tbody>
+            <tr><td>DEX trading fees</td><td>Traders swapping in the pool</td><td>Yes — scales with real volume</td></tr>
+            <tr><td>Borrower interest</td><td>Borrowers in K-Lend</td><td>Yes — scales with real demand</td></tr>
+            <tr><td>Token incentives</td><td>Emissions, diluting holders</td><td>No — a budget, not a business</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The distinction matters most when comparing advertised rates. A vault paying a high headline number largely from emissions is paying you in a token whose supply is increasing; the rate will fall when the programme ends. That is not deceptive if disclosed, but it is a different proposition from fee income, and the two should not be compared as if they were the same number.</p>
+
+      <h2 id="risks">The risks, by product</h2>
+      <ul>
+        <li><strong>Smart contract risk</strong> — applies to everything. Kamino has operated at scale and been audited, which reduces but does not remove it.</li>
+        <li><strong>Impermanent loss</strong> — vaults only. Realised on each rebalance rather than deferred to exit.</li>
+        <li><strong>Liquidation</strong> — lending and leverage. Automated, unsentimental, and fastest exactly when markets are worst.</li>
+        <li><strong>Oracle risk</strong> — lending and leverage. Collateral is priced by an oracle; a bad print can liquidate a healthy position.</li>
+        <li><strong>Chain risk</strong> — Solana has historically had congestion and outage episodes. Being unable to transact during volatility is a real risk for leveraged positions specifically.</li>
+        <li><strong>Price risk</strong> — the largest and least discussed. Earning 12% on an asset that falls 40% is a 28% loss.</li>
+      </ul>
+
+      <h2>Who it suits</h2>
+      <p>Kamino suits someone already committed to Solana who wants managed liquidity positions rather than manual ones, and understands that automation removes the labour, not the exposure. Depositors who want yield without liquidity-provision risk should look at plain lending or staking instead — a comparison we draw in <a href="what-is-crypto-staking">What is crypto staking</a>.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is Kamino Finance?</summary><p>Kamino Finance is a DeFi protocol on Solana that bundles three related products: automated concentrated-liquidity vaults that manage LP positions on Solana DEXes, a lending market known as K-Lend, and leveraged strategies built on top of both. The unifying idea is that positions which normally require active management are run by the protocol instead.</p></details>
+      <details><summary>How does Kamino make money for depositors?</summary><p>From three ordinary sources. Liquidity vaults earn DEX trading fees, plus whatever incentive tokens the pool emits. K-Lend pays suppliers the interest borrowers pay. Leveraged strategies amplify one of those by borrowing against the position. There is no fourth source, and any advertised return has to be explainable by one of these.</p></details>
+      <details><summary>What are Kamino vaults?</summary><p>Automated liquidity vaults. On a concentrated-liquidity DEX an LP must choose a price range and move it as the market moves, or stop earning fees. Kamino's vaults rebalance that range automatically according to a published strategy, so depositors get a managed position instead of a manual one. The trade-off is that rebalancing crystallises impermanent loss and you inherit the strategy's judgement.</p></details>
+      <details><summary>Is Kamino the same as Aave?</summary><p>No. They overlap on lending but differ in scope. Aave is a lending market and little else, deployed across many chains. Kamino is Solana-native and combines lending with automated liquidity management and leverage products, so depositors take on liquidity-provision risk that a pure lending market does not have.</p></details>
+      <details><summary>What is the KMNO token?</summary><p>KMNO is Kamino's governance token, used for protocol governance and distributed through incentive programmes including its points and season campaigns. Governance tokens are not a claim on protocol revenue unless the protocol explicitly makes them one, so treat KMNO's value and any yield paid in it separately from the underlying product's economics.</p></details>
+      <details><summary>Do you need SOL to use Kamino?</summary><p>Yes, for transaction fees. Solana fees are very low, but you need a small SOL balance in your wallet to sign transactions, and you should keep some in reserve — being unable to pay fees when you need to adjust or close a leveraged position is an avoidable way to get liquidated.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — and the wider market around it — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="kamino-lend-explained"><img src="../assets/blog/kamino-lend-explained.png" alt="" /><span>Kamino Lend Explained</span></a>
+        <a href="is-kamino-finance-safe"><img src="../assets/blog/is-kamino-finance-safe.png" alt="" /><span>Is Kamino Finance Safe?</span></a>
+        <a href="what-is-crypto-staking"><img src="../assets/blog/what-is-crypto-staking.png" alt="" /><span>What Is Crypto Staking?</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Same idea, different chain</h2>
+      <p>WhaleHub pools governance power on Stellar and pays out the revenue it earns. Non-custodial, no lockup on BLUB.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not financial advice. WhaleHub is not affiliated with any protocol described. Protocol mechanics, rates and token designs change frequently — verify current details directly with the protocol before depositing. DeFi involves risk, including smart-contract failure, liquidation and the total loss of capital.</p>
+  </div>
+</article>
+
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

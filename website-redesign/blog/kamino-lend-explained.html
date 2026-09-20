@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kamino Lend Explained: Borrowing and Supplying on Solana | WhaleHub</title>
+<meta name="description" content="How Kamino's K-Lend market works — supply rates, collateral factors, liquidation mechanics, and the specific risk of using a liquidity vault position as collateral." />
+<link rel="canonical" href="https://whalehub.io/blog/kamino-lend-explained" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="kamino lend, k-lend, kamino borrowing, solana lending, kamino collateral, ltv liquidation solana" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/kamino-lend-explained" />
+<meta property="og:title" content="Kamino Lend Explained: Borrowing and Supplying on Solana" />
+<meta property="og:description" content="How Kamino's K-Lend market works — supply rates, collateral factors, liquidation mechanics, and the specific risk of using a liquidity vault position as collateral." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/kamino-lend-explained.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-20" />
+<meta property="article:modified_time" content="2026-09-20" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="Kamino Lend Explained: Borrowing and Supplying on Solana" />
+<meta name="twitter:description" content="How Kamino's K-Lend market works — supply rates, collateral factors, liquidation mechanics, and the specific risk of using a liquidity vault position as collateral." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/kamino-lend-explained.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/kamino-lend-explained#article",
+      "headline": "Kamino Lend Explained: Borrowing and Supplying on Solana",
+      "description": "How Kamino's K-Lend market works \u2014 supply rates, collateral factors, liquidation mechanics, and the specific risk of using a liquidity vault position as collateral.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/kamino-lend-explained.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-09-20",
+      "dateModified": "2026-09-20",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev"
+        ]
+      },
+      "publisher": {
+        "@id": "https://whalehub.io/#organization"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/kamino-lend-explained"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://whalehub.io/blog/kamino-lend-explained#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Kamino Lend?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Kamino Lend, or K-Lend, is the over-collateralised lending market inside Kamino Finance on Solana. Suppliers deposit assets and earn the interest borrowers pay. Borrowers post collateral worth more than they borrow and can be liquidated if that collateral's value falls too close to the debt."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How are Kamino supply rates set?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "By utilisation. Each asset has a rate curve: when a large share of supplied assets is borrowed, rates rise to attract more supply and discourage borrowing; when utilisation is low, rates fall. Nobody sets the rate by hand, which is why it moves continuously and why a rate you see today is not a rate you are promised."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is a collateral factor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The share of your collateral's value you may borrow against. A collateral factor of 70% means $1,000 of that asset supports at most $700 of debt. Volatile assets get lower factors because the buffer has to absorb a bigger price move before the position becomes undercollateralised."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When does Kamino liquidate a position?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "When the loan-to-value ratio crosses the liquidation threshold, which sits above the maximum borrow LTV to leave a margin. A liquidator repays part of the debt and takes collateral plus a bonus. It is automatic and permissionless \u2014 nobody reviews your position first, and crossing the threshold for a moment is enough."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you use a Kamino vault position as collateral?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, and it is one of the platform's distinguishing features: a liquidity position can back a loan without being closed, so it keeps earning fees. The risk is correlation \u2014 the same market move can reduce the vault's value and its fee income while raising your LTV, so several things deteriorate together rather than independently."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What LTV is safe on Kamino?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "There is no safe number, only more and less headroom. LTV rises on its own when collateral falls, so a position opened at 40% can reach the threshold after a sharp move with no action from you. Borrowing the maximum allowed means starting at the liquidation edge. Treat the advertised maximum as a boundary, not a target."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://whalehub.io/blog/kamino-lend-explained#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://whalehub.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Kamino Lend Explained: Borrowing and Supplying on Solana",
+          "item": "https://whalehub.io/blog/kamino-lend-explained"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; DeFi</div>
+      <span class="tag">DeFi</span>
+      <h1>Kamino Lend Explained: Borrowing and Supplying on Solana</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: September 2026</span>
+        <span class="dot-sep"></span>
+        <span>9 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/kamino-lend-explained.png" alt="Kamino Lend explained — borrowing and supplying on Solana" width="1200" height="630" />
+    </figure>
+
+    <p class="lead"><strong>Kamino Lend</strong> — usually written K-Lend — is the over-collateralised lending market inside Kamino Finance on Solana. Supply an asset and earn what borrowers pay; borrow against collateral worth more than your loan. The mechanics are standard. What is worth understanding is how the numbers move against you when the market does.</p>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#supply">Supplying</a></li>
+        <li><a href="#borrow">Borrowing and collateral factors</a></li>
+        <li><a href="#liq">How liquidation actually works</a></li>
+        <li><a href="#vault">Vault positions as collateral</a></li>
+        <li><a href="#practice">Using it without getting hurt</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="supply">Supplying</h2>
+      <p class="answer">You deposit an asset into a pool and receive a claim on that pool plus a share of the interest borrowers pay. The rate is set by utilisation — the fraction of supplied assets currently borrowed — and moves continuously as people borrow and repay.</p>
+      <p>Two consequences people underestimate. First, <strong>a supply rate is not a promise</strong>: it is a snapshot of current demand, and it can halve in a day if borrowers repay. Second, <strong>high utilisation means withdrawal risk</strong>. If 95% of a pool is borrowed, the remaining 5% is all that is available to withdraw, and you may have to wait for repayments or for higher rates to draw new supply in. That constraint appears exactly when everybody wants out at once.</p>
+
+      <h2 id="borrow">Borrowing and collateral factors</h2>
+      <p>Every collateral asset carries a <strong>collateral factor</strong> — the proportion of its value you may borrow against. A 70% factor means $1,000 of collateral supports at most $700 of debt. Volatile assets get lower factors because the buffer must absorb a larger move before the loan is underwater.</p>
+      <p>Your <strong>loan-to-value ratio</strong> is debt divided by current collateral value. The number that matters is not where it starts but how it moves:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Collateral falls by</th><th>LTV opened at 40%</th><th>LTV opened at 65%</th></tr></thead>
+          <tbody>
+            <tr><td>0%</td><td class="num">40%</td><td class="num">65%</td></tr>
+            <tr><td>20%</td><td class="num">50%</td><td class="num">81%</td></tr>
+            <tr><td>35%</td><td class="num">62%</td><td class="num">100% — liquidated</td></tr>
+            <tr><td>50%</td><td class="num">80%</td><td class="num">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The position opened at 65% dies on a move the 40% position absorbs comfortably. You did nothing differently in either case; the only variable was the headroom you started with.</p>
+
+      <h2 id="liq">How liquidation actually works</h2>
+      <p class="answer">When LTV crosses the liquidation threshold, any liquidator may repay part of your debt and claim collateral plus a bonus. It is automatic, permissionless and instant. Nobody reviews the position, and touching the threshold briefly is enough.</p>
+      <p>Three details that surprise people:</p>
+      <ul>
+        <li><strong>You pay the bonus.</strong> The liquidator's incentive comes out of your collateral. That is the penalty, on top of the loss.</li>
+        <li><strong>Oracle price, not market price.</strong> Collateral is valued by an oracle feed. A bad print or a stale update can liquidate a position that was healthy on every exchange.</li>
+        <li><strong>It happens when you can least act.</strong> Liquidations cluster in violent markets, which on Solana have historically coincided with congestion. Plan for not being able to add collateral at the moment you most want to.</li>
+      </ul>
+
+      <h2 id="vault">Vault positions as collateral</h2>
+      <p>Kamino's distinguishing feature is letting a liquidity vault position back a loan while it keeps earning fees. Capital-efficient, and it introduces a correlation most borrowers do not price.</p>
+      <p>With an ordinary asset as collateral, one thing moves: its price. With a vault position, a sharp move does several things at once — the position's value falls, <a href="impermanent-loss-explained">impermanent loss</a> is realised on rebalance, fee income may drop as the range is left behind, and your LTV rises. These are not independent risks that might offset; they are the same event arriving through four doors.</p>
+      <p>That does not make it a bad product. It makes it one that needs more headroom than the same LTV on a simple asset, because the collateral is itself a volatile strategy rather than a static holding.</p>
+
+      <h2 id="practice">Using it without getting hurt</h2>
+      <ol>
+        <li><strong>Borrow well under the maximum.</strong> The headroom is the product. Half the allowed LTV is a reasonable starting discipline.</li>
+        <li><strong>Know your liquidation price before you borrow</strong> — the collateral price at which you are closed out, as a number you have written down.</li>
+        <li><strong>Keep SOL for fees.</strong> Being unable to sign a transaction that adds collateral is an avoidable liquidation.</li>
+        <li><strong>Check utilisation before supplying</strong> if you may need to withdraw quickly.</li>
+        <li><strong>Treat vault collateral as more volatile than it looks,</strong> for the correlation reason above.</li>
+      </ol>
+      <p>If the appeal is yield rather than leverage, note that supplying carries no liquidation risk at all — and staking carries neither liquidation nor impermanent loss, at the cost of a lower and less flexible return.</p>
+    </div>
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>What is Kamino Lend?</summary><p>Kamino Lend, or K-Lend, is the over-collateralised lending market inside Kamino Finance on Solana. Suppliers deposit assets and earn the interest borrowers pay. Borrowers post collateral worth more than they borrow and can be liquidated if that collateral's value falls too close to the debt.</p></details>
+      <details><summary>How are Kamino supply rates set?</summary><p>By utilisation. Each asset has a rate curve: when a large share of supplied assets is borrowed, rates rise to attract more supply and discourage borrowing; when utilisation is low, rates fall. Nobody sets the rate by hand, which is why it moves continuously and why a rate you see today is not a rate you are promised.</p></details>
+      <details><summary>What is a collateral factor?</summary><p>The share of your collateral's value you may borrow against. A collateral factor of 70% means $1,000 of that asset supports at most $700 of debt. Volatile assets get lower factors because the buffer has to absorb a bigger price move before the position becomes undercollateralised.</p></details>
+      <details><summary>When does Kamino liquidate a position?</summary><p>When the loan-to-value ratio crosses the liquidation threshold, which sits above the maximum borrow LTV to leave a margin. A liquidator repays part of the debt and takes collateral plus a bonus. It is automatic and permissionless — nobody reviews your position first, and crossing the threshold for a moment is enough.</p></details>
+      <details><summary>Can you use a Kamino vault position as collateral?</summary><p>Yes, and it is one of the platform's distinguishing features: a liquidity position can back a loan without being closed, so it keeps earning fees. The risk is correlation — the same market move can reduce the vault's value and its fee income while raising your LTV, so several things deteriorate together rather than independently.</p></details>
+      <details><summary>What LTV is safe on Kamino?</summary><p>There is no safe number, only more and less headroom. LTV rises on its own when collateral falls, so a position opened at 40% can reach the threshold after a sharp move with no action from you. Borrowing the maximum allowed means starting at the liquidation edge. Treat the advertised maximum as a boundary, not a target.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — and the wider market around it — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="what-is-kamino-finance"><img src="../assets/blog/what-is-kamino-finance.png" alt="" /><span>What Is Kamino Finance?</span></a>
+        <a href="crypto-loans-without-collateral"><img src="../assets/blog/crypto-loans-without-collateral.png" alt="" /><span>Crypto Loans Without Collateral</span></a>
+        <a href="is-kamino-finance-safe"><img src="../assets/blog/is-kamino-finance-safe.png" alt="" /><span>Is Kamino Finance Safe?</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Yield without a liquidation price</h2>
+      <p>Staking earns without borrowing against anything. WhaleHub pools AQUA on Stellar and pays out what it earns.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for educational and informational purposes only and is general information, not financial advice. WhaleHub is not affiliated with any protocol described. Protocol mechanics, rates and token designs change frequently — verify current details directly with the protocol before depositing. DeFi involves risk, including smart-contract failure, liquidation and the total loss of capital.</p>
+  </div>
+</article>
+
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>
