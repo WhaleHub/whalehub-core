@@ -47,6 +47,7 @@ import DialogC from "./Dialog";
 import { kit } from "../Navbar";
 import { WALLET_CONNECT_ID } from "@creit.tech/stellar-wallets-kit/modules/walletconnect.module";
 import { ensureTrustline } from "../../utils/trustline.helper";
+import { getErrorMessage, isUserRejection } from "../../utils/errors";
 import { useTokenPrice, formatUsd } from "../../hooks/useTokenPrice";
 
 function Yield() {
@@ -458,10 +459,12 @@ function Yield() {
       setOptDialog(true);
     } catch (err: any) {
       console.error("[Yield] Unstaking failed:", err);
-      toast.error(`Unstaking failed: ${err.message || "Please try again"}`);
-      setDialogTitle("Unstaking Failed");
+      const reason = getErrorMessage(err, "Unstaking failed. Please try again.");
+      const cancelled = isUserRejection(err);
+      toast.error(cancelled ? reason : `Unstaking failed: ${reason}`);
+      setDialogTitle(cancelled ? "Request Cancelled" : "Unstaking Failed");
       setDialogMsg(
-        `Error: ${err.message}\n\nPlease try again or contact support.`
+        cancelled ? reason : `${reason}\n\nIf this keeps happening, contact support.`
       );
       setOptDialog(true);
     } finally {
@@ -662,10 +665,12 @@ function Yield() {
       setOptDialog(true);
     } catch (err: any) {
       console.error("[Yield] Restaking failed:", err);
-      toast.error(`Restaking failed: ${err.message || "Please try again"}`);
-      setDialogTitle("Restaking Failed");
+      const reason = getErrorMessage(err, "Restaking failed. Please try again.");
+      const cancelled = isUserRejection(err);
+      toast.error(cancelled ? reason : `Restaking failed: ${reason}`);
+      setDialogTitle(cancelled ? "Request Cancelled" : "Restaking Failed");
       setDialogMsg(
-        `Error: ${err.message}\n\nPlease try again or contact support.`
+        cancelled ? reason : `${reason}\n\nIf this keeps happening, contact support.`
       );
       setOptDialog(true);
     } finally {

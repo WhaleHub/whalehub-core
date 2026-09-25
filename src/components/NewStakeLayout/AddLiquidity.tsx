@@ -15,6 +15,7 @@ import { getAccountInfo, storeAccountBalance } from "../../lib/slices/userSlice"
 import aquaLogo from "../../assets/images/aqua_logo.png";
 import xlmLogo from "../../assets/images/xlm.png";
 import usdcLogo from "../../assets/images/usdc.svg";
+import { getErrorMessage } from "../../utils/errors";
 
 // Locale-safe number formatter — always uses dot as decimal separator
 const fmtNum = (val: string | number, decimals = 4): string =>
@@ -625,7 +626,7 @@ function AddLiquidity() {
       }
     } catch (error: any) {
       console.error("Deposit error:", error);
-      toast.error(error.message || "Deposit failed");
+      toast.error(getErrorMessage(error, "Deposit failed"));
     } finally {
       setIsDepositing(false);
     }
@@ -700,7 +701,7 @@ function AddLiquidity() {
       }
     } catch (error: any) {
       console.error("Withdrawal error:", error);
-      toast.error(error.message || "Withdrawal failed");
+      toast.error(getErrorMessage(error, "Withdrawal failed"));
     } finally {
       setIsWithdrawing(false);
     }

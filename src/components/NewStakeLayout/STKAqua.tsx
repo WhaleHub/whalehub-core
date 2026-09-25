@@ -60,6 +60,7 @@ import {
 } from "@creit.tech/stellar-wallets-kit/modules/walletconnect.module";
 import { kit } from "../Navbar";
 import { enhancedBalanceRefresh } from "../../utils/helpers";
+import { getErrorMessage, isUserRejection } from "../../utils/errors";
 import { useTokenPrice, formatUsd } from "../../hooks/useTokenPrice";
 
 function STKAqua() {
@@ -244,10 +245,12 @@ function STKAqua() {
       setIsSorobanStaking(false);
     } catch (error: any) {
       console.error("❌ [STKAqua] Soroban staking failed:", error);
-      toast.error(`Staking failed: ${error.message}`);
-      setDialogTitle("Staking Failed");
+      const reason = getErrorMessage(error, "Staking failed. Please try again.");
+      const cancelled = isUserRejection(error);
+      toast.error(cancelled ? reason : `Staking failed: ${reason}`);
+      setDialogTitle(cancelled ? "Request Cancelled" : "Staking Failed");
       setDialogMsg(
-        `Error: ${error.message}\n\nPlease try again or contact support.`
+        cancelled ? reason : `${reason}\n\nIf this keeps happening, contact support.`
       );
       setOptDialog(true);
       setIsSorobanStaking(false);
@@ -538,10 +541,12 @@ function STKAqua() {
       setOptDialog(true);
     } catch (err: any) {
       console.error("[STKAqua] Claim rewards failed:", err);
-      toast.error(`Claim failed: ${err.message || "Please try again"}`);
-      setDialogTitle("Claim Failed");
+      const reason = getErrorMessage(err, "Claim failed. Please try again.");
+      const cancelled = isUserRejection(err);
+      toast.error(cancelled ? reason : `Claim failed: ${reason}`);
+      setDialogTitle(cancelled ? "Request Cancelled" : "Claim Failed");
       setDialogMsg(
-        `Error: ${err.message}\n\nPlease try again or contact support.`
+        cancelled ? reason : `${reason}\n\nIf this keeps happening, contact support.`
       );
       setOptDialog(true);
     } finally {
