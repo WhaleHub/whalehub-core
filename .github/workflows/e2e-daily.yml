@@ -1,0 +1,63 @@
+name: e2e-daily
+
+# Daily read-only smoke suite against live mainnet + the deployed sites.
+# Posts a summary to Telegram and goes red if anything fails.
+#
+# Nothing here signs or submits a transaction — see scripts/e2e/lib/chain.cjs.
+on:
+  schedule:
+    # 06:40 UTC daily. Off the hour so it never collides with live-apy (:17).
+    - cron: '40 6 * * *'
+  workflow_dispatch:
+    inputs:
+      only:
+        description: 'Comma-separated check groups (infra,reads,writes,invariants). Blank = all.'
+        required: false
+        default: ''
+      telegram:
+        description: 'Send the Telegram report'
+        type: boolean
+        required: false
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: e2e-daily
+  cancel-in-progress: false
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      # Only @stellar/stellar-sdk is needed; the full CRA install is slow and
+      # irrelevant here, so skip scripts and dev extras.
+      - name: Install dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
+
+      - name: Run E2E suite
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # Optional overrides; all have sane defaults in scripts/e2e/lib/chain.cjs
+          E2E_SOROBAN_RPC_URL: ${{ secrets.E2E_SOROBAN_RPC_URL }}
+          E2E_SUBJECT: ${{ vars.E2E_SUBJECT }}
+          E2E_SAMPLE_USER: ${{ vars.E2E_SAMPLE_USER }}
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.only }}" ]; then
+            ARGS="--only=${{ github.event.inputs.only }}"
+          fi
+          if [ "${{ github.event.inputs.telegram }}" = "false" ]; then
+            ARGS="$ARGS --no-telegram"
+          fi
+          node scripts/e2e/run.cjs $ARGS
