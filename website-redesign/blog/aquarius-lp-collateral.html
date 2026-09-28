@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Borrowing Against Aquarius LP Tokens on Stellar: Venues and Leverage Maths | WhaleHub</title>
+<meta name="description" content="Aquarius LP tokens can now be used as collateral on Stellar. Which venues accept them, the LTVs and caps, how looping works, and how far XLM can move before a levered XLM/USDC LP is liquidated." />
+<link rel="canonical" href="https://whalehub.io/blog/aquarius-lp-collateral" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+<meta name="author" content="WhaleHub Research" />
+<meta name="keywords" content="aquarius lp collateral, borrow against lp tokens, leveraged liquidity stellar, xoxno lending stellar, leveraged yield farming stellar, aquarius lp" />
+
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="WhaleHub" />
+<meta property="og:url" content="https://whalehub.io/blog/aquarius-lp-collateral" />
+<meta property="og:title" content="Borrowing Against Aquarius LP Tokens on Stellar: Venues and Leverage Maths" />
+<meta property="og:description" content="Aquarius LP tokens can now be used as collateral on Stellar. Which venues accept them, the LTVs and caps, how looping works, and how far XLM can move before a levered XLM/USDC LP is liquidated." />
+<meta property="og:image" content="https://whalehub.io/assets/blog/aquarius-lp-collateral.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="article:published_time" content="2026-09-28" />
+<meta property="article:modified_time" content="2026-09-28" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@whalehubdefi" />
+<meta name="twitter:title" content="Borrowing Against Aquarius LP Tokens on Stellar: Venues and Leverage Maths" />
+<meta name="twitter:description" content="Aquarius LP tokens can now be used as collateral on Stellar. Which venues accept them, the LTVs and caps, how looping works, and how far XLM can move before a levered XLM/USDC LP is liquidated." />
+<meta name="twitter:image" content="https://whalehub.io/assets/blog/aquarius-lp-collateral.png" />
+
+<link rel="icon" type="image/webp" href="../assets/logo-icon.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="blog.css" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://whalehub.io/blog/aquarius-lp-collateral#article",
+      "headline": "Borrowing Against Aquarius LP Tokens on Stellar: Venues and Leverage Maths",
+      "description": "Aquarius LP tokens can now be used as collateral on Stellar. Which venues accept them, the LTVs and caps, how looping works, and how far XLM can move before a levered XLM/USDC LP is liquidated.",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://whalehub.io/assets/blog/aquarius-lp-collateral.png",
+        "width": 1200,
+        "height": 630
+      },
+      "datePublished": "2026-09-28",
+      "dateModified": "2026-09-28",
+      "author": {
+        "@type": "Organization",
+        "@id": "https://whalehub.io/#organization",
+        "name": "WhaleHub Research",
+        "url": "https://whalehub.io/",
+        "sameAs": [
+          "https://x.com/whalehubdefi",
+          "https://github.com/WhaleHubDev"
+        ]
+      },
+      "publisher": {
+        "@id": "https://whalehub.io/#organization"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://whalehub.io/blog/aquarius-lp-collateral"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://whalehub.io/blog/aquarius-lp-collateral#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Can you borrow against Aquarius LP tokens?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Since August 2026 XOXNO Lending on Stellar lists several Aquarius LP tokens as collateral, including XLM/USDC, XLM/AQUA and AQUA/USDC, at 50% loan-to-value. Blend V2 pools can also list an LP token as collateral if a pool operator chooses to."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much leverage can you get on an Aquarius LP position?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "At a 50% loan-to-value, looping an LP position reaches at most 2x in theory. At 2x there is almost no room before liquidation, so a practical range is 1.25\u20131.75x, where XLM would have to rise roughly 96\u2013800% before a levered XLM/USDC position with XLM debt is liquidated, under the assumptions in this article."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you still earn Aquarius rewards on LP tokens used as collateral?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Aquarius rewards accrue to the address holding the LP token. When the token sits in a lending contract, whether the rewards reach you depends on that venue. Check before levering, because rewards are often a large share of an LP's yield."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What liquidates a levered XLM/USDC LP position?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If the debt is in XLM, an XLM rally. The LP's value grows roughly with the square root of the XLM price while the debt grows one-for-one with it, so a sharp rally closes the gap. A falling XLM price makes this position safer."
+          }
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://whalehub.io/blog/aquarius-lp-collateral#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://whalehub.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://whalehub.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Borrowing Against Aquarius LP Tokens on Stellar: Venues and Leverage Maths",
+          "item": "https://whalehub.io/blog/aquarius-lp-collateral"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="../"><img class="logo" src="../assets/logo-full.webp" alt="WhaleHub" /></a>
+    <div class="nav-links">
+      <a href="../#how">How it works</a>
+      <a href="../#why">Why WhaleHub</a>
+      <a href="./" class="active">Blog</a>
+      <a href="../about">About</a>
+      <a href="../faq">FAQ</a>
+      <a href="https://whalehub-1.gitbook.io/whalehub">Docs</a>
+    </div>
+    <div class="nav-right">
+      <a href="https://app.whalehub.io/" class="btn btn-primary"><img class="ic-whale" src="../assets/logo-icon.webp" alt="" width="20" height="20"> Launch app</a>
+    </div>
+  </nav>
+</header>
+
+<article class="article">
+  <div class="article-head">
+    <div class="content">
+      <div class="breadcrumb"><a href="./">Blog</a> &nbsp;/&nbsp; Stellar DeFi</div>
+      <span class="tag">Stellar DeFi</span>
+      <h1>Borrowing Against Aquarius LP Tokens on Stellar: Venues and Leverage Maths</h1>
+      <div class="article-meta">
+        <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
+        <span class="dot-sep"></span>
+        <span>Last updated: September 2026</span>
+        <span class="dot-sep"></span>
+        <span>9 min read</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <figure class="cover-fig">
+      <img src="../assets/blog/aquarius-lp-collateral.png" alt="Borrowing against Aquarius LP tokens on Stellar: venues, LTVs and leverage maths" width="1200" height="630" />
+    </figure>
+
+
+    <p class="lead">For most of Stellar's DeFi history, an Aquarius LP token did one thing: earn fees and rewards in the wallet that held it. Since August 2026 it can also be <strong>borrowed against</strong>, which makes leveraged liquidity provision possible on Stellar for the first time. This guide covers where you can do it, on what terms, and the maths to understand before looping a position.</p>
+
+    <div class="callout">
+      <div class="k">The short version</div>
+      <p>XOXNO Lending lists Aquarius LPs as collateral at <strong>50% LTV, 60% liquidation threshold</strong>, borrowing XLM, USDC, EURC or PYUSD. Looping at 50% LTV caps out at 2×, and at 2× a 44% XLM rally liquidates an XLM/USDC position with XLM debt. The useful range is well below the maximum.</p>
+    </div>
+
+    <div class="toc">
+      <div class="k">On this page</div>
+      <ol>
+        <li><a href="#why">Why LP collateral matters</a></li>
+        <li><a href="#venues">Where you can borrow against an LP today</a></li>
+        <li><a href="#loop">How a leveraged LP position works</a></li>
+        <li><a href="#maths">The maths: yield and liquidation</a></li>
+        <li><a href="#check">Questions to ask before looping</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </div>
+
+    <div class="prose">
+      <h2 id="why">Why LP collateral matters</h2>
+      <p class="answer">An LP token is a claim on two assets in a pool plus the fees they earn. Using it as collateral lets a liquidity provider borrow against that claim and add more liquidity, turning a fixed position into a levered one.</p>
+      <p>On Ethereum and Solana this is a mature category: LP and yield-bearing tokens are routine collateral, and curated vaults run looped positions for users. On Stellar the pieces arrived separately. <a href="aquarius-amm-explained">Aquarius</a> issues transferable SEP-41 LP share tokens, and Soroban lending venues support flash loans. What was missing was a venue willing to list the LP tokens themselves.</p>
+
+      <h2 id="venues">Where you can borrow against an LP today</h2>
+      <p><strong>XOXNO Lending</strong> is the first venue on Stellar to list Aquarius LP tokens, in its mainnet configuration from August 2026. The LPs are collateral-only: you can deposit them, but nobody can borrow them. They sit in two isolated risk groups, "AMM Collateral" and "Aquarius Ecosystem":</p>
+      <table>
+        <thead><tr><th>Aquarius LP</th><th>Max LTV</th><th>Liquidation threshold</th><th>Liquidation bonus</th><th>Supply cap</th></tr></thead>
+        <tbody>
+          <tr><td>XLM/AQUA</td><td>50%</td><td>60%</td><td>10%</td><td>5,000,000 LP</td></tr>
+          <tr><td>AQUA/USDC</td><td>50%</td><td>60%</td><td>10%</td><td>5,000,000 LP</td></tr>
+          <tr><td>XLM/USDC</td><td>50%</td><td>60%</td><td>10%</td><td>500 LP</td></tr>
+          <tr><td>PYUSD/USDC, USDY/USDC, CETES/USDC, USTRY/USDC, XAUM/USDC, XLM/SolvBTC</td><td>50%</td><td>60%</td><td>10%</td><td>200–500 LP</td></tr>
+        </tbody>
+      </table>
+      <p>Against them you can borrow <strong>XLM, USDC, EURC or PYUSD</strong>, and XOXNO supports flash loans on those assets, which is what makes a one-transaction loop possible. Two caveats. First, the supply caps on most pairs are small, so capacity is limited today. Second, XOXNO's Stellar deployment is young and small, with roughly $74K of TVL on DefiLlama at the time of writing.</p>
+      <p><strong>Blend V2</strong> can list LP tokens too, because anyone can deploy a pool with any collateral. We are not aware of a major Blend pool listing Aquarius LPs as of this writing, and Blend paused its backstop after the <a href="blend-exploits-2026">August Comet exploit</a>, so check its current status first.</p>
+
+      <h2 id="loop">How a leveraged LP position works</h2>
+      <p>Take $1,000 in an XLM/USDC LP and a target of 1.5× exposure. Done by hand, you would deposit the LP, borrow XLM, swap half to USDC, add liquidity, deposit the new LP, and repeat. Each pass adds less, costs more fees, and leaves the position exposed between steps.</p>
+      <p>A flash loan does it in one transaction:</p>
+      <ol>
+        <li>Flash-borrow $500 of XLM.</li>
+        <li>Swap half to USDC and add both to the pool, receiving about $500 of new LP.</li>
+        <li>Deposit all $1,500 of LP as collateral.</li>
+        <li>Borrow $500 of XLM against it and repay the flash loan.</li>
+      </ol>
+      <p>You end with $1,500 of LP exposure and $500 of XLM debt, and the venue checks health once, at the end. This is the pattern XOXNO's "multiply" feature and WhaleHub's leverage vault (in testnet development) both use.</p>
+
+      <h2 id="maths">The maths: yield and liquidation</h2>
+      <p><strong>Yield.</strong> At leverage <em>L</em>, return on your equity is the LP yield on the whole position minus interest on the borrowed part:</p>
+      <p><code>net APY = LP APY × L − borrow APR × (L − 1)</code></p>
+      <p>With an LP earning 10.77% (the Aquarius XLM/USDC concentrated pool's unboosted rate in August) at 1.5×: borrowing at 0.10% nets 16.11%; at 5% it nets 13.66%; at 10.79% it nets 10.76%, the same as not levering at all. Leverage only pays while the borrow rate stays well under the LP yield, and borrow rates move with utilisation.</p>
+      <p><strong>Liquidation.</strong> With XLM debt against an XLM/USDC LP, the risk is an XLM rally. In a constant-product pool the LP's value grows with the square root of the XLM price, while XLM debt grows one-for-one. With a 60% liquidation threshold, the health factor starts at <code>0.6 × L ÷ (L − 1)</code> and falls with the square root of the price move:</p>
+      <table>
+        <thead><tr><th>Leverage</th><th>Starting health factor</th><th>XLM rise that liquidates</th></tr></thead>
+        <tbody>
+          <tr><td>1.25×</td><td>3.00</td><td>+800%</td></tr>
+          <tr><td>1.50×</td><td>1.80</td><td>+224%</td></tr>
+          <tr><td>1.75×</td><td>1.40</td><td>+96%</td></tr>
+          <tr><td>2.00× (max at 50% LTV)</td><td>1.20</td><td>+44%</td></tr>
+        </tbody>
+      </table>
+      <p>These figures ignore interest, fees and the extra <a href="impermanent-loss-explained">impermanent loss</a> of concentrated ranges, all of which bring liquidation closer. A falling XLM price makes this position safer, because the debt shrinks faster than the collateral. Borrowing USDC instead flips that: a falling XLM becomes the risk.</p>
+
+      <h2 id="check">Questions to ask before looping</h2>
+      <ul>
+        <li><strong>Do rewards still reach you?</strong> Aquarius rewards accrue to the address holding the LP token. Once it is in a lending contract, whether you still receive them depends on the venue, and rewards are often a large share of LP yield.</li>
+        <li><strong>How is the LP priced?</strong> An LP priced from the pool's own spot price can be manipulated; one priced from the pool invariant and independent feeds is much harder to move. The <a href="blend-exploits-2026">YieldBlox exploit</a> shows what happens when collateral pricing is weak.</li>
+        <li><strong>What is the borrow rate, and how fast can it change?</strong> Utilisation-driven rates can jump when others borrow the same asset.</li>
+        <li><strong>How deep is the exit?</strong> Unwinding sells through the same Aquarius pool. A large unwind in a shallow pool moves the price against you.</li>
+        <li><strong>Who watches the position?</strong> A self-managed loop has no one deleveraging it at 3am during a rally.</li>
+      </ul>
+
+      <h2>The takeaway</h2>
+      <p>LP collateral is a genuine new primitive for Stellar, and the numbers make the trade clear: modest leverage, a borrow rate well below the LP yield, and a price move you can survive. The maximum leverage a venue allows is not the leverage worth using.</p>
+      <p class="disclaimer">Sources: XOXNO rs-lending-xlm mainnet configuration (configs/mainnet/markets.json, spokes.json); DefiLlama; Aquarius pool data as of August 2026. Supply caps and parameters can change through XOXNO governance.</p>
+    </div>
+
+
+    <section class="faq" id="faq">
+      <h2>Frequently asked questions</h2>
+      <details><summary>Can you borrow against Aquarius LP tokens?</summary><p>Yes. Since August 2026 XOXNO Lending on Stellar lists several Aquarius LP tokens as collateral, including XLM/USDC, XLM/AQUA and AQUA/USDC, at 50% loan-to-value. Blend V2 pools can also list an LP token as collateral if a pool operator chooses to.</p></details>
+      <details><summary>How much leverage can you get on an Aquarius LP position?</summary><p>At a 50% loan-to-value, looping an LP position reaches at most 2x in theory. At 2x there is almost no room before liquidation, so a practical range is 1.25–1.75x, where XLM would have to rise roughly 96–800% before a levered XLM/USDC position with XLM debt is liquidated, under the assumptions in this article.</p></details>
+      <details><summary>Do you still earn Aquarius rewards on LP tokens used as collateral?</summary><p>Aquarius rewards accrue to the address holding the LP token. When the token sits in a lending contract, whether the rewards reach you depends on that venue. Check before levering, because rewards are often a large share of an LP's yield.</p></details>
+      <details><summary>What liquidates a levered XLM/USDC LP position?</summary><p>If the debt is in XLM, an XLM rally. The LP's value grows roughly with the square root of the XLM price while the debt grows one-for-one with it, so a sharp rally closes the gap. A falling XLM price makes this position safer.</p></details>
+    </section>
+
+    <div class="author-box">
+      <img src="../assets/logo-icon.webp" alt="WhaleHub Research" />
+      <div>
+        <div class="n">WhaleHub Research</div>
+        <div class="r">Protocol research &amp; education · WhaleHub</div>
+        <p>WhaleHub is a yield-optimization protocol on Stellar. We stake AQUA, aggregate ICE voting power, and auto-compound Aquarius rewards for stakers. This series explains the Stellar DeFi stack — and the wider market around it — in plain English.</p>
+      </div>
+    </div>
+
+    <section class="related">
+      <h2>Read more</h2>
+      <div class="related-grid">
+        <a href="aquarius-concentrated-liquidity"><img src="../assets/blog/aquarius-concentrated-liquidity.png" alt="" /><span>Aquarius Concentrated Liquidity</span></a>
+        <a href="impermanent-loss-explained"><img src="../assets/blog/impermanent-loss-explained.png" alt="" /><span>Impermanent Loss, With Real Numbers</span></a>
+        <a href="blend-exploits-2026"><img src="../assets/blog/blend-exploits-2026.png" alt="" /><span>Blend's 2026 Incidents, Explained</span></a>
+      </div>
+    </section>
+
+    <div class="end-cta">
+      <h2>Earn on Aquarius without managing a loop</h2>
+      <p>WhaleHub's vaults auto-compound Aquarius LP positions every 4 hours. Stake AQUA or deposit into a vault in a few clicks.</p>
+      <a href="https://app.whalehub.io/" class="btn btn-primary">Launch the app</a>
+    </div>
+
+    <p class="disclaimer">This article is for education only and is not financial advice. Figures are taken from the sources linked in the text as of the date shown and change constantly. Verify them before acting. Leverage can lose more than the yield it adds; a levered position can be liquidated.</p>
+  </div>
+</article>
+
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="../assets/logo-full.webp" alt="WhaleHub" />
+        <p>One protocol. Three ways to earn.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Protocol</h4>
+        <a href="../#how">How it works</a>
+        <a href="../#why">Why WhaleHub</a>
+        <a href="https://app.whalehub.io/">Launch app</a>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <a href="./">Blog</a>
+        <a href="https://whalehub-1.gitbook.io/whalehub">Documentation</a>
+        <a href="../about">About</a>
+        <a href="../faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Community</h4>
+        <a href="https://discord.gg/DmGKxgSdTP">Discord</a>
+        <a href="https://t.me/whalehubdefi">Telegram</a>
+        <a href="https://x.com/whalehubdefi">X / Twitter</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr"></span> WhaleHub · Live on Stellar Mainnet</span>
+      <span>whalehub.io</span>
+    </div>
+  </div>
+</footer>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

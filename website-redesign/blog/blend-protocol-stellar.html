@@ -19,7 +19,7 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="article:published_time" content="2026-07-17" />
-<meta property="article:modified_time" content="2026-07-17" />
+<meta property="article:modified_time" content="2026-09-28" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@whalehubdefi" />
 <meta name="twitter:title" content="What Is Blend? Stellar's DeFi Lending Protocol" />
@@ -49,7 +49,7 @@
         "height": 630
       },
       "datePublished": "2026-07-17",
-      "dateModified": "2026-07-17",
+      "dateModified": "2026-09-28",
       "author": {
         "@type": "Organization",
         "@id": "https://whalehub.io/#organization",
@@ -181,7 +181,7 @@
       <div class="article-meta">
         <span class="author"><img src="../assets/logo-icon.webp" alt="WhaleHub Research" /> WhaleHub Research</span>
         <span class="dot-sep"></span>
-        <span>Last updated: July 2026</span>
+        <span>Last updated: September 2026</span>
         <span class="dot-sep"></span>
         <span>8 min read</span>
       </div>
@@ -276,7 +276,7 @@
         <a href="https://app.whalehub.io/" class="btn btn-primary">Launch app</a>
       </div>
 
-      <p>This is exactly the territory WhaleHub is exploring. WhaleHub is a yield optimiser on Stellar, and we're researching <strong>leveraged LP strategies</strong> that could draw on Blend-style flash liquidity to amplify farming returns. To be clear: that work is <em>in development</em>. It is not live, not audited, and not a launched product — nothing here should be read as a promise of a specific integration or return. If you want the broader landscape first, our guides on <a href="stellar-yield-farming">Stellar yield farming</a> and <a href="best-yield-aggregators">the best yield aggregators</a> set the context for where leverage fits.</p>
+      <p>This is exactly the territory WhaleHub is exploring. WhaleHub is a yield optimiser on Stellar, and we're researching <strong>leveraged LP strategies</strong> that draw on flash liquidity from Stellar lending venues to amplify farming returns. Aquarius LP tokens can now be used as collateral; see <a href="aquarius-lp-collateral">borrowing against Aquarius LP tokens</a> for the venues and the maths. To be clear: that work is <em>in development</em>. It is not live, not audited, and not a launched product — nothing here should be read as a promise of a specific integration or return. If you want the broader landscape first, our guides on <a href="stellar-yield-farming">Stellar yield farming</a> and <a href="best-yield-aggregators">the best yield aggregators</a> set the context for where leverage fits.</p>
 
       <h2 id="risks">Risks to understand</h2>
       <p class="answer">Blend's isolated design contains risk, but it doesn't remove it. The main hazards are liquidation if your collateral falls, bad debt if a position can't be covered, oracle failure if a price feed is wrong, and smart-contract risk if code has a flaw. Understanding each one is the price of admission to any lending protocol.</p>
@@ -286,6 +286,8 @@
         <li><strong>Oracle risk.</strong> Every pool relies on a price feed to value collateral. A wrong, stale, or manipulated price can trigger unfair liquidations or let bad loans slip through. Because each pool picks its own oracle, oracle quality varies pool to pool.</li>
         <li><strong>Smart-contract risk.</strong> Blend's contracts are immutable, which is a strength — but immutability also means a bug can't be hot-patched. As with all DeFi, code can contain flaws regardless of audits, and interacting with any protocol carries this risk.</li>
       </ul>
+      <h3>The 2026 incidents</h3>
+      <p>Two of these risks became real in 2026. In February, the community-run <strong>YieldBlox</strong> pool lost about $10M when an attacker moved the thin market behind its USTRY price feed from about $1 to about $107 and borrowed against the inflated collateral: an oracle failure in one pool's configuration, not in Blend's contracts. In August, the <strong>Comet BLND-USDC pool</strong> that holds backstop deposits was exploited for about $717K through a same-asset swap bug, and Blend paused its backstop. Blend's lending pools held roughly $150–165M throughout, per DefiLlama. The full breakdown is in <a href="blend-exploits-2026">Blend's 2026 incidents, explained</a>.</p>
       <p>The healthy way to read this list isn't "avoid Blend" — it's "assess each pool on its own." Isolated pools mean the answers to "which oracle? how deep is the backstop? how volatile is the collateral?" can differ sharply between two markets on the same protocol.</p>
 
       <h2 id="getting-started">Getting started on Stellar DeFi</h2>
@@ -317,8 +319,9 @@
     <section class="related">
       <h2>Read more</h2>
       <div class="related-grid">
+        <a href="aquarius-lp-collateral"><img src="../assets/blog/aquarius-lp-collateral.png" alt="" /><span>Borrowing Against Aquarius LP Tokens</span></a>
+        <a href="blend-exploits-2026"><img src="../assets/blog/blend-exploits-2026.png" alt="" /><span>Blend's 2026 Incidents, Explained</span></a>
         <a href="stellar-defi-guide"><img src="../assets/blog/stellar-defi-guide.png" alt="" /><span>What Is Stellar DeFi?</span></a>
-        <a href="best-compliance-platforms"><img src="../assets/blog/best-compliance-platforms.png" alt="" /><span>Best KYC &amp; KYB Platforms</span></a>
         <a href="best-crypto-staking-platforms"><img src="../assets/blog/best-crypto-staking-platforms.png" alt="" /><span>Best Crypto Staking Platforms</span></a>
         <a href="what-is-crypto-staking"><img src="../assets/blog/what-is-crypto-staking.png" alt="" /><span>What Is Crypto Staking?</span></a>
         <a href="liquid-staking-explained"><img src="../assets/blog/liquid-staking-explained.png" alt="" /><span>What Is Liquid Staking?</span></a>
