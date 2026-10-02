@@ -54,9 +54,9 @@ your debt       = your debt shares       ÷ all debt shares       × the vault's
 ```
 
 This is why interest and liquidation losses spread across depositors automatically, with nothing to
-reconcile. It is also the reason for the v1 caveat in
-[What Is Leveraged Farming](what-is-leveraged-farming.md#what-you-are-taking-on): losses are shared rather
-than isolated.
+reconcile. It is also why, as set out in
+[What Is Leveraged Farming](what-is-leveraged-farming.md#what-you-are-taking-on), a liquidation loss is
+shared pro-rata across every depositor in the vault rather than falling on one position.
 
 ## Closing a position
 

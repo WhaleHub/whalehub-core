@@ -55,7 +55,7 @@ and every dollar of new LP also dilutes the rewards the pool pays out. The cap r
 | **XLM rallies** | Debt grows faster than collateral as the pool rebalances out of XLM — this is the move that liquidates | Leverage capped at 92% of the boundary; live health factor and alerts |
 | **XLM falls** | The position gets *safer* — debt shrinks faster than collateral | Nothing needed; the counterpart is a smaller upside in a rally |
 | **Borrow rate rises above LP yield** | Leverage starts subtracting return | Live net APY and break-even rate shown before signing; unwind at any time |
-| **Shared losses (v1)** | A liquidation is spread across vault depositors, not isolated to one position | Equity cap at launch; per-user isolation before mainnet |
+| **Shared losses** | A liquidation is spread pro-rata across every depositor in the vault, not isolated to one position | One leverage per vault; withdrawals repay proportional debt; equity cap per vault; acknowledged before the first deposit |
 | **Pool depth** | A large unwind moves the Aquarius price against itself | Equity cap sized to measured pool capacity |
 | **Contract risk** | Bugs in vault, zapper, oracle or liquidator | External audit before mainnet; slippage bounds and caps enforced on-chain |
 
@@ -69,7 +69,8 @@ multi-signature process used for the live staking contract.
 ## Before mainnet
 
 - Production LP oracle adapter with the manipulation test suite.
-- Per-user health and per-user liquidation, replacing shared losses.
+- External security review through the SCF Audit Bank, with the report published and every critical,
+  high and medium finding fixed, before public deposits.
 - On-chain leverage cap lowered to the liquidation boundary.
 - Soroban footprint validation of the full liquidation sequence — a liquidation that cannot fit in a
   transaction is an un-liquidatable position.

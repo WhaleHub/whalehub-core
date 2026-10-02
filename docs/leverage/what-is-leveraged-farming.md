@@ -61,9 +61,12 @@ work, and it is a Stellar-specific advantage.
   XLM rally grows the debt faster than the collateral — that is the move that liquidates, and it also means a
   rally returns less than plain liquidity providing would have.
 - **The spread inverting.** If the borrow rate climbs above the LP yield, unwind or deleverage.
-- **Shared losses (v1).** In the current design the vault holds one Blend position and depositors hold shares
-  of it, so a liquidation is shared across the vault rather than falling only on the position that caused it.
-  Per-user isolation is planned before mainnet.
+- **Shared losses.** Each vault holds one lending position and every depositor holds shares of it, at the
+  vault's single target leverage. Health is measured for the vault, not for you: if the position is
+  liquidated, the loss is shared pro-rata across all shares, including yours even if you did nothing. This
+  is the design, not a temporary stage. What limits it: no depositor can choose a higher leverage than the
+  vault's, a withdrawal must repay its proportional share of the debt so it cannot leave others more
+  levered, and each vault is capped in size.
 
 ## Fees
 
