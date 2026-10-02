@@ -977,12 +977,12 @@ function AddLiquidity() {
             </div>
 
             {/* LP + USD inline */}
-            <div className="text-base font-semibold text-white mb-2">
-              {parseFloat(userPosition.user_lp_amount).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} LP{" "}
-              <span className="text-[#6B7280] text-xs font-normal">
+            <div className="text-base font-semibold text-white mb-2 flex flex-wrap items-baseline gap-x-1 leading-snug">
+              <span className="whitespace-nowrap">{parseFloat(userPosition.user_lp_amount).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} LP</span>
+              <span className="text-[#6B7280] text-xs font-normal whitespace-nowrap">
                 {positionValueUsd === null ? "" : positionValueUsd > 0 ? `($${formatPositionUsd(positionValueUsd)})` : "(...)"}
               </span>
-              {" "}<span className="text-[#6B7280] text-xs font-normal">your slice of the pool</span>
+              <span className="text-[#6B7280] text-xs font-normal whitespace-nowrap">your slice of the pool</span>
             </div>
 
             {/* What this position has earned: LP gained from compounding, with its USD value */}
@@ -1013,9 +1013,9 @@ function AddLiquidity() {
               );
             })()}
 
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
               <div className="flex items-center gap-1">
-                <div className="text-xs text-[#00CC99] font-medium flex items-center gap-1">
+                <div className="text-xs text-[#00CC99] font-medium flex items-center gap-1 whitespace-nowrap">
                   <CheckCircleIcon className="h-[14px] w-[14px] flex-shrink-0" />
                   Earning Boosted Rewards
                 </div>
@@ -1038,7 +1038,7 @@ function AddLiquidity() {
                   : `${Math.floor(ageSec / 86400)}d ago`;
                 return (
                   <div className="flex items-center gap-1">
-                    <div className={clsx("text-[10px] font-medium px-2 py-0.5 rounded-full border", stalled ? "text-[#F5B942] border-[#F5B942]/40 bg-[#F5B942]/10" : "text-[#00CC99] border-[#00CC99]/40 bg-[#00CC99]/10")}>
+                    <div className={clsx("text-[10px] font-medium px-2 py-0.5 rounded-full border whitespace-nowrap", stalled ? "text-[#F5B942] border-[#F5B942]/40 bg-[#F5B942]/10" : "text-[#00CC99] border-[#00CC99]/40 bg-[#00CC99]/10")}>
                       {stalled ? "Compounding stalled" : "Compounding active"} · {ago}
                     </div>
                     <InformationCircleIcon
@@ -1107,10 +1107,10 @@ function AddLiquidity() {
                   singleAsset ? "border-[#00CC99] bg-[#00CC99]/10" : "border-[#1C2235] bg-[#0A0D14] hover:border-[#2A3050]"
                 )}
               >
-                <div className="flex items-center gap-1.5 text-sm font-medium text-white">
+                <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-sm font-medium text-white">
                   {TOKEN_LOGOS["AQUA"] && <img src={TOKEN_LOGOS["AQUA"]} alt="AQUA" className="w-4 h-4 rounded-full flex-shrink-0" />}
-                  AQUA only
-                  <span className="ml-auto text-[10px] uppercase tracking-wider text-[#00CC99] font-bold">Boosted</span>
+                  <span className="whitespace-nowrap">AQUA only</span>
+                  <span className="sm:ml-auto text-[10px] uppercase tracking-wider text-[#00CC99] font-bold">Boosted</span>
                 </div>
                 <div className="text-[10px] text-[#B1B3B8] mt-1 leading-snug">
                   Swap fees + AQUA rewards
@@ -1123,7 +1123,7 @@ function AddLiquidity() {
                   !singleAsset ? "border-[#00CC99] bg-[#00CC99]/10" : "border-[#1C2235] bg-[#0A0D14] hover:border-[#2A3050]"
                 )}
               >
-                <div className="flex items-center gap-1.5 text-sm font-medium text-white">
+                <div className="flex items-center gap-1.5 text-sm font-medium text-white whitespace-nowrap">
                   {TOKEN_LOGOS["AQUA"] && <img src={TOKEN_LOGOS["AQUA"]} alt="AQUA" className="w-4 h-4 rounded-full flex-shrink-0" />}
                   {TOKEN_LOGOS["BLUB"] && <img src={TOKEN_LOGOS["BLUB"]} alt="BLUB" className="w-4 h-4 rounded-full -ml-2.5 flex-shrink-0" />}
                   AQUA + BLUB
